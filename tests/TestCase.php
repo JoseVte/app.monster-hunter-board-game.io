@@ -14,6 +14,8 @@ abstract class TestCase extends BaseTestCase
     {
         parent::setUp();
 
+        $this->withoutVite();
+
         $uses = array_flip(class_uses_recursive(static::class));
 
         if (isset($uses[RefreshDatabase::class])) {
