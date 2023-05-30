@@ -19,6 +19,9 @@ module.exports = {
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
+            fontSize: {
+                'xxs': '8px',
+            },
             colors: {
                 primary: colors.sky
             }

@@ -43,6 +43,10 @@ class Team extends JetstreamTeam
         'deleted' => TeamDeleted::class,
     ];
 
+    protected $with = [
+        'campaigns'
+    ];
+
     public function campaigns(): HasMany
     {
         return $this->hasMany(Campaign::class, 'team_id');

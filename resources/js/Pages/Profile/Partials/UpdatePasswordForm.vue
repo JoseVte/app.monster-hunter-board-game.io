@@ -110,14 +110,14 @@ const updatePassword = () => {
                 :on="form.recentlySuccessful"
                 class="mr-3"
             >
-                Saved.
+                {{ $t('Saved.') }}
             </ActionMessage>
 
             <PrimaryButton
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing"
             >
-                Save
+                {{ $t('Save') }}
             </PrimaryButton>
         </template>
     </FormSection>

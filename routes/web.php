@@ -1,9 +1,6 @@
 <?php
 
-use App\Enum\MonsterCategory;
-use App\Enum\MonsterExpansion;
 use App\Models\Item;
-use Illuminate\Http\JsonResponse;
 use Inertia\Inertia;
 use App\Models\Armor;
 use App\Models\Weapon;
@@ -11,9 +8,13 @@ use App\Models\Monster;
 use App\Models\WeaponType;
 use App\Models\ArmorAbility;
 use App\Models\WeaponAttack;
+use App\Enum\MonsterCategory;
+use App\Enum\MonsterExpansion;
 use App\Models\DowntimeActivity;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use App\Http\Controllers\CampaignController;
 
 /*
 |--------------------------------------------------------------------------
@@ -40,7 +41,17 @@ Route::middleware([
     config('jetstream.auth_session'),
     'verified',
 ])->group(function (): void {
-    Route::get('/dashboard', fn () => Inertia::render('Dashboard'))->name('dashboard');
+    Route::get('/dashboard', function () {
+        /** @var \App\Models\User $user */
+        $user = auth()->user();
+        $campaigns = $user->campaigns()
+            ->with(['team', 'team.owner'])
+            ->withCount('days')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+
+        return Inertia::render('Dashboard', compact('campaigns'));
+    })->name('dashboard');
 
     Route::get('global-search', static function (Illuminate\Http\Request $request): JsonResponse {
         $locale = app()->getLocale();
@@ -76,30 +87,33 @@ Route::middleware([
         return response()->json($results);
     })->name('global-search');
 
-    Route::prefix('wiki')->name('wiki.')->group(function () {
+    Route::prefix('wiki')->name('wiki.')->group(function (): void {
         Route::get('/', fn () => Inertia::render('Wiki/Index'))->name('index');
 
-        Route::prefix('monsters')->name('monster.')->group(function () {
+        Route::prefix('monsters')->name('monster.')->group(function (): void {
             Route::get('/', fn () => Inertia::render('Wiki/Monster/Index', [
                 'filter' => [
                     'category' => MonsterCategory::asSelectable(),
                     'expansion' => MonsterExpansion::asSelectable(),
-                ]
+                ],
             ]))->name('index');
 
             Route::get('{monster}', fn (Monster $monster) => Inertia::render('Wiki/Monster/Show', compact('monster')))->name('show');
         });
 
-        Route::prefix('items')->name('item.')->group(function () {
+        Route::prefix('items')->name('item.')->group(function (): void {
             Route::get('/', fn () => Inertia::render('Wiki/Item/Index'))->name('index');
         });
 
-        Route::prefix('armors')->name('armor.')->group(function () {
+        Route::prefix('armors')->name('armor.')->group(function (): void {
             Route::get('/', fn () => Inertia::render('Wiki/Armor/Index'))->name('index');
         });
 
-        Route::prefix('weapons')->name('weapon.')->group(function () {
+        Route::prefix('weapons')->name('weapon.')->group(function (): void {
             Route::get('/', fn () => Inertia::render('Wiki/Weapon/Index'))->name('index');
         });
     });
+
+    Route::resource('campaigns', CampaignController::class);
+    Route::put('campaigns/{campaign}/update-potions', [CampaignController::class, 'updatePotions'])->name('campaigns.update-potions');
 });
