@@ -35,18 +35,18 @@ const setPassword = () => {
 <template>
     <FormSection @submitted="setPassword">
         <template #title>
-            Set Password
+            {{ $t('Set Password') }}
         </template>
 
         <template #description>
-            Ensure your account is using a long, random password to stay secure.
+            {{ $t('Ensure your account is using a long, random password to stay secure.') }}
         </template>
 
         <template #form>
             <div class="col-span-6 sm:col-span-4">
                 <InputLabel
                     for="password"
-                    value="New Password"
+                    :value="$t('New Password')"
                 />
                 <TextInput
                     id="password"
@@ -65,7 +65,7 @@ const setPassword = () => {
             <div class="col-span-6 sm:col-span-4">
                 <InputLabel
                     for="password_confirmation"
-                    value="Confirm Password"
+                    :value="$t('Confirm Password')"
                 />
                 <TextInput
                     id="password_confirmation"

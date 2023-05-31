@@ -38,7 +38,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Two-factor Confirmation" />
+    <Head :title="('Two-factor Confirmation')" />
 
     <AuthenticationCard>
         <template #logo>
@@ -47,11 +47,11 @@ const submit = () => {
 
         <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
             <template v-if="! recovery">
-                Please confirm access to your account by entering the authentication code provided by your authenticator application.
+                {{ $t('Please confirm access to your account by entering the authentication code provided by your authenticator application.') }}
             </template>
 
             <template v-else>
-                Please confirm access to your account by entering one of your emergency recovery codes.
+                {{ $t('Please confirm access to your account by entering one of your emergency recovery codes.') }}
             </template>
         </div>
 
@@ -59,7 +59,7 @@ const submit = () => {
             <div v-if="! recovery">
                 <InputLabel
                     for="code"
-                    value="Code"
+                    :value="$t('Code')"
                 />
                 <TextInput
                     id="code"
@@ -80,7 +80,7 @@ const submit = () => {
             <div v-else>
                 <InputLabel
                     for="recovery_code"
-                    value="Recovery Code"
+                    :value="$t('Recovery Code')"
                 />
                 <TextInput
                     id="recovery_code"
@@ -103,11 +103,11 @@ const submit = () => {
                     @click.prevent="toggleRecovery"
                 >
                     <template v-if="! recovery">
-                        Use a recovery code
+                        {{ $t('Use a recovery code') }}
                     </template>
 
                     <template v-else>
-                        Use an authentication code
+                        {{ $t('Use an authentication code') }}
                     </template>
                 </button>
 
@@ -116,7 +116,7 @@ const submit = () => {
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Log in
+                    {{ $t('Log in') }}
                 </PrimaryButton>
             </div>
         </form>
