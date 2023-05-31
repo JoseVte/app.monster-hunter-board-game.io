@@ -86,14 +86,14 @@ const setPassword = () => {
                 :on="form.recentlySuccessful"
                 class="mr-3"
             >
-                Saved.
+                {{ $t('Saved.') }}
             </ActionMessage>
 
             <Button
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing"
             >
-                Save
+                {{ $t('Save') }}
             </Button>
         </template>
     </FormSection>

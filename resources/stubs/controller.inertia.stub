@@ -1,0 +1,55 @@
+<?php
+
+namespace {{ namespace }};
+
+use Auth;
+use {{ namespacedModel }};
+use Inertia\Inertia;
+use Inertia\Response;
+use {{ rootNamespace }}Http\Controllers\Controller;
+use {{ rootNamespace }}Http\Requests\{{ requestClass }};
+use Illuminate\Http\RedirectResponse;
+
+class {{ class }} extends Controller
+{
+    public function index(): Response
+    {
+        return Inertia::render('{{ model }}/Index');
+    }
+
+    public function create(): Response
+    {
+        return Inertia::render('{{ model }}/Create');
+    }
+
+    public function store({{ requestClass }} $request): RedirectResponse
+    {
+        ${{ modelSingular }} = {{ model }}::create($request->validated());
+
+        return redirect()->route('{{ modelPlural }}.show', ['{{ modelSingular }}' => ${{ modelSingular }}]);
+    }
+
+    public function show({{ model }} ${{ modelVariable }}): Response
+    {
+        return Inertia::render('{{ model }}/Show', compact('{{ modelVariable }}'));
+    }
+
+    public function edit({{ model }} ${{ modelVariable }}): Response
+    {
+        return Inertia::render('{{ model }}/Edit', compact('{{ modelVariable }}'));
+    }
+
+    public function update({{requestClass}} $request, {{ model }} ${{ modelVariable }}): RedirectResponse
+    {
+        {{ model }}::update(${{ modelVariable }}->id, $request->validated());
+
+        return redirect()->route('{{ modelPlural }}.edit', ['{{ modelVariable }}' => ${{ modelVariable }}]);
+    }
+
+    public function destroy({{ model }} ${{ modelVariable }}): RedirectResponse
+    {
+        ${{ modelVariable }}->delete();
+
+        return redirect()->route('{{ modelPlural }}.index');
+    }
+}
