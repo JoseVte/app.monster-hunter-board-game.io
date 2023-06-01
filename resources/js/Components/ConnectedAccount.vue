@@ -50,7 +50,7 @@ defineProps({
                 />
 
                 <div>
-                    <div class="text-sm font-semibold text-gray-600">
+                    <div class="text-sm font-semibold text-gray-600 dark:text-gray-400">
                         {{ provider === 'twitter-oauth-2' ? 'Twitter' : provider.charAt(0).toUpperCase() + provider.slice(1) }}
                     </div>
 
@@ -58,14 +58,14 @@ defineProps({
                         v-if="createdAt !== null"
                         class="text-xs text-gray-500"
                     >
-                        Connected {{ createdAt }}
+                        {{ $t('Connected') }} {{ createdAt }}
                     </div>
 
                     <div
                         v-else
                         class="text-xs text-gray-500"
                     >
-                        Not connected.
+                        {{ $t('Not connected.') }}
                     </div>
                 </div>
             </div>

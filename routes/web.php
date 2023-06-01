@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Item;
+use Illuminate\Support\Facades\App;
 use Inertia\Inertia;
 use App\Models\Armor;
 use App\Models\Weapon;
@@ -35,6 +36,13 @@ Route::get('/', function () {
         'phpVersion' => PHP_VERSION,
     ]);
 });
+
+Route::get('language/{language}', function ($language) {
+    session()->put('locale', $language);
+    App::setLocale($language);
+
+    return redirect()->back();
+})->name('language');
 
 Route::middleware([
     'auth:sanctum',

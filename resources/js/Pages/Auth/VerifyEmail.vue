@@ -19,7 +19,7 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
 </script>
 
 <template>
-    <Head title="Email Verification" />
+    <Head :title="$t('Email Verification')" />
 
     <AuthenticationCard>
         <template #logo>
@@ -27,14 +27,14 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
         </template>
 
         <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-            Before continuing, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.
+            {{ $t('Before continuing, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
         </div>
 
         <div
             v-if="verificationLinkSent"
             class="mb-4 font-medium text-sm text-green-600 dark:text-green-400"
         >
-            A new verification link has been sent to the email address you provided in your profile settings.
+            {{ $t('A new verification link has been sent to the email address you provided in your profile settings.') }}
         </div>
 
         <form @submit.prevent="submit">
@@ -43,7 +43,7 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Resend Verification Email
+                    {{ $t('Resend Verification Email') }}
                 </PrimaryButton>
 
                 <div>
@@ -51,7 +51,7 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
                         :href="route('profile.show')"
                         class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800"
                     >
-                        Edit Profile
+                        {{ $t('Edit Profile') }}
                     </Link>
 
                     <Link
@@ -60,7 +60,7 @@ const verificationLinkSent = computed(() => props.status === 'verification-link-
                         as="button"
                         class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-500 dark:focus:ring-offset-gray-800 ml-2"
                     >
-                        Log Out
+                        {{ $t('Log Out') }}
                     </Link>
                 </div>
             </div>

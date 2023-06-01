@@ -25,7 +25,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Register" />
+    <Head :title="$t('Register')" />
 
     <AuthenticationCard>
         <template #logo>
@@ -36,7 +36,7 @@ const submit = () => {
             <div>
                 <InputLabel
                     for="name"
-                    value="Name"
+                    :value="$t('Name')"
                 />
                 <TextInput
                     id="name"
@@ -56,7 +56,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel
                     for="email"
-                    value="Email"
+                    :value="$t('Email')"
                 />
                 <TextInput
                     id="email"
@@ -74,7 +74,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel
                     for="password"
-                    value="Password"
+                    :value="$t('Password')"
                 />
                 <TextInput
                     id="password"
@@ -93,7 +93,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel
                     for="password_confirmation"
-                    value="Confirm Password"
+                    :value="$t('Confirm Password')"
                 />
                 <TextInput
                     id="password_confirmation"
@@ -141,7 +141,7 @@ const submit = () => {
                     :href="route('login')"
                     class="underline text-sm text-gray-600 hover:text-gray-900"
                 >
-                    Already registered?
+                    {{ $t('Already registered?') }}
                 </Link>
 
                 <PrimaryButton
@@ -149,7 +149,7 @@ const submit = () => {
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Register
+                    {{ $t('Register') }}
                 </PrimaryButton>
             </div>
         </form>

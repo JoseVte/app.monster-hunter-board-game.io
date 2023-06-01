@@ -27,7 +27,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Reset Password" />
+    <Head :title="$t('Reset Password')" />
 
     <AuthenticationCard>
         <template #logo>
@@ -38,7 +38,7 @@ const submit = () => {
             <div>
                 <InputLabel
                     for="email"
-                    value="Email"
+                    :value="$t('Email')"
                 />
                 <TextInput
                     id="email"
@@ -58,7 +58,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel
                     for="password"
-                    value="Password"
+                    :value="$t('Password')"
                 />
                 <TextInput
                     id="password"
@@ -77,7 +77,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel
                     for="password_confirmation"
-                    value="Confirm Password"
+                    :value="$t('Confirm Password')"
                 />
                 <TextInput
                     id="password_confirmation"
@@ -98,7 +98,7 @@ const submit = () => {
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Reset Password
+                    {{ $t('Reset Password') }}
                 </PrimaryButton>
             </div>
         </form>

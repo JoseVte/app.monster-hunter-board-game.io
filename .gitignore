@@ -1,7 +1,5 @@
 /.phpunit.cache
 /bootstrap/ssr
-/bootstrap/ssr
-/bootstrap/ssr
 /node_modules
 /public/build
 /public/hot
@@ -24,7 +22,6 @@ yarn-error.log
 /mysql_backup
 /public/css
 /public/js
-/resources/images
 /public/img
 /public/webfonts
 /public/service-worker.js*

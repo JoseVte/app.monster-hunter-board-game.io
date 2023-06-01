@@ -8,6 +8,7 @@ import SetPasswordForm from '@/Pages/Profile/Partials/SetPasswordForm.vue';
 import TwoFactorAuthenticationForm from '@/Pages/Profile/Partials/TwoFactorAuthenticationForm.vue';
 import UpdatePasswordForm from '@/Pages/Profile/Partials/UpdatePasswordForm.vue';
 import UpdateProfileInformationForm from '@/Pages/Profile/Partials/UpdateProfileInformationForm.vue';
+import Breadcrumb from "@/Components/Breadcrumb.vue";
 
 defineProps({
     confirmsTwoFactorAuthentication: Boolean,
@@ -16,11 +17,12 @@ defineProps({
 </script>
 
 <template>
-    <AppLayout title="Profile">
+    <AppLayout :title="$t('Profile')">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
-                Profile
-            </h2>
+            <Breadcrumb
+                :current-title="$t('Profile')"
+                :breadcrumbs="[]"
+            />
         </template>
 
         <div>

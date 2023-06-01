@@ -65,31 +65,29 @@ function removeConnectedAccount(id) {
 <template>
     <ActionSection>
         <template #title>
-            Connected Accounts
+            {{ $t('Connected Accounts') }}
         </template>
 
         <template #description>
-            Manage and remove your connected accounts.
+            {{ $t('Manage and remove your connected accounts.') }}
         </template>
 
         <template #content>
             <h3
                 v-if="$page.props.socialstream.connectedAccounts.length === 0"
-                class="text-lg font-medium text-gray-900"
+                class="text-lg font-medium text-gray-900 dark:text-gray-100"
             >
-                You have no connected accounts.
+                {{ $t('You have no connected accounts.') }}
             </h3>
             <h3
                 v-else
-                class="text-lg font-medium text-gray-900"
+                class="text-lg font-medium text-gray-900 dark:text-gray-100"
             >
-                Your connected accounts.
+                {{ $t('Your connected accounts.') }}
             </h3>
 
-            <div class="mt-3 ax-w-xl text-sm text-gray-600">
-                You are free to connect any social accounts to your profile and may remove any connected accounts at any
-                time. If you feel any of your connected accounts have been compromised, you should disconnect them
-                immediately and change your password.
+            <div class="mt-3 ax-w-xl text-sm text-gray-600 dark:text-gray-400">
+                {{ $t('You are free to connect any social accounts to your profile and may remove any connected accounts at any time. If you feel any of your connected accounts have been compromised, you should disconnect them immediately and change your password.') }}
             </div>
 
             <div class="mt-5 space-y-6">
@@ -109,21 +107,21 @@ function removeConnectedAccount(id) {
                                         class="cursor-pointer ml-6 text-sm text-gray-500 focus:outline-none"
                                         @click="setProfilePhoto(getAccountForProvider(provider).id)"
                                     >
-                                        Use Avatar as Profile Photo
+                                        {{ $t('Use Avatar as Profile Photo') }}
                                     </button>
 
                                     <DangerButton
                                         v-if="$page.props.socialstream.connectedAccounts.length > 1 || $page.props.socialstream.hasPassword"
                                         @click="confirmRemove(getAccountForProvider(provider).id)"
                                     >
-                                        Remove
+                                        {{ $t('Remove') }}
                                     </DangerButton>
                                 </div>
                             </template>
 
                             <template v-else>
                                 <ActionLink :href="route('oauth.redirect', { provider })">
-                                    Connect
+                                    {{ $t('Connect') }}
                                 </ActionLink>
                             </template>
                         </template>
@@ -137,16 +135,16 @@ function removeConnectedAccount(id) {
                 @close="confirmingRemove = false"
             >
                 <template #title>
-                    Remove Connected Account
+                    {{ $t('Remove Connected Account') }}
                 </template>
 
                 <template #content>
-                    Please confirm your removal of this account - this action cannot be undone.
+                    {{ $t('Please confirm your removal of this account - this action cannot be undone.') }}
                 </template>
 
                 <template #footer>
                     <SecondaryButton @click="confirmingRemove = false">
-                        Nevermind
+                        {{ $t('Nevermind') }}
                     </SecondaryButton>
 
                     <PrimaryButton
@@ -155,7 +153,7 @@ function removeConnectedAccount(id) {
                         :disabled="form.processing"
                         @click="removeConnectedAccount(accountId)"
                     >
-                        Remove Connected Account
+                        {{ $t('Remove Connected Account') }}
                     </PrimaryButton>
                 </template>
             </DialogModal>

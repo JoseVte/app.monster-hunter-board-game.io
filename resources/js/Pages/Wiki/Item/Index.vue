@@ -1,14 +1,20 @@
 <script setup>
 
 import AppLayout from "@/Layouts/AppLayout.vue";
+import Breadcrumb from "@/Components/Breadcrumb.vue";
+import ItemsIcon from "@/Components/Icons/ItemsIcon.vue";
 </script>
 
 <template>
-    <AppLayout title="Dashboard">
+    <AppLayout :title="$t('Items')">
         <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 dark:text-gray-200 leading-tight">
-                {{ $t('Items') }}
-            </h2>
+            <Breadcrumb
+                :current-title="$t('Items')"
+                :breadcrumbs="[
+                    { url: route('wiki.index'), title: $t('Wiki') },
+                ]"
+                :icon="ItemsIcon"
+            />
         </template>
 
         <div class="py-12">

@@ -31,7 +31,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Log in" />
+    <Head :title="$t('Log in')" />
 
     <AuthenticationCard>
         <template #logo>
@@ -49,7 +49,7 @@ const submit = () => {
             <div>
                 <InputLabel
                     for="email"
-                    value="Email"
+                    :value="$t('Email')"
                 />
                 <TextInput
                     id="email"
@@ -68,7 +68,7 @@ const submit = () => {
             <div class="mt-4">
                 <InputLabel
                     for="password"
-                    value="Password"
+                    :value="$t('Password')"
                 />
                 <TextInput
                     id="password"
@@ -90,7 +90,7 @@ const submit = () => {
                         v-model:checked="form.remember"
                         name="remember"
                     />
-                    <span class="ml-2 text-sm text-gray-600">Remember me</span>
+                    <span class="ml-2 text-sm text-gray-600">{{ $t('Remember me') }}</span>
                 </label>
             </div>
 
@@ -100,7 +100,7 @@ const submit = () => {
                     :href="route('password.request')"
                     class="underline text-sm text-gray-600 hover:text-gray-900"
                 >
-                    Forgot your password?
+                    {{ $t('Forgot your password?') }}
                 </Link>
 
                 <PrimaryButton
@@ -108,7 +108,7 @@ const submit = () => {
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
                 >
-                    Log in
+                    {{ $t('Log in') }}
                 </PrimaryButton>
             </div>
         </form>
