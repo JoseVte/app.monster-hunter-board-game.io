@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2328ed8e1b1dd2003b73347ca85c9042",
+    "content-hash": "fdd78636003505e2cead2fd2db105032",
     "packages": [
         {
             "name": "ably/ably-php",
@@ -58,6 +58,58 @@
                 "source": "https://github.com/ably/ably-php/tree/1.1.9"
             },
             "time": "2022-09-15T12:31:16+00:00"
+        },
+        {
+            "name": "ajcastro/eager-load-pivot-relations",
+            "version": "v0.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/ajcastro/eager-load-pivot-relations.git",
+                "reference": "e7e27ce2fe68822d1c31ff2cfcdde679e85f166d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/ajcastro/eager-load-pivot-relations/zipball/e7e27ce2fe68822d1c31ff2cfcdde679e85f166d",
+                "reference": "e7e27ce2fe68822d1c31ff2cfcdde679e85f166d",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.0"
+            },
+            "require-dev": {
+                "laravel/framework": ">= 5.0.0",
+                "laravel/legacy-factories": ">= 1.0.0",
+                "orchestra/testbench": ">= 3.0.0",
+                "phpunit/phpunit": ">= 6.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [],
+                    "aliases": []
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "AjCastro\\EagerLoadPivotRelations\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Arjon Jason Castro",
+                    "email": "ajcastro29@gmail.com"
+                }
+            ],
+            "description": "Eager load pivot relations for Laravel Eloquent's BelongsToMany relation.",
+            "support": {
+                "issues": "https://github.com/ajcastro/eager-load-pivot-relations/issues",
+                "source": "https://github.com/ajcastro/eager-load-pivot-relations/tree/v0.3.0"
+            },
+            "time": "2022-11-02T13:31:59+00:00"
         },
         {
             "name": "aws/aws-crt-php",
@@ -11832,6 +11884,79 @@
                 }
             ],
             "time": "2023-05-11T05:16:22+00:00"
+        },
+        {
+            "name": "protonemedia/inertiajs-events-laravel-dusk",
+            "version": "1.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/protonemedia/inertiajs-events-laravel-dusk.git",
+                "reference": "5d78bdb16fff47b02399ca069057b91b8c573b7d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/protonemedia/inertiajs-events-laravel-dusk/zipball/5d78bdb16fff47b02399ca069057b91b8c573b7d",
+                "reference": "5d78bdb16fff47b02399ca069057b91b8c573b7d",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/support": "^9.0|^10.0",
+                "laravel/dusk": "^6.15|^7.0",
+                "nesbot/carbon": "^2.66",
+                "php": "^8.1|^8.2"
+            },
+            "require-dev": {
+                "mockery/mockery": "^1.4.4",
+                "orchestra/testbench": "^7.0|^8.0",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "ProtoneMedia\\InertiaJsEventsLaravelDusk\\ServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "ProtoneMedia\\InertiaJsEventsLaravelDusk\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Pascal Baljet",
+                    "email": "pascal@protone.media",
+                    "role": "Developer"
+                }
+            ],
+            "description": "Inertia.js Events for Laravel Dusk",
+            "homepage": "https://github.com/protonemedia/inertiajs-events-laravel-dusk",
+            "keywords": [
+                "Laravel Dusk",
+                "inertia",
+                "inertia.js",
+                "inertiajs",
+                "inertiajs-events-laravel-dusk",
+                "laravel",
+                "protonemedia",
+                "testing"
+            ],
+            "support": {
+                "issues": "https://github.com/protonemedia/inertiajs-events-laravel-dusk/issues",
+                "source": "https://github.com/protonemedia/inertiajs-events-laravel-dusk/tree/1.3.0"
+            },
+            "funding": [
+                {
+                    "url": "https://github.com/pascalbaljet",
+                    "type": "github"
+                }
+            ],
+            "time": "2023-02-21T21:40:25+00:00"
         },
         {
             "name": "sebastian/cli-parser",

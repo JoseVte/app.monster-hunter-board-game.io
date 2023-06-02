@@ -61,6 +61,15 @@ const strLimit = function (value, size) {
                     </div>
                 </div>
             </Link>
+            <div class="isolate flex -space-x-2">
+                <img
+                    v-for="user in campaign.users"
+                    :key="user.id"
+                    :src="user.profile_photo_url"
+                    :alt="user.name"
+                    class="relative inline-block h-8 w-8 rounded-full ring-2 ring-white"
+                >
+            </div>
         </div>
     </div>
 </template>

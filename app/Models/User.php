@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
+use App\Models\Pivot\CampaignMembership;
+use App\Models\Traits\HasCampaigns;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
 use Laravel\Jetstream\HasProfilePhoto;
@@ -28,6 +32,8 @@ class User extends Authenticatable
     use SetsProfilePhotoFromUrl;
     use TwoFactorAuthenticatable;
     use HasRoles;
+    use HasCampaigns;
+    use EagerLoadPivotTrait;
 
     /**
      * The attributes that are mass assignable.
@@ -80,8 +86,11 @@ class User extends Authenticatable
             : $this->getPhotoUrl();
     }
 
-    public function campaigns(): HasManyThrough
+    public function campaigns(): BelongsToMany
     {
-        return $this->hasManyThrough(Campaign::class, Team::class);
+        return $this->belongsToMany(Campaign::class, CampaignMembership::class)
+            ->withPivot('role_id')
+            ->withTimestamps()
+            ->as('membership');
     }
 }

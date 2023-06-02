@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Spatie\Permission\Models\Role;
 
 class UserFactory extends Factory
 {
@@ -35,6 +36,21 @@ class UserFactory extends Factory
             'profile_photo_path' => null,
             'current_team_id' => null,
         ];
+    }
+
+    public function configure(): UserFactory
+    {
+        return $this->afterCreating(function (User $user): void {
+            $user->assignRole(Role::findByName('standard'));
+        });
+    }
+
+    public function admin(): Factory
+    {
+        return $this->afterCreating(function (User $user): void {
+            $user->removeRole(Role::findByName('standard'));
+            $user->assignRole(Role::findByName('admin'));
+        });
     }
 
     /**

@@ -43,7 +43,6 @@ const submit = () => {
                     v-model="form.name"
                     type="text"
                     class="mt-1 block w-full"
-                    required
                     autofocus
                     autocomplete="name"
                 />
@@ -63,7 +62,6 @@ const submit = () => {
                     v-model="form.email"
                     type="email"
                     class="mt-1 block w-full"
-                    required
                 />
                 <InputError
                     class="mt-2"
@@ -81,7 +79,6 @@ const submit = () => {
                     v-model="form.password"
                     type="password"
                     class="mt-1 block w-full"
-                    required
                     autocomplete="new-password"
                 />
                 <InputError
@@ -100,7 +97,6 @@ const submit = () => {
                     v-model="form.password_confirmation"
                     type="password"
                     class="mt-1 block w-full"
-                    required
                     autocomplete="new-password"
                 />
                 <InputError
@@ -125,11 +121,11 @@ const submit = () => {
                             I agree to the <a
                                 target="_blank"
                                 :href="route('terms.show')"
-                                class="underline text-sm text-gray-600 hover:text-gray-900"
+                                class="underline text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
                             >Terms of Service</a> and <a
                                 target="_blank"
                                 :href="route('policy.show')"
-                                class="underline text-sm text-gray-600 hover:text-gray-900"
+                                class="underline text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
                             >Privacy Policy</a>
                         </div>
                     </div>
@@ -139,7 +135,7 @@ const submit = () => {
             <div class="flex items-center justify-end mt-4">
                 <Link
                     :href="route('login')"
-                    class="underline text-sm text-gray-600 hover:text-gray-900"
+                    class="underline text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
                 >
                     {{ $t('Already registered?') }}
                 </Link>

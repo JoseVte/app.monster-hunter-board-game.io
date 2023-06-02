@@ -1,6 +1,9 @@
 <script setup>
 import DropdownLink from "@/Components/DropdownLink.vue";
 
+defineProps({
+    campaigns: Array
+})
 </script>
 
 <template>
@@ -16,7 +19,7 @@ import DropdownLink from "@/Components/DropdownLink.vue";
     </DropdownLink>
 
     <!-- Campaign Switcher -->
-    <template v-if="$page.props.auth.user.current_team.campaigns.length > 1">
+    <template v-if="campaigns.length > 1">
         <div class="border-t border-gray-200 dark:border-gray-600" />
 
         <div class="block px-4 py-2 text-xs text-gray-400">
@@ -24,7 +27,7 @@ import DropdownLink from "@/Components/DropdownLink.vue";
         </div>
 
         <template
-            v-for="campaign in $page.props.auth.user.current_team.campaigns"
+            v-for="campaign in campaigns"
             :key="campaign.id"
         >
             <DropdownLink :href="route('campaigns.show', campaign)">

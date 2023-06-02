@@ -1,4 +1,5 @@
 <script setup>
+import _ from 'lodash';
 import {computed, ref} from 'vue';
 import {Head, Link, router, usePage} from '@inertiajs/vue3';
 import {useI18n} from "vue-i18n";
@@ -32,6 +33,20 @@ const localeImg = computed(() => {
 })
 
 const showingNavigationDropdown = ref(false);
+const currentTeam = usePage().props.auth.user.current_team;
+
+const campaigns = computed(() => {
+    let campaigns = [];
+    if (currentTeam) {
+        _.each(currentTeam.campaigns, (campaign) => {
+            if (_.filter(usePage().props.auth.user.campaigns, {'id': campaign.id}).length) {
+                campaigns.push(campaign)
+            }
+        });
+    }
+
+    return campaigns;
+});
 
 const switchToTeam = (team) => {
     router.put(route('current-team.update'), {
@@ -206,7 +221,7 @@ const logout = () => {
                                                     type="button"
                                                     class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150"
                                                 >
-                                                    {{ $t('Campaigns') }}
+                                                    {{ $page.props.current_campaign ? $page.props.current_campaign.name : $t('Campaigns') }}
 
                                                     <svg
                                                         class="ml-2 -mr-0.5 h-4 w-4"
@@ -228,7 +243,7 @@ const logout = () => {
 
                                         <template #content>
                                             <div class="w-60">
-                                                <DropdownCampaign />
+                                                <DropdownCampaign :campaigns="campaigns" />
                                             </div>
                                         </template>
                                     </Dropdown>
@@ -247,7 +262,7 @@ const logout = () => {
                                                     type="button"
                                                     class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150"
                                                 >
-                                                    {{ $page.props.auth.user.current_team.name }}
+                                                    {{ currentTeam.name }}
 
                                                     <svg
                                                         class="ml-2 -mr-0.5 h-4 w-4"
@@ -269,7 +284,7 @@ const logout = () => {
 
                                         <template #content>
                                             <div class="w-60">
-                                                <DropdownTeam />
+                                                <DropdownTeam :switch-to-team="switchToTeam" />
                                             </div>
                                         </template>
                                     </Dropdown>
@@ -323,13 +338,13 @@ const logout = () => {
 
                                         <template #content>
                                             <div class="block lg:hidden">
-                                                <DropdownCampaign />
+                                                <DropdownCampaign :campaigns="campaigns" />
                                             </div>
 
                                             <div class="block lg:hidden border-t border-gray-200 dark:border-gray-600" />
 
                                             <div class="block lg:hidden">
-                                                <DropdownTeam />
+                                                <DropdownTeam :switch-to-team="switchToTeam" />
                                             </div>
 
                                             <div class="block lg:hidden border-t border-gray-200 dark:border-gray-600" />
@@ -433,7 +448,7 @@ const logout = () => {
                     </ResponsiveNavLink>
 
                     <!-- Campaign Switcher -->
-                    <template v-if="$page.props.auth.user.current_team.campaigns.length > 1">
+                    <template v-if="campaigns.length > 1">
                         <div class="border-t border-gray-200 dark:border-gray-600" />
 
                         <div class="block px-4 py-2 text-xs text-gray-400">
@@ -441,7 +456,7 @@ const logout = () => {
                         </div>
 
                         <template
-                            v-for="campaign in $page.props.auth.user.current_team.campaigns"
+                            v-for="campaign in campaigns"
                             :key="campaign.id"
                         >
                             <ResponsiveNavLink
@@ -530,7 +545,7 @@ const logout = () => {
 
                                 <!-- Team Settings -->
                                 <ResponsiveNavLink
-                                    :href="route('teams.show', $page.props.auth.user.current_team)"
+                                    :href="route('teams.show', currentTeam)"
                                     :active="route().current('teams.show')"
                                 >
                                     {{ $t('Team Settings') }}
