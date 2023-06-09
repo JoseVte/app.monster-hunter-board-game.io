@@ -1,5 +1,9 @@
 <script setup>
 import DropdownLink from "@/Components/DropdownLink.vue";
+
+defineProps({
+    switchToTeam: Function
+})
 </script>
 
 <template>

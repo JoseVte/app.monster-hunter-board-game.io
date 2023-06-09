@@ -9,9 +9,13 @@ import ActionMessage from "@/Components/ActionMessage.vue";
 import InputError from "@/Components/Form/InputError.vue";
 import SectionBorder from "@/Components/SectionBorder.vue";
 import Breadcrumb from "@/Components/Breadcrumb.vue";
+import TeamMemberManager from "@/Pages/Teams/Partials/TeamMemberManager.vue";
+import MemberManager from "@/Pages/Campaign/Partials/MemberManager.vue";
 
 const props = defineProps({
     campaign: Object,
+    availableRoles: Array,
+    permissions: Object,
 });
 
 const form = useForm({
@@ -170,7 +174,12 @@ const decrementPotion = () => {
                     </template>
                 </ActionSection>
 
-                <SectionBorder />
+                <MemberManager
+                    class="mt-10 sm:mt-0"
+                    :campaign="campaign"
+                    :available-roles="availableRoles"
+                    :user-permissions="permissions"
+                />
             </div>
         </div>
     </AppLayout>

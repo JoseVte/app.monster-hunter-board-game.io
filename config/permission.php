@@ -153,4 +153,27 @@ return [
 
         'store' => 'default',
     ],
+
+    'campaign-roles' => [
+        'admin-campaign' => [
+            'key' => 'admin-campaign',
+            'name' => 'Administrator',
+            'description' => 'Administrator users can perform any action.',
+            'permissions' => [
+                'create',
+                'read',
+                'update',
+                'delete',
+            ]
+        ],
+        'member-campaign' => [
+            'key' => 'member-campaign',
+            'name' => 'Member',
+            'description' => 'Members have the ability to read and update.',
+            'permissions' => [
+                'read',
+                'update',
+            ]
+        ]
+    ]
 ];

@@ -1,7 +1,7 @@
 <?php
 
+use App\Http\Controllers\CampaignInvitationController;
 use App\Models\Item;
-use Illuminate\Support\Facades\App;
 use Inertia\Inertia;
 use App\Models\Armor;
 use App\Models\Weapon;
@@ -13,9 +13,11 @@ use App\Enum\MonsterCategory;
 use App\Enum\MonsterExpansion;
 use App\Models\DowntimeActivity;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\CampaignMemberController;
 
 /*
 |--------------------------------------------------------------------------
@@ -53,7 +55,7 @@ Route::middleware([
         /** @var \App\Models\User $user */
         $user = auth()->user();
         $campaigns = $user->campaigns()
-            ->with(['team', 'team.owner'])
+            ->with(['team', 'team.owner', 'users'])
             ->withCount('days')
             ->orderBy('updated_at', 'desc')
             ->get();
@@ -124,4 +126,14 @@ Route::middleware([
 
     Route::resource('campaigns', CampaignController::class);
     Route::put('campaigns/{campaign}/update-potions', [CampaignController::class, 'updatePotions'])->name('campaigns.update-potions');
+    Route::post('campaigns/{campaign}/members', [CampaignMemberController::class, 'store'])->name('campaign-members.store');
+    Route::put('campaigns/{campaign}/members/{user}', [CampaignMemberController::class, 'update'])->name('campaign-members.update');
+    Route::delete('campaigns/{campaign}/members/{user}', [CampaignMemberController::class, 'destroy'])->name('campaign-members.destroy');
+
+    Route::get('/campaign-invitations/{invitation}', [CampaignInvitationController::class, 'accept'])
+        ->middleware(['signed'])
+        ->name('campaign-invitations.accept');
+
+    Route::delete('/campaign-invitations/{invitation}', [CampaignInvitationController::class, 'destroy'])
+        ->name('campaign-invitations.destroy');
 });
