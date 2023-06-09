@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\ArmorAbility;
 use Arr;
+use App\Models\ArmorAbility;
 use Illuminate\Database\Seeder;
 
 class ArmorAbilitiesSeeder extends Seeder

@@ -34,6 +34,7 @@
         "amirami/localizator": "^0.12.1@alpha",
         "barryvdh/laravel-debugbar": "^3.6",
         "barryvdh/laravel-ide-helper": "^2.10",
+        "derekmd/laravel-dusk-firefox": "^2.1",
         "envatic/laravel-vue-i18n-generator": "^0.1.60",
         "fakerphp/faker": "^1.9.1",
         "friendsofphp/php-cs-fixer": "^3.2",
@@ -43,6 +44,7 @@
         "laravel/envoy": "^2.8",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
+        "magic-test/magic-test-laravel": "^1.0",
         "mockery/mockery": "^1.4.4",
         "nunomaduro/collision": "^7.0",
         "pestphp/pest": "^2.0",
@@ -72,6 +74,12 @@
         ],
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ],
+        "coverage": [
+            "vendor/bin/pest --parallel --coverage-html ./reports"
+        ],
+        "extract-translations": [
+            "@php artisan translations:extract-vue"
         ],
         "generate-translations": [
             "@php artisan translations:extract-vue",

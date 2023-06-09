@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Campaign;
 use App\Models\User;
+use App\Models\Campaign;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 class CampaignPolicy
@@ -39,7 +39,7 @@ class CampaignPolicy
      */
     public function update(User $user, Campaign $campaign): bool
     {
-        return $user->ownsCampaign($campaign) && $user->hasCampaignRole($campaign, 'member-campaign');
+        return $user->ownsCampaign($campaign) && ($user->hasCampaignRole($campaign, 'member-campaign') || $user->hasCampaignRole($campaign, 'admin-campaign'));
     }
 
     /**

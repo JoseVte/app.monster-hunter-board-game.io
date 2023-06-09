@@ -4,8 +4,8 @@ namespace App\Models;
 
 use Laravel\Scout\Searchable;
 use App\Models\Traits\HasTranslations;
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class ArmorAbility extends Model
 {
@@ -18,7 +18,7 @@ class ArmorAbility extends Model
         'description',
 
         'bonus_set',
-        'bonus_set_armor'
+        'bonus_set_armor',
     ];
 
     protected $casts = [

@@ -50,9 +50,15 @@ class CampaignController extends Controller
         }
 
         $campaign->load(
-            'team', 'team.owner', 'team.users', 'team.teamInvitations',
-            'campaignInvitations', 'campaignInvitations.role',
-            'users', 'users.membership.role'
+            'team',
+            'team.owner',
+            'team.users',
+            'team.teamInvitations',
+            'campaignInvitations',
+            'campaignInvitations.role',
+            'users',
+            'users.membership.role',
+            'users.membership.hunter'
         );
         $campaign->loadCount('days');
 

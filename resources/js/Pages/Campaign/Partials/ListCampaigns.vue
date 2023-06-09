@@ -62,13 +62,28 @@ const strLimit = function (value, size) {
                 </div>
             </Link>
             <div class="isolate flex -space-x-2">
-                <img
+                <template
                     v-for="user in campaign.users"
                     :key="user.id"
-                    :src="user.profile_photo_url"
-                    :alt="user.name"
-                    class="relative inline-block h-8 w-8 rounded-full ring-2 ring-white"
                 >
+                    <Link
+                        v-if="user.membership.hunter_id"
+                        :href="route('campaigns.hunters.show', [campaign, user.membership.hunter_id])"
+                        class="hover:z-50"
+                    >
+                        <img
+                            :src="user.profile_photo_url"
+                            :alt="user.name"
+                            class="relative inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-gray-800 hover:ring-gray-200 dark:hover:ring-gray-600"
+                        >
+                    </Link>
+                    <img
+                        v-else
+                        :src="user.profile_photo_url"
+                        :alt="user.name"
+                        class="relative inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-gray-800"
+                    >
+                </template>
             </div>
         </div>
     </div>

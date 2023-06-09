@@ -5,8 +5,8 @@ namespace App\Models;
 use App\Enum\ArmorType;
 use Laravel\Scout\Searchable;
 use App\Models\Pivot\CountItemArmor;
-use Illuminate\Database\Eloquent\Model;
 use App\Models\Traits\HasTranslations;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Pivot\ArmorAbility as ArmorAbilityPivot;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -37,7 +37,7 @@ class Armor extends Model
     ];
 
     protected $with = [
-        'abilities'
+        'abilities',
     ];
 
     public array $translatable = [

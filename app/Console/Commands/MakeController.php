@@ -2,8 +2,9 @@
 
 namespace App\Console\Commands;
 
-use Illuminate\Routing\Console\ControllerMakeCommand;
 use Str;
+use InvalidArgumentException;
+use Illuminate\Routing\Console\ControllerMakeCommand;
 
 class MakeController extends ControllerMakeCommand
 {
@@ -102,12 +103,12 @@ class MakeController extends ControllerMakeCommand
     /**
      * Get the fully-qualified model class name.
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     protected function parseRequest(string $model): string
     {
         if (preg_match('([^A-Za-z0-9_/\\\\])', $model)) {
-            throw new \InvalidArgumentException('Request name contains invalid characters.');
+            throw new InvalidArgumentException('Request name contains invalid characters.');
         }
 
         return $this->rootNamespace().'Http\\Requests\\'.$model;

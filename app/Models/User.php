@@ -2,14 +2,12 @@
 
 namespace App\Models;
 
-use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
-use App\Models\Pivot\CampaignMembership;
-use App\Models\Traits\HasCampaigns;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use App\Models\Traits\HasCampaigns;
 use Laravel\Jetstream\HasProfilePhoto;
 use Spatie\Permission\Traits\HasRoles;
+use App\Models\Pivot\CampaignMembership;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Fortify\TwoFactorAuthenticatable;
 use Illuminate\Database\Eloquent\Casts\Attribute;
@@ -17,7 +15,8 @@ use JoelButcher\Socialstream\HasConnectedAccounts;
 use JoelButcher\Socialstream\SetsProfilePhotoFromUrl;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Illuminate\Database\Eloquent\Relations\HasManyThrough;
+use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
@@ -89,7 +88,7 @@ class User extends Authenticatable
     public function campaigns(): BelongsToMany
     {
         return $this->belongsToMany(Campaign::class, CampaignMembership::class)
-            ->withPivot('role_id')
+            ->withPivot(['role_id', 'hunter_id'])
             ->withTimestamps()
             ->as('membership');
     }

@@ -3,7 +3,6 @@
 namespace App\Models\Traits;
 
 use App\Models\Campaign;
-use Laravel\Jetstream\Jetstream;
 use Spatie\Permission\Models\Role;
 
 trait HasCampaigns
@@ -37,7 +36,17 @@ trait HasCampaigns
         }
 
         return $this->belongsToCampaign($campaign) && optional(Role::find($campaign->users->where(
-                'id', $this->id
-            )->first()->membership->role_id))->name === $role;
+            'id',
+            $this->id
+        )->first()->membership->role_id))->name === $role;
+    }
+
+    public function hasCampaignHunter(?Campaign $campaign): bool
+    {
+        if (is_null($campaign)) {
+            return false;
+        }
+
+        return $this->belongsToCampaign($campaign) && $campaign->users->where('id', $this->id)->whereNotNull('membership.hunter_id')->isNotEmpty();
     }
 }

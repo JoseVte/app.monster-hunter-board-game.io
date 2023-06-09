@@ -3,19 +3,18 @@
 use App\Models\User;
 use App\Models\Campaign;
 
-test('campaign can see edit page', function (): void {
-    $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-    $campaign = Campaign::factory()->create(['team_id' => $user->currentTeam->id]);
+beforeEach(function (): void {
+    $this->actingAs($this->user = User::factory()->withPersonalTeam()->create());
+    $this->campaign = Campaign::factory()->create(['team_id' => $this->user->currentTeam->id]);
+});
 
-    $response = $this->get('/campaigns/'.$campaign->id.'/edit');
+test('campaign can see edit page', function (): void {
+    $response = $this->get(route('campaigns.edit', $this->campaign));
     $response->assertStatus(200);
 });
 
 test('campaign can update', function (): void {
-    $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-    $campaign = Campaign::factory()->create(['team_id' => $user->currentTeam->id]);
-
-    $response = $this->put('/campaigns/'.$campaign->id, [
+    $response = $this->put(route('campaigns.update', $this->campaign), [
         'name' => 'Test Campaign',
         'description' => 'Test Campaign Description',
         'max_days' => 40,
@@ -23,23 +22,20 @@ test('campaign can update', function (): void {
     ]);
     $response->assertStatus(303);
 
-    $campaign->refresh();
-    $this->assertEquals(1, $campaign->team_id);
-    $this->assertEquals('Test Campaign', $campaign->name);
-    $this->assertEquals('Test Campaign Description', $campaign->description);
-    $this->assertEquals(40, $campaign->max_days);
-    $this->assertEquals(2, $campaign->health_potions);
+    $this->campaign->refresh();
+    $this->assertEquals(1, $this->campaign->team_id);
+    $this->assertEquals('Test Campaign', $this->campaign->name);
+    $this->assertEquals('Test Campaign Description', $this->campaign->description);
+    $this->assertEquals(40, $this->campaign->max_days);
+    $this->assertEquals(2, $this->campaign->health_potions);
 });
 
 test('campaign can update potions', function (): void {
-    $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-    $campaign = Campaign::factory()->create(['team_id' => $user->currentTeam->id]);
-
-    $response = $this->put('/campaigns/'.$campaign->id.'/update-potions', [
+    $response = $this->put(route('campaigns.update-potions', $this->campaign), [
         'health_potions' => 1,
     ]);
     $response->assertStatus(303);
 
-    $campaign->refresh();
-    $this->assertEquals(1, $campaign->health_potions);
+    $this->campaign->refresh();
+    $this->assertEquals(1, $this->campaign->health_potions);
 });

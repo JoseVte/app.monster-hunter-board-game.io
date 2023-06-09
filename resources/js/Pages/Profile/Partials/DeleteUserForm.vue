@@ -72,6 +72,7 @@ const closeModal = () => {
 
                     <div class="mt-4">
                         <TextInput
+                            id="delete-user-password"
                             ref="passwordInput"
                             v-model="form.password"
                             type="password"
@@ -94,6 +95,7 @@ const closeModal = () => {
                     </SecondaryButton>
 
                     <DangerButton
+                        id="delete-user-btn"
                         class="ml-3"
                         :class="{ 'opacity-25': form.processing }"
                         :disabled="form.processing"

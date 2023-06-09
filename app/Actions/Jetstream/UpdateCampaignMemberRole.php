@@ -5,10 +5,10 @@ namespace App\Actions\Jetstream;
 use App\Models\User;
 use App\Models\Campaign;
 use Illuminate\Validation\Rule;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Gate;
 use App\Events\CampaignMemberUpdated;
 use Illuminate\Support\Facades\Validator;
-use Spatie\Permission\Models\Role;
 
 class UpdateCampaignMemberRole
 {

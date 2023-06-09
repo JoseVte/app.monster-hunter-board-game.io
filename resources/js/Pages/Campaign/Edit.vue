@@ -12,7 +12,7 @@ defineProps({
 </script>
 
 <template>
-    <AppLayout :title="'Edit ' + campaign.name">
+    <AppLayout :title="$t('Edit') + ' ' + campaign.name">
         <template #header>
             <Breadcrumb
                 :current-title="$t('Edit')"

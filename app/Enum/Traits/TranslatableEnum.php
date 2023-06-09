@@ -9,8 +9,8 @@ trait TranslatableEnum
     public static function asSelectable(): array
     {
         return collect(self::cases())
-            ->keyBy(fn(TranslatableEnumContract $enum) => $enum->name)
-            ->map(fn(TranslatableEnumContract $enum) => $enum->label())
+            ->keyBy(fn (TranslatableEnumContract $enum) => $enum->name)
+            ->map(fn (TranslatableEnumContract $enum) => $enum->label())
             ->toArray();
     }
 

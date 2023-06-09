@@ -2,12 +2,12 @@
 
 namespace App\Models;
 
-use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Pivot\CampaignMembership;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Campaign extends Model
@@ -47,7 +47,7 @@ class Campaign extends Model
     public function users(): BelongsToMany
     {
         return $this->belongsToMany(User::class, CampaignMembership::class)
-            ->withPivot('role_id')
+            ->withPivot(['role_id', 'hunter_id'])
             ->withTimestamps()
             ->as('membership');
     }

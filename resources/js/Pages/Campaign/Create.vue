@@ -9,7 +9,7 @@ defineProps({
 </script>
 
 <template>
-    <AppLayout title="Create Team">
+    <AppLayout :title="$t('Create Campaign')">
         <template #header>
             <Breadcrumb
                 :current-title="$t('Create Campaign')"

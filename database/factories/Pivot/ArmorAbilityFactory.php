@@ -17,7 +17,6 @@ class ArmorAbilityFactory extends Factory
     public function definition(): array
     {
         return [
-            //
         ];
     }
 }

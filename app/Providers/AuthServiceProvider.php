@@ -3,8 +3,10 @@
 namespace App\Providers;
 
 use App\Models\Team;
+use App\Models\Hunter;
 use App\Models\Campaign;
 use App\Policies\TeamPolicy;
+use App\Policies\HunterPolicy;
 use App\Models\ConnectedAccount;
 use App\Policies\CampaignPolicy;
 use App\Policies\ConnectedAccountPolicy;
@@ -20,6 +22,7 @@ class AuthServiceProvider extends ServiceProvider
     protected $policies = [
         Team::class => TeamPolicy::class,
         Campaign::class => CampaignPolicy::class,
+        Hunter::class => HunterPolicy::class,
         ConnectedAccount::class => ConnectedAccountPolicy::class,
     ];
 

@@ -1,8 +1,5 @@
 <?php
 
-use App\Enum\ItemType;
-use App\Enum\ArmorType;
-
 return [
     [
         'name' => 'Visit the Resource Centre',

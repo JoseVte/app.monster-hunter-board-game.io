@@ -2,10 +2,10 @@
 
 namespace App\Models;
 
-use App\Models\Pivot\CountItemWeapon;
-use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
+use App\Models\Pivot\CountItemWeapon;
 use App\Models\Traits\HasTranslations;
+use Illuminate\Database\Eloquent\Model;
 use App\Models\Pivot\CountWeaponAttackAdd;
 use App\Models\Pivot\CountWeaponAttackRemove;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -46,7 +46,7 @@ class Weapon extends Model
     ];
 
     protected $with = [
-        'type'
+        'type',
     ];
 
     public array $translatable = [

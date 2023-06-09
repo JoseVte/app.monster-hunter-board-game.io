@@ -7,12 +7,12 @@ use App\Models\User;
 use App\Models\Campaign;
 use Illuminate\Validation\Rule;
 use App\Mail\CampaignInvitation;
+use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Mail;
 use App\Events\InvitingCampaignMember;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\Validator;
-use Spatie\Permission\Models\Role;
 
 class InviteCampaignMember
 {
