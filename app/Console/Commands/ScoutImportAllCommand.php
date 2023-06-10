@@ -2,7 +2,6 @@
 
 namespace App\Console\Commands;
 
-use Artisan;
 use App\Models\Item;
 use App\Models\Armor;
 use App\Models\Weapon;

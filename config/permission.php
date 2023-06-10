@@ -164,7 +164,7 @@ return [
                 'read',
                 'update',
                 'delete',
-            ]
+            ],
         ],
         'member-campaign' => [
             'key' => 'member-campaign',
@@ -173,7 +173,7 @@ return [
             'permissions' => [
                 'read',
                 'update',
-            ]
-        ]
-    ]
+            ],
+        ],
+    ],
 ];

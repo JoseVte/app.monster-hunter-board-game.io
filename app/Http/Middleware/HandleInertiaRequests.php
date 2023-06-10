@@ -30,9 +30,13 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
+        $campaign = $request->route('campaign');
+        $user = $request->user();
+
         return array_merge(parent::share($request), [
-            'current_campaign' => $request->route('campaign') ?? null,
-            'current_campaign_id' => $request->route('campaign')->id ?? null,
+            'current_campaign' => $campaign ?? null,
+            'current_campaign_id' => $campaign->id ?? null,
+            'has_campaign_hunter' => $user ? $user->hasCampaignHunter($campaign) : false,
 
             'ziggy' => function () use ($request) {
                 return array_merge((new Ziggy())->toArray(), [
@@ -41,8 +45,8 @@ class HandleInertiaRequests extends Middleware
                 ]);
             },
             'locale' => app()->getLocale(),
-            'user.roles' => $request->user() ? $request->user()->roles->pluck('name') : [],
-            'user.permissions' => $request->user() ? $request->user()->getPermissionsViaRoles()->pluck('name') : [],
+            'user.roles' => $user ? $user->roles->pluck('name') : [],
+            'user.permissions' => $user ? $user->getPermissionsViaRoles()->pluck('name') : [],
         ]);
     }
 }

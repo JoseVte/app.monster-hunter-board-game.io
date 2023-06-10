@@ -1,7 +1,7 @@
 <?php
 
-use App\Http\Controllers\CampaignInvitationController;
 use App\Models\Item;
+use App\Models\User;
 use Inertia\Inertia;
 use App\Models\Armor;
 use App\Models\Weapon;
@@ -17,7 +17,10 @@ use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\CampaignHunterController;
 use App\Http\Controllers\CampaignMemberController;
+use App\Http\Controllers\CampaignHunterItemController;
+use App\Http\Controllers\CampaignInvitationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -52,7 +55,7 @@ Route::middleware([
     'verified',
 ])->group(function (): void {
     Route::get('/dashboard', function () {
-        /** @var \App\Models\User $user */
+        /** @var User $user */
         $user = auth()->user();
         $campaigns = $user->campaigns()
             ->with(['team', 'team.owner', 'users'])
@@ -125,10 +128,14 @@ Route::middleware([
     });
 
     Route::resource('campaigns', CampaignController::class);
-    Route::put('campaigns/{campaign}/update-potions', [CampaignController::class, 'updatePotions'])->name('campaigns.update-potions');
-    Route::post('campaigns/{campaign}/members', [CampaignMemberController::class, 'store'])->name('campaign-members.store');
-    Route::put('campaigns/{campaign}/members/{user}', [CampaignMemberController::class, 'update'])->name('campaign-members.update');
-    Route::delete('campaigns/{campaign}/members/{user}', [CampaignMemberController::class, 'destroy'])->name('campaign-members.destroy');
+    Route::put('campaigns/{campaign}/update-potions', [CampaignController::class, 'updatePotions'])
+        ->name('campaigns.update-potions');
+    Route::post('campaigns/{campaign}/members', [CampaignMemberController::class, 'store'])
+        ->name('campaign-members.store');
+    Route::put('campaigns/{campaign}/members/{user}', [CampaignMemberController::class, 'update'])
+        ->name('campaign-members.update');
+    Route::delete('campaigns/{campaign}/members/{user}', [CampaignMemberController::class, 'destroy'])
+        ->name('campaign-members.destroy');
 
     Route::get('/campaign-invitations/{invitation}', [CampaignInvitationController::class, 'accept'])
         ->middleware(['signed'])
@@ -136,4 +143,8 @@ Route::middleware([
 
     Route::delete('/campaign-invitations/{invitation}', [CampaignInvitationController::class, 'destroy'])
         ->name('campaign-invitations.destroy');
+
+    Route::resource('campaigns.hunters', CampaignHunterController::class);
+    Route::put('campaigns/{campaign}/hunters/{hunter}/items/{item}/update-count', [CampaignHunterItemController::class, 'updateCount'])
+        ->name('campaigns.hunters.items.update-count');
 });

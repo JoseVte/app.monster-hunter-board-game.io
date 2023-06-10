@@ -6,8 +6,8 @@ use App\Models\Team;
 use App\Models\User;
 use Illuminate\Support\Str;
 use Laravel\Jetstream\Features;
-use Illuminate\Database\Eloquent\Factories\Factory;
 use Spatie\Permission\Models\Role;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 class UserFactory extends Factory
 {

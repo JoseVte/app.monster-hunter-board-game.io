@@ -2,8 +2,8 @@
 
 namespace App\Enum;
 
-use App\Enum\Contracts\TranslatableEnum as TranslatableEnumContract;
 use App\Enum\Traits\TranslatableEnum;
+use App\Enum\Contracts\TranslatableEnum as TranslatableEnumContract;
 
 enum ArmorType implements TranslatableEnumContract
 {

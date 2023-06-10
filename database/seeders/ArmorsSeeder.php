@@ -30,7 +30,7 @@ class ArmorsSeeder extends Seeder
                 ]);
                 if (Arr::get($armorDetails, 'ability')) {
                     if (ArmorAbility::where('name->en', $armorDetails['ability'])->doesntExist()) {
-                        logger($armorDetails['ability']);
+                        logger('Armor ability: '.$armorDetails['ability']);
                     }
 
                     $ability = ArmorAbility::where('name->en', $armorDetails['ability'])->firstOrFail();
@@ -39,7 +39,7 @@ class ArmorsSeeder extends Seeder
                 if (Arr::get($armorDetails, 'items')) {
                     foreach ($armorDetails['items'] as $itemName => $count) {
                         if (Item::where('name->en', $itemName)->doesntExist()) {
-                            logger($itemName);
+                            logger('Item: '.$itemName);
                         }
 
                         $item = Item::where('name->en', $itemName)->firstOrFail();

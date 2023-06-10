@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Hunter;
 use App\Models\Campaign;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Schema;
@@ -18,6 +19,7 @@ return new class() extends Migration {
             $table->foreignIdFor(Campaign::class, 'campaign_id');
             $table->foreignIdFor(User::class, 'user_id');
             $table->foreignIdFor(Role::class, 'role_id');
+            $table->foreignIdFor(Hunter::class, 'hunter_id')->nullable();
             $table->timestamps();
 
             $table->unique(['campaign_id', 'user_id']);

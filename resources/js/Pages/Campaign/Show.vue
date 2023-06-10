@@ -7,10 +7,9 @@ import Potion from "@/Components/Icons/Potion.vue";
 import Edit from "@/Components/Icons/Edit.vue";
 import ActionMessage from "@/Components/ActionMessage.vue";
 import InputError from "@/Components/Form/InputError.vue";
-import SectionBorder from "@/Components/SectionBorder.vue";
 import Breadcrumb from "@/Components/Breadcrumb.vue";
-import TeamMemberManager from "@/Pages/Teams/Partials/TeamMemberManager.vue";
 import MemberManager from "@/Pages/Campaign/Partials/MemberManager.vue";
+import CountForm from "@/Components/Form/CountForm.vue";
 
 const props = defineProps({
     campaign: Object,
@@ -90,59 +89,14 @@ const decrementPotion = () => {
                                             {{ $t('Health Potions') }}
                                         </div>
 
-                                        <div class="flex flex-row h-10 w-full rounded-lg relative bg-transparent mt-1">
-                                            <button
-                                                type="button"
-                                                class="bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600 flex items-center justify-center h-full w-10 rounded-l cursor-pointer outline-none"
-                                                :class="{ 'opacity-25': form.processing }"
-                                                :disabled="form.processing"
-                                                @click="decrementPotion"
-                                            >
-                                                <svg
-                                                    class="h-6 w-6"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="1.5"
-                                                    viewBox="0 0 24 24"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    aria-hidden="true"
-                                                >
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M18 12H6"
-                                                    />
-                                                </svg>
-                                            </button>
-                                            <div
-                                                class="outline-none px-2 w-auto border-0 focus:outline-none text-center bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 font-semibold text-md flex items-center"
-                                            >
-                                                {{ campaign.health_potions }} / 3
-                                            </div>
-                                            <button
-                                                type="button"
-                                                class="bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600 flex items-center justify-center h-full w-10 rounded-r cursor-pointer outline-none"
-                                                :class="{ 'opacity-25': form.processing }"
-                                                :disabled="form.processing"
-                                                @click="incrementPotion"
-                                            >
-                                                <svg
-                                                    class="h-6 w-6"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="1.5"
-                                                    viewBox="0 0 24 24"
-                                                    xmlns="http://www.w3.org/2000/svg"
-                                                    aria-hidden="true"
-                                                >
-                                                    <path
-                                                        stroke-linecap="round"
-                                                        stroke-linejoin="round"
-                                                        d="M12 6v12m6-6H6"
-                                                    />
-                                                </svg>
-                                            </button>
-                                        </div>
+                                        <CountForm
+                                            :form="form"
+                                            :decrement="decrementPotion"
+                                            :increment="incrementPotion"
+                                            :value="campaign.health_potions"
+                                            max="3"
+                                            class="w-full mt-1"
+                                        />
                                     </div>
                                 </div>
                                 <div class="flex items-center">

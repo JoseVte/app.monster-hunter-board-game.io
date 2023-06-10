@@ -1,6 +1,6 @@
 <script setup>
 import { ref } from 'vue';
-import { router, useForm, usePage } from '@inertiajs/vue3';
+import {Link, router, useForm, usePage} from '@inertiajs/vue3';
 import ActionMessage from '@/Components/ActionMessage.vue';
 import ActionSection from '@/Components/ActionSection.vue';
 import ConfirmationModal from '@/Components/ConfirmationModal.vue';
@@ -31,11 +31,13 @@ const updateRoleForm = useForm({
 
 const leaveCampaignForm = useForm({});
 const removeCampaignMemberForm = useForm({});
+const removeCampaignHunterForm = useForm({});
 
 const currentlyManagingRole = ref(false);
 const managingRoleFor = ref(null);
 const confirmingLeavingCampaign = ref(false);
 const campaignMemberBeingRemoved = ref(null);
+const campaignHunterBeingRemoved = ref(null);
 
 const addCampaignMember = () => {
     addCampaignMemberForm.post(route('campaign-members.store', props.campaign), {
@@ -73,7 +75,11 @@ const leaveCampaign = () => {
 };
 
 const confirmCampaignMemberRemoval = (campaignMember) => {
-    campaignMemberBeingRemoved.value = campaignMember;
+    campaignMemberBeingRemoved.value = !!campaignMember.id;
+};
+
+const confirmCampaignHunterRemoval = (campaignHunter) => {
+    campaignHunterBeingRemoved.value = !!campaignHunter.id;
 };
 
 const removeCampaignMember = () => {
@@ -82,6 +88,15 @@ const removeCampaignMember = () => {
         preserveScroll: true,
         preserveState: true,
         onSuccess: () => campaignMemberBeingRemoved.value = null,
+    });
+};
+
+const removeCampaignHunter = () => {
+    removeCampaignHunterForm.delete(route('campaigns.hunters.destroy', [props.campaign, campaignHunterBeingRemoved.value]), {
+        errorBag: 'removeCampaignHunter',
+        preserveScroll: true,
+        preserveState: true,
+        onSuccess: () => campaignHunterBeingRemoved.value = null,
     });
 };
 
@@ -98,11 +113,11 @@ const displayableRole = (role) => {
             <!-- Manage Campaign Members -->
             <ActionSection class="mt-10 sm:mt-0">
                 <template #title>
-                    {{ $t('Campaign Members') }}
+                    {{ $t('Campaign Members/Hunters') }}
                 </template>
 
                 <template #description>
-                    {{ $t('All of the people that are part of this campaign.') }}
+                    {{ $t('All of the people/hunters that are part of this campaign.') }}
                 </template>
 
                 <!-- Campaign Member List -->
@@ -119,45 +134,76 @@ const displayableRole = (role) => {
                                     :src="user.profile_photo_url"
                                     :alt="user.name"
                                 >
-                                <div class="ml-4 dark:text-white">
-                                    {{ user.name }}
+                                <div class="ml-4 dark:text-white flex flex-col gap-2">
+                                    <Link
+                                        v-if="user.membership.hunter_id"
+                                        :href="route('campaigns.hunters.show', [campaign, user.membership.hunter_id])"
+                                    >
+                                        {{ user.membership.hunter.name }}
+                                    </Link>
+                                    <span
+                                        v-else
+                                        class="text-gray-500"
+                                    >{{ $t('- Missing hunter -') }}</span>
+                                    <span class="text-gray-600 dark:text-gray-400">{{ user.name }}</span>
                                 </div>
                             </div>
 
-                            <div class="flex items-center">
-                                <!-- Manage Campaign Member Role -->
-                                <button
-                                    v-if="userPermissions.canAddCampaignMembers && availableRoles.length"
-                                    class="ml-2 text-sm text-gray-400 underline"
-                                    @click="manageRole(user)"
-                                >
-                                    {{ displayableRole(user.membership.role.name) }}
-                                </button>
+                            <div class="flex items-end gap-2 flex-col">
+                                <div class="flex items-center">
+                                    <!-- Edit Hunter -->
+                                    <Link
+                                        v-if="$page.props.auth.user.id === user.id && user.membership.hunter_id"
+                                        class="ml-2 text-sm text-gray-600 dark:text-gray-400 underline"
+                                        :href="route('campaigns.hunters.edit', [campaign, user.membership.hunter])"
+                                    >
+                                        {{ $t('Edit Hunter') }}
+                                    </Link>
 
-                                <div
-                                    v-else-if="availableRoles.length"
-                                    class="ml-2 text-sm text-gray-400"
-                                >
-                                    {{ displayableRole(user.membership.role.name) }}
+                                    <!-- Remove Hunter -->
+                                    <button
+                                        v-if="$page.props.auth.user.id === user.id && user.membership.hunter_id"
+                                        class="cursor-pointer ml-6 text-sm text-red-500"
+                                        @click="confirmCampaignHunterRemoval(user)"
+                                    >
+                                        {{ $t('Remove Hunter') }}
+                                    </button>
                                 </div>
+                                <div class="flex items-center">
+                                    <!-- Manage Campaign Member Role -->
+                                    <button
+                                        v-if="userPermissions.canAddCampaignMembers && availableRoles.length"
+                                        class="ml-2 text-sm text-gray-600 dark:text-gray-400 underline"
+                                        @click="manageRole(user)"
+                                    >
+                                        {{ displayableRole(user.membership.role.name) }}
+                                    </button>
 
-                                <!-- Leave Campaign -->
-                                <button
-                                    v-if="$page.props.auth.user.id === user.id"
-                                    class="cursor-pointer ml-6 text-sm text-red-500"
-                                    @click="confirmLeavingCampaign"
-                                >
-                                    {{ $t('Leave') }}
-                                </button>
+                                    <div
+                                        v-else-if="availableRoles.length"
+                                        class="ml-2 text-sm text-gray-600 dark:text-gray-400"
+                                    >
+                                        {{ displayableRole(user.membership.role.name) }}
+                                    </div>
 
-                                <!-- Remove Campaign Member -->
-                                <button
-                                    v-else-if="userPermissions.canRemoveCampaignMembers"
-                                    class="cursor-pointer ml-6 text-sm text-red-500"
-                                    @click="confirmCampaignMemberRemoval(user)"
-                                >
-                                    {{ $t('Remove') }}
-                                </button>
+                                    <!-- Leave Campaign -->
+                                    <button
+                                        v-if="$page.props.auth.user.id === user.id"
+                                        class="cursor-pointer ml-6 text-sm text-red-500"
+                                        @click="confirmLeavingCampaign"
+                                    >
+                                        {{ $t('Leave') }}
+                                    </button>
+
+                                    <!-- Remove Campaign Member -->
+                                    <button
+                                        v-else-if="userPermissions.canRemoveCampaignMembers"
+                                        class="cursor-pointer ml-6 text-sm text-red-500"
+                                        @click="confirmCampaignMemberRemoval(user)"
+                                    >
+                                        {{ $t('Remove') }}
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -447,6 +493,35 @@ const displayableRole = (role) => {
                     :class="{ 'opacity-25': removeCampaignMemberForm.processing }"
                     :disabled="removeCampaignMemberForm.processing"
                     @click="removeCampaignMember"
+                >
+                    {{ $t('Remove') }}
+                </DangerButton>
+            </template>
+        </ConfirmationModal>
+
+        <!-- Remove Campaign Hunter Confirmation Modal -->
+        <ConfirmationModal
+            :show="campaignHunterBeingRemoved"
+            @close="campaignHunterBeingRemoved = null"
+        >
+            <template #title>
+                {{ $t('Remove Campaign Hunter') }}
+            </template>
+
+            <template #content>
+                {{ $t('Are you sure you would like to remove this hunter from the campaign?') }}
+            </template>
+
+            <template #footer>
+                <SecondaryButton @click="campaignHunterBeingRemoved = null">
+                    {{ $t('Cancel') }}
+                </SecondaryButton>
+
+                <DangerButton
+                    class="ml-3"
+                    :class="{ 'opacity-25': removeCampaignHunterForm.processing }"
+                    :disabled="removeCampaignHunterForm.processing"
+                    @click="removeCampaignHunter"
                 >
                     {{ $t('Remove') }}
                 </DangerButton>

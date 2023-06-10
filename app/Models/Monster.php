@@ -3,10 +3,10 @@
 namespace App\Models;
 
 use App\Enum\MonsterCategory;
-use App\Enum\MonsterExpansion;
-use Illuminate\Database\Eloquent\Model;
 use Laravel\Scout\Searchable;
+use App\Enum\MonsterExpansion;
 use App\Models\Traits\HasTranslations;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Monster extends Model

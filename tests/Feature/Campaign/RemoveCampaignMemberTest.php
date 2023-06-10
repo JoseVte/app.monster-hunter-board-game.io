@@ -4,7 +4,7 @@ use App\Models\User;
 use App\Models\Campaign;
 use Spatie\Permission\Models\Role;
 
-test('campaign member can be removed from campaigns', function () {
+test('campaign member can be removed from campaigns', function (): void {
     $this->actingAs($user = User::factory()->withPersonalTeam()->create());
     $campaign = Campaign::factory()->create(['team_id' => $user->currentTeam->id]);
     $campaign->users()->attach($user->id, [

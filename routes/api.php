@@ -1,8 +1,8 @@
 <?php
 
 use App\Models\Monster;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,7 +31,7 @@ Route::post('locale', static function () {
     return redirect()->back();
 });
 
-Route::prefix('monsters')->name('monster.')->group(function () {
+Route::prefix('monsters')->name('monster.')->group(function (): void {
     Route::get('filter', static function (Illuminate\Http\Request $request): JsonResponse {
         $query = Monster::query();
 

@@ -4,7 +4,7 @@ use App\Models\User;
 use App\Models\Campaign;
 use Spatie\Permission\Models\Role;
 
-test('users can leave campaigns', function () {
+test('users can leave campaigns', function (): void {
     $user = User::factory()->withPersonalTeam()->create();
     $campaign = Campaign::factory()->create(['team_id' => $user->currentTeam->id]);
     $campaign->users()->attach($user->id, [

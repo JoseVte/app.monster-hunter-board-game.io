@@ -1,7 +1,7 @@
 <?php
 
-use App\Models\Monster;
 use App\Models\Weapon;
+use App\Models\Monster;
 use App\Models\WeaponType;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;

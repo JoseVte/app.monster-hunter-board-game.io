@@ -3,18 +3,18 @@
 use App\Models\User;
 use App\Models\Campaign;
 
-test('campaign can see create page', function (): void {
-    $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+beforeEach(function (): void {
+    $this->actingAs($this->user = User::factory()->withPersonalTeam()->create());
+});
 
-    $response = $this->get('/campaigns/create');
+test('campaign can see create page', function (): void {
+    $response = $this->get(route('campaigns.create'));
     $response->assertStatus(200);
 });
 
 test('campaign can create', function (): void {
-    $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-
-    $response = $this->post('/campaigns', [
-        'team_id' => $user->currentTeam->id,
+    $response = $this->post(route('campaigns.store'), [
+        'team_id' => $this->user->currentTeam->id,
         'name' => 'Test Campaign',
         'description' => 'Test Campaign Description',
         'max_days' => 40,

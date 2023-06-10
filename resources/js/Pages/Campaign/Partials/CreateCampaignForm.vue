@@ -19,7 +19,7 @@ const form = useForm({
     max_days: null,
 });
 
-const createTeam = () => {
+const createCampaign = () => {
     form.post(route('campaigns.store'), {
         errorBag: 'createCampaign',
         preserveScroll: true,
@@ -28,7 +28,7 @@ const createTeam = () => {
 </script>
 
 <template>
-    <FormSection @submitted="createTeam">
+    <FormSection @submitted="createCampaign">
         <template #title>
             {{ $t('Campaign Details') }}
         </template>

@@ -44,7 +44,7 @@ class Team extends JetstreamTeam
     ];
 
     protected $with = [
-        'campaigns'
+        'campaigns',
     ];
 
     public function campaigns(): HasMany

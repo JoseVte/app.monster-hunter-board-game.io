@@ -46,7 +46,7 @@ class WeaponsSeeder extends Seeder
 
                 if (Arr::get($weaponDetails, 'parent')) {
                     if (Weapon::where('name->en', $weaponDetails['parent'])->doesntExist()) {
-                        logger($weaponDetails['parent']);
+                        logger('Weapon parent: '.$weaponDetails['parent']);
                     }
 
                     $weapon->parent_id = Weapon::where('name->en', $weaponDetails['parent'])->firstOrFail()->id;
@@ -56,7 +56,7 @@ class WeaponsSeeder extends Seeder
                 if (Arr::get($weaponDetails, 'items')) {
                     foreach ($weaponDetails['items'] as $itemName => $count) {
                         if (Item::where('name->en', $itemName)->doesntExist()) {
-                            logger($itemName);
+                            logger('Item: '.$itemName);
                         }
 
                         $weaponAttack = Item::where('name->en', $itemName)->firstOrFail();
@@ -68,7 +68,7 @@ class WeaponsSeeder extends Seeder
                     if (Arr::get($weaponDetails, 'attacks.remove')) {
                         foreach ($weaponDetails['attacks']['remove'] as $attackName => $count) {
                             if (WeaponAttack::where('name->en', $attackName)->doesntExist()) {
-                                logger($attackName);
+                                logger('Attack name: '.$attackName);
                                 WeaponAttack::create(['name' => $attackName]);
                             }
 
@@ -79,7 +79,7 @@ class WeaponsSeeder extends Seeder
                     if (Arr::get($weaponDetails, 'attacks.add')) {
                         foreach ($weaponDetails['attacks']['add'] as $attackName => $count) {
                             if (WeaponAttack::where('name->en', $attackName)->doesntExist()) {
-                                logger($attackName);
+                                logger('Attack name: '.$attackName);
                                 WeaponAttack::create(['name' => $attackName]);
                             }
 
