@@ -79,9 +79,11 @@
             "vendor/bin/pest --parallel --coverage-html ./reports"
         ],
         "extract-translations": [
+            "@php artisan localize es,en",
             "@php artisan translations:extract-vue"
         ],
         "generate-translations": [
+            "@php artisan localize es,en",
             "@php artisan translations:extract-vue",
             "@php artisan vue-i18n:generate"
         ]
