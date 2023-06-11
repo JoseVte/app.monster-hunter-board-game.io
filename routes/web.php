@@ -40,7 +40,7 @@ Route::get('/', function () {
         'laravelVersion' => Application::VERSION,
         'phpVersion' => PHP_VERSION,
     ]);
-});
+})->name('welcome');
 
 Route::get('language/{language}', function ($language) {
     session()->put('locale', $language);
