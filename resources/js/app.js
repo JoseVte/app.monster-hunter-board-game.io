@@ -4,6 +4,7 @@ import '../css/app.css';
 import { createI18n } from 'vue-i18n';
 
 import { createApp, h } from 'vue';
+import Vue3Storage, {StorageType} from "vue3-storage";
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
@@ -23,6 +24,10 @@ createInertiaApp({
         });
 
         return createApp({ render: () => h(App, props) })
+            .use(Vue3Storage, {
+                namespace: 'mh_',
+                storage: StorageType.Session
+            })
             .use(plugin)
             .use(i18n)
             .use(ZiggyVue, Ziggy)

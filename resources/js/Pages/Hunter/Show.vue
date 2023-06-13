@@ -1,39 +1,38 @@
 <script setup>
 import {Link} from "@inertiajs/vue3";
 import _ from "lodash";
+import {computed, ref, watch} from "vue";
+import {useStorage} from "vue3-storage";
 import Breadcrumb from "@/Components/Breadcrumb.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import WeaponsIcon from "@/Components/Icons/WeaponsIcon.vue";
 import Edit from "@/Components/Icons/Edit.vue";
 import SectionBorder from "@/Components/SectionBorder.vue";
-import UpdateCountItemForm from "@/Pages/Hunter/Partials/UpdateCountItemForm.vue";
+import AddItemToHunterButton from "@/Pages/Hunter/Partials/AddItemToHunterButton.vue";
+import GridItemHunter from "@/Pages/Hunter/Partials/GridItemHunter.vue";
+import Switch from "@/Components/Form/Switch.vue";
 
 const props = defineProps({
+    canEdit: Boolean,
     campaign: Object,
     hunter: Object,
     user: Object,
     commonItems: Array,
+    otherItems: [Array, Object],
+    monsterItems: [Array, Object],
 });
 
-const chunkArray = (arr, n) => {
-    const chunkLength = Math.max(arr.length / n, 1);
-    const chunks = [];
-    for (let i = 0; i < n; i++) {
-        if (chunkLength * (i + 1) <= arr.length) chunks.push(arr.slice(chunkLength * i, chunkLength * (i + 1)));
-    }
-    return chunks;
-}
+const storage = useStorage();
+const hideEmpty = ref(storage.getStorageSync('hide-empty-items'));
+watch(hideEmpty, (hideEmptyValue) => storage.setStorageSync('hide-empty-items', hideEmptyValue))
 
-const countItem = (item) => {
-    const hunterItemCount = _.find(props.hunter.items, (hunterItem) => {
-        return item.id === hunterItem.pivot.item_id
-    });
-    if (hunterItemCount) {
-        return hunterItemCount.pivot.number;
-    }
+const hunterOtherItems = computed(() => {
+    return _.sortBy(props.hunter.other_items, (item) => item.name);
+});
 
-    return 0;
-}
+const hunterMonsterItems = computed(() => {
+    return _.sortBy(props.hunter.monster_items, (item) => item.name);
+});
 </script>
 
 <template>
@@ -72,7 +71,10 @@ const countItem = (item) => {
                         <h2 class="text-gray-600 dark:text-gray-400 text-xl">
                             {{ hunter.palico ? hunter.palico.name : '-' }}
                         </h2>
-                        <div class="absolute top-0 right-0">
+                        <div
+                            v-if="canEdit"
+                            class="absolute top-0 right-0"
+                        >
                             <Link :href="route('campaigns.hunters.edit', [campaign, hunter])">
                                 <Edit class="h-4 w-4 text-gray-700 dark:text-gray-300" />
                             </Link>
@@ -80,28 +82,79 @@ const countItem = (item) => {
                     </div>
                 </div>
 
-                <SectionBorder />
+                <SectionBorder>
+                    <Switch
+                        v-model:checked="hideEmpty"
+                        :label="$t('Hide empty items')"
+                    />
+                </SectionBorder>
 
                 <div class="px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow sm:rounded-lg flex flex-col gap-4">
                     <h2 class="text-gray-600 dark:text-gray-400 text-xl">
                         {{ $t('Common Bones, Ores and Hides') }}
                     </h2>
 
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div
-                            v-for="(chunkItems, index) in chunkArray(commonItems, 2)"
-                            :key="index"
-                        >
-                            <UpdateCountItemForm
-                                v-for="item in chunkItems"
-                                :key="item.id"
-                                :campaign="campaign"
-                                :hunter="hunter"
-                                :item="item"
-                                :count-item="countItem(item)"
-                            />
-                        </div>
+                    <GridItemHunter
+                        :can-edit="canEdit"
+                        :hide-empty="hideEmpty"
+                        :campaign="campaign"
+                        :hunter="hunter"
+                        :items="commonItems"
+                    />
+                </div>
+
+                <SectionBorder />
+
+                <div class="px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow sm:rounded-lg flex flex-col gap-4">
+                    <div class="flex flex-col sm:flex-row justify-between">
+                        <h2 class="text-gray-600 dark:text-gray-400 text-xl">
+                            {{ $t('Other Items') }}
+                        </h2>
+
+                        <AddItemToHunterButton
+                            v-if="canEdit"
+                            :campaign="campaign"
+                            :hunter="hunter"
+                            :items="otherItems"
+                            :label="$t('Add Other Item')"
+                            :label-btn="$t('Add Other Item')"
+                        />
                     </div>
+
+                    <GridItemHunter
+                        :can-edit="canEdit"
+                        :hide-empty="hideEmpty"
+                        :campaign="campaign"
+                        :hunter="hunter"
+                        :items="hunterOtherItems"
+                    />
+                </div>
+
+                <SectionBorder />
+
+                <div class="px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow sm:rounded-lg flex flex-col gap-4">
+                    <div class="flex flex-col sm:flex-row justify-between">
+                        <h2 class="text-gray-600 dark:text-gray-400 text-xl">
+                            {{ $t('Monter Parts') }}
+                        </h2>
+
+                        <AddItemToHunterButton
+                            v-if="canEdit"
+                            :campaign="campaign"
+                            :hunter="hunter"
+                            :items="monsterItems"
+                            :label="$t('Add Monter Part')"
+                            :label-btn="$t('Add Monter Part')"
+                        />
+                    </div>
+
+                    <GridItemHunter
+                        :can-edit="canEdit"
+                        :hide-empty="hideEmpty"
+                        :campaign="campaign"
+                        :hunter="hunter"
+                        :items="hunterMonsterItems"
+                    />
                 </div>
             </div>
         </div>

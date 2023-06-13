@@ -2,6 +2,7 @@
 
 namespace App\Policies;
 
+use App\Models\Hunter;
 use App\Models\User;
 use App\Models\Campaign;
 use Illuminate\Auth\Access\HandlesAuthorization;
@@ -37,9 +38,13 @@ class CampaignPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Campaign $campaign): bool
+    public function update(User $user, Campaign $campaign, Hunter $hunter = null): bool
     {
-        return $user->ownsCampaign($campaign) && ($user->hasCampaignRole($campaign, 'member-campaign') || $user->hasCampaignRole($campaign, 'admin-campaign'));
+        return (
+            $user->ownsCampaign($campaign) || (
+                $hunter !== null && $user->belongsToCampaign($campaign) && $campaign->users()->wherePivot('hunter_id', $hunter->id)->find($user->id)
+            )
+        ) && ($user->hasCampaignRole($campaign, 'member-campaign') || $user->hasCampaignRole($campaign, 'admin-campaign'));
     }
 
     /**

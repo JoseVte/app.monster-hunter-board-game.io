@@ -15,7 +15,7 @@ class CampaignHunterController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource([Hunter::class, 'campaign'], ['campaign', 'hunter']);
+        $this->authorizeResource(['campaign', Hunter::class], ['campaign', 'hunter']);
     }
 
     public function index(Campaign $campaign): RedirectResponse
@@ -39,10 +39,21 @@ class CampaignHunterController extends Controller
     public function show(Campaign $campaign, Hunter $hunter): Response
     {
         $user = $hunter->getUser();
-        $hunter->load('palico', 'items');
+        $canEdit = auth()->user()?->can('update', [$campaign, $hunter]);
+        $hunter->load('palico', 'items', 'otherItems', 'monsterItems');
         $commonItems = Item::where('type', ItemType::COMMON->name)->get();
+        $otherItems = Item::where('type', ItemType::OTHER->name)->get();
+        $monsterItems = Item::where('type', ItemType::MONSTER_PART->name)->get();
 
-        return Inertia::render('Hunter/Show', compact('campaign', 'hunter', 'user', 'commonItems'));
+        return Inertia::render('Hunter/Show', compact(
+            'campaign',
+            'hunter',
+            'user',
+            'commonItems',
+            'otherItems',
+            'monsterItems',
+            'canEdit'
+        ));
     }
 
     public function edit(Campaign $campaign, Hunter $hunter): Response
