@@ -3,7 +3,7 @@ import { onMounted, ref } from 'vue';
 
 defineProps({
     modelValue: String,
-    options: Object,
+    options: [Array, Object],
     placeholder: String
 });
 

@@ -116,6 +116,7 @@ Route::middleware([
 
         Route::prefix('items')->name('item.')->group(function (): void {
             Route::get('/', fn () => Inertia::render('Wiki/Item/Index'))->name('index');
+            Route::get('{item}', fn (Item $item) => Inertia::render('Wiki/Item/Show', compact('item')))->name('show');
         });
 
         Route::prefix('armors')->name('armor.')->group(function (): void {

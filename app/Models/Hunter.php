@@ -64,9 +64,19 @@ class Hunter extends Model
             ->using(HunterArmor::class);
     }
 
-    public function commonItems(): array
+    public function commonItems(): BelongsToMany
     {
-        return $this->items->where('type', ItemType::COMMON);
+        return $this->items()->where('type', ItemType::COMMON->name);
+    }
+
+    public function otherItems(): BelongsToMany
+    {
+        return $this->items()->where('type', ItemType::OTHER->name);
+    }
+
+    public function monsterItems(): BelongsToMany
+    {
+        return $this->items()->where('type', ItemType::MONSTER_PART->name);
     }
 
     public function getUser(): ?User
