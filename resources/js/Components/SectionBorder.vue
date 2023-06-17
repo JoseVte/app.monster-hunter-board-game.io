@@ -5,7 +5,7 @@
     >
         <div class="py-8">
             <div
-                class="grid grid-template-section items-center before:content-[''] before:hidden sm:before:block before:h-[1px] before:bg-gray-200 dark:before:bg-gray-200"
+                class="grid grid-template-section items-center before:content-[''] before:hidden sm:before:block before:h-[1px] before:bg-gray-200 dark:before:bg-gray-700"
             >
                 <slot />
             </div>

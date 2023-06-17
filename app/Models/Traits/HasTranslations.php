@@ -30,7 +30,7 @@ trait HasTranslations
             $attributes[$field] = $this->getTranslation($field, $locale);
         }
         foreach ($this->casts as $field => $cast) {
-            if (in_array(TranslatableEnum::class, class_uses_recursive($cast), true)) {
+            if (class_exists($cast) && in_array(TranslatableEnum::class, class_uses_recursive($cast), true)) {
                 $attributes[$field] = $this->getAttribute($field)->label($locale);
             }
         }

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\WeaponType;
 use Inertia\Inertia;
 use Inertia\Response;
 use App\Enum\ItemType;
@@ -36,22 +37,32 @@ class CampaignHunterController extends Controller
         return redirect()->route('campaigns.hunters.edit', [$campaign, $hunter]);
     }
 
-    public function show(Campaign $campaign, Hunter $hunter): Response
+    public function show(Campaign $campaign, Hunter $hunter, string $tab = 'items', WeaponType $weaponType = null): Response
     {
         $user = $hunter->getUser();
         $canEdit = auth()->user()?->can('update', [$campaign, $hunter]);
-        $hunter->load('palico', 'items', 'otherItems', 'monsterItems');
+        $hunter->load('palico', 'items', 'weapons', 'otherItems', 'monsterItems');
         $commonItems = Item::where('type', ItemType::COMMON->name)->get();
         $otherItems = Item::where('type', ItemType::OTHER->name)->get();
         $monsterItems = Item::where('type', ItemType::MONSTER_PART->name)->get();
+        $weaponTypes = WeaponType::all();
+        $tabOpened = $tab;
+        $weapons = [];
+        if ($weaponType) {
+            $weapons = create_weapon_tree($weaponType);
+        }
 
         return Inertia::render('Hunter/Show', compact(
             'campaign',
             'hunter',
+            'tabOpened',
+            'weaponType',
+            'weapons',
             'user',
             'commonItems',
             'otherItems',
             'monsterItems',
+            'weaponTypes',
             'canEdit'
         ));
     }

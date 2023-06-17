@@ -5,3 +5,35 @@
 [x-cloak] {
     display: none;
 }
+
+.tabs-component {
+    @apply my-8 mx-0;
+}
+
+.tabs-component-tabs {
+    @apply border border-gray-200 dark:border-gray-700 rounded mb-3 sm:border-0 sm:flex sm:items-stretch sm:justify-start sm:mb-[-1px];
+}
+
+.tabs-component-tab {
+    @apply text-gray-800 dark:text-gray-400 text-sm font-bold mr-0 list-none hover:text-gray-700 dark:hover:text-gray-200;
+    @apply sm:bg-white dark:sm:bg-gray-800 sm:border sm:border-gray-400 dark:sm:border-gray-600 rounded mr-2 translate-y-[3px] transition-all duration-[300ms] ease-linear;
+}
+
+.tabs-component-tab.is-active {
+    @apply text-black dark:text-white;
+    @apply sm:border-b sm:border-b-white dark:sm:border-b-gray-800 z-10 translate-y-0 rounded-b-none;
+}
+
+.tabs-component-tab.is-disabled * {
+    @apply text-gray-500 dark:text-gray-400;
+    cursor: not-allowed !important;
+}
+
+.tabs-component-tab-a {
+    @apply flex items-center text-inherit py-3.5 px-4 decoration-0
+}
+
+.tabs-component-panels {
+    @apply py-4 px-0;
+    @apply sm:pt-0 sm:px-6 sm:bg-white dark:sm:bg-gray-800 sm:border sm:border-gray-400 dark:sm:border-gray-600 sm:rounded sm:rounded-tl-none;
+}

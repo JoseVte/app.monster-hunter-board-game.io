@@ -1,5 +1,9 @@
 <?php
 
+use App\Models\Weapon;
+use App\Models\WeaponType;
+use Illuminate\Support\Collection;
+
 if (!function_exists('arr_expand')) {
     function arr_expand(&$data): void
     {
@@ -23,5 +27,41 @@ if (!function_exists('arr_expand')) {
                 }
             }
         }
+    }
+}
+
+if (!function_exists('create_weapon_tree')) {
+    function create_weapon_tree(WeaponType $weaponType): Collection
+    {
+        $latestWeaponModels = $weaponType->weapons()
+            ->doesntHave('children')
+            ->with([
+                'parent',
+                'parent.parent',
+                'parent.parent.parent',
+                'parent.parent.parent.parent',
+            ])
+            ->get();
+
+        $latestWeapons = collect();
+        $latestWeaponModels->each(function (Weapon $weapon) use (&$latestWeapons) {
+            $weapons = collect();
+            $branch = $weapon->branch;
+            $rarity = $weapon->rarity;
+
+            do {
+                while ($rarity > $weapon->rarity) {
+                    $weapons->push([]);
+                    $rarity--;
+                }
+                $weapons->push($weapon);
+                $weapon = $weapon->parent;
+                $rarity--;
+            } while($weapon !== null);
+
+            $latestWeapons->put($branch, $weapons->reverse()->values());
+        });
+
+        return $latestWeapons;
     }
 }
