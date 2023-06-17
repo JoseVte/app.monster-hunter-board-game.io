@@ -15,9 +15,9 @@ const props = defineProps({
 const getRarityColor = (rarity) => {
     switch (rarity) {
     case 1:
-        return 'text-gray-500';
+        return 'text-gray-600 dark:text-gray-500';
     case 2:
-        return 'text-gray-300';
+        return 'text-gray-400 dark:text-gray-300';
     case 3:
         return 'text-lime-600';
     case 4:
@@ -78,7 +78,7 @@ const hunterWeaponCount = (weapon) => {
                             >
                                 <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
                                     <div class="flex justify-between items-center w-full lg:w-auto">
-                                        <div class="bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8 flex items-center justify-center">
+                                        <div class="bg-gray-300 dark:bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8 flex items-center justify-center">
                                             <WeaponsIcon
                                                 class="h-4 w-4"
                                                 :class="getRarityColor(weapon.rarity)"
@@ -86,7 +86,7 @@ const hunterWeaponCount = (weapon) => {
                                         </div>
                                         <div
                                             v-if="weapon.is_default || hunterWeaponCount(weapon)"
-                                            class="bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8 flex lg:hidden items-center justify-center"
+                                            class="bg-gray-300 dark:bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8 flex lg:hidden items-center justify-center"
                                         >
                                             <Check
                                                 class="h-6 w-6 text-green-500"
@@ -98,7 +98,7 @@ const hunterWeaponCount = (weapon) => {
                                     </div>
                                     <div
                                         v-if="weapon.is_default || hunterWeaponCount(weapon)"
-                                        class="bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8  hidden lg:flex items-center justify-center"
+                                        class="bg-gray-300 dark:bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8  hidden lg:flex items-center justify-center"
                                     >
                                         <Check
                                             class="h-6 w-6 text-green-500"
@@ -121,7 +121,7 @@ const hunterWeaponCount = (weapon) => {
             :key="branch"
             class="mt-4 md:hidden"
         >
-            <div class="border mb-4 capitalize h-fit rounded border-gray-400 dark:border-gray-500 bg-gray-300 dark:bg-gray-600 p-2 text-gray-800 dark:text-gray-200">
+            <div class="border text-center mb-4 capitalize h-fit rounded border-gray-400 dark:border-gray-500 bg-gray-300 dark:bg-gray-600 p-2 text-gray-800 dark:text-gray-200">
                 {{ branch }}
             </div>
 
@@ -135,7 +135,7 @@ const hunterWeaponCount = (weapon) => {
                         class="weapon-box-vertical relative border rounded border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 p-2 text-gray-800 dark:text-gray-200"
                     >
                         <div class="grid grid-cols-3 gap-2 sm:w-full">
-                            <div class="bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8 flex items-center justify-center">
+                            <div class="bg-gray-300 dark:bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8 flex items-center justify-center">
                                 <WeaponsIcon
                                     class="h-4 w-4"
                                     :class="getRarityColor(weapon.rarity)"
@@ -147,7 +147,7 @@ const hunterWeaponCount = (weapon) => {
                             <div class="w-full text-right">
                                 <div
                                     v-if="weapon.is_default || hunterWeaponCount(weapon)"
-                                    class="bg-gray-800 ml-auto rounded-full h-8 w-8 min-h-8 min-w-8 flex items-center justify-center"
+                                    class="bg-gray-300 dark:bg-gray-800 ml-auto rounded-full h-8 w-8 min-h-8 min-w-8 flex items-center justify-center"
                                 >
                                     <Check
                                         class="h-6 w-6 text-green-500"

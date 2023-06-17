@@ -86,7 +86,7 @@ $themes: slate, gray, zinc, neutral, stone, red, orange, amber, yellow, lime, gr
     .theme-#{$theme} {
         @apply bg-#{$theme}-500;
         .mh-icon {
-            @apply bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] to-#{$theme}-500 from-#{$theme}-900 group-hover:to-#{$theme}-700 transition-all;
+            @apply bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] to-#{$theme}-500 from-#{$theme}-100 group-hover:to-#{$theme}-300 dark:from-#{$theme}-900 dark:group-hover:to-#{$theme}-700 transition-all;
         }
     }
 }

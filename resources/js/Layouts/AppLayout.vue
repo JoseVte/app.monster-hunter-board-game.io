@@ -15,6 +15,7 @@ import esImg from '~/icons/es.svg';
 import DropdownCampaign from "@/Layouts/Partials/DropdownCampaign.vue";
 import DropdownTeam from "@/Layouts/Partials/DropdownTeam.vue";
 import HunterBanner from "@/Layouts/Partials/HunterBanner.vue";
+import ButtonDark from "@/Layouts/Partials/ButtonDark.vue";
 const { locale } = useI18n({ useScope: 'global' })
 
 locale.value = usePage().props.locale;
@@ -106,6 +107,11 @@ const logout = () => {
                         </div>
 
                         <div class="flex items-center">
+                            <div class="flex items-center">
+                                <div class="ml-3 relative">
+                                    <ButtonDark />
+                                </div>
+                            </div>
                             <div class="flex items-center">
                                 <div class="ml-3 relative">
                                     <!-- Locale Dropdown -->
