@@ -16,6 +16,9 @@ module.exports = {
 
     theme: {
         extend: {
+            screens: {
+                'xs': '420px',
+            },
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
@@ -24,6 +27,12 @@ module.exports = {
             },
             colors: {
                 primary: colors.sky
+            },
+            minWidth: {
+                8: '2rem',
+            },
+            minHeight: {
+                8: '2rem',
             }
         },
     },

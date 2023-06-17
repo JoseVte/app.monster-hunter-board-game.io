@@ -60,7 +60,7 @@ class Weapon extends Model
 
     public function parent(): HasOne
     {
-        return $this->hasOne(__CLASS__, 'parent_id');
+        return $this->hasOne(__CLASS__, 'id', 'parent_id');
     }
 
     public function children(): HasMany

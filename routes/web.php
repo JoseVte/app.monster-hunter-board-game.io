@@ -21,6 +21,7 @@ use App\Http\Controllers\CampaignHunterController;
 use App\Http\Controllers\CampaignMemberController;
 use App\Http\Controllers\CampaignHunterItemController;
 use App\Http\Controllers\CampaignInvitationController;
+use App\Http\Controllers\CampaignHunterWeaponTypeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -145,7 +146,10 @@ Route::middleware([
     Route::delete('/campaign-invitations/{invitation}', [CampaignInvitationController::class, 'destroy'])
         ->name('campaign-invitations.destroy');
 
-    Route::resource('campaigns.hunters', CampaignHunterController::class);
+    Route::resource('campaigns.hunters', CampaignHunterController::class)->except('show');
+    Route::get('campaigns/{campaign}/hunters/{hunter}/{tab?}/{weaponType?}', [CampaignHunterController::class, 'show'])
+        ->name('campaigns.hunters.show')
+        ->where('tab', 'items|weapons|armors');
     Route::put('campaigns/{campaign}/hunters/{hunter}/items/{item}/update-count', [CampaignHunterItemController::class, 'updateCount'])
         ->name('campaigns.hunters.items.update-count');
 });

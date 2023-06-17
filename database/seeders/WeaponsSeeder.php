@@ -9,6 +9,8 @@ use App\Models\Monster;
 use App\Models\WeaponType;
 use App\Models\WeaponAttack;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Storage;
+use Str;
 
 class WeaponsSeeder extends Seeder
 {
@@ -17,10 +19,13 @@ class WeaponsSeeder extends Seeder
      */
     public function run(): void
     {
+        $storage = Storage::disk(config('jetstream.profile_photo_disk', 'public'));
+
         foreach (config('seeders.weapons') as $weaponsByType) {
             $weaponType = WeaponType::create([
                 'name' => $weaponsByType['name'],
                 'description' => $weaponsByType['description'],
+                'image_path' => $storage->putFileAs('weapon-types', resource_path('images/'.$weaponsByType['image']), Str::slug($weaponsByType['name']).'.png', 'public'),
             ]);
 
             foreach (Arr::get($weaponsByType, 'weapons', []) as $weaponDetails) {

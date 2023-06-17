@@ -1,7 +1,8 @@
 <script setup>
-import {Link} from "@inertiajs/vue3";
+import {Link, router } from "@inertiajs/vue3";
 import _ from "lodash";
-import {computed, ref, watch} from "vue";
+import {Tab, Tabs} from "vue3-tabs-component";
+import {computed, onMounted, ref, watch} from "vue";
 import {useStorage} from "vue3-storage";
 import Breadcrumb from "@/Components/Breadcrumb.vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
@@ -11,15 +12,21 @@ import SectionBorder from "@/Components/SectionBorder.vue";
 import AddItemToHunterButton from "@/Pages/Hunter/Partials/AddItemToHunterButton.vue";
 import GridItemHunter from "@/Pages/Hunter/Partials/GridItemHunter.vue";
 import Switch from "@/Components/Form/Switch.vue";
+import GridWeaponTypes from "@/Pages/Hunter/Partials/GridWeaponTypes.vue";
+import ListWeapons from "@/Pages/Hunter/Partials/ListWeapons.vue";
 
 const props = defineProps({
     canEdit: Boolean,
     campaign: Object,
     hunter: Object,
+    tabOpened: String,
+    weaponType: Object,
+    weapons: [Array, Object],
     user: Object,
     commonItems: Array,
     otherItems: [Array, Object],
     monsterItems: [Array, Object],
+    weaponTypes: [Array, Object],
 });
 
 const storage = useStorage();
@@ -29,10 +36,27 @@ watch(hideEmpty, (hideEmptyValue) => storage.setStorageSync('hide-empty-items', 
 const hunterOtherItems = computed(() => {
     return _.sortBy(props.hunter.other_items, (item) => item.name);
 });
-
 const hunterMonsterItems = computed(() => {
     return _.sortBy(props.hunter.monster_items, (item) => item.name);
 });
+
+const tabs = ref(null);
+const tabInitialized = ref(false);
+const tabOptions = {
+    useUrlFragment: false,
+    defaultTabHash: props.tabOpened,
+};
+const tabChanged = (tab) => {
+    if (tabInitialized.value) {
+        const newUrl = route('campaigns.hunters.show', [props.campaign, props.hunter, tab.tab.computedId]);
+        router.visit(newUrl);
+    }
+}
+
+onMounted(() => {
+    tabs.value.selectTab('#'+props.tabOpened)
+    tabInitialized.value = true;
+})
 </script>
 
 <template>
@@ -82,80 +106,116 @@ const hunterMonsterItems = computed(() => {
                     </div>
                 </div>
 
-                <SectionBorder>
-                    <Switch
-                        v-model:checked="hideEmpty"
-                        :label="$t('Hide empty items')"
-                    />
-                </SectionBorder>
+                <Tabs
+                    ref="tabs"
+                    :cache-lifetime="-1"
+                    :options="tabOptions"
+                    @changed="tabChanged"
+                >
+                    <Tab
+                        id="items"
+                        :name="$t('Items')"
+                    >
+                        <SectionBorder>
+                            <Switch
+                                v-model:checked="hideEmpty"
+                                :label="$t('Hide empty items')"
+                            />
+                        </SectionBorder>
 
-                <div class="px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow sm:rounded-lg flex flex-col gap-4">
-                    <h2 class="text-gray-600 dark:text-gray-400 text-xl">
-                        {{ $t('Common Bones, Ores and Hides') }}
-                    </h2>
+                        <div class="flex flex-col gap-4">
+                            <h2 class="text-gray-600 dark:text-gray-400 text-xl">
+                                {{ $t('Common Bones, Ores and Hides') }}
+                            </h2>
 
-                    <GridItemHunter
-                        :can-edit="canEdit"
-                        :hide-empty="hideEmpty"
-                        :campaign="campaign"
-                        :hunter="hunter"
-                        :items="commonItems"
-                    />
-                </div>
+                            <GridItemHunter
+                                :can-edit="canEdit"
+                                :hide-empty="hideEmpty"
+                                :campaign="campaign"
+                                :hunter="hunter"
+                                :items="commonItems"
+                            />
+                        </div>
 
-                <SectionBorder />
+                        <SectionBorder />
 
-                <div class="px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow sm:rounded-lg flex flex-col gap-4">
-                    <div class="flex flex-col sm:flex-row justify-between">
-                        <h2 class="text-gray-600 dark:text-gray-400 text-xl">
-                            {{ $t('Other Items') }}
-                        </h2>
+                        <div class="flex flex-col gap-4">
+                            <div class="flex flex-col sm:flex-row justify-between">
+                                <h2 class="text-gray-600 dark:text-gray-400 text-xl">
+                                    {{ $t('Other Items') }}
+                                </h2>
 
-                        <AddItemToHunterButton
-                            v-if="canEdit"
+                                <AddItemToHunterButton
+                                    v-if="canEdit"
+                                    :campaign="campaign"
+                                    :hunter="hunter"
+                                    :items="otherItems"
+                                    :label="$t('Add Other Item')"
+                                    :label-btn="$t('Add Other Item')"
+                                />
+                            </div>
+
+                            <GridItemHunter
+                                :can-edit="canEdit"
+                                :hide-empty="hideEmpty"
+                                :campaign="campaign"
+                                :hunter="hunter"
+                                :items="hunterOtherItems"
+                            />
+                        </div>
+
+                        <SectionBorder />
+
+                        <div class="flex flex-col gap-4">
+                            <div class="flex flex-col sm:flex-row justify-between">
+                                <h2 class="text-gray-600 dark:text-gray-400 text-xl">
+                                    {{ $t('Monter Parts') }}
+                                </h2>
+
+                                <AddItemToHunterButton
+                                    v-if="canEdit"
+                                    :campaign="campaign"
+                                    :hunter="hunter"
+                                    :items="monsterItems"
+                                    :label="$t('Add Monter Part')"
+                                    :label-btn="$t('Add Monter Part')"
+                                />
+                            </div>
+
+                            <GridItemHunter
+                                :can-edit="canEdit"
+                                :hide-empty="hideEmpty"
+                                :campaign="campaign"
+                                :hunter="hunter"
+                                :items="hunterMonsterItems"
+                            />
+                        </div>
+                    </Tab>
+                    <Tab
+                        id="weapons"
+                        :name="$t('Weapons')"
+                    >
+                        <GridWeaponTypes
+                            v-if="!weaponType"
+                            :can-edit="canEdit"
                             :campaign="campaign"
                             :hunter="hunter"
-                            :items="otherItems"
-                            :label="$t('Add Other Item')"
-                            :label-btn="$t('Add Other Item')"
+                            :weapon-types="weaponTypes"
                         />
-                    </div>
-
-                    <GridItemHunter
-                        :can-edit="canEdit"
-                        :hide-empty="hideEmpty"
-                        :campaign="campaign"
-                        :hunter="hunter"
-                        :items="hunterOtherItems"
-                    />
-                </div>
-
-                <SectionBorder />
-
-                <div class="px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow sm:rounded-lg flex flex-col gap-4">
-                    <div class="flex flex-col sm:flex-row justify-between">
-                        <h2 class="text-gray-600 dark:text-gray-400 text-xl">
-                            {{ $t('Monter Parts') }}
-                        </h2>
-
-                        <AddItemToHunterButton
-                            v-if="canEdit"
+                        <ListWeapons
+                            v-else
+                            :can-edit="canEdit"
                             :campaign="campaign"
                             :hunter="hunter"
-                            :items="monsterItems"
-                            :label="$t('Add Monter Part')"
-                            :label-btn="$t('Add Monter Part')"
+                            :weapon-type="weaponType"
+                            :weapons="weapons"
                         />
-                    </div>
-
-                    <GridItemHunter
-                        :can-edit="canEdit"
-                        :hide-empty="hideEmpty"
-                        :campaign="campaign"
-                        :hunter="hunter"
-                        :items="hunterMonsterItems"
+                    </Tab>
+                    <Tab
+                        id="armors"
+                        :name="$t('Armors')"
                     />
-                </div>
+                </Tabs>
             </div>
         </div>
     </AppLayout>

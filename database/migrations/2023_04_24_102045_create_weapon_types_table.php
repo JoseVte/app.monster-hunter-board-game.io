@@ -15,6 +15,7 @@ return new class() extends Migration {
 
             $table->json('name');
             $table->json('description')->nullable();
+            $table->text('image_path')->nullable();
 
             $table->timestamps();
         });
