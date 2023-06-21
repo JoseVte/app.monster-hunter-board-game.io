@@ -93,12 +93,17 @@ return [
         'Jyuratodus Carapace',
         'Jyuratodus Fin',
         'Jyuratodus Fang',
+        'Jyuratodus Shell',
+        'Jyuratodus Shell',
+        'Aqua Sac',
         'Torrent Sac',
 
         'Diablos Ridge',
         'Diablos Fang',
         'Diablos Carapace',
+        'Diablos Shell',
         'Majestic Horn',
+        'Twisted Horn',
         'Blos Medulla',
 
         'Black Diablos Ridge',

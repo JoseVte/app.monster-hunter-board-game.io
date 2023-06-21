@@ -2,8 +2,8 @@
 
 namespace App\Policies;
 
-use App\Models\Hunter;
 use App\Models\User;
+use App\Models\Hunter;
 use App\Models\Campaign;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -42,7 +42,7 @@ class CampaignPolicy
     {
         return (
             $user->ownsCampaign($campaign) || (
-                $hunter !== null && $user->belongsToCampaign($campaign) && $campaign->users()->wherePivot('hunter_id', $hunter->id)->find($user->id)
+                null !== $hunter && $user->belongsToCampaign($campaign) && $campaign->users()->wherePivot('hunter_id', $hunter->id)->find($user->id)
             )
         ) && ($user->hasCampaignRole($campaign, 'member-campaign') || $user->hasCampaignRole($campaign, 'admin-campaign'));
     }

@@ -3,12 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
-use App\Models\WeaponType;
 use Inertia\Inertia;
+use App\Models\Armor;
 use Inertia\Response;
 use App\Enum\ItemType;
 use App\Models\Hunter;
 use App\Models\Campaign;
+use App\Models\WeaponType;
+use Illuminate\Support\Collection;
 use App\Http\Requests\HunterRequest;
 use Illuminate\Http\RedirectResponse;
 
@@ -41,16 +43,20 @@ class CampaignHunterController extends Controller
     {
         $user = $hunter->getUser();
         $canEdit = auth()->user()?->can('update', [$campaign, $hunter]);
-        $hunter->load('palico', 'items', 'weapons', 'otherItems', 'monsterItems');
+        $hunter->load('palico', 'items', 'weapons', 'armors', 'otherItems', 'monsterItems');
         $commonItems = Item::where('type', ItemType::COMMON->name)->get();
         $otherItems = Item::where('type', ItemType::OTHER->name)->get();
         $monsterItems = Item::where('type', ItemType::MONSTER_PART->name)->get();
-        $weaponTypes = WeaponType::all();
+
         $tabOpened = $tab;
+
+        $weaponTypes = WeaponType::all();
         $weapons = [];
         if ($weaponType) {
             $weapons = create_weapon_tree($weaponType);
         }
+
+        $armors = Armor::with('abilities')->get()->groupBy(fn (Armor $armor) => strtolower($armor->type->label('en')))->map(fn (Collection $armors) => $armors->groupBy(fn (Armor $armor) => $armor->rarity));
 
         return Inertia::render('Hunter/Show', compact(
             'campaign',
@@ -58,6 +64,7 @@ class CampaignHunterController extends Controller
             'tabOpened',
             'weaponType',
             'weapons',
+            'armors',
             'user',
             'commonItems',
             'otherItems',
@@ -65,6 +72,11 @@ class CampaignHunterController extends Controller
             'weaponTypes',
             'canEdit'
         ));
+    }
+
+    public function showWeaponType(Campaign $campaign, Hunter $hunter, WeaponType $weaponType): Response
+    {
+        return $this->show($campaign, $hunter, 'weapons', $weaponType);
     }
 
     public function edit(Campaign $campaign, Hunter $hunter): Response

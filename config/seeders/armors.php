@@ -165,6 +165,8 @@ return [
                 'Dragonite Ore' => 1,
             ],
             'defense' => 1,
+            'branch' => 'mineral',
+            'rarity' => 2,
         ],
         'Bone Helm' => [
             'items' => [
@@ -172,6 +174,8 @@ return [
                 'Ancient Bone' => 2,
             ],
             'defense' => 1,
+            'branch' => 'bone',
+            'rarity' => 2,
         ],
         'Jagras Helm' => [
             'items' => [
@@ -183,6 +187,8 @@ return [
             'defense' => 1,
             'defense_water' => 1,
             'ability' => 'Speed Eating',
+            'branch' => 'Great Jagras',
+            'rarity' => 3,
         ],
         'Kadachi Helm' => [
             'items' => [
@@ -192,6 +198,8 @@ return [
             ],
             'defense_thunder' => 2,
             'ability' => 'Constitution',
+            'branch' => 'Tobi-Kadachi',
+            'rarity' => 3,
         ],
         'Anja Helm' => [
             'items' => [
@@ -202,6 +210,8 @@ return [
             'defense' => 1,
             'defense_fire' => 1,
             'ability' => 'Fire Attack',
+            'branch' => 'Anjanath',
+            'rarity' => 3,
         ],
         'Rathalos Helm' => [
             'items' => [
@@ -212,6 +222,8 @@ return [
             'defense' => 2,
             'defense_fire' => 1,
             'ability' => 'Rathalos Mastery',
+            'branch' => 'Rathalos',
+            'rarity' => 4,
         ],
         'Rath Soul Helm' => [
             'items' => [
@@ -222,6 +234,8 @@ return [
             'defense' => 2,
             'defense_fire' => 1,
             'ability' => 'Intimidator',
+            'branch' => 'Azure Rathalos',
+            'rarity' => 4,
         ],
         'Barroth Helm' => [
             'items' => [
@@ -232,6 +246,8 @@ return [
             'defense' => 1,
             'defense_water' => 1,
             'ability' => 'Guard',
+            'branch' => 'Barroth',
+            'rarity' => 3,
         ],
         'Pukei Hood' => [
             'items' => [
@@ -242,6 +258,8 @@ return [
             'defense' => 1,
             'defense_water' => 1,
             'ability' => 'Sporepuff Expert',
+            'branch' => 'Pukei-Pukei',
+            'rarity' => 3,
         ],
         'Jyura Helm' => [
             'items' => [
@@ -253,6 +271,8 @@ return [
             'defense' => 1,
             'defense_water' => 1,
             'ability' => 'Aquatic Expert',
+            'branch' => 'Jyuratodus',
+            'rarity' => 3,
         ],
         'Diablos Helm' => [
             'items' => [
@@ -264,6 +284,8 @@ return [
             'defense' => 1,
             'defense_fire' => 1,
             'ability' => 'Heroics',
+            'branch' => 'Diablos',
+            'rarity' => 4,
         ],
         'Diablos Nero Helm' => [
             'items' => [
@@ -275,6 +297,8 @@ return [
             'defense' => 1,
             'defense_fire' => 1,
             'ability' => 'Black Diablos Mastery',
+            'branch' => 'Black Diablos',
+            'rarity' => 4,
         ],
         'Kulu Headpiece' => [
             'items' => [
@@ -285,6 +309,8 @@ return [
             'defense' => 1,
             'defense_ice' => 1,
             'ability' => 'Weakness Exploit',
+            'branch' => 'Kulu-Ya-Ku',
+            'rarity' => 5,
         ],
         'Nergigante Helm' => [
             'items' => [
@@ -296,6 +322,8 @@ return [
             'defense' => 2,
             'defense_fire' => 2,
             'ability' => 'Maximun Might',
+            'branch' => 'Nergigante',
+            'rarity' => 5,
         ],
         'Kaiser Helm' => [
             'items' => [
@@ -307,6 +335,8 @@ return [
             'defense' => 2,
             'defense_fire' => 1,
             'ability' => 'Latent Power',
+            'branch' => 'Teostra',
+            'rarity' => 5,
         ],
         'Kushala Glare' => [
             'items' => [
@@ -318,6 +348,8 @@ return [
             'defense' => 1,
             'defense_ice' => 2,
             'ability' => 'Ice Attack',
+            'branch' => 'Kushala Daora',
+            'rarity' => 5,
         ],
     ],
 
@@ -329,6 +361,8 @@ return [
                 'Dragonite Ore' => 1,
             ],
             'defense' => 1,
+            'branch' => 'mineral',
+            'rarity' => 2,
         ],
         'Bone Mail' => [
             'items' => [
@@ -336,6 +370,8 @@ return [
                 'Ancient Bone' => 1,
             ],
             'ability' => 'Slugger',
+            'branch' => 'bone',
+            'rarity' => 2,
         ],
         'Jagras Mail' => [
             'items' => [
@@ -347,6 +383,8 @@ return [
             'defense' => 1,
             'defense_water' => 1,
             'ability' => 'Palico Rally',
+            'branch' => 'Great Jagras',
+            'rarity' => 3,
         ],
         'Kadachi Mail' => [
             'items' => [
@@ -358,6 +396,8 @@ return [
             'defense' => 1,
             'defense_thunder' => 1,
             'ability' => 'Evade Extender',
+            'branch' => 'Tobi-Kadachi',
+            'rarity' => 3,
         ],
         'Anja Mail' => [
             'items' => [
@@ -368,6 +408,8 @@ return [
             'defense' => 1,
             'defense_fire' => 1,
             'ability' => 'Marathon Runner',
+            'branch' => 'Anjanath',
+            'rarity' => 3,
         ],
         'Rathalos Mail' => [
             'items' => [
@@ -378,6 +420,8 @@ return [
             'defense' => 1,
             'defense_fire' => 1,
             'ability' => 'Weakness Exploit',
+            'branch' => 'Rathalos',
+            'rarity' => 4,
         ],
         'Rath Soul Mail' => [
             'items' => [
@@ -388,6 +432,8 @@ return [
             'defense' => 1,
             'defense_fire' => 1,
             'ability' => 'Azure Rathalos Mastery',
+            'branch' => 'Azure Rathalos',
+            'rarity' => 4,
         ],
         'Barroth Mail' => [
             'items' => [
@@ -398,6 +444,8 @@ return [
             ],
             'defense' => 1,
             'defense_water' => 1,
+            'branch' => 'Barroth',
+            'rarity' => 3,
         ],
         'Pukei Mail' => [
             'items' => [
@@ -408,6 +456,8 @@ return [
             'defense' => 1,
             'defense_water' => 1,
             'ability' => 'Botanist',
+            'branch' => 'Pukei-Pukei',
+            'rarity' => 3,
         ],
         'Jyura Mail' => [
             'items' => [
@@ -419,6 +469,8 @@ return [
             'defense' => 1,
             'defense_water' => 1,
             'ability' => 'Water Attack',
+            'branch' => 'Jyuratodus',
+            'rarity' => 3,
         ],
         'Diablos Mail' => [
             'items' => [
@@ -430,6 +482,8 @@ return [
             'defense' => 1,
             'defense_fire' => 1,
             'ability' => 'Slugger',
+            'branch' => 'Diablos',
+            'rarity' => 4,
         ],
         'Diablos Nero Mail' => [
             'items' => [
@@ -440,6 +494,8 @@ return [
             'defense' => 1,
             'defense_fire' => 1,
             'ability' => 'Resentment',
+            'branch' => 'Black Diablos',
+            'rarity' => 4,
         ],
         'Kulu Mail' => [
             'items' => [
@@ -451,6 +507,8 @@ return [
             'defense' => 1,
             'defense_ice' => 1,
             'ability' => 'Critical Eye',
+            'branch' => 'Kulu-Ya-Ku',
+            'rarity' => 5,
         ],
         'Nergigante Mail' => [
             'items' => [
@@ -461,6 +519,8 @@ return [
             'defense' => 2,
             'defense_ice' => 2,
             'ability' => 'Agitator',
+            'branch' => 'Nergigante',
+            'rarity' => 5,
         ],
         'Kaiser Mail' => [
             'items' => [
@@ -471,6 +531,8 @@ return [
             'defense' => 1,
             'defense_fire' => 2,
             'ability' => 'Teostra Technique',
+            'branch' => 'Teostra',
+            'rarity' => 5,
         ],
         'Kushala Cista' => [
             'items' => [
@@ -482,6 +544,8 @@ return [
             'defense' => 2,
             'defense_ice' => 1,
             'ability' => 'Kushala Daora Flight',
+            'branch' => 'Kushala Daora',
+            'rarity' => 5,
         ],
     ],
 
@@ -493,6 +557,8 @@ return [
                 'Dragonite Ore' => 1,
             ],
             'ability' => 'Poison Resistance',
+            'branch' => 'mineral',
+            'rarity' => 2,
         ],
         'Bone Greaves' => [
             'items' => [
@@ -500,6 +566,8 @@ return [
                 'Ancient Bone' => 1,
             ],
             'defense' => 1,
+            'branch' => 'bone',
+            'rarity' => 2,
         ],
         'Jagras Greaves' => [
             'items' => [
@@ -509,6 +577,8 @@ return [
             ],
             'defense' => 1,
             'defense_water' => 1,
+            'branch' => 'Great Jagras',
+            'rarity' => 3,
         ],
         'Kadachi Greaves' => [
             'items' => [
@@ -518,6 +588,8 @@ return [
             ],
             'defense_thunder' => 1,
             'ability' => 'Thunder Attack',
+            'branch' => 'Tobi-Kadachi',
+            'rarity' => 3,
         ],
         'Anja Greaves' => [
             'items' => [
@@ -528,6 +600,8 @@ return [
             ],
             'defense' => 1,
             'defense_fire' => 2,
+            'branch' => 'Anjanath',
+            'rarity' => 3,
         ],
         'Rathalos Greaves' => [
             'items' => [
@@ -538,6 +612,8 @@ return [
             'defense' => 1,
             'defense_fire' => 1,
             'ability' => 'Sleep Resistance',
+            'branch' => 'Rathalos',
+            'rarity' => 4,
         ],
         'Rath Soul Greaves' => [
             'items' => [
@@ -548,6 +624,8 @@ return [
             'defense' => 1,
             'defense_fire' => 1,
             'ability' => 'Focus',
+            'branch' => 'Azure Rathalos',
+            'rarity' => 4,
         ],
         'Barroth Greaves' => [
             'items' => [
@@ -559,6 +637,8 @@ return [
             'defense' => 1,
             'defense_water' => 1,
             'ability' => 'Stun Resistance',
+            'branch' => 'Barroth',
+            'rarity' => 3,
         ],
         'Pukei Greaves' => [
             'items' => [
@@ -570,6 +650,8 @@ return [
             'defense' => 1,
             'defense_water' => 1,
             'ability' => 'Poison Resistance',
+            'branch' => 'Pukei-Pukei',
+            'rarity' => 3,
         ],
         'Jyura Greaves' => [
             'items' => [
@@ -580,6 +662,8 @@ return [
             ],
             'defense' => 1,
             'defense_water' => 2,
+            'branch' => 'Jyuratodus',
+            'rarity' => 3,
         ],
         'Diablos Greaves' => [
             'items' => [
@@ -590,6 +674,8 @@ return [
             'defense' => 2,
             'defense_fire' => 1,
             'ability' => 'Diablos Mastery',
+            'branch' => 'Diablos',
+            'rarity' => 4,
         ],
         'Diablos Nero Greaves' => [
             'items' => [
@@ -601,6 +687,8 @@ return [
             'defense' => 2,
             'defense_fire' => 1,
             'ability' => 'Part Breaker',
+            'branch' => 'Black Diablos',
+            'rarity' => 4,
         ],
         'Kulu Greaves' => [
             'items' => [
@@ -611,6 +699,8 @@ return [
             ],
             'defense' => 1,
             'defense_ice' => 2,
+            'branch' => 'Kulu-Ya-Ku',
+            'rarity' => 5,
         ],
         'Nergigante Greaves' => [
             'items' => [
@@ -622,6 +712,8 @@ return [
             'defense' => 2,
             'defense_water' => 2,
             'ability' => 'Nergigante Hunger',
+            'branch' => 'Nergigante',
+            'rarity' => 5,
         ],
         'Teostra Greaves' => [
             'items' => [
@@ -631,6 +723,8 @@ return [
             'defense' => 2,
             'defense_fire' => 1,
             'ability' => 'Weakness Exploit',
+            'branch' => 'Teostra',
+            'rarity' => 5,
         ],
         'Kushala Crus' => [
             'items' => [
@@ -642,6 +736,8 @@ return [
             'defense' => 2,
             'defense_ice' => 1,
             'ability' => 'Handicraft',
+            'branch' => 'Kushala Daora',
+            'rarity' => 5,
         ],
     ],
 ];

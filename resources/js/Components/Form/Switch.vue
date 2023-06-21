@@ -38,7 +38,7 @@ const proxyChecked = computed({
             class="sr-only"
         >
         <span class="switch" />
-        <span class="ml-5 dark:text-gray-300">{{ label }}</span>
+        <span class="ml-5 dark:text-gray-300 break-words whitespace-wrap">{{ label }}</span>
     </label>
 </template>
 
@@ -61,6 +61,9 @@ const proxyChecked = computed({
     width: calc(var(--switch-size) - 4px);
     transition: all 0.25s ease-in-out;
     @apply border-solid border-[2px] border-gray-300 dark:border-gray-700
+}
+.switch + span {
+    width: calc(100% - 5rem);
 }
 input:checked + .switch {
     @apply bg-teal-400 dark:bg-teal-600;

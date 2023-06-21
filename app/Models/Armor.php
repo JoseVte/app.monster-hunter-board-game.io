@@ -9,6 +9,7 @@ use App\Models\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\Pivot\ArmorAbility as ArmorAbilityPivot;
+use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Armor extends Model
@@ -16,6 +17,7 @@ class Armor extends Model
     use HasFactory;
     use HasTranslations;
     use Searchable;
+    use EagerLoadPivotTrait;
 
     protected $fillable = [
         'type',
@@ -46,7 +48,9 @@ class Armor extends Model
 
     public function abilities(): BelongsToMany
     {
-        return $this->belongsToMany(ArmorAbility::class, 'armor_ability')->using(ArmorAbilityPivot::class);
+        return $this->belongsToMany(ArmorAbility::class, 'armor_ability')
+            ->withTimestamps()
+            ->using(ArmorAbilityPivot::class);
     }
 
     public function items(): BelongsToMany

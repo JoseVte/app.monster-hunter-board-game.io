@@ -12,8 +12,12 @@ import SectionBorder from "@/Components/SectionBorder.vue";
 import AddItemToHunterButton from "@/Pages/Hunter/Partials/AddItemToHunterButton.vue";
 import GridItemHunter from "@/Pages/Hunter/Partials/GridItemHunter.vue";
 import Switch from "@/Components/Form/Switch.vue";
-import GridWeaponTypes from "@/Pages/Hunter/Partials/GridWeaponTypes.vue";
+import ListWeaponTypes from "@/Pages/Hunter/Partials/ListWeaponTypes.vue";
 import ListWeapons from "@/Pages/Hunter/Partials/ListWeapons.vue";
+import HelmetIcon from "@/Components/Icons/HelmetIcon.vue";
+import ArmorsIcon from "@/Components/Icons/ArmorsIcon.vue";
+import LegArmor from "@/Components/Icons/LegArmor.vue";
+import ListArmorType from "@/Pages/Hunter/Partials/ListArmorType.vue";
 
 const props = defineProps({
     canEdit: Boolean,
@@ -22,6 +26,7 @@ const props = defineProps({
     tabOpened: String,
     weaponType: Object,
     weapons: [Array, Object],
+    armors: [Array, Object],
     user: Object,
     commonItems: Array,
     otherItems: [Array, Object],
@@ -32,6 +37,10 @@ const props = defineProps({
 const storage = useStorage();
 const hideEmpty = ref(storage.getStorageSync('hide-empty-items'));
 watch(hideEmpty, (hideEmptyValue) => storage.setStorageSync('hide-empty-items', hideEmptyValue))
+const showAllArmors = ref(storage.getStorageSync('show-all-armors'));
+watch(showAllArmors, (showAllArmorsValue) => storage.setStorageSync('show-all-armors', showAllArmorsValue))
+const showAdvanceAbilityDescription = ref(storage.getStorageSync('show-advance-ability-description'));
+watch(showAdvanceAbilityDescription, (showAdvanceAbilityDescriptionValue) => storage.setStorageSync('show-advance-ability-description', showAdvanceAbilityDescriptionValue))
 
 const hunterOtherItems = computed(() => {
     return _.sortBy(props.hunter.other_items, (item) => item.name);
@@ -195,7 +204,7 @@ onMounted(() => {
                         id="weapons"
                         :name="$t('Weapons')"
                     >
-                        <GridWeaponTypes
+                        <ListWeaponTypes
                             v-if="!weaponType"
                             :can-edit="canEdit"
                             :campaign="campaign"
@@ -214,7 +223,54 @@ onMounted(() => {
                     <Tab
                         id="armors"
                         :name="$t('Armors')"
-                    />
+                    >
+                        <SectionBorder>
+                            <div class="flex flex-col md:flex-row items-start sm:items-end md:items-center gap-2 md:gap-0 px-4 sm:px-0">
+                                <Switch
+                                    v-model:checked="showAllArmors"
+                                    :label="$t('Show all armors')"
+                                />
+                                <Switch
+                                    v-model:checked="showAdvanceAbilityDescription"
+                                    :label="$t('Show advanced description for abilities')"
+                                />
+                            </div>
+                        </SectionBorder>
+
+                        <ListArmorType
+                            :can-edit="canEdit"
+                            :show-all-armors="showAllArmors"
+                            :show-advance-ability-description="showAdvanceAbilityDescription"
+                            :icon="HelmetIcon"
+                            :campaign="campaign"
+                            :hunter="hunter"
+                            :armors="armors['head']"
+                        />
+
+                        <SectionBorder />
+
+                        <ListArmorType
+                            :can-edit="canEdit"
+                            :show-all-armors="showAllArmors"
+                            :show-advance-ability-description="showAdvanceAbilityDescription"
+                            :icon="ArmorsIcon"
+                            :campaign="campaign"
+                            :hunter="hunter"
+                            :armors="armors['body']"
+                        />
+
+                        <SectionBorder />
+
+                        <ListArmorType
+                            :can-edit="canEdit"
+                            :show-all-armors="showAllArmors"
+                            :show-advance-ability-description="showAdvanceAbilityDescription"
+                            :icon="LegArmor"
+                            :campaign="campaign"
+                            :hunter="hunter"
+                            :armors="armors['leg']"
+                        />
+                    </Tab>
                 </Tabs>
             </div>
         </div>

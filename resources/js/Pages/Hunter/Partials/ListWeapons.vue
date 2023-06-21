@@ -12,19 +12,6 @@ const props = defineProps({
     weapons: [Array, Object]
 });
 
-const getRarityColor = (rarity) => {
-    switch (rarity) {
-    case 1:
-        return 'text-gray-600 dark:text-gray-500';
-    case 2:
-        return 'text-gray-400 dark:text-gray-300';
-    case 3:
-        return 'text-lime-600';
-    case 4:
-        return 'text-green-600';
-    }
-}
-
 const hunterWeaponCount = (weapon) => {
     return _.filter(props.hunter.weapons, (hunterWeapon) => {
         return hunterWeapon.id === weapon.id;

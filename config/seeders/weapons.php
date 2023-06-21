@@ -217,6 +217,52 @@ return [
                 ],
             ],
             [
+                'parent' => 'Bone Blade',
+                'branch' => 'Barroth',
+                'rarity' => 3,
+                'name' => 'Carapace Buster',
+                'count_attack_2' => 5,
+                'count_attack_3' => 4,
+                'count_attack_4' => 1,
+                'items' => [
+                    'Barroth Claw' => 1,
+                    'Barroth Shell' => 3,
+                    'Barroth Ridge' => 3,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Great Sword Block' => 2,
+                    ],
+                    'add' => [
+                        'Empowered Great Sword Block' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Carapace Buster',
+                'branch' => 'Barroth',
+                'rarity' => 4,
+                'name' => 'Barroth Shredder',
+                'count_attack_2' => 6,
+                'count_attack_3' => 4,
+                'count_attack_4' => 2,
+                'items' => [
+                    'Barroth Claw' => 2,
+                    'Barroth Carapace' => 3,
+                    'Barroth Ridge' => 3,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Great Sword Block' => 2,
+                        'Any Card' => 2,
+                    ],
+                    'add' => [
+                        'Empowered Great Sword Block' => 2,
+                        'Paralysing Slash' => 2,
+                    ],
+                ],
+            ],
+            [
                 'parent' => 'Buster Sword',
                 'branch' => 'Pukei-Pukei',
                 'rarity' => 3,
@@ -265,14 +311,135 @@ return [
                     ],
                 ],
             ],
+        ],
+    ],
+    [
+        'name' => 'Lance',
+        'description' => 'After you resolve an attack card, if there are at least 3 face up attack cards with __lance_icon__ on your stamina board you may discard 3 face up attack cards with __lance_icon__ from your stamina board.',
+        'image' => 'icon_weapon_07.png',
+        'weapons' => [
             [
-                'parent' => 'Bone Blade',
+                'default' => true,
+                'branch' => 'mineral',
+                'name' => 'Iron Lance',
+                'defense' => 1,
+                'count_attack_1' => 8,
+                'count_attack_2' => 2,
+            ],
+            [
+                'parent' => 'Iron Lance',
+                'branch' => 'mineral',
+                'rarity' => 2,
+                'name' => 'Steel Lance',
+                'defense' => 1,
+                'count_attack_1' => 6,
+                'count_attack_2' => 6,
+                'items' => [
+                    'Dragonite Ore' => 1,
+                    'Machalite Ore' => 1,
+                    'Monster Bone Medium' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Mid Thrust' => 3,
+                    ],
+                    'add' => [
+                        'Long Thrust' => 3,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Steel Lance',
+                'branch' => 'mineral',
+                'rarity' => 3,
+                'name' => 'Chrome Lance',
+                'defense' => 1,
+                'count_attack_1' => 4,
+                'count_attack_2' => 6,
+                'count_attack_3' => 2,
+                'items' => [
+                    'Fucium Ore' => 2,
+                    'Carbalite Ore' => 2,
+                    'Dragonite Ore' => 3,
+                    'Dragonvein Crystal' => 2,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Mid Thrust' => 3,
+                        'Guard Thrust' => 2,
+                    ],
+                    'add' => [
+                        'Long Thrust' => 3,
+                        'Long Guard' => 2,
+                    ],
+                ],
+            ],
+            [
+                'branch' => 'bone',
+                'name' => 'Bone Lance',
+                'defense' => 1,
+                'count_attack_1' => 6,
+                'count_attack_2' => 4,
+                'items' => [
+                    'Monster Bone Small' => 1,
+                ],
+            ],
+            [
+                'parent' => 'Bone Lance',
+                'branch' => 'bone',
+                'rarity' => 2,
+                'name' => 'Hard Bone Lance',
+                'defense' => 1,
+                'count_attack_1' => 4,
+                'count_attack_2' => 6,
+                'items' => [
+                    'Monster Bone Large' => 1,
+                    'Monster Bone Medium' => 1,
+                    'Boulder Bone' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'High Thrust' => 3,
+                    ],
+                    'add' => [
+                        'High Lunge' => 3,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Hard Bone Lance',
+                'branch' => 'bone',
+                'rarity' => 3,
+                'name' => 'Heavy Bone Lance',
+                'defense' => 1,
+                'count_attack_1' => 3,
+                'count_attack_2' => 5,
+                'count_attack_3' => 2,
+                'items' => [
+                    'Monster Hardbone' => 2,
+                    'Monster Keenbone' => 2,
+                    'Quality Bone' => 3,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'High Thrust' => 3,
+                        'Guard Dash' => 2,
+                    ],
+                    'add' => [
+                        'High Lunge' => 3,
+                        'Guard Sprint' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Bone Lance',
                 'branch' => 'Barroth',
                 'rarity' => 3,
-                'name' => 'Carapace Buster',
+                'name' => 'Carapace Lance',
+                'defense' => 1,
+                'count_attack_1' => 2,
                 'count_attack_2' => 5,
-                'count_attack_3' => 4,
-                'count_attack_4' => 1,
+                'count_attack_3' => 3,
                 'items' => [
                     'Barroth Claw' => 1,
                     'Barroth Shell' => 3,
@@ -280,21 +447,21 @@ return [
                 ],
                 'attacks' => [
                     'remove' => [
-                        'Great Sword Block' => 2,
+                        'Counter Thrust' => 2,
                     ],
                     'add' => [
-                        'Empowered Great Sword Block' => 2,
+                        'Armoured Thrust' => 2,
                     ],
                 ],
             ],
             [
-                'parent' => 'Carapace Buster',
+                'parent' => 'Carapace Lance',
                 'branch' => 'Barroth',
                 'rarity' => 4,
-                'name' => 'Barroth Shredder',
-                'count_attack_2' => 6,
-                'count_attack_3' => 4,
-                'count_attack_4' => 2,
+                'name' => 'Barroth Stinger',
+                'defense' => 1,
+                'count_attack_2' => 9,
+                'count_attack_3' => 3,
                 'items' => [
                     'Barroth Claw' => 2,
                     'Barroth Carapace' => 3,
@@ -302,36 +469,813 @@ return [
                 ],
                 'attacks' => [
                     'remove' => [
-                        'Great Sword Block' => 2,
-                        'Any Card' => 2,
+                        'Counter Thrust' => 2,
+                        'Guard Thrust' => 2,
                     ],
                     'add' => [
-                        'Empowered Great Sword Block' => 2,
-                        'Paralysing Slash' => 2,
+                        'Armoured Thrust' => 2,
+                        'Armoured Guard' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Bone Lance',
+                'branch' => 'Jyuratodus',
+                'rarity' => 3,
+                'name' => 'Aqua Lance',
+                'defense' => 1,
+                'has_elemental_attacks' => true,
+                'count_attack_1' => 2,
+                'count_attack_2' => 4,
+                'count_attack_3' => 4,
+                'items' => [
+                    'Jyuratodus Fin' => 1,
+                    'Jyuratodus Shell' => 2,
+                    'Jyuratodus Scale' => 3,
+                    'Aqua Sac' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'High Thrust' => 3,
+                    ],
+                    'add' => [
+                        'Aqua Thrust' => 3,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Aqua Lance',
+                'branch' => 'Jyuratodus',
+                'rarity' => 4,
+                'name' => 'Water Spike',
+                'defense' => 1,
+                'has_elemental_attacks' => true,
+                'count_attack_1' => 6,
+                'count_attack_3' => 6,
+                'items' => [
+                    'Jyuratodus Fin' => 1,
+                    'Jyuratodus Carapace' => 2,
+                    'Jyuratodus Scale' => 2,
+                    'Aqua Sac' => 1,
+                    'Gajau Scale' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'High Thrust' => 3,
+                        'Guard Bash' => 2,
+                    ],
+                    'add' => [
+                        'Aqua Thrust' => 3,
+                        'Aqua Bash' => 2,
                     ],
                 ],
             ],
         ],
     ],
     [
-        'name' => 'Lance',
-        'description' => 'After you resolve an attack card, if there are at least 3 face up attack cards with __lance_icon__ on your stamina board you may discard 3 face up attack cards with __lance_icon__ from your stamina board.',
-        'image' => 'icon_weapon_07.png',
-    ],
-    [
         'name' => 'Gunlance',
         'description' => '',
         'image' => 'icon_weapon_08.png',
+        'weapons' => [
+            [
+                'default' => true,
+                'branch' => 'mineral',
+                'name' => 'Iron Gunlance',
+                'defense' => 1,
+                'count_attack_1' => 8,
+                'count_attack_2' => 2,
+            ],
+            [
+                'parent' => 'Iron Gunlance',
+                'branch' => 'mineral',
+                'rarity' => 2,
+                'name' => 'Steel Gunlance',
+                'defense' => 1,
+                'count_attack_1' => 7,
+                'count_attack_2' => 4,
+                'count_attack_3' => 1,
+                'items' => [
+                    'Dragonite Ore' => 1,
+                    'Machalite Ore' => 1,
+                    'Monster Bone Medium' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Full Burst' => 2,
+                    ],
+                    'add' => [
+                        'Improved Full Burst' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Steel Gunlance',
+                'branch' => 'mineral',
+                'rarity' => 3,
+                'name' => 'Chrome Gunlance',
+                'defense' => 1,
+                'count_attack_1' => 5,
+                'count_attack_2' => 4,
+                'count_attack_3' => 3,
+                'items' => [
+                    'Fucium Ore' => 2,
+                    'Carbalite Ore' => 2,
+                    'Dragonite Ore' => 3,
+                    'Dragonvein Crystal' => 2,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Full Burst' => 2,
+                        'Lunging Upthrust' => 2,
+                    ],
+                    'add' => [
+                        'Improved Full Burst' => 2,
+                        'Improved Lunging Upthrust' => 2,
+                    ],
+                ],
+            ],
+            [
+                'branch' => 'bone',
+                'name' => 'Bone Gunlance',
+                'defense' => 1,
+                'count_attack_1' => 5,
+                'count_attack_2' => 5,
+                'items' => [
+                    'Monster Bone Small' => 1,
+                ],
+            ],
+            [
+                'parent' => 'Bone Gunlance',
+                'branch' => 'bone',
+                'rarity' => 2,
+                'name' => 'Bone Cannon',
+                'defense' => 1,
+                'count_attack_1' => 3,
+                'count_attack_2' => 6,
+                'count_attack_3' => 1,
+                'items' => [
+                    'Monster Bone Large' => 1,
+                    'Monster Bone Medium' => 1,
+                    'Boulder Bone' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Charged Shell' => 2,
+                    ],
+                    'add' => [
+                        'Improved Charged Shell' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Bone Cannon',
+                'branch' => 'bone',
+                'rarity' => 3,
+                'name' => 'Great Bone Gunlance',
+                'defense' => 1,
+                'count_attack_1' => 3,
+                'count_attack_2' => 4,
+                'count_attack_3' => 3,
+                'items' => [
+                    'Monster Hardbone' => 2,
+                    'Monster Keenbone' => 2,
+                    'Quality Bone' => 3,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Charged Shell' => 2,
+                        'Overhead Smash' => 2,
+                    ],
+                    'add' => [
+                        'Improved Charged Shell' => 2,
+                        'Improved Overhead Smash' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Bone Gunlance',
+                'branch' => 'Barroth',
+                'rarity' => 3,
+                'name' => 'Carapace Cannon',
+                'defense' => 1,
+                'count_attack_1' => 3,
+                'count_attack_2' => 3,
+                'count_attack_3' => 4,
+                'items' => [
+                    'Barroth Claw' => 1,
+                    'Barroth Shell' => 3,
+                    'Barroth Ridge' => 3,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Wyrmstake Cannon' => 2,
+                    ],
+                    'add' => [
+                        'Brutal Wyrmstake Cannon' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Carapace Cannon',
+                'branch' => 'Barroth',
+                'rarity' => 4,
+                'name' => 'Barroth Blaster',
+                'defense' => 1,
+                'count_attack_1' => 3,
+                'count_attack_2' => 5,
+                'count_attack_3' => 3,
+                'count_attack_4' => 1,
+                'items' => [
+                    'Barroth Claw' => 2,
+                    'Barroth Carapace' => 3,
+                    'Barroth Ridge' => 3,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Wyrmstake Cannon' => 2,
+                        'Rising Slash' => 2,
+                    ],
+                    'add' => [
+                        'Brutal Wyrmstake Cannon' => 2,
+                        'Crippling Rising Slash' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Iron Gunlance',
+                'branch' => 'Jyuratodus',
+                'rarity' => 3,
+                'name' => 'Madness Gunlance',
+                'defense' => 1,
+                'has_elemental_attacks' => true,
+                'count_attack_1' => 2,
+                'count_attack_2' => 7,
+                'count_attack_3' => 3,
+                'items' => [
+                    'Jyuratodus Fin' => 1,
+                    'Jyuratodus Shell' => 2,
+                    'Jyuratodus Scale' => 3,
+                    'Aqua Sac' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Burst' => 2,
+                    ],
+                    'add' => [
+                        'Water Burst' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Madness Gunlance',
+                'branch' => 'Jyuratodus',
+                'rarity' => 4,
+                'name' => 'Jyura Buster',
+                'defense' => 1,
+                'has_elemental_attacks' => true,
+                'count_attack_1' => 2,
+                'count_attack_2' => 7,
+                'count_attack_3' => 5,
+                'items' => [
+                    'Jyuratodus Fin' => 1,
+                    'Jyuratodus Carapace' => 2,
+                    'Jyuratodus Scale' => 2,
+                    'Aqua Sac' => 1,
+                    'Gajau Scale' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Burst' => 2,
+                        'Wyrmstake Cannon' => 2,
+                    ],
+                    'add' => [
+                        'Water Burst' => 2,
+                        'Tidal Wyrmstake Cannon' => 2,
+                    ],
+                ],
+            ],
+        ],
     ],
     [
         'name' => 'Hammer',
         'description' => '',
         'image' => 'icon_weapon_05.png',
+        'weapons' => [
+            [
+                'default' => true,
+                'branch' => 'mineral',
+                'name' => 'Iron Hammer',
+                'count_attack_1' => 10,
+                'count_attack_2' => 1,
+                'count_attack_4' => 1,
+            ],
+            [
+                'parent' => 'Iron Hammer',
+                'branch' => 'mineral',
+                'rarity' => 2,
+                'name' => 'Iron Demon',
+                'count_attack_1' => 8,
+                'count_attack_2' => 2,
+                'count_attack_4' => 2,
+                'items' => [
+                    'Dragonite Ore' => 1,
+                    'Machalite Ore' => 1,
+                    'Monster Bone Medium' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Rare Steak' => 2,
+                    ],
+                    'add' => [
+                        'Well-Done Steak' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Iron Demon',
+                'branch' => 'mineral',
+                'rarity' => 3,
+                'name' => 'Iron Demon',
+                'count_attack_1' => 5,
+                'count_attack_2' => 3,
+                'count_attack_4' => 3,
+                'items' => [
+                    'Fucium Ore' => 2,
+                    'Carbalite Ore' => 2,
+                    'Dragonite Ore' => 3,
+                    'Dragonvein Crystal' => 2,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Rare Steak' => 2,
+                        'Upswing' => 2,
+                    ],
+                    'add' => [
+                        'Well-Done Steak' => 2,
+                        'Improved Upswing' => 2,
+                    ],
+                ],
+            ],
+            [
+                'branch' => 'bone',
+                'name' => 'Bone Bludgeon',
+                'count_attack_1' => 7,
+                'count_attack_2' => 2,
+                'count_attack_4' => 1,
+                'items' => [
+                    'Monster Bone Small' => 1,
+                ],
+            ],
+            [
+                'parent' => 'Bone Bludgeon',
+                'branch' => 'bone',
+                'rarity' => 2,
+                'name' => 'Fossil Bludgeon',
+                'count_attack_1' => 5,
+                'count_attack_2' => 3,
+                'count_attack_4' => 2,
+                'items' => [
+                    'Monster Bone Large' => 1,
+                    'Monster Bone Medium' => 1,
+                    'Boulder Bone' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Charge' => 3,
+                    ],
+                    'add' => [
+                        'Improved Charge' => 3,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Fossil Bludgeon',
+                'branch' => 'bone',
+                'rarity' => 3,
+                'name' => 'Grand Rock',
+                'count_attack_1' => 4,
+                'count_attack_2' => 3,
+                'count_attack_4' => 3,
+                'items' => [
+                    'Monster Hardbone' => 2,
+                    'Monster Keenbone' => 2,
+                    'Quality Bone' => 3,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Charge' => 3,
+                        'Spinning Bludgeon' => 2,
+                    ],
+                    'add' => [
+                        'Improved Charge' => 3,
+                        'Improved Spinning Bludgeon' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Bone Bludgeon',
+                'branch' => 'bone',
+                'rarity' => 3,
+                'name' => 'Blazing Hammer',
+                'has_elemental_attacks' => true,
+                'count_attack_2' => 8,
+                'count_attack_4' => 2,
+                'items' => [
+                    'Anjanath Fang' => 2,
+                    'Anjanath Scale' => 3,
+                    'Flame Sac' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Big Bang' => 4,
+                    ],
+                    'add' => [
+                        'Blazing Big Bang' => 4,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Bone Bludgeon',
+                'branch' => 'bone',
+                'rarity' => 3,
+                'name' => 'Blazing Hammer',
+                'defense' => 1,
+                'has_elemental_attacks' => true,
+                'count_attack_2' => 9,
+                'count_attack_4' => 3,
+                'items' => [
+                    'Anjanath Fang' => 4,
+                    'Anjanath Scale' => 2,
+                    'Inferno Sac' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Big Bang' => 4,
+                        'Charged Upswing' => 2,
+                    ],
+                    'add' => [
+                        'Blazing Big Bang' => 4,
+                        'Blazing Charged Upswing' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Bone Bludgeon',
+                'branch' => 'Barroth',
+                'rarity' => 3,
+                'name' => 'Carapace Sledge',
+                'count_attack_1' => 4,
+                'count_attack_2' => 2,
+                'count_attack_4' => 4,
+                'items' => [
+                    'Barroth Claw' => 1,
+                    'Barroth Shell' => 4,
+                    'Barroth Ridge' => 2,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Spinning Bludgeon' => 2,
+                    ],
+                    'add' => [
+                        'Brutal Bludgeon' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Carapace Sledge',
+                'branch' => 'Barroth',
+                'rarity' => 4,
+                'name' => 'Barroth Shredder',
+                'count_attack_1' => 2,
+                'count_attack_2' => 5,
+                'count_attack_4' => 5,
+                'items' => [
+                    'Barroth Claw' => 2,
+                    'Barroth Carapace' => 3,
+                    'Barroth Ridge' => 2,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Spinning Bludgeon' => 2,
+                        'Charged Brutal Big Bang' => 2,
+                    ],
+                    'add' => [
+                        'Brutal Bludgeon' => 2,
+                        'Pulverising Brutal Big Bang' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Iron Hammer',
+                'branch' => 'Pukei-Pukei',
+                'rarity' => 3,
+                'name' => 'Blooming Hammer',
+                'count_attack_1' => 1,
+                'count_attack_2' => 8,
+                'count_attack_4' => 3,
+                'items' => [
+                    'Pukei-Pukei Quill' => 2,
+                    'Pukei-Pukei Scale' => 3,
+                    'Poison Sac' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Slide Smash' => 2,
+                    ],
+                    'add' => [
+                        'Poisoned Slide Smash' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Blooming Hammer',
+                'branch' => 'Pukei-Pukei',
+                'rarity' => 4,
+                'name' => 'Buon Fiore',
+                'count_attack_1' => 1,
+                'count_attack_2' => 9,
+                'count_attack_4' => 4,
+                'items' => [
+                    'Pukei-Pukei Scale' => 3,
+                    'Pukei-Pukei Wing' => 2,
+                    'Toxic Sac' => 2,
+                    'Quality Bone' => 3,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Slide Smash' => 2,
+                        'Charged Upswing' => 2,
+                    ],
+                    'add' => [
+                        'Poisoned Slide Smash' => 2,
+                        'Poisoned Charged Upswing' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Bone Bludgeon',
+                'branch' => 'Diablos',
+                'rarity' => 3,
+                'name' => 'Diablos Sledge',
+                'count_attack_1' => 4,
+                'count_attack_2' => 3,
+                'count_attack_4' => 5,
+                'items' => [
+                    'Twisted Horn' => 1,
+                    'Diablos Fang' => 2,
+                    'Diablos Shell' => 4,
+                    'Monster Bone Large' => 3,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Big Bang' => 4,
+                    ],
+                    'add' => [
+                        'Crippling Big Bang' => 4,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Diablos Sledge',
+                'branch' => 'Diablos',
+                'rarity' => 4,
+                'name' => 'Barroth Shredder',
+                'defense' => 1,
+                'count_attack_1' => 3,
+                'count_attack_2' => 5,
+                'count_attack_4' => 6,
+                'items' => [
+                    'Majestic Horn' => 2,
+                    'Diablos Carapace' => 2,
+                    'Diablos Ridge' => 2,
+                    'Blos Medulla' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Big Bang' => 4,
+                        'Upswing' => 2,
+                    ],
+                    'add' => [
+                        'Crippling Big Bang' => 4,
+                        'Brutal Upswing' => 2,
+                    ],
+                ],
+            ],
+        ],
     ],
     [
         'name' => 'Hunting Horn',
         'description' => '',
         'image' => 'icon_weapon_06.png',
+        'weapons' => [
+            [
+                'default' => true,
+                'branch' => 'mineral',
+                'name' => 'Metal Bagpipe',
+                'count_attack_1' => 10,
+                'count_attack_2' => 2,
+            ],
+            [
+                'parent' => 'Metal Bagpipe',
+                'branch' => 'mineral',
+                'rarity' => 2,
+                'name' => 'Great Bagpipe',
+                'count_attack_1' => 8,
+                'count_attack_2' => 3,
+                'count_attack_3' => 1,
+                'items' => [
+                    'Dragonite Ore' => 1,
+                    'Machalite Ore' => 1,
+                    'Monster Bone Medium' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Forward Smash' => 2,
+                    ],
+                    'add' => [
+                        'Leaping Smash' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Great Bagpipe',
+                'branch' => 'mineral',
+                'rarity' => 3,
+                'name' => 'Fortissimo',
+                'count_attack_1' => 5,
+                'count_attack_2' => 5,
+                'count_attack_3' => 2,
+                'items' => [
+                    'Fucium Ore' => 2,
+                    'Carbalite Ore' => 2,
+                    'Dragonite Ore' => 3,
+                    'Dragonvein Crystal' => 2,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Forward Smash' => 2,
+                        'Right Swing' => 2,
+                    ],
+                    'add' => [
+                        'Leaping Smash' => 2,
+                        'Crunching Swing' => 2,
+                    ],
+                ],
+            ],
+            [
+                'branch' => 'bone',
+                'name' => 'Bone Horn',
+                'count_attack_1' => 7,
+                'count_attack_2' => 3,
+                'items' => [
+                    'Monster Bone Small' => 1,
+                ],
+            ],
+            [
+                'parent' => 'Bone Horn',
+                'branch' => 'bone',
+                'rarity' => 2,
+                'name' => 'Hard Bone Horn',
+                'count_attack_1' => 5,
+                'count_attack_2' => 5,
+                'items' => [
+                    'Monster Bone Large' => 1,
+                    'Monster Bone Medium' => 1,
+                    'Boulder Bone' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Backwards Strike' => 2,
+                    ],
+                    'add' => [
+                        'Retreatring Strike' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Hard Bone Horn',
+                'branch' => 'bone',
+                'rarity' => 3,
+                'name' => 'Heavy Bone Horn',
+                'count_attack_1' => 3,
+                'count_attack_2' => 5,
+                'count_attack_3' => 2,
+                'items' => [
+                    'Monster Hardbone' => 2,
+                    'Monster Keenbone' => 2,
+                    'Quality Bone' => 3,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Backwards Strike' => 2,
+                        'Hilt Stab' => 2,
+                    ],
+                    'add' => [
+                        'Retreatring Strike' => 2,
+                        'Hilt Slice' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Bone Horn',
+                'branch' => 'Pukei-Pukei',
+                'rarity' => 3,
+                'name' => 'Blooming Horn',
+                'count_attack_1' => 3,
+                'count_attack_2' => 5,
+                'count_attack_3' => 4,
+                'items' => [
+                    'Pukei-Pukei Quill' => 2,
+                    'Pukei-Pukei Scale' => 2,
+                    'Poison Sac' => 1,
+                    'Pukei-Pukei Tail' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Forward Smash' => 2,
+                    ],
+                    'add' => [
+                        'Poison Forward Slash' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Blooming Horn',
+                'branch' => 'Pukei-Pukei',
+                'rarity' => 4,
+                'name' => 'Datura Horn',
+                'count_attack_1' => 3,
+                'count_attack_2' => 4,
+                'count_attack_3' => 7,
+                'items' => [
+                    'Pukei-Pukei Scale' => 2,
+                    'Pukei-Pukei Wing' => 2,
+                    'Toxic Sac' => 2,
+                    'Quality Bone' => 3,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Forward Smash' => 2,
+                        'Encore' => 2,
+                    ],
+                    'add' => [
+                        'Poison Forward Slash' => 2,
+                        'Poison Encore' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Bone Horn',
+                'branch' => 'Jyuratodus',
+                'rarity' => 3,
+                'name' => 'Aqua Bagpipe',
+                'has_elemental_attacks' => true,
+                'count_attack_1' => 2,
+                'count_attack_2' => 6,
+                'count_attack_3' => 4,
+                'items' => [
+                    'Jyuratodus Fin' => 1,
+                    'Jyuratodus Shell' => 2,
+                    'Jyuratodus Scale' => 3,
+                    'Aqua Sac' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Right Swing' => 2,
+                    ],
+                    'add' => [
+                        'Aqua Right Swing' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Aqua Bagpipe',
+                'branch' => 'Jyuratodus',
+                'rarity' => 4,
+                'name' => 'Water Tamtam',
+                'has_elemental_attacks' => true,
+                'count_attack_1' => 2,
+                'count_attack_2' => 6,
+                'count_attack_3' => 4,
+                'items' => [
+                    'Jyuratodus Fin' => 1,
+                    'Jyuratodus Carapace' => 2,
+                    'Jyuratodus Scale' => 2,
+                    'Aqua Sac' => 1,
+                    'Gajau Scale' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Right Swing' => 2,
+                        'Hilt Stab' => 3,
+                    ],
+                    'add' => [
+                        'Aqua Right Swing' => 2,
+                        'Aqua Hilt Stab' => 3,
+                    ],
+                ],
+            ],
+        ],
     ],
     [
         'name' => 'Longsword',
@@ -557,6 +1501,106 @@ When the white-only spirit symbol is at the top, the spirit card can\'t be rotat
                     'add' => [
                         'Blazing Fold Slash' => 2,
                         'Blazing Double Slash' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Bone Hatchets',
+                'branch' => 'Jyuratodus',
+                'rarity' => 3,
+                'name' => 'Madness Pangas',
+                'has_elemental_attacks' => true,
+                'count_attack_1' => 2,
+                'count_attack_2' => 5,
+                'count_attack_3' => 3,
+                'items' => [
+                    'Jyuratodus Fin' => 1,
+                    'Jyuratodus Shell' => 2,
+                    'Jyuratodus Scale' => 3,
+                    'Aqua Sac' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Blade Dance' => 4,
+                    ],
+                    'add' => [
+                        'Water Dance' => 4,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Madness Pangas',
+                'branch' => 'Jyuratodus',
+                'rarity' => 4,
+                'name' => 'Jyura Hatchets',
+                'has_elemental_attacks' => true,
+                'count_attack_1' => 2,
+                'count_attack_2' => 6,
+                'count_attack_3' => 4,
+                'items' => [
+                    'Jyuratodus Fin' => 1,
+                    'Jyuratodus Carapace' => 2,
+                    'Jyuratodus Scale' => 2,
+                    'Aqua Sac' => 1,
+                    'Gajau Scale' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Blade Dance' => 4,
+                        'Rapid Spin' => 2,
+                    ],
+                    'add' => [
+                        'Water Dance' => 4,
+                        'Flurry Rush' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Bone Hatchets',
+                'branch' => 'Diablos',
+                'rarity' => 3,
+                'name' => 'Diablos Hatchets',
+                'count_attack_1' => 2,
+                'count_attack_2' => 6,
+                'count_attack_3' => 4,
+                'items' => [
+                    'Twisted Horn' => 1,
+                    'Diablos Fang' => 2,
+                    'Diablos Shell' => 4,
+                    'Monster Bone Large' => 3,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Double Slash' => 2,
+                    ],
+                    'add' => [
+                        'Brutal Double Slash' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Diablos Hatchets',
+                'branch' => 'Diablos',
+                'rarity' => 4,
+                'name' => 'Diablos Clubs',
+                'defense' => 1,
+                'count_attack_1' => 2,
+                'count_attack_2' => 7,
+                'count_attack_3' => 5,
+                'items' => [
+                    'Majestic Horn' => 2,
+                    'Diablos Carapace' => 2,
+                    'Diablos Ridge' => 2,
+                    'Blos Medulla' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Double Slash' => 2,
+                        'Demon Mode' => 2,
+                    ],
+                    'add' => [
+                        'Brutal Double Slash' => 2,
+                        'Brutal Demon Mode' => 2,
                     ],
                 ],
             ],
@@ -802,6 +1846,110 @@ When the white-only spirit symbol is at the top, the spirit card can\'t be rotat
                         'Blast Coating' => 2,
                         'Paralysis Coating' => 2,
                         'Blazing Charge Shot' => 3,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Hunter\'s Bow',
+                'branch' => 'Pukei-Pukei',
+                'rarity' => 3,
+                'name' => 'Blooming Arch',
+                'count_attack_1' => 1,
+                'count_attack_2' => 7,
+                'count_attack_3' => 2,
+                'items' => [
+                    'Pukei-Pukei Quill' => 2,
+                    'Pukei-Pukei Scale' => 3,
+                    'Poison Sac' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Power Coating' => 4,
+                        'Shot' => 2,
+                    ],
+                    'add' => [
+                        'Poison Coating' => 2,
+                        'Paralysis Coating' => 2,
+                        'Poisoned Shot' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Blooming Arch',
+                'branch' => 'Pukei-Pukei',
+                'rarity' => 4,
+                'name' => 'Datura String',
+                'count_attack_1' => 1,
+                'count_attack_2' => 7,
+                'count_attack_3' => 4,
+                'items' => [
+                    'Pukei-Pukei Scale' => 3,
+                    'Pukei-Pukei Wing' => 2,
+                    'Toxic Sac' => 2,
+                    'Quality Bone' => 3,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Power Coating' => 4,
+                        'Shot' => 6,
+                    ],
+                    'add' => [
+                        'Poison Coating' => 2,
+                        'Paralysis Coating' => 2,
+                        'Poisoned Shot' => 2,
+                        'Flared' => 4,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Hunter\'s Bow',
+                'branch' => 'Diablos',
+                'rarity' => 3,
+                'name' => 'Diablos Hatchets',
+                'count_attack_1' => 4,
+                'count_attack_2' => 4,
+                'count_attack_3' => 4,
+                'items' => [
+                    'Twisted Horn' => 1,
+                    'Diablos Fang' => 2,
+                    'Diablos Shell' => 4,
+                    'Monster Bone Large' => 3,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Power Coating' => 2,
+                        'Shot' => 2,
+                    ],
+                    'add' => [
+                        'Paralysis Coating' => 2,
+                        'Rending Arrows' => 2,
+                    ],
+                ],
+            ],
+            [
+                'parent' => 'Diablos Hatchets',
+                'branch' => 'Diablos',
+                'rarity' => 4,
+                'name' => 'Diablos Clubs',
+                'count_attack_1' => 2,
+                'count_attack_2' => 7,
+                'count_attack_3' => 5,
+                'items' => [
+                    'Majestic Horn' => 2,
+                    'Diablos Carapace' => 2,
+                    'Diablos Ridge' => 2,
+                    'Blos Medulla' => 1,
+                ],
+                'attacks' => [
+                    'remove' => [
+                        'Power Coating' => 2,
+                        'Shot' => 2,
+                        'Charge Sidestep' => 2,
+                    ],
+                    'add' => [
+                        'Paralysis Coating' => 2,
+                        'Rending Arrows' => 2,
+                        'Rapid Dash' => 2,
                     ],
                 ],
             ],
