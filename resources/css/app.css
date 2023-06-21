@@ -11,7 +11,7 @@
 }
 
 .tabs-component-tabs {
-    @apply border border-gray-200 dark:border-gray-700 rounded mb-3 sm:border-0 sm:flex sm:items-stretch sm:justify-start sm:mb-[-1px];
+    @apply sm:rounded mb-3 sm:border-0 sm:flex sm:items-stretch sm:justify-start sm:mb-[-1px];
 }
 
 .tabs-component-tab {

@@ -44,7 +44,7 @@ if (!function_exists('create_weapon_tree')) {
             ->get();
 
         $latestWeapons = collect();
-        $latestWeaponModels->each(function (Weapon $weapon) use (&$latestWeapons) {
+        $latestWeaponModels->each(function (Weapon $weapon) use (&$latestWeapons): void {
             $weapons = collect();
             $branch = $weapon->branch;
             $rarity = $weapon->rarity;
@@ -52,12 +52,12 @@ if (!function_exists('create_weapon_tree')) {
             do {
                 while ($rarity > $weapon->rarity) {
                     $weapons->push([]);
-                    $rarity--;
+                    --$rarity;
                 }
                 $weapons->push($weapon);
                 $weapon = $weapon->parent;
-                $rarity--;
-            } while($weapon !== null);
+                --$rarity;
+            } while (null !== $weapon);
 
             $latestWeapons->put($branch, $weapons->reverse()->values());
         });

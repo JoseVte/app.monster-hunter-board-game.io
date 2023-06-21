@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Arr;
+use Str;
 use App\Models\Item;
 use App\Models\Weapon;
 use App\Models\Monster;
@@ -10,7 +11,6 @@ use App\Models\WeaponType;
 use App\Models\WeaponAttack;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
-use Str;
 
 class WeaponsSeeder extends Seeder
 {
@@ -29,7 +29,10 @@ class WeaponsSeeder extends Seeder
             ]);
 
             foreach (Arr::get($weaponsByType, 'weapons', []) as $weaponDetails) {
-                $weapon = Weapon::create([
+                $weapon = Weapon::updateOrCreate([
+                    'name' => $weaponDetails['name'],
+                    'type_id' => $weaponType->id,
+                ], [
                     'name' => $weaponDetails['name'],
                     'type_id' => $weaponType->id,
                     'branch' => Arr::get($weaponDetails, 'branch'),

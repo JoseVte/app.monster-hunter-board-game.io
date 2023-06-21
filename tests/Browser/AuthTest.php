@@ -71,17 +71,17 @@ class AuthTest extends DuskTestCase
         });
     }
 
-//    public function testMagic(): void
-//    {
-//        $this->browse(function (Browser $browser): void {
-//            $browser->visit('/')
-//                ->clickLink('Log in')
-//                ->waitFor('#email')
-//                ->type('#email', env('ADMIN_EMAIL'))
-//                ->type('#password', env('ADMIN_PASSWORD'))
-//                ->press('INICIAR SESIÓN')
-//                ->waitForLocation(route('dashboard'))
-//                ->magic();
-//        });
-//    }
+    //    public function testMagic(): void
+    //    {
+    //        $this->browse(function (Browser $browser): void {
+    //            $browser->visit('/')
+    //                ->clickLink('Log in')
+    //                ->waitFor('#email')
+    //                ->type('#email', env('ADMIN_EMAIL'))
+    //                ->type('#password', env('ADMIN_PASSWORD'))
+    //                ->press('INICIAR SESIÓN')
+    //                ->waitForLocation(route('dashboard'))
+    //                ->magic();
+    //        });
+    //    }
 }

@@ -5,7 +5,7 @@ defineProps({
     increment: Function,
     value: Number,
     max: {
-        type: Number,
+        type: [Number, String],
         default: null,
     },
 })

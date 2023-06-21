@@ -2,7 +2,6 @@
     <svg
         fill="currentColor"
         xmlns="http://www.w3.org/2000/svg"
-        xmlns:xlink="http://www.w3.org/1999/xlink"
         x="0px"
         y="0px"
         viewBox="0 0 511.99 511.99"
@@ -65,7 +64,3 @@
         </g>
     </svg>
 </template>
-
-<script>
-export default {}
-</script>

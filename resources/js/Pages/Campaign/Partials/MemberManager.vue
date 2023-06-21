@@ -153,16 +153,16 @@ const displayableRole = (role) => {
                                 <div class="flex items-center">
                                     <!-- Edit Hunter -->
                                     <Link
-                                        v-if="$page.props.auth.user.id === user.id && user.membership.hunter_id"
+                                        v-if="(userPermissions.canAddCampaignMembers || $page.props.auth.user.id === user.id) && user.membership.hunter_id"
                                         class="ml-2 text-sm text-gray-600 dark:text-gray-400 underline"
-                                        :href="route('campaigns.hunters.edit', [campaign, user.membership.hunter])"
+                                        :href="route('campaigns.hunters.edit', [campaign, user.membership.hunter_id])"
                                     >
                                         {{ $t('Edit Hunter') }}
                                     </Link>
 
                                     <!-- Remove Hunter -->
                                     <button
-                                        v-if="$page.props.auth.user.id === user.id && user.membership.hunter_id"
+                                        v-if="(userPermissions.canAddCampaignMembers || $page.props.auth.user.id === user.id) && user.membership.hunter_id"
                                         class="cursor-pointer ml-6 text-sm text-red-500"
                                         @click="confirmCampaignHunterRemoval(user)"
                                     >
