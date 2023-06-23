@@ -6,8 +6,8 @@ use Inertia\Inertia;
 use App\Models\Armor;
 use App\Models\Weapon;
 use App\Models\Monster;
+use App\Models\ArmorSkill;
 use App\Models\WeaponType;
-use App\Models\ArmorAbility;
 use App\Models\WeaponAttack;
 use App\Enum\MonsterCategory;
 use App\Enum\MonsterExpansion;
@@ -67,34 +67,36 @@ Route::middleware([
     })->name('dashboard');
 
     Route::get('global-search', static function (Illuminate\Http\Request $request): JsonResponse {
-        $locale = app()->getLocale();
-        $searchOptions = static function ($meiliSearch, string $query, array $options) use ($locale) {
-            $options['attributesToHighlight'] = ['*'];
-            $options['attributesToRetrieve'] = ['id', $locale];
-
-            $meiliSearch->updateSettings([
-                'searchableAttributes' => [$locale],
-            ]);
-
-            return $meiliSearch->search($query, $options);
-        };
-        $searchLimit = 5;
-        $resultsMap = static function ($result, $class) use ($locale) {
-            arr_expand($result['_formatted']);
-
-            return [
-                'id' => $result['id'],
-                'class' => $class,
-                'url' => Arr::get($result, '_formatted.url'),
-                'name' => Arr::get($result, '_formatted.'.$locale.'.name'),
-                'type' => Arr::get($result, '_formatted.'.$locale.'.type'),
-            ];
-        };
-
         $results = collect();
-        foreach ([Armor::class, ArmorAbility::class, DowntimeActivity::class, Item::class, Monster::class, Weapon::class, WeaponType::class, WeaponAttack::class] as $class) {
-            $results = $results->merge(collect(Arr::get(call_user_func([$class, 'search'], $request->get('keyword'), $searchOptions)->take($searchLimit)->raw(), 'hits', []))
-                ->map(fn ($result) => $resultsMap($result, $class)));
+        if ($request->get('keyword')) {
+            $locale = app()->getLocale();
+            $searchOptions = static function ($meiliSearch, string $query, array $options) {
+                $options['attributesToHighlight'] = ['*'];
+                $options['attributesToRetrieve'] = ['id', 'en', 'es'];
+
+                $meiliSearch->updateSettings([
+                    'searchableAttributes' => ['en', 'es'],
+                ]);
+
+                return $meiliSearch->search($query, $options);
+            };
+            $searchLimit = 5;
+            $resultsMap = static function ($result, $class) use ($locale) {
+                arr_expand($result['_formatted']);
+
+                return [
+                    'id' => $result['id'],
+                    'class' => $class,
+                    'url' => Arr::get($result, '_formatted.url'),
+                    'name' => Arr::get($result, '_formatted.' . $locale . '.name'),
+                    'type' => Arr::get($result, '_formatted.' . $locale . '.type'),
+                ];
+            };
+
+            foreach ([Armor::class, ArmorSkill::class, DowntimeActivity::class, Item::class, Monster::class, Weapon::class, WeaponType::class, WeaponAttack::class] as $class) {
+                $results = $results->merge(collect(Arr::get(call_user_func([$class, 'search'], $request->get('keyword'), $searchOptions)->take($searchLimit)->raw(), 'hits', []))
+                    ->map(fn($result) => $resultsMap($result, $class)));
+            }
         }
 
         return response()->json($results);
@@ -121,10 +123,12 @@ Route::middleware([
 
         Route::prefix('armors')->name('armor.')->group(function (): void {
             Route::get('/', fn () => Inertia::render('Wiki/Armor/Index'))->name('index');
+            Route::get('{armor}', fn (Armor $armor) => Inertia::render('Wiki/Armor/Show', compact('armor')))->name('show');
         });
 
         Route::prefix('weapons')->name('weapon.')->group(function (): void {
             Route::get('/', fn () => Inertia::render('Wiki/Weapon/Index'))->name('index');
+            Route::get('{weapon}', fn (Weapon $weapon) => Inertia::render('Wiki/Weapon/Show', compact('weapon')))->name('show');
         });
     });
 

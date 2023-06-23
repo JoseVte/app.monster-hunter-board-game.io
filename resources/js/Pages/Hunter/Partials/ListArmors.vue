@@ -15,7 +15,7 @@ import dragon from '~/types/dragon.png';
 const props = defineProps({
     canEdit: Boolean,
     showAllArmors: Boolean,
-    showAdvanceAbilityDescription: Boolean,
+    showAdvanceSkillDescription: Boolean,
     campaign: Object,
     hunter: Object,
     icon: [Object, String],
@@ -125,20 +125,20 @@ const hunterArmorCount = (armor) => {
                             </span>
                         </div>
                         <div
-                            v-for="ability in armor.abilities"
-                            :key="ability.id"
+                            v-for="skill in armor.skills"
+                            :key="skill.id"
                             class="border-t border-gray-500 pt-2 w-full italic text-sm"
                         >
                             <div class="font-semibold flex items-center justify-between gap-2">
-                                <span>{{ ability.name }}</span>
+                                <span>{{ skill.name }}</span>
                                 <KnightIcon
-                                    v-if="ability.bonus_set"
+                                    v-if="skill.bonus_set"
                                     class="h-8 w-8"
                                     :class="getRarityColor(armor.rarity)"
                                 />
                             </div>
-                            <div v-if="showAdvanceAbilityDescription">
-                                {{ ability.description }}
+                            <div v-if="showAdvanceSkillDescription">
+                                {{ skill.description }}
                             </div>
                         </div>
                         <div

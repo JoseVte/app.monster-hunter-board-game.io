@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\Armor;
-use App\Models\ArmorAbility;
+use App\Models\ArmorSkill;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -12,11 +12,11 @@ return new class() extends Migration {
      */
     public function up(): void
     {
-        Schema::create('armor_ability', function (Blueprint $table): void {
+        Schema::create('armor_skill', function (Blueprint $table): void {
             $table->id();
 
             $table->foreignIdFor(Armor::class)->constrained();
-            $table->foreignIdFor(ArmorAbility::class)->constrained();
+            $table->foreignIdFor(ArmorSkill::class)->constrained();
 
             $table->timestamps();
         });
@@ -27,6 +27,6 @@ return new class() extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('armor_ability');
+        Schema::dropIfExists('armor_skill');
     }
 };

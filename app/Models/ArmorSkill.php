@@ -7,7 +7,7 @@ use App\Models\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class ArmorAbility extends Model
+class ArmorSkill extends Model
 {
     use HasFactory;
     use HasTranslations;

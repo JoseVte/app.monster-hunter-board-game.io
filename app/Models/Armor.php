@@ -7,8 +7,8 @@ use Laravel\Scout\Searchable;
 use App\Models\Pivot\CountItemArmor;
 use App\Models\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Pivot\ArmorSkill as ArmorSkillPivot;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use App\Models\Pivot\ArmorAbility as ArmorAbilityPivot;
 use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
@@ -39,18 +39,18 @@ class Armor extends Model
     ];
 
     protected $with = [
-        'abilities',
+        'skills',
     ];
 
     public array $translatable = [
         'name',
     ];
 
-    public function abilities(): BelongsToMany
+    public function skills(): BelongsToMany
     {
-        return $this->belongsToMany(ArmorAbility::class, 'armor_ability')
+        return $this->belongsToMany(ArmorSkill::class, 'armor_skill')
             ->withTimestamps()
-            ->using(ArmorAbilityPivot::class);
+            ->using(ArmorSkillPivot::class);
     }
 
     public function items(): BelongsToMany
@@ -61,13 +61,13 @@ class Armor extends Model
     public function toSearchableArray(): array
     {
         $searchable = [
-            'url' => 'TODO',
+            'url' => route('wiki.armor.show', $this->id),
         ];
         foreach ($this->type->getTranslations() as $locale => $translation) {
             $searchable[$locale.'.type'] = $translation;
             $searchable[$locale.'.name'] = $this->getTranslation('name', $locale);
-            foreach ($this->abilities as $index => $ability) {
-                $searchable[$locale.'.'.$index.'.ability'] = $ability->getTranslation('name', $locale);
+            foreach ($this->skills as $index => $skill) {
+                $searchable[$locale.'.'.$index.'.skill'] = $skill->getTranslation('name', $locale);
             }
         }
 

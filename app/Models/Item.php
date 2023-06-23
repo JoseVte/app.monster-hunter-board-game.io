@@ -30,7 +30,7 @@ class Item extends Model
     public function toSearchableArray(): array
     {
         $searchable = [
-            'url' => 'TODO',
+            'url' => route('wiki.item.show', $this->id),
         ];
         foreach ($this->type->getTranslations() as $locale => $translation) {
             $searchable[$locale.'.type'] = $translation;

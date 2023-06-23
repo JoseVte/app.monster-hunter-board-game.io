@@ -25,7 +25,7 @@ class WeaponsSeeder extends Seeder
             $weaponType = WeaponType::create([
                 'name' => $weaponsByType['name'],
                 'description' => $weaponsByType['description'],
-                'image_path' => $storage->putFileAs('weapon-types', resource_path('images/'.$weaponsByType['image']), Str::slug($weaponsByType['name']).'.png', 'public'),
+                'image_path' => $storage->putFileAs('weapon-types', resource_path('images/'.$weaponsByType['image']), Str::slug($weaponsByType['name']['en']).'.png', 'public'),
             ]);
 
             foreach (Arr::get($weaponsByType, 'weapons', []) as $weaponDetails) {

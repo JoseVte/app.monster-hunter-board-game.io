@@ -2,7 +2,10 @@
 
 return [
     [
-        'name' => 'Great Sword',
+        'name' => [
+            'en' => 'Great Sword',
+            'es' => 'Gran Espada',
+        ],
         'description' => '',
         'image' => 'icon_weapon_01.png',
         'weapons' => [
@@ -314,7 +317,10 @@ return [
         ],
     ],
     [
-        'name' => 'Lance',
+        'name' => [
+            'en' => 'Lance',
+            'es' => 'Lanza',
+        ],
         'description' => 'After you resolve an attack card, if there are at least 3 face up attack cards with __lance_icon__ on your stamina board you may discard 3 face up attack cards with __lance_icon__ from your stamina board.',
         'image' => 'icon_weapon_07.png',
         'weapons' => [
@@ -533,7 +539,10 @@ return [
         ],
     ],
     [
-        'name' => 'Gunlance',
+        'name' => [
+            'en' => 'Gunlance',
+            'es' => 'Lanzapistola',
+        ],
         'description' => '',
         'image' => 'icon_weapon_08.png',
         'weapons' => [
@@ -757,7 +766,10 @@ return [
         ],
     ],
     [
-        'name' => 'Hammer',
+        'name' => [
+            'en' => 'Hammer',
+            'es' => 'Martillo',
+        ],
         'description' => '',
         'image' => 'icon_weapon_05.png',
         'weapons' => [
@@ -1064,7 +1076,10 @@ return [
         ],
     ],
     [
-        'name' => 'Hunting Horn',
+        'name' => [
+            'en' => 'Hunting Horn',
+            'es' => 'Cornamusa',
+        ],
         'description' => '',
         'image' => 'icon_weapon_06.png',
         'weapons' => [
@@ -1278,7 +1293,10 @@ return [
         ],
     ],
     [
-        'name' => 'Longsword',
+        'name' => [
+            'en' => 'Longsword',
+            'es' => 'Espada Larga',
+        ],
         'description' => 'During setup, place the spirit card next to your stamina board with the white-only side at the top. Your attack cards have a spirit symbol with colours matching sides of the spirit card.<br>
 Attack cards will instruct you when to rotate the spirit card, and in which direction. The spirit card is always rotated 90 degrees at a time.<br>
 You may only play attack cards wit a spirit symbol if all the colours in the symbol are currently at the rop of the spirit card.<br>
@@ -1286,12 +1304,18 @@ When the white-only spirit symbol is at the top, the spirit card can\'t be rotat
         'image' => 'icon_weapon_02.png',
     ],
     [
-        'name' => 'Sword & Shield',
+        'name' => [
+            'en' => 'Sword & Shield',
+            'es' => 'Espada y Escudo',
+        ],
         'description' => '',
         'image' => 'icon_weapon_03.png',
     ],
     [
-        'name' => 'Dual Blades',
+        'name' => [
+            'en' => 'Dual Blades',
+            'es' => 'Espadas Dobles',
+        ],
         'description' => '',
         'image' => 'icon_weapon_04.png',
         'weapons' => [
@@ -1607,22 +1631,34 @@ When the white-only spirit symbol is at the top, the spirit card can\'t be rotat
         ],
     ],
     [
-        'name' => 'Switch Axe',
+        'name' => [
+            'en' => 'Switch Axe',
+            'es' => 'Hacha Espada',
+        ],
         'description' => '',
         'image' => 'icon_weapon_09.png',
     ],
     [
-        'name' => 'Charge Blade',
+        'name' => [
+            'en' => 'Charge Blade',
+            'es' => 'Hacha Cargada',
+        ],
         'description' => '',
         'image' => 'icon_weapon_10.png',
     ],
     [
-        'name' => 'Insect Glaive',
+        'name' => [
+            'en' => 'Insect Glaive',
+            'es' => 'Glaive Insecto',
+        ],
         'description' => '',
         'image' => 'icon_weapon_11.png',
     ],
     [
-        'name' => 'Bow',
+        'name' => [
+            'en' => 'Bow',
+            'es' => 'Arco',
+        ],
         'description' => '',
         'image' => 'icon_weapon_12.png',
         'weapons' => [
@@ -1956,12 +1992,18 @@ When the white-only spirit symbol is at the top, the spirit card can\'t be rotat
         ],
     ],
     [
-        'name' => 'Light Bowgun',
+        'name' => [
+            'en' => 'Light Bowgun',
+            'es' => 'Ballesta Ligera',
+        ],
         'description' => '',
         'image' => 'icon_weapon_13.png',
     ],
     [
-        'name' => 'Heavy Bowgun',
+        'name' => [
+            'en' => 'Heavy Bowgun',
+            'es' => 'Ballesta Pesada',
+        ],
         'description' => '',
         'image' => 'icon_weapon_14.png',
     ],

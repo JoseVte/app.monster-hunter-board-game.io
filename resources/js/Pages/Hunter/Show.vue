@@ -39,8 +39,8 @@ const hideEmpty = ref(storage.getStorageSync('hide-empty-items'));
 watch(hideEmpty, (hideEmptyValue) => storage.setStorageSync('hide-empty-items', hideEmptyValue))
 const showAllArmors = ref(storage.getStorageSync('show-all-armors'));
 watch(showAllArmors, (showAllArmorsValue) => storage.setStorageSync('show-all-armors', showAllArmorsValue))
-const showAdvanceAbilityDescription = ref(storage.getStorageSync('show-advance-ability-description'));
-watch(showAdvanceAbilityDescription, (showAdvanceAbilityDescriptionValue) => storage.setStorageSync('show-advance-ability-description', showAdvanceAbilityDescriptionValue))
+const showAdvanceSkillDescription = ref(storage.getStorageSync('show-advance-skill-description'));
+watch(showAdvanceSkillDescription, (showAdvanceSkillDescriptionValue) => storage.setStorageSync('show-advance-skill-description', showAdvanceSkillDescriptionValue))
 
 const hunterOtherItems = computed(() => {
     return _.sortBy(props.hunter.other_items, (item) => item.name);
@@ -58,7 +58,7 @@ const tabOptions = {
 const tabChanged = (tab) => {
     if (tabInitialized.value) {
         const newUrl = route('campaigns.hunters.show', [props.campaign, props.hunter, tab.tab.computedId]);
-        router.visit(newUrl);
+        router.visit(newUrl, {preserveScroll: true});
     }
 }
 
@@ -231,8 +231,8 @@ onMounted(() => {
                                     :label="$t('Show all armors')"
                                 />
                                 <Switch
-                                    v-model:checked="showAdvanceAbilityDescription"
-                                    :label="$t('Show advanced description for abilities')"
+                                    v-model:checked="showAdvanceSkillDescription"
+                                    :label="$t('Show advanced description for skills')"
                                 />
                             </div>
                         </SectionBorder>
@@ -240,7 +240,7 @@ onMounted(() => {
                         <ListArmorType
                             :can-edit="canEdit"
                             :show-all-armors="showAllArmors"
-                            :show-advance-ability-description="showAdvanceAbilityDescription"
+                            :show-advance-skill-description="showAdvanceSkillDescription"
                             :icon="HelmetIcon"
                             :campaign="campaign"
                             :hunter="hunter"
@@ -252,7 +252,7 @@ onMounted(() => {
                         <ListArmorType
                             :can-edit="canEdit"
                             :show-all-armors="showAllArmors"
-                            :show-advance-ability-description="showAdvanceAbilityDescription"
+                            :show-advance-skill-description="showAdvanceSkillDescription"
                             :icon="ArmorsIcon"
                             :campaign="campaign"
                             :hunter="hunter"
@@ -264,7 +264,7 @@ onMounted(() => {
                         <ListArmorType
                             :can-edit="canEdit"
                             :show-all-armors="showAllArmors"
-                            :show-advance-ability-description="showAdvanceAbilityDescription"
+                            :show-advance-skill-description="showAdvanceSkillDescription"
                             :icon="LegArmor"
                             :campaign="campaign"
                             :hunter="hunter"

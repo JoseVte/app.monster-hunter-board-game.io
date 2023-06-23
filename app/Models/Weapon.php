@@ -86,7 +86,7 @@ class Weapon extends Model
     public function toSearchableArray(): array
     {
         $searchable = [
-            'url' => 'TODO',
+            'url' => route('wiki.weapon.show', $this->id),
         ];
         foreach (config('app.locales-available') as $locale) {
             $searchable[$locale.'.name'] = $this->getTranslation('name', $locale);

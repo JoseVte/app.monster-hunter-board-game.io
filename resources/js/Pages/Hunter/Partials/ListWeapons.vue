@@ -24,6 +24,7 @@ const hunterWeaponCount = (weapon) => {
         <Link
             :href="route('campaigns.hunters.show', [campaign, hunter, 'weapons'])"
             class="text-gray-800 dark:text-gray-200 text-sm flex items-center"
+            preserve-scroll
         >
             <svg
                 class="h-5 w-5 mr-2"

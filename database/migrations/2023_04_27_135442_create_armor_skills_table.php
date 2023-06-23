@@ -10,7 +10,7 @@ return new class() extends Migration {
      */
     public function up(): void
     {
-        Schema::create('armor_abilities', function (Blueprint $table): void {
+        Schema::create('armor_skills', function (Blueprint $table): void {
             $table->id();
 
             $table->json('name');
@@ -27,6 +27,6 @@ return new class() extends Migration {
      */
     public function down(): void
     {
-        Schema::dropIfExists('armor_abilities');
+        Schema::dropIfExists('armor_skills');
     }
 };

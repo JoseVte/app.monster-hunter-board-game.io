@@ -7,7 +7,7 @@ use App\Models\Item;
 use App\Models\Armor;
 use App\Enum\ArmorType;
 use App\Models\Monster;
-use App\Models\ArmorAbility;
+use App\Models\ArmorSkill;
 use Illuminate\Database\Seeder;
 
 class ArmorsSeeder extends Seeder
@@ -24,7 +24,10 @@ class ArmorsSeeder extends Seeder
                     'name' => $armorName,
                 ], [
                     'type' => $type,
-                    'name' => $armorName,
+                    'name' => [
+                        'en' => $armorName,
+                        'es' => Arr::get($armorDetails, 'name', $armorName),
+                    ],
                     'branch' => Arr::get($armorDetails, 'branch'),
                     'is_default' => Arr::get($armorDetails, 'default', false),
                     'rarity' => Arr::get($armorDetails, 'rarity', 1),
@@ -40,13 +43,13 @@ class ArmorsSeeder extends Seeder
                     $armor->branch_id = Monster::where('name->en', $armorDetails['branch'])->firstOrFail()->id;
                     $armor->save();
                 }
-                if (Arr::get($armorDetails, 'ability')) {
-                    if (ArmorAbility::where('name->en', $armorDetails['ability'])->doesntExist()) {
-                        logger('Armor ability: '.$armorDetails['ability']);
+                if (Arr::get($armorDetails, 'skill')) {
+                    if (ArmorSkill::where('name->en', $armorDetails['skill'])->doesntExist()) {
+                        logger('Armor skill: '.$armorDetails['skill']);
                     }
 
-                    $ability = ArmorAbility::where('name->en', $armorDetails['ability'])->firstOrFail();
-                    $armor->abilities()->attach($ability);
+                    $skill = ArmorSkill::where('name->en', $armorDetails['skill'])->firstOrFail();
+                    $armor->skills()->attach($skill);
                 }
 
                 if (Arr::get($armorDetails, 'items')) {
@@ -59,6 +62,21 @@ class ArmorsSeeder extends Seeder
                         $armor->items()->attach($item, ['number' => $count]);
                     }
                 }
+            }
+        }
+
+        foreach (config('seeders.armors.skills') as $skill) {
+            if (Arr::get($skill, 'bonus-set')) {
+                $bonusSet = [];
+                foreach ($skill['bonus-set'] as $armorName) {
+                    $armor = Armor::where('name->en', $armorName)->firstOrFail();
+                    $bonusSet[] = $armor->id;
+                }
+
+                $armorSkill = ArmorSkill::where('name->en', $skill['name']['en'])->firstOrFail();
+                $armorSkill->bonus_set = true;
+                $armorSkill->bonus_set_armor = $bonusSet;
+                $armorSkill->save();
             }
         }
     }

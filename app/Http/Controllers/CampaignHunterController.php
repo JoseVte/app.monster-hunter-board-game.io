@@ -56,7 +56,7 @@ class CampaignHunterController extends Controller
             $weapons = create_weapon_tree($weaponType);
         }
 
-        $armors = Armor::with('abilities')->get()->groupBy(fn (Armor $armor) => strtolower($armor->type->label('en')))->map(fn (Collection $armors) => $armors->groupBy(fn (Armor $armor) => $armor->rarity));
+        $armors = Armor::with('skills')->get()->groupBy(fn (Armor $armor) => strtolower($armor->type->label('en')))->map(fn (Collection $armors) => $armors->groupBy(fn (Armor $armor) => $armor->rarity));
 
         return Inertia::render('Hunter/Show', compact(
             'campaign',

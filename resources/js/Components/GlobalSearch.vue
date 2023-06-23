@@ -62,7 +62,7 @@ watch(searchText, (after) => {
 
         <ul
             v-if="searchResults.length > 0 && openSearchResults"
-            class="absolute top-16 left-11 w-80 bg-white border-2 border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded"
+            class="absolute top-16 left-11 w-80 bg-white border-2 border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded z-50"
         >
             <li
                 v-for="result in searchResults"

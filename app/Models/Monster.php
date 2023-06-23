@@ -37,7 +37,7 @@ class Monster extends Model
         $searchable = [
             'category' => $this->category->name,
             'expansion' => $this->expansion->name,
-            'url' => 'TODO',
+            'url' => route('wiki.monster.show', $this->id),
         ];
         foreach (config('app.locales-available') as $locale) {
             $searchable[$locale.'.name'] = $this->getTranslation('name', $locale);

@@ -3,162 +3,369 @@
 use App\Enum\ArmorType;
 
 return [
-    'abilities' => [
+    'skills' => [
         [
-            'name' => 'Poison Resistance',
-            'description' => '',
+            'name' => [
+                'en' => 'Poison Resistance',
+                'es' => 'Anti Veneno',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Speed Eating',
-            'description' => '',
+            'name' => [
+                'en' => 'Speed Eating',
+                'es' => 'Velocidad al Comer',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Slugger',
-            'description' => '',
+            'name' => [
+                'en' => 'Slugger',
+                'es' => 'Bonus al Aturdir',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Palico Rally',
-            'description' => '',
+            'name' => [
+                'en' => 'Palico Rally',
+                'es' => 'Mejora de Camarada',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Constitution',
-            'description' => '',
+            'name' => [
+                'en' => 'Constitution',
+                'es' => 'Bonus Evasión',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Evade Extender',
-            'description' => '',
+            'name' => [
+                'en' => 'Evade Extender',
+                'es' => 'Distancia de Evasión',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Thunder Attack',
-            'description' => '',
+            'name' => [
+                'en' => 'Thunder Attack',
+                'es' => 'Ataque de Rayo',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Fire Attack',
-            'description' => '',
+            'name' => [
+                'en' => 'Fire Attack',
+                'es' => 'Ataque de Fuego',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Marathon Runner',
-            'description' => '',
+            'name' => [
+                'en' => 'Marathon Runner',
+                'es' => 'Bonus Esprint',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Weakness Exploit',
-            'description' => '',
+            'name' => [
+                'en' => 'Weakness Exploit',
+                'es' => 'Bonus Punto Débil',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Sleep Resistance',
-            'description' => '',
+            'name' => [
+                'en' => 'Sleep Resistance',
+                'es' => 'Anti Sueño',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Intimidator',
-            'description' => '',
+            'name' => [
+                'en' => 'Intimidator',
+                'es' => 'Intimidador',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Focus',
-            'description' => '',
+            'name' => [
+                'en' => 'Focus',
+                'es' => 'Tiempo de Carga',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
             'bonus-set' => ['Rathalos Helm', 'Rathalos Mail', 'Rathalos Greaves'],
-            'name' => 'Rathalos Mastery',
-            'description' => '',
+            'name' => [
+                'en' => 'Rathalos Mastery',
+                'es' => 'Maestría de Rathalos',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
             'bonus-set' => ['Rath Soul Helm', 'Rath Soul Mail', 'Rath Soul Greaves'],
-            'name' => 'Azure Rathalos Mastery',
-            'description' => '',
+            'name' => [
+                'en' => 'Azure Rathalos Mastery',
+                'es' => 'Maestría de Rathalos Celeste',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Guard',
-            'description' => '',
+            'name' => [
+                'en' => 'Guard',
+                'es' => 'Escudo',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Stun Resistance',
-            'description' => '',
+            'name' => [
+                'en' => 'Stun Resistance',
+                'es' => 'Anti Aturdimiento',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Sporepuff Expert',
-            'description' => '',
+            'name' => [
+                'en' => 'Sporepuff Expert',
+                'es' => 'Experto en Esporas',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Botanist',
-            'description' => '',
+            'name' => [
+                'en' => 'Botanist',
+                'es' => 'Experto en Recursos',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Aquatic Expert',
-            'description' => '',
+            'name' => [
+                'en' => 'Aquatic Expert',
+                'es' => 'Experto Acuático',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Water Attack',
-            'description' => '',
+            'name' => [
+                'en' => 'Water Attack',
+                'es' => 'Ataque de Agua',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Heroics',
-            'description' => '',
+            'name' => [
+                'en' => 'Heroics',
+                'es' => 'Bonus Salud Baja',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Resentment',
-            'description' => '',
+            'name' => [
+                'en' => 'Resentment',
+                'es' => 'Bonus Daño Temporal',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Part Breaker',
-            'description' => '',
+            'name' => [
+                'en' => 'Part Breaker',
+                'es' => 'Bonus Rompe-partes',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
             'bonus-set' => ['Diablos Helm', 'Diablos Mail', 'Diablos Greaves'],
-            'name' => 'Diablos Mastery',
-            'description' => '',
+            'name' => [
+                'en' => 'Diablos Mastery',
+                'es' => 'Maestría de Diablos',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
             'bonus-set' => ['Diablos Nero Helm', 'Diablos Nero Mail', 'Diablos Nero Greaves'],
-            'name' => 'Black Diablos Mastery',
-            'description' => '',
+            'name' => [
+                'en' => 'Black Diablos Mastery',
+                'es' => 'Maestría de Diablos Negra',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Weakness Exploit',
-            'description' => '',
+            'name' => [
+                'en' => 'Critical Eye',
+                'es' => 'Bonus Afinidad',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Critical Eye',
-            'description' => '',
+            'name' => [
+                'en' => 'Maximun Might',
+                'es' => 'Bonus de Afinidad',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Maximun Might',
-            'description' => '',
-        ],
-        [
-            'name' => 'Agitator',
-            'description' => '',
+            'name' => [
+                'en' => 'Agitator',
+                'es' => 'Instigador',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
             'bonus-set' => ['Nergigante Helm', 'Nergigante Mail', 'Nergigante Greaves'],
-            'name' => 'Nergigante Hunger',
-            'description' => '',
+            'name' => [
+                'en' => 'Nergigante Hunger',
+                'es' => 'Hambre de Nergigante',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Latent Power',
-            'description' => '',
+            'name' => [
+                'en' => 'Latent Power',
+                'es' => 'Poder Latente',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
             'bonus-set' => ['Kaiser Crown', 'Kaiser Mail', 'Kaiser Greaves'],
-            'name' => 'Teostra Technique',
-            'description' => '',
+            'name' => [
+                'en' => 'Teostra Technique',
+                'es' => 'Técnica de Teostra',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Ice Attack',
-            'description' => '',
+            'name' => [
+                'en' => 'Ice Attack',
+                'es' => 'Ataque de Hielo',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
             'bonus-set' => ['Kushala Glare', 'Kushala Cista', 'Kushala Crus'],
-            'name' => 'Kushala Daora Flight',
-            'description' => '',
+            'name' => [
+                'en' => 'Kushala Daora Flight',
+                'es' => 'Vuelo de Kushala Daora',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
         [
-            'name' => 'Handicraft',
-            'description' => '',
+            'name' => [
+                'en' => 'Handicraft',
+                'es' => 'Artesano',
+            ],
+            'description' => [
+                'en' => '',
+                'es' => '',
+            ],
         ],
     ],
 
     ArmorType::HEAD->name => [
         'Alloy Helm' => [
+            'name' => 'Yelmo de Aleación',
             'items' => [
                 'Machalite Ore' => 2,
                 'Carbalite Ore' => 1,
@@ -169,6 +376,7 @@ return [
             'rarity' => 2,
         ],
         'Bone Helm' => [
+            'name' => 'Yelmo de Hueso',
             'items' => [
                 'Monster Bone Small' => 2,
                 'Ancient Bone' => 2,
@@ -178,6 +386,7 @@ return [
             'rarity' => 2,
         ],
         'Jagras Helm' => [
+            'name' => 'Yelmo de Jagras',
             'items' => [
                 'Great Jagras Hide' => 1,
                 'Great Jagras Mane' => 1,
@@ -186,22 +395,24 @@ return [
             ],
             'defense' => 1,
             'defense_water' => 1,
-            'ability' => 'Speed Eating',
+            'skill' => 'Speed Eating',
             'branch' => 'Great Jagras',
             'rarity' => 3,
         ],
         'Kadachi Helm' => [
+            'name' => 'Yelmo de Kadachi',
             'items' => [
                 'Tobi-Kadachi Pelt' => 1,
                 'Tobi-Kadachi Claw' => 1,
                 'Electro Sac' => 1,
             ],
             'defense_thunder' => 2,
-            'ability' => 'Constitution',
+            'skill' => 'Constitution',
             'branch' => 'Tobi-Kadachi',
             'rarity' => 3,
         ],
         'Anja Helm' => [
+            'name' => 'Yelmo de Anja',
             'items' => [
                 'Anjanath Pelt' => 1,
                 'Anjanath Scale' => 1,
@@ -209,11 +420,12 @@ return [
             ],
             'defense' => 1,
             'defense_fire' => 1,
-            'ability' => 'Fire Attack',
+            'skill' => 'Fire Attack',
             'branch' => 'Anjanath',
             'rarity' => 3,
         ],
         'Rathalos Helm' => [
+            'name' => 'Yelmo de Rathalos',
             'items' => [
                 'Rathalos Scale' => 1,
                 'Rathalos Shell' => 1,
@@ -221,11 +433,12 @@ return [
             ],
             'defense' => 2,
             'defense_fire' => 1,
-            'ability' => 'Rathalos Mastery',
+            'skill' => 'Rathalos Mastery',
             'branch' => 'Rathalos',
             'rarity' => 4,
         ],
         'Rath Soul Helm' => [
+            'name' => 'Yelmo Alma Rath',
             'items' => [
                 'Azure Rathalos Scale' => 1,
                 'Azure Rathalos Carapace' => 1,
@@ -233,11 +446,12 @@ return [
             ],
             'defense' => 2,
             'defense_fire' => 1,
-            'ability' => 'Intimidator',
+            'skill' => 'Intimidator',
             'branch' => 'Azure Rathalos',
             'rarity' => 4,
         ],
         'Barroth Helm' => [
+            'name' => 'Yelmo de Barroth',
             'items' => [
                 'Barroth Ridge' => 1,
                 'Barroth Claw' => 1,
@@ -245,11 +459,12 @@ return [
             ],
             'defense' => 1,
             'defense_water' => 1,
-            'ability' => 'Guard',
+            'skill' => 'Guard',
             'branch' => 'Barroth',
             'rarity' => 3,
         ],
         'Pukei Hood' => [
+            'name' => 'Capucha de Pukei',
             'items' => [
                 'Pukei-Pukei Carapace' => 1,
                 'Pukei-Pukei Tail' => 1,
@@ -257,11 +472,12 @@ return [
             ],
             'defense' => 1,
             'defense_water' => 1,
-            'ability' => 'Sporepuff Expert',
+            'skill' => 'Sporepuff Expert',
             'branch' => 'Pukei-Pukei',
             'rarity' => 3,
         ],
         'Jyura Helm' => [
+            'name' => 'Yelmo de Jyura',
             'items' => [
                 'Jyuratodus Scale' => 1,
                 'Jyuratodus Carapace' => 1,
@@ -270,11 +486,12 @@ return [
             ],
             'defense' => 1,
             'defense_water' => 1,
-            'ability' => 'Aquatic Expert',
+            'skill' => 'Aquatic Expert',
             'branch' => 'Jyuratodus',
             'rarity' => 3,
         ],
         'Diablos Helm' => [
+            'name' => 'Yelmo de Diablos',
             'items' => [
                 'Diablos Ridge' => 1,
                 'Diablos Fang' => 2,
@@ -283,11 +500,12 @@ return [
             ],
             'defense' => 1,
             'defense_fire' => 1,
-            'ability' => 'Heroics',
+            'skill' => 'Heroics',
             'branch' => 'Diablos',
             'rarity' => 4,
         ],
         'Diablos Nero Helm' => [
+            'name' => 'Yelmo Diablos Negra',
             'items' => [
                 'Black Diablos Ridge' => 2,
                 'Majestic Horn' => 1,
@@ -296,11 +514,12 @@ return [
             ],
             'defense' => 1,
             'defense_fire' => 1,
-            'ability' => 'Black Diablos Mastery',
+            'skill' => 'Black Diablos Mastery',
             'branch' => 'Black Diablos',
             'rarity' => 4,
         ],
         'Kulu Headpiece' => [
+            'name' => 'Defensa de Kulu',
             'items' => [
                 'Kulu-Ya-Ku Scale' => 1,
                 'Kulu-Ya-Ku Hide' => 1,
@@ -308,11 +527,12 @@ return [
             ],
             'defense' => 1,
             'defense_ice' => 1,
-            'ability' => 'Weakness Exploit',
+            'skill' => 'Weakness Exploit',
             'branch' => 'Kulu-Ya-Ku',
             'rarity' => 5,
         ],
         'Nergigante Helm' => [
+            'name' => 'Yelmo de Nergigante',
             'items' => [
                 'Nergigante Horn' => 1,
                 'Nergigante Carapace' => 1,
@@ -321,11 +541,12 @@ return [
             ],
             'defense' => 2,
             'defense_fire' => 2,
-            'ability' => 'Maximun Might',
+            'skill' => 'Maximun Might',
             'branch' => 'Nergigante',
             'rarity' => 5,
         ],
         'Kaiser Helm' => [
+            'name' => 'Yelmo de Káiser',
             'items' => [
                 'Teostra Carapace' => 1,
                 'Teostra Horn' => 1,
@@ -334,11 +555,12 @@ return [
             ],
             'defense' => 2,
             'defense_fire' => 1,
-            'ability' => 'Latent Power',
+            'skill' => 'Latent Power',
             'branch' => 'Teostra',
             'rarity' => 5,
         ],
         'Kushala Glare' => [
+            'name' => 'Mirada de Kushala',
             'items' => [
                 'Daora Dragon Scale' => 2,
                 'Daora Carapace' => 1,
@@ -347,7 +569,7 @@ return [
             ],
             'defense' => 1,
             'defense_ice' => 2,
-            'ability' => 'Ice Attack',
+            'skill' => 'Ice Attack',
             'branch' => 'Kushala Daora',
             'rarity' => 5,
         ],
@@ -355,6 +577,7 @@ return [
 
     ArmorType::BODY->name => [
         'Alloy Mail' => [
+            'name' => 'Cota de Aleación',
             'items' => [
                 'Machalite Ore' => 1,
                 'Carbalite Ore' => 2,
@@ -365,15 +588,17 @@ return [
             'rarity' => 2,
         ],
         'Bone Mail' => [
+            'name' => 'Cota de Hueso',
             'items' => [
                 'Monster Bone Small' => 1,
                 'Ancient Bone' => 1,
             ],
-            'ability' => 'Slugger',
+            'skill' => 'Slugger',
             'branch' => 'bone',
             'rarity' => 2,
         ],
         'Jagras Mail' => [
+            'name' => 'Cota de Jagras',
             'items' => [
                 'Great Jagras Hide' => 1,
                 'Great Jagras Claw' => 1,
@@ -382,11 +607,12 @@ return [
             ],
             'defense' => 1,
             'defense_water' => 1,
-            'ability' => 'Palico Rally',
+            'skill' => 'Palico Rally',
             'branch' => 'Great Jagras',
             'rarity' => 3,
         ],
         'Kadachi Mail' => [
+            'name' => 'Cota de Kadachi',
             'items' => [
                 'Tobi-Kadachi Pelt' => 1,
                 'Tobi-Kadachi Electrode' => 1,
@@ -395,11 +621,12 @@ return [
             ],
             'defense' => 1,
             'defense_thunder' => 1,
-            'ability' => 'Evade Extender',
+            'skill' => 'Evade Extender',
             'branch' => 'Tobi-Kadachi',
             'rarity' => 3,
         ],
         'Anja Mail' => [
+            'name' => 'Cota de Anja',
             'items' => [
                 'Anjanath Pelt' => 1,
                 'Anjanath Fang' => 1,
@@ -407,11 +634,12 @@ return [
             ],
             'defense' => 1,
             'defense_fire' => 1,
-            'ability' => 'Marathon Runner',
+            'skill' => 'Marathon Runner',
             'branch' => 'Anjanath',
             'rarity' => 3,
         ],
         'Rathalos Mail' => [
+            'name' => 'Cota de Rathalos',
             'items' => [
                 'Rathalos Scale' => 1,
                 'Rathalos Webbing' => 1,
@@ -419,11 +647,12 @@ return [
             ],
             'defense' => 1,
             'defense_fire' => 1,
-            'ability' => 'Weakness Exploit',
+            'skill' => 'Weakness Exploit',
             'branch' => 'Rathalos',
             'rarity' => 4,
         ],
         'Rath Soul Mail' => [
+            'name' => 'Cota Alma Rath',
             'items' => [
                 'Azure Rathalos Scale' => 1,
                 'Azure Rathalos Wing' => 1,
@@ -431,11 +660,12 @@ return [
             ],
             'defense' => 1,
             'defense_fire' => 1,
-            'ability' => 'Azure Rathalos Mastery',
+            'skill' => 'Azure Rathalos Mastery',
             'branch' => 'Azure Rathalos',
             'rarity' => 4,
         ],
         'Barroth Mail' => [
+            'name' => 'Cota de Barroth',
             'items' => [
                 'Barroth Carapace' => 1,
                 'Barroth Ridge' => 2,
@@ -448,6 +678,7 @@ return [
             'rarity' => 3,
         ],
         'Pukei Mail' => [
+            'name' => 'Cota de Pukei',
             'items' => [
                 'Pukei-Pukei Scale' => 2,
                 'Pukei-Pukei Carapace' => 1,
@@ -455,11 +686,12 @@ return [
             ],
             'defense' => 1,
             'defense_water' => 1,
-            'ability' => 'Botanist',
+            'skill' => 'Botanist',
             'branch' => 'Pukei-Pukei',
             'rarity' => 3,
         ],
         'Jyura Mail' => [
+            'name' => 'Cota de Jyura',
             'items' => [
                 'Jyuratodus Scale' => 1,
                 'Jyuratodus Fin' => 1,
@@ -468,11 +700,12 @@ return [
             ],
             'defense' => 1,
             'defense_water' => 1,
-            'ability' => 'Water Attack',
+            'skill' => 'Water Attack',
             'branch' => 'Jyuratodus',
             'rarity' => 3,
         ],
         'Diablos Mail' => [
+            'name' => 'Cota de Diablos',
             'items' => [
                 'Diablos Carapace' => 2,
                 'Diablos Ridge' => 1,
@@ -481,11 +714,12 @@ return [
             ],
             'defense' => 1,
             'defense_fire' => 1,
-            'ability' => 'Slugger',
+            'skill' => 'Slugger',
             'branch' => 'Diablos',
             'rarity' => 4,
         ],
         'Diablos Nero Mail' => [
+            'name' => 'Cota Diablos Negra',
             'items' => [
                 'Black Diablos Carapace' => 2,
                 'Black Spiral Horn' => 2,
@@ -493,11 +727,12 @@ return [
             ],
             'defense' => 1,
             'defense_fire' => 1,
-            'ability' => 'Resentment',
+            'skill' => 'Resentment',
             'branch' => 'Black Diablos',
             'rarity' => 4,
         ],
         'Kulu Mail' => [
+            'name' => 'Cota de Kulu',
             'items' => [
                 'Kulu-Ya-Ku Hide' => 2,
                 'Kulu-Ya-Ku Plume' => 1,
@@ -506,11 +741,12 @@ return [
             ],
             'defense' => 1,
             'defense_ice' => 1,
-            'ability' => 'Critical Eye',
+            'skill' => 'Critical Eye',
             'branch' => 'Kulu-Ya-Ku',
             'rarity' => 5,
         ],
         'Nergigante Mail' => [
+            'name' => 'Cota de Nergigante',
             'items' => [
                 'Immortal Dragonscale' => 2,
                 'Nergigante Talon' => 2,
@@ -518,11 +754,12 @@ return [
             ],
             'defense' => 2,
             'defense_ice' => 2,
-            'ability' => 'Agitator',
+            'skill' => 'Agitator',
             'branch' => 'Nergigante',
             'rarity' => 5,
         ],
         'Kaiser Mail' => [
+            'name' => 'Cota de Káiser',
             'items' => [
                 'Teostra Webbing' => 2,
                 'Teostra Powder' => 2,
@@ -530,11 +767,12 @@ return [
             ],
             'defense' => 1,
             'defense_fire' => 2,
-            'ability' => 'Teostra Technique',
+            'skill' => 'Teostra Technique',
             'branch' => 'Teostra',
             'rarity' => 5,
         ],
         'Kushala Cista' => [
+            'name' => 'Quiste de Kushala',
             'items' => [
                 'Daora Carapace' => 1,
                 'Daora Horn' => 1,
@@ -543,7 +781,7 @@ return [
             ],
             'defense' => 2,
             'defense_ice' => 1,
-            'ability' => 'Kushala Daora Flight',
+            'skill' => 'Kushala Daora Flight',
             'branch' => 'Kushala Daora',
             'rarity' => 5,
         ],
@@ -551,16 +789,18 @@ return [
 
     ArmorType::LEG->name => [
         'Alloy Greaves' => [
+            'name' => 'Grebas de Aleación',
             'items' => [
                 'Machalite Ore' => 1,
                 'Carbalite Ore' => 2,
                 'Dragonite Ore' => 1,
             ],
-            'ability' => 'Poison Resistance',
+            'skill' => 'Poison Resistance',
             'branch' => 'mineral',
             'rarity' => 2,
         ],
         'Bone Greaves' => [
+            'name' => 'Grebas de Hueso',
             'items' => [
                 'Monster Bone Small' => 1,
                 'Ancient Bone' => 1,
@@ -570,6 +810,7 @@ return [
             'rarity' => 2,
         ],
         'Jagras Greaves' => [
+            'name' => 'Grebas de Jagras',
             'items' => [
                 'Great Jagras Scale' => 1,
                 'Great Jagras Hide' => 1,
@@ -581,17 +822,19 @@ return [
             'rarity' => 3,
         ],
         'Kadachi Greaves' => [
+            'name' => 'Grebas de Kadachi',
             'items' => [
                 'Tobi-Kadachi Scale' => 2,
                 'Tobi-Kadachi Pelt' => 1,
                 'Warm Pelt' => 1,
             ],
             'defense_thunder' => 1,
-            'ability' => 'Thunder Attack',
+            'skill' => 'Thunder Attack',
             'branch' => 'Tobi-Kadachi',
             'rarity' => 3,
         ],
         'Anja Greaves' => [
+            'name' => 'Grebas de Anja',
             'items' => [
                 'Anjanath Scale' => 1,
                 'Anjanath Pelt' => 1,
@@ -604,6 +847,7 @@ return [
             'rarity' => 3,
         ],
         'Rathalos Greaves' => [
+            'name' => 'Grebas de Rathalos',
             'items' => [
                 'Rathalos Shell' => 1,
                 'Rathalos Wingtalon' => 1,
@@ -611,11 +855,12 @@ return [
             ],
             'defense' => 1,
             'defense_fire' => 1,
-            'ability' => 'Sleep Resistance',
+            'skill' => 'Sleep Resistance',
             'branch' => 'Rathalos',
             'rarity' => 4,
         ],
         'Rath Soul Greaves' => [
+            'name' => 'Grebas Alma Rath',
             'items' => [
                 'Azure Rathalos Carapace' => 1,
                 'Azure Rathalos Wingtalon' => 1,
@@ -623,11 +868,12 @@ return [
             ],
             'defense' => 1,
             'defense_fire' => 1,
-            'ability' => 'Focus',
+            'skill' => 'Focus',
             'branch' => 'Azure Rathalos',
             'rarity' => 4,
         ],
         'Barroth Greaves' => [
+            'name' => 'Grebas de Barroth',
             'items' => [
                 'Barroth Ridge' => 1,
                 'Barroth Carapace' => 2,
@@ -636,11 +882,12 @@ return [
             ],
             'defense' => 1,
             'defense_water' => 1,
-            'ability' => 'Stun Resistance',
+            'skill' => 'Stun Resistance',
             'branch' => 'Barroth',
             'rarity' => 3,
         ],
         'Pukei Greaves' => [
+            'name' => 'Grebas de Pukei',
             'items' => [
                 'Pukei-Pukei Carapace' => 2,
                 'Pukei-Pukei Sac' => 2,
@@ -649,11 +896,12 @@ return [
             ],
             'defense' => 1,
             'defense_water' => 1,
-            'ability' => 'Poison Resistance',
+            'skill' => 'Poison Resistance',
             'branch' => 'Pukei-Pukei',
             'rarity' => 3,
         ],
         'Jyura Greaves' => [
+            'name' => 'Grebas de Jyura',
             'items' => [
                 'Jyuratodus Carapace' => 1,
                 'Jyuratodus Fang' => 1,
@@ -666,6 +914,7 @@ return [
             'rarity' => 3,
         ],
         'Diablos Greaves' => [
+            'name' => 'Grebas de Diablos',
             'items' => [
                 'Diablos Ridge' => 1,
                 'Diablos Carapace' => 2,
@@ -673,11 +922,12 @@ return [
             ],
             'defense' => 2,
             'defense_fire' => 1,
-            'ability' => 'Diablos Mastery',
+            'skill' => 'Diablos Mastery',
             'branch' => 'Diablos',
             'rarity' => 4,
         ],
         'Diablos Nero Greaves' => [
+            'name' => 'Grebas Diablos Negra',
             'items' => [
                 'Black Diablos Ridge' => 1,
                 'Black Diablos Carapace' => 2,
@@ -686,11 +936,12 @@ return [
             ],
             'defense' => 2,
             'defense_fire' => 1,
-            'ability' => 'Part Breaker',
+            'skill' => 'Part Breaker',
             'branch' => 'Black Diablos',
             'rarity' => 4,
         ],
         'Kulu Greaves' => [
+            'name' => 'Grebas de Kulu',
             'items' => [
                 'Kulu-Ya-Ku Hide' => 1,
                 'Kulu-Ya-Ku Scale' => 2,
@@ -703,6 +954,7 @@ return [
             'rarity' => 5,
         ],
         'Nergigante Greaves' => [
+            'name' => 'Grebas de Nergigante',
             'items' => [
                 'Nergigante Carapace' => 1,
                 'Immortal Dragonscale' => 1,
@@ -711,22 +963,24 @@ return [
             ],
             'defense' => 2,
             'defense_water' => 2,
-            'ability' => 'Nergigante Hunger',
+            'skill' => 'Nergigante Hunger',
             'branch' => 'Nergigante',
             'rarity' => 5,
         ],
         'Teostra Greaves' => [
+            'name' => 'Grebas de Káiser',
             'items' => [
                 'Fire Dragon Scale' => 2,
                 'Teostra Mane' => 1,
             ],
             'defense' => 2,
             'defense_fire' => 1,
-            'ability' => 'Weakness Exploit',
+            'skill' => 'Weakness Exploit',
             'branch' => 'Teostra',
             'rarity' => 5,
         ],
         'Kushala Crus' => [
+            'name' => 'Perneras de Kushala',
             'items' => [
                 'Daora Carapace' => 1,
                 'Daora Dragon Scale' => 1,
@@ -735,7 +989,7 @@ return [
             ],
             'defense' => 2,
             'defense_ice' => 1,
-            'ability' => 'Handicraft',
+            'skill' => 'Handicraft',
             'branch' => 'Kushala Daora',
             'rarity' => 5,
         ],

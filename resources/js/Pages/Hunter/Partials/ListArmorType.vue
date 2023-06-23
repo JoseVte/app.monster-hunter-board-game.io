@@ -7,7 +7,7 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 defineProps({
     canEdit: Boolean,
     showAllArmors: Boolean,
-    showAdvanceAbilityDescription: Boolean,
+    showAdvanceSkillDescription: Boolean,
     campaign: Object,
     hunter: Object,
     icon: [Object, String],
@@ -28,7 +28,7 @@ let toggleChange = ref(false);
                 />
             </div>
             <span class="text-gray-500 italic">{{ $t('Current') }}</span>
-            <span class="text-gray-500 italic">{{ $t('Ability') }}</span>
+            <span class="text-gray-500 italic">{{ $t('Skill') }}</span>
         </div>
         <div class="block md:hidden text-gray-600 dark:text-gray-400 underline">
             <SecondaryButton @click="toggleChange = !toggleChange">
@@ -39,7 +39,7 @@ let toggleChange = ref(false);
             <ListArmors
                 :can-edit="canEdit"
                 :show-all-armors="showAllArmors"
-                :show-advance-ability-description="showAdvanceAbilityDescription"
+                :show-advance-skill-description="showAdvanceSkillDescription"
                 :icon="icon"
                 :campaign="campaign"
                 :hunter="hunter"
@@ -56,7 +56,7 @@ let toggleChange = ref(false);
             class="px-4 sm:px-0"
             :can-edit="canEdit"
             :show-all-armors="showAllArmors"
-            :show-advance-ability-description="showAdvanceAbilityDescription"
+            :show-advance-skill-description="showAdvanceSkillDescription"
             :icon="icon"
             :campaign="campaign"
             :hunter="hunter"

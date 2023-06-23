@@ -15,7 +15,7 @@ const countWeaponCrafted = (weaponType)  => {
 
 const openWeaponType = (weaponType) => {
     const newUrl = route('campaigns.hunters.weapon-type.index', [props.campaign, props.hunter, weaponType]);
-    router.visit(newUrl);
+    router.visit(newUrl, {preserveScroll: true});
 }
 
 const clases = [
