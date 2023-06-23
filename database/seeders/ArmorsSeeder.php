@@ -69,6 +69,9 @@ class ArmorsSeeder extends Seeder
             if (Arr::get($skill, 'bonus-set')) {
                 $bonusSet = [];
                 foreach ($skill['bonus-set'] as $armorName) {
+                    if (Armor::where('name->en', $armorName)->doesntExist()) {
+                        logger($armorName);
+                    }
                     $armor = Armor::where('name->en', $armorName)->firstOrFail();
                     $bonusSet[] = $armor->id;
                 }

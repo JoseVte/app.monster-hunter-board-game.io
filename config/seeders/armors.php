@@ -545,8 +545,8 @@ return [
             'branch' => 'Nergigante',
             'rarity' => 5,
         ],
-        'Kaiser Helm' => [
-            'name' => 'Yelmo de Káiser',
+        'Kaiser Crown' => [
+            'name' => 'Corona del Káiser',
             'items' => [
                 'Teostra Carapace' => 1,
                 'Teostra Horn' => 1,
@@ -967,7 +967,7 @@ return [
             'branch' => 'Nergigante',
             'rarity' => 5,
         ],
-        'Teostra Greaves' => [
+        'Kaiser Greaves' => [
             'name' => 'Grebas de Káiser',
             'items' => [
                 'Fire Dragon Scale' => 2,
