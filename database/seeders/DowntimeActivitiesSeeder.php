@@ -13,7 +13,9 @@ class DowntimeActivitiesSeeder extends Seeder
     public function run(): void
     {
         foreach (config('seeders.downtime-activities') as $activity) {
-            DowntimeActivity::create($activity);
+            DowntimeActivity::updateOrCreate([
+                'name->en' => $activity['name']['en'],
+            ], $activity);
         }
     }
 }

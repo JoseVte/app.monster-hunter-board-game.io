@@ -88,7 +88,7 @@ const submit = () => {
                         v-model:checked="form.remember"
                         name="remember"
                     />
-                    <span class="ml-2 text-sm text-gray-600">{{ $t('Remember me') }}</span>
+                    <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">{{ $t('Remember me') }}</span>
                 </label>
             </div>
 

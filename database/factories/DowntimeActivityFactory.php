@@ -17,6 +17,10 @@ class DowntimeActivityFactory extends Factory
     public function definition(): array
     {
         return [
+            'name' => [
+                'en' => $this->faker->sentence,
+                'es' => $this->faker->sentence,
+            ],
         ];
     }
 }

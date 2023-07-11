@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enum\MonsterCategory;
+use App\Enum\MonsterExpansion;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,6 +19,12 @@ class MonsterFactory extends Factory
     public function definition(): array
     {
         return [
+            'name' => [
+                'en' => $this->faker->name,
+                'es' => $this->faker->name,
+            ],
+            'category' => $this->faker->randomElement(MonsterCategory::cases()),
+            'expansion' => $this->faker->randomElement(MonsterExpansion::cases()),
         ];
     }
 }

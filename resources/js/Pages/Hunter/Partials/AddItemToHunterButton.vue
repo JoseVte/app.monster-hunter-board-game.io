@@ -111,7 +111,7 @@ const closeModal = () => {
                     />
 
                     <InputError
-                        :message="form.errors.count_item"
+                        :message="form.errors.item_id"
                         class="mt-2"
                     />
                 </div>
@@ -155,40 +155,3 @@ const closeModal = () => {
         </template>
     </DialogModal>
 </template>
-
-<style>
-.multiselect__spinner {
-    @apply dark:bg-gray-900;
-}
-
-.multiselect__input,
-.multiselect__single {
-    @apply dark:bg-gray-900;
-}
-
-.multiselect__input:focus,
-.multiselect__single:focus {
-    @apply ring-0;
-}
-
-.multiselect__tags {
-    @apply border-gray-300 dark:border-gray-700 dark:bg-gray-900;
-}
-
-.multiselect__tag {
-    @apply dark:text-gray-500;
-}
-
-.multiselect__content-wrapper {
-    @apply border-gray-300 dark:border-gray-700 dark:bg-gray-900;
-}
-
-.multiselect--above .multiselect__content-wrapper {
-    @apply border-gray-300 dark:border-gray-700;
-}
-
-.multiselect__option--selected {
-    @apply dark:bg-gray-700 dark:text-gray-400;
-}
-
-</style>
