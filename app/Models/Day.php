@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\MonsterDifficulty;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Pivot\DayDowntimeActivityHunter;
 use Illuminate\Database\Eloquent\Relations\HasOne;
@@ -15,14 +16,18 @@ class Day extends Model
 
     protected $fillable = [
         'number',
+        'difficulty',
         'hunted',
 
         'campaign_id',
         'monster_id',
+        'downtime_activity_id',
     ];
 
     protected $casts = [
+        'difficulty' => MonsterDifficulty::class,
         'hunted' => 'boolean',
+        'all_hunters_same_activity' => 'boolean',
     ];
 
     public function campaign(): BelongsTo
@@ -32,11 +37,19 @@ class Day extends Model
 
     public function monster(): HasOne
     {
-        return $this->hasOne(Monster::class);
+        return $this->hasOne(Monster::class, 'id', 'monster_id');
+    }
+
+    public function downtimeActivity(): HasOne
+    {
+        return $this->hasOne(DowntimeActivity::class, 'id', 'downtime_activity_id');
     }
 
     public function hunters(): BelongsToMany
     {
-        return $this->belongsToMany(Hunter::class)->using(DayDowntimeActivityHunter::class);
+        return $this->belongsToMany(Hunter::class, DayDowntimeActivityHunter::class)
+            ->withPivot('downtime_activity_id')
+            ->withTimestamps()
+            ->using(DayDowntimeActivityHunter::class);
     }
 }

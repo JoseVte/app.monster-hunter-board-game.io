@@ -37,3 +37,57 @@
     @apply py-4 px-0;
     @apply sm:pt-0 sm:px-6 sm:bg-white dark:sm:bg-gray-800 sm:border sm:border-gray-400 dark:sm:border-gray-600 sm:rounded sm:rounded-tl-none;
 }
+
+.multiselect__spinner {
+    @apply dark:bg-gray-900;
+}
+
+.multiselect__input,
+.multiselect__single {
+    @apply dark:bg-gray-900;
+}
+
+.multiselect__input:focus,
+.multiselect__single:focus {
+    @apply ring-0;
+}
+
+.multiselect__tags {
+    @apply border-gray-300 dark:border-gray-700 dark:bg-gray-900;
+}
+
+.multiselect__tag {
+    @apply dark:text-gray-500;
+}
+
+.multiselect__content-wrapper {
+    @apply border-gray-300 dark:border-gray-700 dark:bg-gray-900;
+}
+
+.multiselect--above .multiselect__content-wrapper {
+    @apply border-gray-300 dark:border-gray-700;
+}
+
+.multiselect__option--selected {
+    @apply dark:bg-gray-700 dark:text-gray-400;
+}
+
+.day-description table {
+    @apply w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-4 rounded overflow-hidden;
+}
+
+.day-description table thead {
+    @apply text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-600 dark:text-gray-400;
+}
+
+.day-description table th {
+    @apply px-6 py-2 text-center;
+}
+
+.day-description table tbody tr {
+    @apply bg-white border dark:bg-gray-800 dark:border-gray-600;
+}
+
+.day-description table td {
+    @apply px-6 py-2 text-center;
+}

@@ -88,14 +88,14 @@ Route::middleware([
                     'id' => $result['id'],
                     'class' => $class,
                     'url' => Arr::get($result, '_formatted.url'),
-                    'name' => Arr::get($result, '_formatted.' . $locale . '.name'),
-                    'type' => Arr::get($result, '_formatted.' . $locale . '.type'),
+                    'name' => Arr::get($result, '_formatted.'.$locale.'.name'),
+                    'type' => Arr::get($result, '_formatted.'.$locale.'.type'),
                 ];
             };
 
             foreach ([Armor::class, ArmorSkill::class, DowntimeActivity::class, Item::class, Monster::class, Weapon::class, WeaponType::class, WeaponAttack::class] as $class) {
                 $results = $results->merge(collect(Arr::get(call_user_func([$class, 'search'], $request->get('keyword'), $searchOptions)->take($searchLimit)->raw(), 'hits', []))
-                    ->map(fn($result) => $resultsMap($result, $class)));
+                    ->map(fn ($result) => $resultsMap($result, $class)));
             }
         }
 
@@ -135,6 +135,10 @@ Route::middleware([
     Route::resource('campaigns', CampaignController::class);
     Route::put('campaigns/{campaign}/update-potions', [CampaignController::class, 'updatePotions'])
         ->name('campaigns.update-potions');
+    Route::put('campaigns/{campaign}/add-day', [CampaignController::class, 'addDay'])
+        ->name('campaigns.add-day');
+    Route::put('campaigns/{campaign}/update-day/{day}', [CampaignController::class, 'updateDay'])
+        ->name('campaigns.update-day');
     Route::post('campaigns/{campaign}/members', [CampaignMemberController::class, 'store'])
         ->name('campaign-members.store');
     Route::put('campaigns/{campaign}/members/{user}', [CampaignMemberController::class, 'update'])

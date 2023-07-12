@@ -8,9 +8,8 @@ return [
         ],
         'description' => [
             'en' => 'Each player may roll two dice and check the result on the following table.<br>
-<table>
-<tr><th>2d6 Roll Result</th><th>Resource Gained</th></tr>
-<tr><td>2</td><td>Carbalite Ore</td></tr>
+<table><thead><tr><th>2d6 Roll Result</th><th>Resource Gained</th></tr></thead>
+<tbody><tr><td>2</td><td>Carbalite Ore</td></tr>
 <tr><td>3</td><td>Machalite Ore</td></tr>
 <tr><td>4</td><td>Dragonite Ore</td></tr>
 <tr><td>5</td><td>Fulcium Ore</td></tr>
@@ -21,11 +20,10 @@ return [
 <tr><td>10</td><td>Boulder Bone</td></tr>
 <tr><td>11</td><td>Coral Crystal</td></tr>
 <tr><td>12</td><td>Firecell Stone</td></tr>
-</table>',
+</tbody></table>',
             'es' => 'Cada jugador puede tirar dos dados y comprobar el resultado en la siguiente tabla.<br>
-<table>
-<tr><th>Resultado de la Tirada de 2d6</th><th>Recurso Ganado</th></tr>
-<tr><td>2</td><td>Carbalita</td></tr>
+<table><thead><tr><th>Resultado de la Tirada de 2d6</th><th>Recurso Ganado</th></tr></thead>
+<tbody><tr><td>2</td><td>Carbalita</td></tr>
 <tr><td>3</td><td>Machalita</td></tr>
 <tr><td>4</td><td>Dragonita</td></tr>
 <tr><td>5</td><td>Fulcium</td></tr>
@@ -36,7 +34,7 @@ return [
 <tr><td>10</td><td>Hueso Fósil</td></tr>
 <tr><td>11</td><td>Cristal Coralino</td></tr>
 <tr><td>12</td><td>Piedra de Lava</td></tr>
-</table>',
+</tbody></table>',
         ],
     ],
     [

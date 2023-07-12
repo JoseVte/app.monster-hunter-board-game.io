@@ -2,9 +2,11 @@
 
 namespace App\Http\Middleware;
 
+use App\Enum\DayType;
 use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 use Illuminate\Http\Request;
+use App\Enum\MonsterDifficulty;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -47,6 +49,10 @@ class HandleInertiaRequests extends Middleware
             'locale' => app()->getLocale(),
             'user.roles' => $user ? $user->roles->pluck('name') : [],
             'user.permissions' => $user ? $user->getPermissionsViaRoles()->pluck('name') : [],
+
+            // Enums
+            'dayType' => DayType::asKeyLabelObjectSelectable(),
+            'monsterDifficulty' => MonsterDifficulty::asKeyLabelObjectSelectable(),
         ]);
     }
 }

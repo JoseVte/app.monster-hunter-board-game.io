@@ -1,5 +1,7 @@
 <script setup>
 import {useForm, Link} from "@inertiajs/vue3";
+import {useStorage} from "vue3-storage";
+import {ref, watch} from "vue";
 import AppLayout from '@/Layouts/AppLayout.vue';
 import ActionSection from "@/Components/ActionSection.vue";
 import Calendar from "@/Components/Icons/Calendar.vue";
@@ -10,9 +12,14 @@ import InputError from "@/Components/Form/InputError.vue";
 import Breadcrumb from "@/Components/Breadcrumb.vue";
 import MemberManager from "@/Pages/Campaign/Partials/MemberManager.vue";
 import CountForm from "@/Components/Form/CountForm.vue";
+import AddDayToCampaignButton from "@/Pages/Campaign/Partials/AddDayToCampaignButton.vue";
+import SectionBorder from "@/Components/SectionBorder.vue";
+import CampaignDay from "@/Pages/Campaign/Partials/CampaignDay.vue";
 
 const props = defineProps({
     campaign: Object,
+    downtimeDays: [Array, Object],
+    monsters: [Array, Object],
     availableRoles: Array,
     permissions: Object,
 });
@@ -35,6 +42,10 @@ const decrementPotion = () => {
         preserveScroll: true,
     });
 }
+
+const storage = useStorage();
+const showFullCalendar = ref(storage.getStorageSync('show-full-calendar'));
+watch(showFullCalendar, (showFullCalendarValue) => storage.setStorageSync('show-full-calendar', showFullCalendarValue))
 </script>
 
 <template>
@@ -78,7 +89,7 @@ const decrementPotion = () => {
                                 />
                             </div>
 
-                            <div class="grid md:grid-cols-2 mt-4 w-full gap-4 border-t pt-4 border-gray-300 dark:border-gray-700">
+                            <div class="grid sm:grid-cols-2 mt-4 w-full gap-4 border-t pt-4 border-gray-300 dark:border-gray-700">
                                 <div class="flex items-center">
                                     <div class="w-12 h-12 rounded-full bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200 flex items-center justify-center">
                                         <Potion class="w-8 h-8" />
@@ -100,13 +111,34 @@ const decrementPotion = () => {
                                     </div>
                                 </div>
                                 <div class="flex items-center">
-                                    <div class="w-12 h-12 rounded-full bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200 flex items-center justify-center">
+                                    <div
+                                        class="w-12 h-12 rounded-full flex items-center justify-center cursor-pointer"
+                                        :class="{
+                                            'bg-gray-600 text-gray-200 dark:bg-gray-400 dark:text-gray-800': showFullCalendar,
+                                            'bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200': !showFullCalendar,
+                                        }"
+                                        @click="showFullCalendar = !showFullCalendar"
+                                    >
                                         <Calendar class="w-8 h-8" />
                                     </div>
 
                                     <div class="ml-4 leading-tight">
                                         <div class="text-gray-900 dark:text-white">
-                                            {{ campaign.days_count }} / {{ campaign.max_days }} {{ $t('Days') }}
+                                            {{ $t('Days') }}
+                                        </div>
+
+                                        <div class="flex items-center gap-4">
+                                            <div>
+                                                <span class="text-gray-800 dark:text-gray-100">{{ campaign.days_count }}</span>
+                                                <span class="text-gray-600 dark:text-gray-300"> / {{ campaign.max_days }}</span>
+                                            </div>
+                                            <AddDayToCampaignButton
+                                                v-if="permissions.canUpdateCampaign"
+                                                :campaign="campaign"
+                                                :current-day="campaign.days_count + 1"
+                                                :days="downtimeDays"
+                                                :monsters="monsters"
+                                            />
                                         </div>
                                     </div>
                                 </div>
@@ -124,6 +156,29 @@ const decrementPotion = () => {
                                     </ActionMessage>
                                 </div>
                             </div>
+                        </div>
+                    </template>
+                </ActionSection>
+
+                <SectionBorder v-if="showFullCalendar" />
+
+                <ActionSection v-if="showFullCalendar">
+                    <template #title>
+                        {{ $t('Campaign Calendar') }}
+                    </template>
+
+                    <template #content>
+                        <!-- Campaign Calendar -->
+                        <div class="col-span-6 relative grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px">
+                            <CampaignDay
+                                v-for="day in campaign.days"
+                                :key="day.id"
+                                :campaign="campaign"
+                                :day="day"
+                                :days="downtimeDays"
+                                :monsters="monsters"
+                                :can-edit="permissions.canUpdateCampaign"
+                            />
                         </div>
                     </template>
                 </ActionSection>

@@ -3,6 +3,9 @@
 namespace App\Exceptions;
 
 use Throwable;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -40,6 +43,22 @@ class Handler extends ExceptionHandler
     public function register(): void
     {
         $this->reportable(function (Throwable $e): void {
+            if (app()->bound('sentry')) {
+                app('sentry')->captureException($e);
+            }
         });
+    }
+
+    public function render($request, Throwable $e): \Illuminate\Http\Response|JsonResponse|RedirectResponse|Response
+    {
+        $response = parent::render($request, $e);
+
+        if (419 === $response->status()) {
+            return back()->with([
+                'status' => __('The page expired, please try again.'),
+            ]);
+        }
+
+        return $response;
     }
 }

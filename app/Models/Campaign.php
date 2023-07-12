@@ -36,7 +36,7 @@ class Campaign extends Model
 
     public function days(): HasMany
     {
-        return $this->hasMany(Day::class, 'campaign_id');
+        return $this->hasMany(Day::class, 'campaign_id')->orderBy('number');
     }
 
     public function campaignInvitations(): HasMany
