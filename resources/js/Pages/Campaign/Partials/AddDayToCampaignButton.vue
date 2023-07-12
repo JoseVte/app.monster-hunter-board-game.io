@@ -2,7 +2,7 @@
 import _ from "lodash";
 import {ref} from "vue";
 import VueMultiselect from "vue-multiselect";
-import {Link, useForm} from "@inertiajs/vue3";
+import {useForm} from "@inertiajs/vue3";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import InputLabel from "@/Components/Form/InputLabel.vue";
 import DialogModal from "@/Components/DialogModal.vue";

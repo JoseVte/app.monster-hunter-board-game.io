@@ -6,6 +6,7 @@ import GitLabIcon from '@/Components/SocialstreamIcons/GitLabIcon.vue';
 import GoogleIcon from '@/Components/SocialstreamIcons/GoogleIcon.vue';
 import LinkedInIcon from '@/Components/SocialstreamIcons/LinkedInIcon.vue';
 import TwitterIcon from '@/Components/SocialstreamIcons/TwitterIcon.vue';
+import DiscordIcon from "@/Components/SocialstreamIcons/DiscordIcon.vue";
 
 defineProps({
     provider: String,
@@ -46,6 +47,10 @@ defineProps({
                 />
                 <BitbucketIcon
                     v-if="provider === 'bitbucket'"
+                    class="h-6 w-6 mr-2"
+                />
+                <DiscordIcon
+                    v-if="provider === 'discord'"
                     class="h-6 w-6 mr-2"
                 />
 

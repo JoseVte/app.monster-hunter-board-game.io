@@ -3,7 +3,6 @@
 namespace App\Enum\Traits;
 
 use ValueError;
-use App\Enum\Contracts\TranslatableEnum as TranslatableEnumContract;
 
 trait TranslatableEnum
 {

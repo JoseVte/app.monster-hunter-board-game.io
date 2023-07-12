@@ -9,6 +9,7 @@ import GoogleIcon from '@/Components/SocialstreamIcons/GoogleIcon.vue';
 import InputError from '@/Components/Form/InputError.vue';
 import LinkedInIcon from '@/Components/SocialstreamIcons/LinkedInIcon.vue';
 import TwitterIcon from '@/Components/SocialstreamIcons/TwitterIcon.vue';
+import DiscordIcon from "@/Components/SocialstreamIcons/DiscordIcon.vue";
 
 const error = computed(() => usePage().props.errors.socialstream);
 </script>
@@ -84,6 +85,14 @@ const error = computed(() => usePage().props.errors.socialstream);
             >
                 <BitbucketIcon class="h-6 w-6 mx-2" />
                 <span class="sr-only">BitBucket</span>
+            </a>
+
+            <a
+                v-if="$page.props.socialstream.providers.includes('discord')"
+                :href="route('oauth.redirect', 'discord')"
+            >
+                <DiscordIcon class="h-6 w-6 mx-2" />
+                <span class="sr-only">Discord</span>
             </a>
         </div>
 
