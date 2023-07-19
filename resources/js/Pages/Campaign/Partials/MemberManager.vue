@@ -150,11 +150,11 @@ const displayableRole = (role) => {
                             </div>
 
                             <div class="flex items-end gap-2 flex-col">
-                                <div class="flex items-center">
+                                <div class="grid grid-cols-2 gap-2 w-full items-center">
                                     <!-- Edit Hunter -->
                                     <Link
                                         v-if="(userPermissions.canAddCampaignMembers || $page.props.auth.user.id === user.id) && user.membership.hunter_id"
-                                        class="ml-2 text-sm text-gray-600 dark:text-gray-400 underline"
+                                        class="text-sm text-gray-600 dark:text-gray-400 underline"
                                         :href="route('campaigns.hunters.edit', [campaign, user.membership.hunter_id])"
                                     >
                                         {{ $t('Edit Hunter') }}
@@ -163,17 +163,17 @@ const displayableRole = (role) => {
                                     <!-- Remove Hunter -->
                                     <button
                                         v-if="(userPermissions.canAddCampaignMembers || $page.props.auth.user.id === user.id) && user.membership.hunter_id"
-                                        class="cursor-pointer ml-6 text-sm text-red-500"
+                                        class="cursor-pointer text-sm text-red-500"
                                         @click="confirmCampaignHunterRemoval(user)"
                                     >
                                         {{ $t('Remove Hunter') }}
                                     </button>
                                 </div>
-                                <div class="flex items-center">
+                                <div class="grid grid-cols-2 gap-2 w-full items-center">
                                     <!-- Manage Campaign Member Role -->
                                     <button
                                         v-if="userPermissions.canAddCampaignMembers && availableRoles.length"
-                                        class="ml-2 text-sm text-gray-600 dark:text-gray-400 underline"
+                                        class="text-sm text-gray-600 dark:text-gray-400 underline"
                                         @click="manageRole(user)"
                                     >
                                         {{ displayableRole(user.membership.role.name) }}
@@ -181,7 +181,7 @@ const displayableRole = (role) => {
 
                                     <div
                                         v-else-if="availableRoles.length"
-                                        class="ml-2 text-sm text-gray-600 dark:text-gray-400"
+                                        class="text-sm text-gray-600 dark:text-gray-400"
                                     >
                                         {{ displayableRole(user.membership.role.name) }}
                                     </div>
@@ -189,7 +189,7 @@ const displayableRole = (role) => {
                                     <!-- Leave Campaign -->
                                     <button
                                         v-if="$page.props.auth.user.id === user.id"
-                                        class="cursor-pointer ml-6 text-sm text-red-500"
+                                        class="cursor-pointer text-sm text-red-500"
                                         @click="confirmLeavingCampaign"
                                     >
                                         {{ $t('Leave') }}
@@ -198,7 +198,7 @@ const displayableRole = (role) => {
                                     <!-- Remove Campaign Member -->
                                     <button
                                         v-else-if="userPermissions.canRemoveCampaignMembers"
-                                        class="cursor-pointer ml-6 text-sm text-red-500"
+                                        class="cursor-pointer text-sm text-red-500"
                                         @click="confirmCampaignMemberRemoval(user)"
                                     >
                                         {{ $t('Remove') }}

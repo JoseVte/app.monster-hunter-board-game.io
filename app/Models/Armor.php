@@ -62,6 +62,7 @@ class Armor extends Model
     {
         $searchable = [
             'url' => route('wiki.armor.show', $this->id),
+            'type' => strtolower($this->type->name),
         ];
         foreach ($this->type->getTranslations() as $locale => $translation) {
             $searchable[$locale.'.type'] = $translation;

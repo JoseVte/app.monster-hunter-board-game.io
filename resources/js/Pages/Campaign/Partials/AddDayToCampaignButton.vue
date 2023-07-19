@@ -69,7 +69,7 @@ const closeModal = () => {
 
 <template>
     <PrimaryButton
-        class="mt-1 h-8 w-8 !p-0 inline-flex items-center justify-center !rounded-full"
+        class="h-8 w-8 !p-0 inline-flex items-center justify-center !rounded-full"
         type="button"
         @click="confirmAddDay"
     >

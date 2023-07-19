@@ -3,6 +3,7 @@
 import {ref, watch} from "vue";
 import { vOnClickOutside } from '@vueuse/components';
 import axios from "axios";
+import {router} from "@inertiajs/vue3";
 import TextInput from "@/Components/Form/TextInput.vue";
 import SearchIcon from "@/Components/Icons/SearchIcon.vue";
 
@@ -12,6 +13,12 @@ const searchText = ref('');
 const searchResults = ref([]);
 
 const closeResults = () => openSearchResults.value = false;
+
+const search = () => {
+    router.visit(route('search'), {
+        data: { query: searchText.value }
+    });
+}
 
 watch(searchText, (after) => {
     axios.get(route('global-search'), {params: {keyword: after}})
@@ -56,6 +63,7 @@ watch(searchText, (after) => {
                     autocomplete="search"
                     :placeholder="$t('Search')"
                     @focusin="openSearchResults = true"
+                    @keydown.enter="search"
                 />
             </div>
         </Transition>

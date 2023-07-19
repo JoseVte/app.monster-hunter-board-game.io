@@ -31,6 +31,7 @@ class Item extends Model
     {
         $searchable = [
             'url' => route('wiki.item.show', $this->id),
+            'type' => strtolower($this->type->name),
         ];
         foreach ($this->type->getTranslations() as $locale => $translation) {
             $searchable[$locale.'.type'] = $translation;

@@ -23,35 +23,35 @@ defineProps({
             <div class="flex items-center">
                 <FacebookIcon
                     v-if="provider === 'facebook'"
-                    class="h-6 w-6 mr-2"
+                    class="h-6 w-6 mr-2 p-1 rounded-full bg-white"
                 />
                 <GoogleIcon
                     v-if="provider === 'google'"
-                    class="h-6 w-6 mr-2"
+                    class="h-6 w-6 mr-2 p-1 rounded-full bg-white"
                 />
                 <TwitterIcon
                     v-if="['twitter', 'twitter-oauth-2'].includes(provider)"
-                    class="h-6 w-6 mr-2"
+                    class="h-6 w-6 mr-2 p-1 rounded-full bg-white"
                 />
                 <LinkedInIcon
                     v-if="provider === 'linkedin'"
-                    class="h-6 w-6 mr-2"
+                    class="h-6 w-6 mr-2 p-1 rounded-full bg-white"
                 />
                 <GithubIcon
                     v-if="provider === 'github'"
-                    class="h-6 w-6 mr-2"
+                    class="h-6 w-6 mr-2 p-1 rounded-full bg-white"
                 />
                 <GitLabIcon
                     v-if="provider === 'gitlab'"
-                    class="h-6 w-6 mr-2"
+                    class="h-6 w-6 mr-2 p-1 rounded-full bg-white"
                 />
                 <BitbucketIcon
                     v-if="provider === 'bitbucket'"
-                    class="h-6 w-6 mr-2"
+                    class="h-6 w-6 mr-2 p-1 rounded-full bg-white"
                 />
                 <DiscordIcon
                     v-if="provider === 'discord'"
-                    class="h-6 w-6 mr-2"
+                    class="h-6 w-6 mr-2 p-1 rounded-full bg-white"
                 />
 
                 <div>

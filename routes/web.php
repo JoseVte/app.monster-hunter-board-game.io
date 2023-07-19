@@ -6,16 +6,12 @@ use Inertia\Inertia;
 use App\Models\Armor;
 use App\Models\Weapon;
 use App\Models\Monster;
-use App\Models\ArmorSkill;
-use App\Models\WeaponType;
-use App\Models\WeaponAttack;
 use App\Enum\MonsterCategory;
 use App\Enum\MonsterExpansion;
-use App\Models\DowntimeActivity;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Application;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\CampaignHunterController;
 use App\Http\Controllers\CampaignMemberController;
@@ -66,41 +62,8 @@ Route::middleware([
         return Inertia::render('Dashboard', compact('campaigns'));
     })->name('dashboard');
 
-    Route::get('global-search', static function (Illuminate\Http\Request $request): JsonResponse {
-        $results = collect();
-        if ($request->get('keyword')) {
-            $locale = app()->getLocale();
-            $searchOptions = static function ($meiliSearch, string $query, array $options) {
-                $options['attributesToHighlight'] = ['*'];
-                $options['attributesToRetrieve'] = ['id', 'en', 'es'];
-
-                $meiliSearch->updateSettings([
-                    'searchableAttributes' => ['en', 'es'],
-                ]);
-
-                return $meiliSearch->search($query, $options);
-            };
-            $searchLimit = 5;
-            $resultsMap = static function ($result, $class) use ($locale) {
-                arr_expand($result['_formatted']);
-
-                return [
-                    'id' => $result['id'],
-                    'class' => $class,
-                    'url' => Arr::get($result, '_formatted.url'),
-                    'name' => Arr::get($result, '_formatted.'.$locale.'.name'),
-                    'type' => Arr::get($result, '_formatted.'.$locale.'.type'),
-                ];
-            };
-
-            foreach ([Armor::class, ArmorSkill::class, DowntimeActivity::class, Item::class, Monster::class, Weapon::class, WeaponType::class, WeaponAttack::class] as $class) {
-                $results = $results->merge(collect(Arr::get(call_user_func([$class, 'search'], $request->get('keyword'), $searchOptions)->take($searchLimit)->raw(), 'hits', []))
-                    ->map(fn ($result) => $resultsMap($result, $class)));
-            }
-        }
-
-        return response()->json($results);
-    })->name('global-search');
+    Route::get('/search', [SearchController::class, 'search'])->name('search');
+    Route::get('/global-search', [SearchController::class, 'globalSearch'])->name('global-search');
 
     Route::prefix('wiki')->name('wiki.')->group(function (): void {
         Route::get('/', fn () => Inertia::render('Wiki/Index'))->name('index');
