@@ -2,9 +2,9 @@
 
 return [
     'entries' => 'entries',
-    'next' => 'Next',
+    'next' => 'Next &raquo;',
     'of' => 'of',
-    'previous' => 'Previous',
+    'previous' => '&laquo; Previous',
     'showing' => 'Showing',
     'to' => 'to',
 ];

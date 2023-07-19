@@ -117,17 +117,7 @@ const submit = () => {
                             name="terms"
                         />
 
-                        <div class="ml-2">
-                            I agree to the <a
-                                target="_blank"
-                                :href="route('terms.show')"
-                                class="underline text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
-                            >Terms of Service</a> and <a
-                                target="_blank"
-                                :href="route('policy.show')"
-                                class="underline text-sm text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-gray-100"
-                            >Privacy Policy</a>
-                        </div>
+                        <div class="ml-2" v-html="$page.props.jetstreamAcceptText" />
                     </div>
                 </InputLabel>
             </div>

@@ -27,7 +27,7 @@ const error = computed(() => usePage().props.errors.socialstream);
                 v-if="$page.props.socialstream.providers.includes('facebook')"
                 :href="route('oauth.redirect', 'facebook')"
             >
-                <FacebookIcon class="h-6 w-6 mx-2" />
+                <FacebookIcon class="h-8 w-8 mx-2 p-1 rounded-full bg-white" />
                 <span class="sr-only">Facebook</span>
             </a>
 
@@ -35,7 +35,7 @@ const error = computed(() => usePage().props.errors.socialstream);
                 v-if="$page.props.socialstream.providers.includes('google')"
                 :href="route('oauth.redirect', 'google')"
             >
-                <GoogleIcon class="h-6 w-6 mx-2" />
+                <GoogleIcon class="h-8 w-8 mx-2 p-1 rounded-full bg-white" />
                 <span class="sr-only">Google</span>
             </a>
 
@@ -43,7 +43,7 @@ const error = computed(() => usePage().props.errors.socialstream);
                 v-if="$page.props.socialstream.providers.includes('twitter')"
                 :href="route('oauth.redirect', 'twitter')"
             >
-                <TwitterIcon class="h-6 w-6 mx-2" />
+                <TwitterIcon class="h-8 w-8 mx-2 p-1 rounded-full bg-white" />
                 <span class="sr-only">Twitter</span>
             </a>
 
@@ -51,7 +51,7 @@ const error = computed(() => usePage().props.errors.socialstream);
                 v-if="$page.props.socialstream.providers.includes('twitter-oauth-2')"
                 :href="route('oauth.redirect', 'twitter-oauth-2')"
             >
-                <TwitterIcon class="h-6 w-6 mx-2" />
+                <TwitterIcon class="h-8 w-8 mx-2 p-1 rounded-full bg-white" />
                 <span class="sr-only">Twitter</span>
             </a>
 
@@ -59,7 +59,7 @@ const error = computed(() => usePage().props.errors.socialstream);
                 v-if="$page.props.socialstream.providers.includes('linkedin')"
                 :href="route('oauth.redirect', 'linkedin')"
             >
-                <LinkedInIcon class="h-6 w-6 mx-2" />
+                <LinkedInIcon class="h-8 w-8 mx-2 p-1 rounded-full bg-white" />
                 <span class="sr-only">LinkedIn</span>
             </a>
 
@@ -67,7 +67,7 @@ const error = computed(() => usePage().props.errors.socialstream);
                 v-if="$page.props.socialstream.providers.includes('github')"
                 :href="route('oauth.redirect', 'github')"
             >
-                <GithubIcon class="h-6 w-6 mx-2" />
+                <GithubIcon class="h-8 w-8 mx-2 p-1 rounded-full bg-white" />
                 <span class="sr-only">GitHub</span>
             </a>
 
@@ -75,7 +75,7 @@ const error = computed(() => usePage().props.errors.socialstream);
                 v-if="$page.props.socialstream.providers.includes('gitlab')"
                 :href="route('oauth.redirect', 'gitlab')"
             >
-                <GitLabIcon class="h-6 w-6 mx-2" />
+                <GitLabIcon class="h-8 w-8 mx-2 p-1 rounded-full bg-white" />
                 <span class="sr-only">GitLab</span>
             </a>
 
@@ -83,7 +83,7 @@ const error = computed(() => usePage().props.errors.socialstream);
                 v-if="$page.props.socialstream.providers.includes('bitbucket')"
                 :href="route('oauth.redirect', 'bitbucket')"
             >
-                <BitbucketIcon class="h-6 w-6 mx-2" />
+                <BitbucketIcon class="h-8 w-8 mx-2 p-1 rounded-full bg-white" />
                 <span class="sr-only">BitBucket</span>
             </a>
 
@@ -91,7 +91,7 @@ const error = computed(() => usePage().props.errors.socialstream);
                 v-if="$page.props.socialstream.providers.includes('discord')"
                 :href="route('oauth.redirect', 'discord')"
             >
-                <DiscordIcon class="h-6 w-6 mx-2" />
+                <DiscordIcon class="h-8 w-8 mx-2 p-1 rounded-full bg-white" />
                 <span class="sr-only">Discord</span>
             </a>
         </div>
