@@ -20,6 +20,15 @@ class UserSeeder extends Seeder
             ]);
 
             $user->assignRole('admin');
+
+            $personalTeam = $user->currentTeam;
+
+            User::factory(3)->create()->each(function (User $user) use ($personalTeam) {
+                $personalTeam->users()->attach(
+                    $user,
+                    ['role' => 'editor']
+                );
+            });
         }
     }
 }

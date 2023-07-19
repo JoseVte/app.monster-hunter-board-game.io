@@ -81,7 +81,7 @@ const clases = [
 </template>
 
 <style scoped lang="scss">
-$themes: slate, gray, zinc, neutral, stone, red, orange, amber, yellow, lime, green, emerald, teal, cyan, sky, blue, indigo, violet, purple, fuchsia, pink, rose;
+$themes: "slate", "gray", "zinc", "neutral", "stone", "red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal", "cyan", "sky", "blue", "indigo", "violet", "purple", "fuchsia", "pink", "rose";
 @each $theme in $themes {
     .theme-#{$theme} {
         @apply bg-#{$theme}-500;
