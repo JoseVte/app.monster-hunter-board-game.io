@@ -1,5 +1,7 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import {useReCaptcha} from "vue-recaptcha-v3";
+import {onUnmounted} from "vue";
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import Checkbox from '@/Components/Form/Checkbox.vue';
@@ -15,9 +17,23 @@ const form = useForm({
     password: '',
     password_confirmation: '',
     terms: false,
+    captcha_token: null,
 });
+const { executeRecaptcha, recaptchaLoaded, instance } = useReCaptcha()
+recaptchaLoaded().then(() => {
+    if (instance?.value) {
+        instance.value.showBadge()
+    }
+})
 
-const submit = () => {
+onUnmounted(() => {
+    if (instance?.value) {
+        instance.value.hideBadge()
+    }
+})
+
+const submit = async () => {
+    form.captcha_token = await executeRecaptcha('register')
     form.post(route('register'), {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
@@ -117,10 +133,18 @@ const submit = () => {
                             name="terms"
                         />
 
-                        <div class="ml-2" v-html="$page.props.jetstreamAcceptText" />
+                        <div
+                            class="ml-2"
+                            v-html="$page.props.jetstreamAcceptText"
+                        />
                     </div>
                 </InputLabel>
             </div>
+
+            <InputError
+                class="mt-2"
+                :message="form.errors.captcha_token"
+            />
 
             <div class="flex items-center justify-end mt-4">
                 <Link

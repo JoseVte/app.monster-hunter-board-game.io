@@ -5,6 +5,7 @@ import { createI18n } from 'vue-i18n';
 
 import { createApp, h } from 'vue';
 import Vue3Storage, {StorageType} from "vue3-storage";
+import { VueReCaptcha } from 'vue-recaptcha-v3'
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
@@ -22,6 +23,8 @@ createInertiaApp({
             fallbackLocale: "en", // set fallback locale
             messages: localeMessages, // set locale messages
         });
+
+        const recaptchaSiteKey = props.initialPage.props.recaptcha_site_key;
 
         return createApp({ render: () => h(App, props) })
             .use({
@@ -55,6 +58,12 @@ createInertiaApp({
                 storage: StorageType.Session
             })
             .use(plugin)
+            .use(VueReCaptcha, {
+                siteKey: recaptchaSiteKey,
+                loaderOptions: {
+                    autoHideBadge: true
+                }
+            } )
             .use(i18n)
             .use(ZiggyVue, Ziggy)
             .mount(el);

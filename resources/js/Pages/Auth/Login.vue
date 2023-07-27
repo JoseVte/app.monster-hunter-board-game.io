@@ -1,5 +1,7 @@
 <script setup>
 import { Head, Link, useForm } from '@inertiajs/vue3';
+import {useReCaptcha} from "vue-recaptcha-v3";
+import {onUnmounted} from "vue";
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import Checkbox from '@/Components/Form/Checkbox.vue';
@@ -18,9 +20,24 @@ const form = useForm({
     email: '',
     password: '',
     remember: false,
+    captcha_token: null,
 });
+const { executeRecaptcha, recaptchaLoaded, instance } = useReCaptcha()
+recaptchaLoaded().then(() => {
+    if (instance?.value) {
+        instance.value.showBadge()
+    }
+})
 
-const submit = () => {
+onUnmounted(() => {
+    if (instance?.value) {
+        instance.value.hideBadge()
+    }
+})
+
+const submit = async () => {
+    form.captcha_token = await executeRecaptcha('login')
+
     form.transform(data => ({
         ...data,
         remember: form.remember ? 'on' : '',
@@ -33,7 +50,7 @@ const submit = () => {
 <template>
     <Head :title="$t('Log in')" />
 
-    <AuthenticationCard>
+    <AuthenticationCard :can-register="true">
         <template #logo>
             <AuthenticationCardLogo />
         </template>
@@ -90,6 +107,11 @@ const submit = () => {
                     />
                     <span class="ml-2 text-sm text-gray-600 dark:text-gray-400">{{ $t('Remember me') }}</span>
                 </label>
+
+                <InputError
+                    class="mt-2"
+                    :message="form.errors.captcha_token"
+                />
             </div>
 
             <div class="flex items-center justify-end mt-4">

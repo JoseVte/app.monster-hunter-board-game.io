@@ -18,9 +18,6 @@ test('campaign members can be invited to campaign', function (): void {
 
     $this->actingAs($user = User::factory()->withPersonalTeam()->create());
     $campaign = Campaign::factory()->create(['team_id' => $user->currentTeam->id]);
-    $campaign->users()->attach($user->id, [
-        'role_id' => Role::findByName('admin-campaign', 'sanctum')->id,
-    ]);
 
     $response = $this->post(route('campaign-members.store', $campaign), [
         'email' => 'test@example.com',
@@ -43,9 +40,6 @@ test('campaign members invitations can be cancelled', function (): void {
 
     $this->actingAs($user = User::factory()->withPersonalTeam()->create());
     $campaign = Campaign::factory()->create(['team_id' => $user->currentTeam->id]);
-    $campaign->users()->attach($user->id, [
-        'role_id' => Role::findByName('admin-campaign', 'sanctum')->id,
-    ]);
 
     $invitation = $campaign->campaignInvitations()->create([
         'email' => 'test@example.com',

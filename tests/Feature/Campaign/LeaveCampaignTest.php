@@ -7,9 +7,6 @@ use Spatie\Permission\Models\Role;
 test('users can leave campaigns', function (): void {
     $user = User::factory()->withPersonalTeam()->create();
     $campaign = Campaign::factory()->create(['team_id' => $user->currentTeam->id]);
-    $campaign->users()->attach($user->id, [
-        'role_id' => Role::findByName('admin-campaign', 'sanctum')->id,
-    ]);
 
     $user->currentTeam->users()->attach(
         $otherUser = User::factory()->create(),

@@ -32,9 +32,11 @@ module.exports = {
             },
             minWidth: {
                 8: '2rem',
+                16: '4rem',
             },
             minHeight: {
                 8: '2rem',
+                16: '4rem',
             }
         },
     },

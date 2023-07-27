@@ -51,4 +51,10 @@ return [
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
         'redirect' => env('GOOGLE_REDIRECT_URI', trim(env('APP_URL', 'http://localhost'), '/').'/oauth/google/callback'),
     ],
+
+    'google-recaptcha' => [
+        'url' => 'https://www.google.com/recaptcha/api/siteverify',
+        'site-key' => env('GOOGLE_RECAPTCHA_SITE_KEY'),
+        'secret-key' => env('GOOGLE_RECAPTCHA_SECRET_SITE_KEY'),
+    ]
 ];
