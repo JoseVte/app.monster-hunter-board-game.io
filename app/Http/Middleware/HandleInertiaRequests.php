@@ -36,6 +36,8 @@ class HandleInertiaRequests extends Middleware
         $user = $request->user();
 
         return array_merge(parent::share($request), [
+            'recaptcha_site_key' => config('services.google-recaptcha.site-key'),
+
             'current_campaign' => $campaign ?? null,
             'current_campaign_id' => $campaign->id ?? null,
             'has_campaign_hunter' => $user ? $user->hasCampaignHunter($campaign) : false,

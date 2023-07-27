@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Hunter;
+use App\Models\User;
 use DB;
 use App\Models\Day;
 use Inertia\Inertia;
@@ -211,7 +213,12 @@ class CampaignController extends Controller
 
     public function destroy(Campaign $campaign): RedirectResponse
     {
-        $campaign->delete();
+        DB::transaction(static function () use ($campaign) {
+            $campaign->days()->delete();
+            $campaign->users()->detach();
+            Hunter::where('campaign_id', $campaign->id)->delete();
+            $campaign->delete();
+        });
 
         return redirect()->route('dashboard');
     }

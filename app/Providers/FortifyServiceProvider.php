@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use App\Http\Requests\LoginRequest;
+use App\Models\User;
+use Hash;
 use Illuminate\Http\Request;
 use Laravel\Fortify\Fortify;
 use App\Actions\Fortify\CreateNewUser;
