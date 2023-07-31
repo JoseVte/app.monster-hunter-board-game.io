@@ -7,6 +7,8 @@
         <x-favicons />
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
+        <link rel="canonical" href="" />
+        <meta name="description" content="{{ __('Website designed for manage your campaigns, hunters and search items, weapons, etc.') }}" />
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

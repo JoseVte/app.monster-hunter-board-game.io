@@ -6,10 +6,10 @@ import {useI18n} from "vue-i18n";
 import Typed from 'typed.js';
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import ButtonDark from "@/Layouts/Partials/ButtonDark.vue";
-import image1 from '~/hero/1.jpg'
-import image2 from '~/hero/2.jpg'
-import image3 from '~/hero/3.jpg'
-import dashboardImg from '~/dashboard.png'
+import image1 from '~/hero/1.webp'
+import image2 from '~/hero/2.webp'
+import image3 from '~/hero/3.webp'
+import dashboardImg from '~/dashboard.webp'
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Dashboard from "@/Components/Icons/Dashboard.vue";
 import LoginIcon from "@/Components/Icons/LoginIcon.vue";
@@ -69,6 +69,7 @@ onMounted(() => {
             <Link
                 v-if="$page.props.auth.user"
                 :href="route('dashboard')"
+                :title="$t('Dashboard')"
                 class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-primary-500"
             >
                 <Dashboard class="h-6 w-6 block lg:hidden" />
@@ -80,6 +81,7 @@ onMounted(() => {
                     <Link
                         v-if="canLogin"
                         :href="route('login')"
+                        :title="$t('Log in')"
                         class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-primary-500"
                     >
                         <LoginIcon class="h-6 w-6 block lg:hidden" />
@@ -89,6 +91,7 @@ onMounted(() => {
                     <Link
                         v-if="canRegister"
                         :href="route('register')"
+                        :title="$t('Register')"
                         class="ml-4 hidden lg:block font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-primary-500"
                     >
                         {{ $t('Register') }}

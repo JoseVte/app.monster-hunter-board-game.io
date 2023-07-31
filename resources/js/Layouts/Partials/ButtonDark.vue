@@ -1,4 +1,6 @@
 <script setup>
+import {Link} from "@inertiajs/vue3";
+
 defineProps({
     containerClass: String
 })
@@ -26,6 +28,7 @@ const toggleDarkMode = () => {
             hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-300
             focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-900 active:bg-gray-50 dark:active:900"
             :class="containerClass"
+            :title="$t('Toggle dark mode')"
             @click="toggleDarkMode()"
         >
             <svg

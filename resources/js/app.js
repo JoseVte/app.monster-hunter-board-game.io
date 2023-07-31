@@ -10,6 +10,8 @@ import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import localeMessages from "./vue-i18n-locales.generated";
+import { useRegisterSW } from 'virtual:pwa-register/vue'
+useRegisterSW();
 
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
 

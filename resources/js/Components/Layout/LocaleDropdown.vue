@@ -34,9 +34,13 @@ const localeImg = computed(() => {
                     class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-700 active:bg-gray-50 dark:active:bg-gray-700 transition ease-in-out duration-150"
                 >
                     <img
+                        loading="eager"
                         class="w-4 h-4"
+                        width="150"
+                        height="150"
                         :src="localeImg"
                         alt="Locale flag"
+                        title="Locale flag"
                     >
 
                     <svg
@@ -63,9 +67,13 @@ const localeImg = computed(() => {
                 <DropdownLink :href="route('language', 'en')">
                     <div class="flex items-center gap-2">
                         <img
+                            loading="lazy"
                             class="w-4 h-4"
+                            width="150"
+                            height="150"
                             :src="enImg"
-                            alt="Locale flag"
+                            alt="Locale en flag"
+                            title="Locale en flag"
                         >
 
                         <div class="hidden sm:block">
@@ -92,9 +100,13 @@ const localeImg = computed(() => {
                 <DropdownLink :href="route('language', 'es')">
                     <div class="flex items-center gap-2">
                         <img
+                            loading="lazy"
                             class="w-4 h-4"
+                            width="150"
+                            height="150"
                             :src="esImg"
-                            alt="Locale flag"
+                            alt="Locale es flag"
+                            title="Locale es flag"
                         >
 
                         <div class="hidden sm:block">

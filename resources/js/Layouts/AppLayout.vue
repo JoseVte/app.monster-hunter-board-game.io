@@ -2,7 +2,6 @@
 import _ from 'lodash';
 import {computed, ref} from 'vue';
 import {Head, Link, router, usePage} from '@inertiajs/vue3';
-import {useI18n} from "vue-i18n";
 import ApplicationMark from '@/Components/ApplicationMark.vue';
 import Banner from '@/Components/Banner.vue';
 import Dropdown from '@/Components/Dropdown.vue';
@@ -10,30 +9,15 @@ import DropdownLink from '@/Components/DropdownLink.vue';
 import NavLink from '@/Components/NavLink.vue';
 import ResponsiveNavLink from '@/Components/ResponsiveNavLink.vue';
 import GlobalSearch from "@/Components/GlobalSearch.vue";
-import enImg from '~/icons/en.svg';
-import esImg from '~/icons/es.svg';
 import DropdownCampaign from "@/Layouts/Partials/DropdownCampaign.vue";
 import DropdownTeam from "@/Layouts/Partials/DropdownTeam.vue";
 import HunterBanner from "@/Layouts/Partials/HunterBanner.vue";
 import ButtonDark from "@/Layouts/Partials/ButtonDark.vue";
 import LocaleDropdown from "@/Components/Layout/LocaleDropdown.vue";
-const { locale } = useI18n({ useScope: 'global' })
-
-locale.value = usePage().props.locale;
 
 defineProps({
     title: String,
 });
-
-const localeImg = computed(() => {
-    if (locale.value === 'en') {
-        return enImg;
-    }
-    if (locale.value === 'es') {
-        return esImg;
-    }
-    return enImg;
-})
 
 const showingNavigationDropdown = ref(false);
 const currentTeam = usePage().props.auth.user.current_team;
