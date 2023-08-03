@@ -1,6 +1,12 @@
 {
     "name": "Monster Hunter World: Board Game",
     "short_name": "MH World: Board Game",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#333333",
+    "lang": "en",
+    "scope": "/",
+    "id": "/",
     "icons": [
         {
             "src": "/android-chrome-192x192.png",
@@ -20,8 +26,5 @@
             "purpose": "maskable"
         }
     ],
-    "theme_color": "#333333",
-    "background_color": "#333333",
-    "start_url": "/",
-    "display": "standalone"
+    "theme_color": "#333333"
 }

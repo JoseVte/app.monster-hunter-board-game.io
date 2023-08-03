@@ -29,21 +29,18 @@ use App\Http\Controllers\CampaignInvitationController;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', static function () {
     return Inertia::render('Welcome', [
         'canLogin' => Route::has('login'),
         'canRegister' => Route::has('register'),
-        'appName' => config('app.name'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
     ]);
 })->name('welcome');
 
-Route::get('language/{language}', function ($language) {
+Route::get('language/{language}', static function ($language) {
     session()->put('locale', $language);
     App::setLocale($language);
 
-    return redirect()->back();
+    return back(302, [], route('welcome'));
 })->name('language');
 
 Route::middleware([

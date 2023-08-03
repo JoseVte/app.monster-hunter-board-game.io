@@ -19,8 +19,6 @@ const { t } = useI18n({ useScope: 'global' })
 defineProps({
     canLogin: Boolean,
     canRegister: Boolean,
-    laravelVersion: String,
-    phpVersion: String,
     status: String,
 });
 
@@ -55,7 +53,7 @@ onMounted(() => {
 </script>
 
 <template>
-    <Head :title="$t('Monster Hunter World: Board Game')" />
+    <Head />
 
     <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 dark:text-white selection:bg-primary-500 selection:text-white">
         <div

@@ -44,6 +44,7 @@ defineProps({
                 <div
                     v-for="hunter in day.hunters"
                     :key="hunter.id"
+                    class="flex gap-2 items-center"
                 >
                     <span class="text-gray-600 dark:text-gray-400">{{ hunter.name }}</span>
                     {{ hunter.pivot.downtime_activity_id ? hunter.pivot.downtime_activity.name : '-' }}

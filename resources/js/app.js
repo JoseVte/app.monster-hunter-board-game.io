@@ -8,15 +8,22 @@ import Vue3Storage, {StorageType} from "vue3-storage";
 import { VueReCaptcha } from 'vue-recaptcha-v3'
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
+import { useRegisterSW } from 'virtual:pwa-register/vue'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import localeMessages from "./vue-i18n-locales.generated";
-import { useRegisterSW } from 'virtual:pwa-register/vue'
 useRegisterSW();
 
-const appName = window.document.getElementsByTagName('title')[0]?.innerText || 'Laravel';
+const appName = window.document.getElementsByTagName('title')[0]?.innerText || process.env.APP_NAME;
+
 
 createInertiaApp({
-    title: (title) => `${title} - ${appName}`,
+    title: (title) => {
+        if (title) {
+            return  `${title} - ${appName}`
+        }
+
+        return  appName
+    },
     resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob('./Pages/**/*.vue')),
     setup({ el, App, props, plugin }) {
         const i18n = createI18n({

@@ -29,14 +29,19 @@ export default defineConfig({
             },
         }),
         VitePWA({
+            mode: 'development',
             injectRegister: 'auto',
+            scope: '/',
+            base: '/',
             registerType: 'autoUpdate',
+            outDir: 'public',
             workbox: {
-                globPatterns: ['**/*.{js,css}'],
+                globPatterns: ['**/*.{js,css,webp,jpg,png}'],
                 navigateFallback: null,
-                cleanupOutdatedCaches: false
+                cleanupOutdatedCaches: false,
             },
             manifest: {
+                id: "/",
                 name: "Monster Hunter World: Board Game",
                 short_name: "MH World: Board Game",
                 icons: [

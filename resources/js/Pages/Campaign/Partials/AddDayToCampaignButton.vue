@@ -163,11 +163,15 @@ const closeModal = () => {
                                 class="mt-2"
                             />
                         </div>
-                        <div
-                            v-if="form.day_id"
-                            class="sm:col-span-2 day-description"
-                            v-html="_.find(days, (day) => day.id === form.day_id.id).description"
-                        />
+                        <template v-if="form.day_id">
+                            <h3 class="font-medium text-gray-700 dark:text-gray-300">
+                                {{ $t('Description') }}
+                            </h3>
+                            <div
+                                class="sm:col-span-2 day-description"
+                                v-html="_.find(days, (day) => day.id === form.day_id.id).description"
+                            />
+                        </template>
                     </template>
                     <template
                         v-for="user in campaign.users"
