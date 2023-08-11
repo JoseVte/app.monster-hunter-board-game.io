@@ -541,15 +541,21 @@ return [
     [
         'name' => [
             'en' => 'Gunlance',
-            'es' => 'Lanzapistola',
+            'es' => 'Lanza Pistola',
         ],
-        'description' => '',
+        'description' => [
+            'en' => 'During setup, place the 5 shelling cards face up in a row above your stamina board.\nWhen you play an attack card with one or more [shelling_up_icon], flip a number of shelling cards face down equal to the number of [shelling_up_icon] on the attack card. If there aren\'t enough face up shelling cards for the attack, flip as many as you can.\nDraw +1 [damage_card_icon] for each shelling card flipped face down while resolving the attack card.\nWhen you sharpen your weapon, fill all your shelling cards face up.',
+            'es' => 'Durante la configuración, coloca las 5 cartas de bombardeo boca arriba en una fila sobre tu tablero de resistencia.\nCuando juegues una carta de ataque con uno o más [shelling_up_icon], voltea una cantidad de cartas de bombardeo boca abajo igual a la cantidad de [shelling_up_icon] en la carta de ataque. Si no hay suficientes cartas de bombardeo boca arriba para el ataque, voltee todas las que pueda.\nObtenga +1 [damage_card_icon] por cada carta de bombardeo volteada boca abajo mientras resuelve la carta de ataque.\nCuando afile su arma, rellene todas tus cartas de bombardeo boca arriba.',
+        ],
         'image' => 'icon_weapon_08.png',
         'weapons' => [
             [
                 'default' => true,
                 'branch' => 'mineral',
-                'name' => 'Iron Gunlance',
+                'name' => [
+                    'en' => 'Iron Gunlance',
+                    'es' => 'Lanza Pistola Férrea',
+                ],
                 'defense' => 1,
                 'count_attack_1' => 8,
                 'count_attack_2' => 2,
@@ -558,7 +564,10 @@ return [
                 'parent' => 'Iron Gunlance',
                 'branch' => 'mineral',
                 'rarity' => 2,
-                'name' => 'Steel Gunlance',
+                'name' => [
+                    'en' => 'Steel Gunlance',
+                    'es' => 'Lanza Pistola Acerada',
+                ],
                 'defense' => 1,
                 'count_attack_1' => 7,
                 'count_attack_2' => 4,
@@ -581,7 +590,10 @@ return [
                 'parent' => 'Steel Gunlance',
                 'branch' => 'mineral',
                 'rarity' => 3,
-                'name' => 'Chrome Gunlance',
+                'name' => [
+                    'en' => 'Chrome Gunlance',
+                    'es' => 'Cromolanza Pistola',
+                ],
                 'defense' => 1,
                 'count_attack_1' => 5,
                 'count_attack_2' => 4,
@@ -605,7 +617,10 @@ return [
             ],
             [
                 'branch' => 'bone',
-                'name' => 'Bone Gunlance',
+                'name' => [
+                    'en' => 'Bone Gunlance',
+                    'es' => 'Lanza Pistola Ósea',
+                ],
                 'defense' => 1,
                 'count_attack_1' => 5,
                 'count_attack_2' => 5,
@@ -617,7 +632,10 @@ return [
                 'parent' => 'Bone Gunlance',
                 'branch' => 'bone',
                 'rarity' => 2,
-                'name' => 'Bone Cannon',
+                'name' => [
+                    'en' => 'Bone Cannon',
+                    'es' => 'Cañón Óseo',
+                ],
                 'defense' => 1,
                 'count_attack_1' => 3,
                 'count_attack_2' => 6,
@@ -640,7 +658,10 @@ return [
                 'parent' => 'Bone Cannon',
                 'branch' => 'bone',
                 'rarity' => 3,
-                'name' => 'Great Bone Gunlance',
+                'name' => [
+                    'en' => 'Great Bone Gunlance',
+                    'es' => 'Lanza Pistola Megaósea',
+                ],
                 'defense' => 1,
                 'count_attack_1' => 3,
                 'count_attack_2' => 4,
@@ -665,7 +686,10 @@ return [
                 'parent' => 'Bone Gunlance',
                 'branch' => 'Barroth',
                 'rarity' => 3,
-                'name' => 'Carapace Cannon',
+                'name' => [
+                    'en' => 'Carapace Cannon',
+                    'es' => 'Cañón Acorazado',
+                ],
                 'defense' => 1,
                 'count_attack_1' => 3,
                 'count_attack_2' => 3,
@@ -688,7 +712,10 @@ return [
                 'parent' => 'Carapace Cannon',
                 'branch' => 'Barroth',
                 'rarity' => 4,
-                'name' => 'Barroth Blaster',
+                'name' => [
+                    'en' => 'Barroth Blaster',
+                    'es' => 'Bláster Barroth',
+                ],
                 'defense' => 1,
                 'count_attack_1' => 3,
                 'count_attack_2' => 5,
@@ -714,7 +741,10 @@ return [
                 'parent' => 'Iron Gunlance',
                 'branch' => 'Jyuratodus',
                 'rarity' => 3,
-                'name' => 'Madness Gunlance',
+                'name' => [
+                    'en' => 'Madness Gunlance',
+                    'es' => 'Lanza Pistola Maníaca',
+                ],
                 'defense' => 1,
                 'has_elemental_attacks' => true,
                 'count_attack_1' => 2,
@@ -739,7 +769,10 @@ return [
                 'parent' => 'Madness Gunlance',
                 'branch' => 'Jyuratodus',
                 'rarity' => 4,
-                'name' => 'Jyura Buster',
+                'name' => [
+                    'en' => 'Jyura Buster',
+                    'es' => 'Cañón Jyura',
+                ],
                 'defense' => 1,
                 'has_elemental_attacks' => true,
                 'count_attack_1' => 2,
@@ -764,6 +797,7 @@ return [
                 ],
             ],
         ],
+        'weapon-attacks' => []
     ],
     [
         'name' => [
