@@ -1,6 +1,7 @@
 <script setup>
+import {useStorage} from "vue3-storage";
+import {ref, watch} from "vue";
 import AppLayout from "@/Layouts/AppLayout.vue";
-import WikiSection from "@/Components/WikiSection.vue";
 import ItemsIcon from "@/Components/Icons/ItemsIcon.vue";
 import MonstersIcon from "@/Components/Icons/MonstersIcon.vue";
 import ArmorsIcon from "@/Components/Icons/ArmorsIcon.vue";
@@ -11,8 +12,6 @@ import LegArmor from "@/Components/Icons/LegArmor.vue";
 import SearchGridItem from "@/Components/SearchGridItem.vue";
 import CogIcon from "@/Components/Icons/CogIcon.vue";
 import Calendar from "@/Components/Icons/Calendar.vue";
-import {useStorage} from "vue3-storage";
-import {ref, watch} from "vue";
 import Switch from "@/Components/Form/Switch.vue";
 
 defineProps({

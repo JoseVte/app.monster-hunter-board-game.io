@@ -36,10 +36,15 @@ if (!function_exists('create_weapon_tree')) {
         $latestWeaponModels = $weaponType->weapons()
             ->doesntHave('children')
             ->with([
+                'items',
                 'parent',
+                'parent.items',
                 'parent.parent',
+                'parent.parent.items',
                 'parent.parent.parent',
+                'parent.parent.parent.items',
                 'parent.parent.parent.parent',
+                'parent.parent.parent.parent.items',
             ])
             ->get();
 

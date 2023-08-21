@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\WeaponType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,6 +18,11 @@ class WeaponFactory extends Factory
     public function definition(): array
     {
         return [
+            'type_id' => WeaponType::factory(),
+            'name' => [
+                'en' => $this->faker->name,
+                'es' => $this->faker->name,
+            ],
         ];
     }
 }

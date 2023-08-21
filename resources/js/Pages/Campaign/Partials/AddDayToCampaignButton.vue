@@ -227,7 +227,7 @@ const closeModal = () => {
                     <div>
                         <InputLabel
                             for="add-monster-id"
-                            :value="$t('Count')"
+                            :value="$t('Monster')"
                         />
                         <VueMultiselect
                             id="add-monster-id"

@@ -55,7 +55,9 @@ class Armor extends Model
 
     public function items(): BelongsToMany
     {
-        return $this->belongsToMany(Item::class, 'count_item_armor')->using(CountItemArmor::class);
+        return $this->belongsToMany(Item::class, 'count_item_armor')
+            ->withTimestamps()
+            ->using(CountItemArmor::class);
     }
 
     public function toSearchableArray(): array

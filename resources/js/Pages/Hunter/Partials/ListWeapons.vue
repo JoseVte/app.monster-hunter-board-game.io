@@ -3,6 +3,7 @@ import {Link} from "@inertiajs/vue3";
 import _ from "lodash";
 import WeaponsIcon from "@/Components/Icons/WeaponsIcon.vue";
 import Check from "@/Components/Icons/Check.vue";
+import CraftWeaponModal from "@/Pages/Hunter/Partials/CraftWeaponModal.vue";
 
 const props = defineProps({
     canEdit: Boolean,
@@ -45,63 +46,78 @@ const hunterWeaponCount = (weapon) => {
         </Link>
 
         <table class="mt-4 hidden md:table">
-            <tr
-                v-for="(weaponBranch, branch) in weapons"
-                :key="branch"
-            >
-                <td class="align-middle pr-4 h-fit">
-                    <div class="border capitalize h-fit lg:min-w-[140px] rounded border-gray-400 dark:border-gray-500 bg-gray-300 dark:bg-gray-600 p-2 text-gray-800 dark:text-gray-200">
-                        {{ branch }}
-                    </div>
-                </td>
-                <td class="align-middle h-full py-2 w-full">
-                    <div class="grid grid-cols-4 gap-8 items-center h-full w-full">
-                        <template
-                            v-for="(weapon, subIndex) in weaponBranch"
-                            :key="weapon.id"
-                        >
-                            <div
-                                v-if="subIndex + 1 === weapon.rarity"
-                                class="weapon-box relative border rounded border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 p-2 text-gray-800 dark:text-gray-200"
+            <thead>
+                <tr>
+                    <th class="dark:text-white">
+                        {{ $t('Tree') }}
+                    </th>
+                    <th class="dark:text-white">
+                        {{ $t('Weapons') }}
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr
+                    v-for="(weaponBranch, branch) in weapons"
+                    :key="branch"
+                >
+                    <td class="align-middle pr-4 h-fit">
+                        <div class="border capitalize h-fit lg:min-w-[140px] rounded border-gray-400 dark:border-gray-500 bg-gray-300 dark:bg-gray-600 p-2 text-gray-800 dark:text-gray-200">
+                            {{ branch }}
+                        </div>
+                    </td>
+                    <td class="align-middle h-full py-2 w-full">
+                        <div class="grid grid-cols-4 gap-8 items-center h-full w-full">
+                            <template
+                                v-for="(weapon, subIndex) in weaponBranch"
+                                :key="weapon.id"
                             >
-                                <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
-                                    <div class="flex justify-between items-center w-full lg:w-auto">
-                                        <div class="bg-gray-300 dark:bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8 flex items-center justify-center">
-                                            <WeaponsIcon
-                                                class="h-4 w-4"
-                                                :class="getRarityColor(weapon.rarity)"
-                                            />
+                                <CraftWeaponModal
+                                    v-if="subIndex + 1 === weapon.rarity"
+                                    :campaign="campaign"
+                                    :hunter="hunter"
+                                    :weapon="weapon"
+                                    class-container="weapon-box"
+                                >
+                                    <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
+                                        <div class="flex justify-between items-center w-full lg:w-auto">
+                                            <div class="bg-gray-300 dark:bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8 flex items-center justify-center">
+                                                <WeaponsIcon
+                                                    class="h-4 w-4"
+                                                    :class="getRarityColor(weapon.rarity)"
+                                                />
+                                            </div>
+                                            <div
+                                                v-if="weapon.is_default || hunterWeaponCount(weapon)"
+                                                class="bg-gray-300 dark:bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8 flex lg:hidden items-center justify-center"
+                                            >
+                                                <Check
+                                                    class="h-6 w-6 text-green-500"
+                                                />
+                                            </div>
+                                        </div>
+                                        <div class="flex gap-2 items-center justify-between">
+                                            {{ weapon.name }} <span v-if="!weapon.is_default && hunterWeaponCount(weapon)">({{ hunterWeaponCount(weapon) }})</span>
                                         </div>
                                         <div
                                             v-if="weapon.is_default || hunterWeaponCount(weapon)"
-                                            class="bg-gray-300 dark:bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8 flex lg:hidden items-center justify-center"
+                                            class="bg-gray-300 dark:bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8  hidden lg:flex items-center justify-center"
                                         >
                                             <Check
                                                 class="h-6 w-6 text-green-500"
                                             />
                                         </div>
                                     </div>
-                                    <div class="flex gap-2 items-center justify-between">
-                                        {{ weapon.name }} <span v-if="!weapon.is_default && hunterWeaponCount(weapon)">({{ hunterWeaponCount(weapon) }})</span>
-                                    </div>
-                                    <div
-                                        v-if="weapon.is_default || hunterWeaponCount(weapon)"
-                                        class="bg-gray-300 dark:bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8  hidden lg:flex items-center justify-center"
-                                    >
-                                        <Check
-                                            class="h-6 w-6 text-green-500"
-                                        />
-                                    </div>
-                                </div>
-                            </div>
-                            <div
-                                v-else
-                                class="weapon-box-line relative border-b rounded border-gray-300 dark:border-gray-500 h-[1px]"
-                            />
-                        </template>
-                    </div>
-                </td>
-            </tr>
+                                </CraftWeaponModal>
+                                <div
+                                    v-else
+                                    class="weapon-box-line relative border-b rounded border-gray-300 dark:border-gray-500 h-[1px]"
+                                />
+                            </template>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
         </table>
 
         <div
@@ -118,9 +134,12 @@ const hunterWeaponCount = (weapon) => {
                     v-for="weapon in weaponBranch"
                     :key="weapon.id"
                 >
-                    <div
+                    <CraftWeaponModal
                         v-if="weapon.id"
-                        class="weapon-box-vertical relative border rounded border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 p-2 text-gray-800 dark:text-gray-200"
+                        :campaign="campaign"
+                        :hunter="hunter"
+                        :weapon="weapon"
+                        class-container="weapon-box-vertical"
                     >
                         <div class="grid grid-cols-3 gap-2 sm:w-full">
                             <div class="bg-gray-300 dark:bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8 flex items-center justify-center">
@@ -143,14 +162,14 @@ const hunterWeaponCount = (weapon) => {
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </CraftWeaponModal>
                 </template>
             </div>
         </div>
     </div>
 </template>
 
-<style scoped lang="scss">
+<style lang="scss">
 .weapon-box:not(:first-child) {
     @apply before:content-[''] before:h-0 before:w-0 before:-left-2 before:top-1/2 before:absolute;
     @apply before:border-solid before:border-transparent before:border-l-gray-300 dark:before:border-l-gray-500 before:border-y-4 before:border-l-8 before:border-r-0 before:-translate-y-1/2;
