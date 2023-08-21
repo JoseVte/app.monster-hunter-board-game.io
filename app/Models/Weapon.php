@@ -70,17 +70,26 @@ class Weapon extends Model
 
     public function items(): BelongsToMany
     {
-        return $this->belongsToMany(Item::class, 'count_item_weapon')->using(CountItemWeapon::class);
+        return $this->belongsToMany(Item::class, 'count_item_weapon')
+            ->withPivot(['number'])
+            ->withTimestamps()
+            ->using(CountItemWeapon::class);
     }
 
     public function attacksToAdd(): BelongsToMany
     {
-        return $this->belongsToMany(WeaponAttack::class, 'count_weapon_attack_add')->using(CountWeaponAttackAdd::class);
+        return $this->belongsToMany(WeaponAttack::class, 'count_weapon_attack_add')
+            ->withPivot(['number'])
+            ->withTimestamps()
+            ->using(CountWeaponAttackAdd::class);
     }
 
     public function attacksToRemove(): BelongsToMany
     {
-        return $this->belongsToMany(WeaponAttack::class, 'count_weapon_attack_remove')->using(CountWeaponAttackRemove::class);
+        return $this->belongsToMany(WeaponAttack::class, 'count_weapon_attack_remove')
+            ->withPivot(['number'])
+            ->withTimestamps()
+            ->using(CountWeaponAttackRemove::class);
     }
 
     public function toSearchableArray(): array

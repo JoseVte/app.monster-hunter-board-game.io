@@ -117,6 +117,8 @@ Route::middleware([
     Route::resource('campaigns.hunters', CampaignHunterController::class)->except('show');
     Route::get('campaigns/{campaign}/hunters/{hunter}/weapons/{weaponType}', [CampaignHunterController::class, 'showWeaponType'])
         ->name('campaigns.hunters.weapon-type.index');
+    Route::post('campaigns/{campaign}/hunters/{hunter}/weapons/{weaponType}/{weapon}', [CampaignHunterController::class, 'craftWeapon'])
+        ->name('campaigns.hunters.weapons.craft');
     Route::get('campaigns/{campaign}/hunters/{hunter}/{tab?}/{weaponType?}', [CampaignHunterController::class, 'show'])
         ->name('campaigns.hunters.show')
         ->where('tab', 'items|weapons|armors');

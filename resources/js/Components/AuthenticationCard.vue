@@ -1,8 +1,8 @@
 <script setup>
+import {Link} from "@inertiajs/vue3";
 import ButtonDark from "@/Layouts/Partials/ButtonDark.vue";
 import LocaleDropdown from "@/Components/Layout/LocaleDropdown.vue";
 import LoginIcon from "@/Components/Icons/LoginIcon.vue";
-import {Link} from "@inertiajs/vue3";
 
 defineProps({
     canRegister: {

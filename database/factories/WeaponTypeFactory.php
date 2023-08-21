@@ -17,6 +17,10 @@ class WeaponTypeFactory extends Factory
     public function definition(): array
     {
         return [
+            'name' => [
+                'en' => $this->faker->name,
+                'es' => $this->faker->name,
+            ],
         ];
     }
 }

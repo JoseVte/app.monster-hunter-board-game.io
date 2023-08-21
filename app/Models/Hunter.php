@@ -83,4 +83,20 @@ class Hunter extends Model
     {
         return $this->campaign->users()->wherePivot('hunter_id', $this->id)->first();
     }
+
+    public function canCraftWeapon(Weapon $weapon): bool
+    {
+        if ($weapon->is_default) {
+            return false;
+        }
+
+        if ($weapon->parent_id && !$this->weapons()->find($weapon->parent_id)) {
+            return false;
+        }
+
+        return $weapon->items->filter(function (Item $item) {
+            $hunterItem = $this->items()->find($item->id);
+            return empty($hunterItem) || $item->pivot->number > $hunterItem->pivot->number;
+        })->count() === 0;
+    }
 }

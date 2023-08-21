@@ -144,7 +144,7 @@ const closeModal = () => {
             </SecondaryButton>
 
             <PrimaryButton
-                id="delete-user-btn"
+                id="add-item-btn"
                 class="ml-3"
                 :class="{ 'opacity-25': form.processing }"
                 :disabled="form.processing"
