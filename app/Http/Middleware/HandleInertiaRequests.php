@@ -49,6 +49,7 @@ class HandleInertiaRequests extends Middleware
                 ]);
             },
             'locale' => app()->getLocale(),
+            'user.campaigns' => $user->campaigns ?? [],
             'user.roles' => $user ? $user->roles->pluck('name') : [],
             'user.permissions' => $user ? $user->getPermissionsViaRoles()->pluck('name') : [],
 

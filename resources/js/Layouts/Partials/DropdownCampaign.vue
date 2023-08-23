@@ -19,7 +19,7 @@ defineProps({
     </DropdownLink>
 
     <!-- Campaign Switcher -->
-    <template v-if="campaigns.length > 1">
+    <template v-if="campaigns.length > 0">
         <div class="border-t border-gray-200 dark:border-gray-600" />
 
         <div class="block px-4 py-2 text-xs text-gray-400">

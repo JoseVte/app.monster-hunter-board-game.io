@@ -7,6 +7,7 @@ import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
 import TextareaInput from "@/Components/Form/TextareaInput.vue";
 import SelectInput from "@/Components/Form/SelectInput.vue";
+import WysiwygInput from "@/Components/Form/WysiwygInput.vue";
 
 defineProps({
     teams: Array
@@ -80,12 +81,10 @@ const createCampaign = () => {
                     for="description"
                     :value="$t('Description')"
                 />
-                <TextareaInput
-                    id="name"
+                <WysiwygInput
+                    id="description"
                     v-model="form.description"
-                    type="text"
                     class="block w-full mt-1"
-                    autofocus
                 />
                 <InputError
                     :message="form.errors.description"

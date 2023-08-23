@@ -7,6 +7,7 @@ import InputLabel from '@/Components/Form/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
 import TextareaInput from "@/Components/Form/TextareaInput.vue";
+import WysiwygInput from "@/Components/Form/WysiwygInput.vue";
 
 const props = defineProps({
     campaign: Object,
@@ -56,15 +57,14 @@ const updateCampaignDetails = () => {
                 />
             </div>
 
-            <div class="col-span-6 sm:col-span-4">
+            <div class="col-span-6">
                 <InputLabel
                     for="description"
                     :value="$t('Description')"
                 />
-                <TextareaInput
-                    id="name"
+                <WysiwygInput
+                    id="description"
                     v-model="form.description"
-                    type="text"
                     class="block w-full mt-1"
                 />
                 <InputError

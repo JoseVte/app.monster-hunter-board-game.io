@@ -99,4 +99,16 @@ class Hunter extends Model
             return empty($hunterItem) || $item->pivot->number > $hunterItem->pivot->number;
         })->count() === 0;
     }
+
+    public function canCraftArmor(Armor $armor): bool
+    {
+        if ($armor->is_default) {
+            return false;
+        }
+
+        return $armor->items->filter(function (Item $item) {
+            $hunterItem = $this->items()->find($item->id);
+            return empty($hunterItem) || $item->pivot->number > $hunterItem->pivot->number;
+        })->count() === 0;
+    }
 }

@@ -15,6 +15,7 @@ import CountForm from "@/Components/Form/CountForm.vue";
 import AddDayToCampaignButton from "@/Pages/Campaign/Partials/AddDayToCampaignButton.vue";
 import SectionBorder from "@/Components/SectionBorder.vue";
 import CampaignDay from "@/Pages/Campaign/Partials/CampaignDay.vue";
+import WysiwygView from "@/Components/Form/WysiwygView.vue";
 
 const props = defineProps({
     campaign: Object,
@@ -83,9 +84,9 @@ watch(showFullCalendar, (showFullCalendarValue) => storage.setStorageSync('show-
                             />
 
                             <div class="mt-2">
-                                <p
+                                <WysiwygView
                                     class="text-gray-600 dark:text-gray-400"
-                                    v-text="campaign.description"
+                                    :text="campaign.description"
                                 />
                             </div>
 

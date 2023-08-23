@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Armor;
 use App\Models\Item;
 use App\Models\User;
 use App\Models\Hunter;
@@ -14,6 +15,13 @@ beforeEach(function (): void {
     $this->weapon = Weapon::factory()->create(['is_default' => false]);
     $this->weaponDefault = Weapon::factory()->create(['is_default' => true]);
     $this->weaponChild = Weapon::factory()->create(['parent_id' => $this->weapon]);
+    $this->weaponItem = Weapon::factory()->create(['is_default' => false]);
+    $this->weaponItem->items()->attach($this->item, ['number' => 1]);
+
+    $this->armor = Armor::factory()->create(['is_default' => false]);
+    $this->armorDefault = Armor::factory()->create(['is_default' => true]);
+    $this->armorItem = Armor::factory()->create(['is_default' => false]);
+    $this->armorItem->items()->attach($this->item, ['number' => 1]);
 });
 
 test('hunter can see edit page', function (): void {
@@ -68,4 +76,52 @@ test('hunter can craft child weapon', function (): void {
     $response->assertStatus(303);
 
     $this->assertEquals(1, $this->hunter->weapons()->count());
+});
+
+test('hunter can craft weapon with items', function (): void {
+    $this->hunter->items()->attach($this->item, ['number' => 1]);
+    $response = $this->post(route('campaigns.hunters.weapons.craft', [$this->campaign, $this->hunter, $this->weaponItem->type, $this->weaponItem]));
+    $response->assertStatus(303);
+
+    $this->assertEquals(1, $this->hunter->weapons()->count());
+    $this->assertEquals(1, $this->hunter->items()->count());
+    $this->assertEquals(0, $this->hunter->items()->find($this->item)->pivot->number);
+});
+
+test('hunter cannot craft weapon without items', function (): void {
+    $response = $this->post(route('campaigns.hunters.weapons.craft', [$this->campaign, $this->hunter, $this->weaponItem->type, $this->weaponItem]));
+    $response->assertStatus(400);
+
+    $this->assertEquals(0, $this->hunter->weapons()->count());
+});
+
+test('hunter can craft armor', function (): void {
+    $response = $this->post(route('campaigns.hunters.armors.craft', [$this->campaign, $this->hunter, $this->armor]));
+    $response->assertStatus(303);
+
+    $this->assertEquals(1, $this->hunter->armors()->count());
+});
+
+test('hunter cannot craft default armor', function (): void {
+    $response = $this->post(route('campaigns.hunters.armors.craft', [$this->campaign, $this->hunter, $this->armorDefault]));
+    $response->assertStatus(400);
+
+    $this->assertEquals(0, $this->hunter->armors()->count());
+});
+
+test('hunter can craft armor with items', function (): void {
+    $this->hunter->items()->attach($this->item, ['number' => 1]);
+    $response = $this->post(route('campaigns.hunters.armors.craft', [$this->campaign, $this->hunter, $this->armorItem]));
+    $response->assertStatus(303);
+
+    $this->assertEquals(1, $this->hunter->armors()->count());
+    $this->assertEquals(1, $this->hunter->items()->count());
+    $this->assertEquals(0, $this->hunter->items()->find($this->item)->pivot->number);
+});
+
+test('hunter cannot craft armor without items', function (): void {
+    $response = $this->post(route('campaigns.hunters.armors.craft', [$this->campaign, $this->hunter, $this->armorItem]));
+    $response->assertStatus(400);
+
+    $this->assertEquals(0, $this->hunter->armors()->count());
 });

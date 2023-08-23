@@ -79,6 +79,9 @@
         "post-update-cmd": [
             "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
         ],
+        "pint": [
+            "vendor/bin/pint --config=./pint.json"
+        ],
         "coverage": [
             "vendor/bin/pest --parallel --coverage-html ./reports"
         ],

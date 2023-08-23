@@ -56,6 +56,7 @@ class Armor extends Model
     public function items(): BelongsToMany
     {
         return $this->belongsToMany(Item::class, 'count_item_armor')
+            ->withPivot('number')
             ->withTimestamps()
             ->using(CountItemArmor::class);
     }

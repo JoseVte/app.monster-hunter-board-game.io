@@ -60,7 +60,7 @@ class CampaignHunterController extends Controller
             $weapons = create_weapon_tree($weaponType);
         }
 
-        $armors = Armor::with('skills')->get()->groupBy(fn (Armor $armor) => strtolower($armor->type->label('en')))->map(fn (Collection $armors) => $armors->groupBy(fn (Armor $armor) => $armor->rarity));
+        $armors = Armor::with('skills', 'items')->get()->groupBy(fn (Armor $armor) => strtolower($armor->type->label('en')))->map(fn (Collection $armors) => $armors->groupBy(fn (Armor $armor) => $armor->rarity));
 
         return Inertia::render('Hunter/Show', compact(
             'campaign',
@@ -102,6 +102,26 @@ class CampaignHunterController extends Controller
             }
 
             $hunter->weapons()->attach($weapon);
+        });
+
+        return back(303);
+    }
+
+    public function craftArmor(Campaign $campaign, Hunter $hunter, Armor $armor): JsonResponse|RedirectResponse
+    {
+        if (!$hunter->canCraftArmor($armor)) {
+            return response()->json([
+                'error' => __('The armor cannot be crafted.'),
+            ], 400);
+        }
+
+        DB::transaction(function () use ($hunter, $armor) {
+            $armor->items->each(function (Item $item) use ($hunter) {
+                $hunterItem = $hunter->items()->findOrFail($item->id);
+                $hunterItem->pivot->decrement('number', $item->pivot->number);
+            });
+
+            $hunter->armors()->attach($armor);
         });
 
         return back(303);

@@ -1,15 +1,14 @@
 <script setup>
 import _ from "lodash";
-import SecondaryButton from "@/Components/SecondaryButton.vue";
-import Wrench from "@/Components/Icons/Wrench.vue";
 import Check from "@/Components/Icons/Check.vue";
-import CogIcon from "@/Components/Icons/CogIcon.vue";
 import KnightIcon from "@/Components/Icons/KnightIcon.vue";
 import fire from '~/types/fire.png';
 import water from '~/types/water.png';
 import thunder from '~/types/thunder.png';
 import ice from '~/types/ice.png';
 import dragon from '~/types/dragon.png';
+import defense from '~/icons/defense.png';
+import CraftArmorModal from "@/Pages/Hunter/Partials/CraftArmorModal.vue";
 
 
 const props = defineProps({
@@ -67,7 +66,14 @@ const hunterArmorCount = (armor) => {
                         <div
                             class="border-t border-gray-500 pt-2 flex items-center justify-between"
                         >
-                            {{ $t('Defense') }}: {{ armor.defense }}
+                            <span class="flex gap-2 items-center">
+                                <img
+                                    :src="defense"
+                                    :alt="$t('Defense')"
+                                    class="h-5 w-5"
+                                >
+                                {{ armor.defense }}
+                            </span>
                             <span
                                 v-if="armor.defense_fire"
                                 class="flex gap-1 items-center px-2 py-1 text-sm rounded-full text-red-700 dark:text-red-300 bg-red-300 dark:bg-red-700"
@@ -133,33 +139,22 @@ const hunterArmorCount = (armor) => {
                                 <span>{{ skill.name }}</span>
                                 <KnightIcon
                                     v-if="skill.bonus_set"
-                                    class="h-8 w-8"
+                                    class="h-5 w-5"
                                     :class="getRarityColor(armor.rarity)"
                                 />
                             </div>
-                            <div v-if="showAdvanceSkillDescription">
-                                {{ skill.description }}
-                            </div>
+                            <div
+                                v-if="showAdvanceSkillDescription"
+                                class="mt-4"
+                                v-html="replaceIcons(skill.description)"
+                            />
                         </div>
-                        <div
+                        <CraftArmorModal
                             v-if="canEdit"
-                            class="border-t border-gray-500 pt-2"
-                        >
-                            <SecondaryButton
-                                v-if="hunterArmorCount(armor)"
-                                class="w-full justify-center gap-2 group"
-                            >
-                                <CogIcon class="w-4 h-4 group-hover:rotate-180 group-hover:text-green-500 transition-all" />
-                                {{ $t('Equip') }}
-                            </SecondaryButton>
-                            <SecondaryButton
-                                v-else
-                                class="w-full justify-center gap-2 group"
-                            >
-                                <Wrench class="w-4 h-4 group-hover:text-green-500 transition-all" />
-                                {{ $t('Craft') }}
-                            </SecondaryButton>
-                        </div>
+                            :campaign="campaign"
+                            :hunter="hunter"
+                            :armor="armor"
+                        />
                     </div>
                 </div>
             </template>
