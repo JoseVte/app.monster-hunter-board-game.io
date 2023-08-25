@@ -66,6 +66,14 @@ onMounted(() => {
     tabs.value.selectTab('#'+props.tabOpened)
     tabInitialized.value = true;
 })
+
+const hunterEquippedArmor = computed(() => {
+    return {
+        head: _.first(_.filter(props.hunter.equipped_armors, (armor) => armor.type_value === 'head')),
+        body: _.first(_.filter(props.hunter.equipped_armors, (armor) => armor.type_value === 'body')),
+        leg: _.first(_.filter(props.hunter.equipped_armors, (armor) => armor.type_value === 'leg'))
+    }
+})
 </script>
 
 <template>
@@ -84,8 +92,8 @@ onMounted(() => {
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
                 <div class="px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow sm:rounded-lg flex items-center gap-4">
                     <img
-                        :src="user.profile_photo_url"
-                        :alt="user.name"
+                        :src="user?.profile_photo_url"
+                        :alt="user?.name"
                         class="relative inline-block h-20 w-20 rounded-full ring-2 ring-white dark:ring-gray-800 hover:ring-gray-200 dark:hover:ring-gray-600"
                     >
                     <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 w-full relative">
@@ -93,7 +101,7 @@ onMounted(() => {
                             {{ hunter.name }}
                         </h1>
                         <h2 class="text-gray-600 dark:text-gray-400 text-xl">
-                            {{ user.name }}
+                            {{ user?.name }}
                         </h2>
                         <Link
                             :href="route('campaigns.show', campaign)"
@@ -245,6 +253,7 @@ onMounted(() => {
                             :campaign="campaign"
                             :hunter="hunter"
                             :armors="armors['head']"
+                            :equipped-armor="hunterEquippedArmor['head']"
                         />
 
                         <SectionBorder />
@@ -257,6 +266,7 @@ onMounted(() => {
                             :campaign="campaign"
                             :hunter="hunter"
                             :armors="armors['body']"
+                            :equipped-armor="hunterEquippedArmor['body']"
                         />
 
                         <SectionBorder />
@@ -269,6 +279,7 @@ onMounted(() => {
                             :campaign="campaign"
                             :hunter="hunter"
                             :armors="armors['leg']"
+                            :equipped-armor="hunterEquippedArmor['leg']"
                         />
                     </Tab>
                 </Tabs>

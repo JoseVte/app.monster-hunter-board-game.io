@@ -167,16 +167,16 @@
         },
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.279.4",
+            "version": "3.279.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "ed0f0f73896c359c5a801ba145f1c0adc5b90047"
+                "reference": "e83376ac8e88ed99c3d75d1309a2cb1148d31fd9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/ed0f0f73896c359c5a801ba145f1c0adc5b90047",
-                "reference": "ed0f0f73896c359c5a801ba145f1c0adc5b90047",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/e83376ac8e88ed99c3d75d1309a2cb1148d31fd9",
+                "reference": "e83376ac8e88ed99c3d75d1309a2cb1148d31fd9",
                 "shasum": ""
             },
             "require": {
@@ -256,9 +256,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.279.4"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.279.6"
             },
-            "time": "2023-08-22T18:12:03+00:00"
+            "time": "2023-08-24T18:07:59+00:00"
         },
         {
             "name": "bacon/bacon-qr-code",
@@ -2581,16 +2581,16 @@
         },
         {
             "name": "laravel/jetstream",
-            "version": "v3.3.2",
+            "version": "v3.3.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/jetstream.git",
-                "reference": "009e5e90636159e9da7f12ccada0c1b5b9ca8ee9"
+                "reference": "6660ede858e1a964134732bb41dff9fd08450d0e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/jetstream/zipball/009e5e90636159e9da7f12ccada0c1b5b9ca8ee9",
-                "reference": "009e5e90636159e9da7f12ccada0c1b5b9ca8ee9",
+                "url": "https://api.github.com/repos/laravel/jetstream/zipball/6660ede858e1a964134732bb41dff9fd08450d0e",
+                "reference": "6660ede858e1a964134732bb41dff9fd08450d0e",
                 "shasum": ""
             },
             "require": {
@@ -2646,7 +2646,7 @@
                 "issues": "https://github.com/laravel/jetstream/issues",
                 "source": "https://github.com/laravel/jetstream"
             },
-            "time": "2023-08-21T13:08:00+00:00"
+            "time": "2023-08-23T13:50:02+00:00"
         },
         {
             "name": "laravel/prompts",
@@ -3928,25 +3928,25 @@
         },
         {
             "name": "mtdowling/jmespath.php",
-            "version": "2.6.1",
+            "version": "2.7.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jmespath/jmespath.php.git",
-                "reference": "9b87907a81b87bc76d19a7fb2d61e61486ee9edb"
+                "reference": "bbb69a935c2cbb0c03d7f481a238027430f6440b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jmespath/jmespath.php/zipball/9b87907a81b87bc76d19a7fb2d61e61486ee9edb",
-                "reference": "9b87907a81b87bc76d19a7fb2d61e61486ee9edb",
+                "url": "https://api.github.com/repos/jmespath/jmespath.php/zipball/bbb69a935c2cbb0c03d7f481a238027430f6440b",
+                "reference": "bbb69a935c2cbb0c03d7f481a238027430f6440b",
                 "shasum": ""
             },
             "require": {
-                "php": "^5.4 || ^7.0 || ^8.0",
+                "php": "^7.2.5 || ^8.0",
                 "symfony/polyfill-mbstring": "^1.17"
             },
             "require-dev": {
-                "composer/xdebug-handler": "^1.4 || ^2.0",
-                "phpunit/phpunit": "^4.8.36 || ^7.5.15"
+                "composer/xdebug-handler": "^3.0.3",
+                "phpunit/phpunit": "^8.5.33"
             },
             "bin": [
                 "bin/jp.php"
@@ -3954,7 +3954,7 @@
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "2.6-dev"
+                    "dev-master": "2.7-dev"
                 }
             },
             "autoload": {
@@ -3971,6 +3971,11 @@
             ],
             "authors": [
                 {
+                    "name": "Graham Campbell",
+                    "email": "hello@gjcampbell.co.uk",
+                    "homepage": "https://github.com/GrahamCampbell"
+                },
+                {
                     "name": "Michael Dowling",
                     "email": "mtdowling@gmail.com",
                     "homepage": "https://github.com/mtdowling"
@@ -3983,9 +3988,9 @@
             ],
             "support": {
                 "issues": "https://github.com/jmespath/jmespath.php/issues",
-                "source": "https://github.com/jmespath/jmespath.php/tree/2.6.1"
+                "source": "https://github.com/jmespath/jmespath.php/tree/2.7.0"
             },
-            "time": "2021-06-14T00:11:39+00:00"
+            "time": "2023-08-25T10:54:48+00:00"
         },
         {
             "name": "nesbot/carbon",
@@ -10205,16 +10210,16 @@
         },
         {
             "name": "barryvdh/laravel-debugbar",
-            "version": "v3.8.2",
+            "version": "v3.9.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/barryvdh/laravel-debugbar.git",
-                "reference": "56a2dc1da9d3219164074713983eef68996386cf"
+                "reference": "070a313fd744f67348906bc879e544c4dda36be9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/56a2dc1da9d3219164074713983eef68996386cf",
-                "reference": "56a2dc1da9d3219164074713983eef68996386cf",
+                "url": "https://api.github.com/repos/barryvdh/laravel-debugbar/zipball/070a313fd744f67348906bc879e544c4dda36be9",
+                "reference": "070a313fd744f67348906bc879e544c4dda36be9",
                 "shasum": ""
             },
             "require": {
@@ -10273,7 +10278,7 @@
             ],
             "support": {
                 "issues": "https://github.com/barryvdh/laravel-debugbar/issues",
-                "source": "https://github.com/barryvdh/laravel-debugbar/tree/v3.8.2"
+                "source": "https://github.com/barryvdh/laravel-debugbar/tree/v3.9.1"
             },
             "funding": [
                 {
@@ -10285,7 +10290,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2023-07-26T04:57:49+00:00"
+            "time": "2023-08-24T12:28:59+00:00"
         },
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -11771,16 +11776,16 @@
         },
         {
             "name": "laravel-lang/http-statuses",
-            "version": "v3.4.3",
+            "version": "v3.4.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Lang/http-statuses.git",
-                "reference": "0bd05c814ac28e826bb243b4ab5e1a12fd58e0ce"
+                "reference": "a040c261c10f68980e865c9900b76c32fd6f0275"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Lang/http-statuses/zipball/0bd05c814ac28e826bb243b4ab5e1a12fd58e0ce",
-                "reference": "0bd05c814ac28e826bb243b4ab5e1a12fd58e0ce",
+                "url": "https://api.github.com/repos/Laravel-Lang/http-statuses/zipball/a040c261c10f68980e865c9900b76c32fd6f0275",
+                "reference": "a040c261c10f68980e865c9900b76c32fd6f0275",
                 "shasum": ""
             },
             "require": {
@@ -11835,7 +11840,7 @@
             ],
             "support": {
                 "issues": "https://github.com/Laravel-Lang/http-statuses/issues",
-                "source": "https://github.com/Laravel-Lang/http-statuses/tree/v3.4.3"
+                "source": "https://github.com/Laravel-Lang/http-statuses/tree/v3.4.4"
             },
             "funding": [
                 {
@@ -11843,7 +11848,7 @@
                     "type": "open_collective"
                 }
             ],
-            "time": "2023-08-22T01:18:47+00:00"
+            "time": "2023-08-24T01:17:58+00:00"
         },
         {
             "name": "laravel-lang/lang",

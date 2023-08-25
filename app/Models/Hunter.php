@@ -53,6 +53,16 @@ class Hunter extends Model
     public function weapons(): BelongsToMany
     {
         return $this->belongsToMany(Weapon::class, HunterWeapon::class)
+            ->withPivot('equipped')
+            ->withTimestamps()
+            ->using(HunterWeapon::class);
+    }
+
+    public function equippedWeapons(): BelongsToMany
+    {
+        return $this->belongsToMany(Weapon::class, HunterWeapon::class)
+            ->wherePivot('equipped', true)
+            ->withPivot('equipped')
             ->withTimestamps()
             ->using(HunterWeapon::class);
     }
@@ -60,6 +70,16 @@ class Hunter extends Model
     public function armors(): BelongsToMany
     {
         return $this->belongsToMany(Armor::class, HunterArmor::class)
+            ->withPivot('equipped')
+            ->withTimestamps()
+            ->using(HunterArmor::class);
+    }
+
+    public function equippedArmors(): BelongsToMany
+    {
+        return $this->belongsToMany(Armor::class, HunterArmor::class)
+            ->wherePivot('equipped', true)
+            ->withPivot('equipped')
             ->withTimestamps()
             ->using(HunterArmor::class);
     }
@@ -107,7 +127,7 @@ class Hunter extends Model
         }
 
         return $armor->items->filter(function (Item $item) {
-            $hunterItem = $this->items()->find($item->id);
+            $hunterItem = $this->items->firstWhere('id', $item->id);
             return empty($hunterItem) || $item->pivot->number > $hunterItem->pivot->number;
         })->count() === 0;
     }

@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Item;
-use App\Models\Weapon;
 use DB;
-use Illuminate\Http\JsonResponse;
+use App\Models\Item;
 use Inertia\Inertia;
 use App\Models\Armor;
 use Inertia\Response;
 use App\Enum\ItemType;
 use App\Models\Hunter;
+use App\Models\Weapon;
 use App\Models\Campaign;
 use App\Models\WeaponType;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
+use App\Http\Requests\EquipRequest;
 use App\Http\Requests\HunterRequest;
 use Illuminate\Http\RedirectResponse;
-use Mockery\Exception;
 
 class CampaignHunterController extends Controller
 {
@@ -47,7 +47,7 @@ class CampaignHunterController extends Controller
     {
         $user = $hunter->getUser();
         $canEdit = auth()->user()?->can('update', [$campaign, $hunter]);
-        $hunter->load('palico', 'items', 'weapons', 'armors', 'otherItems', 'monsterItems');
+        $hunter->load('palico', 'items', 'weapons', 'equippedWeapons', 'armors', 'equippedArmors', 'otherItems', 'monsterItems');
         $commonItems = Item::where('type', ItemType::COMMON->name)->get();
         $otherItems = Item::where('type', ItemType::OTHER->name)->get();
         $monsterItems = Item::where('type', ItemType::MONSTER_PART->name)->get();
@@ -60,7 +60,16 @@ class CampaignHunterController extends Controller
             $weapons = create_weapon_tree($weaponType);
         }
 
-        $armors = Armor::with('skills', 'items')->get()->groupBy(fn (Armor $armor) => strtolower($armor->type->label('en')))->map(fn (Collection $armors) => $armors->groupBy(fn (Armor $armor) => $armor->rarity));
+        $armors = Armor::with('skills', 'items')
+            ->get()
+            ->map(function (Armor $armor) use ($hunter) {
+                $armor->equipped = $hunter->equippedArmors->firstWhere('id', $armor->id);
+                $armor->can_craft = $hunter->canCraftArmor($armor);
+
+                return $armor;
+            })
+            ->groupBy('type_value')
+            ->map(fn (Collection $armors) => $armors->groupBy(fn (Armor $armor) => $armor->rarity));
 
         return Inertia::render('Hunter/Show', compact(
             'campaign',
@@ -91,8 +100,8 @@ class CampaignHunterController extends Controller
             ], 400);
         }
 
-        DB::transaction(function () use ($hunter, $weapon) {
-            $weapon->items->each(function (Item $item) use ($hunter) {
+        DB::transaction(function () use ($hunter, $weapon): void {
+            $weapon->items->each(function (Item $item) use ($hunter): void {
                 $hunterItem = $hunter->items()->findOrFail($item->id);
                 $hunterItem->pivot->decrement('number', $item->pivot->number);
             });
@@ -115,13 +124,37 @@ class CampaignHunterController extends Controller
             ], 400);
         }
 
-        DB::transaction(function () use ($hunter, $armor) {
-            $armor->items->each(function (Item $item) use ($hunter) {
+        DB::transaction(function () use ($hunter, $armor): void {
+            $armor->items->each(function (Item $item) use ($hunter): void {
                 $hunterItem = $hunter->items()->findOrFail($item->id);
                 $hunterItem->pivot->decrement('number', $item->pivot->number);
             });
 
             $hunter->armors()->attach($armor);
+        });
+
+        return back(303);
+    }
+
+    public function updateEquippedArmor(EquipRequest $request, Campaign $campaign, Hunter $hunter, Armor $armor): JsonResponse|RedirectResponse
+    {
+        if (!$hunter->armors()->find($armor->id)) {
+            return response()->json([
+                'error' => __('The armor cannot be equipped.'),
+            ], 400);
+        }
+
+        DB::transaction(function () use ($armor, $request, $hunter) {
+            if ($request->boolean('equip')) {
+                $hunter->armors()->where('type', $armor->type->name)->each(function (Armor $hunterArmor) {
+                    $hunterArmor->pivot->equipped = false;
+                    $hunterArmor->pivot->save();
+                });
+            }
+
+            $hunter->armors()->updateExistingPivot($armor->id, [
+                'equipped' => $request->boolean('equip'),
+            ]);
         });
 
         return back(303);

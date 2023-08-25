@@ -30,17 +30,13 @@ const craftArmor = () => {
 };
 
 const form = useForm({});
+const formEquip = useForm({equip: false});
 const closeModal = () => {
     confirmingCraftArmor.value = false;
 
     form.reset();
 };
 
-const canCraftArmor = computed(() => {
-    return !props.armor.is_default && _.filter(props.armor.items, (item) => {
-        return item.pivot.number >  countItemHunter(item.id)
-    }).length === 0;
-})
 const countItemHunter = (itemId) => {
     const hunterItemCount = _.find(props.hunter.items, (hunterItem) => {
         return itemId === hunterItem.pivot.item_id
@@ -57,6 +53,23 @@ const hunterArmorCount = (armor) => {
         return hunterArmor.id === armor.id;
     }).length;
 }
+
+const equip = () => {
+    formEquip.equip = true;
+    formEquip.put(route('campaigns.hunters.armors.equip', [props.campaign, props.hunter, props.armor]), {
+        errorBag: 'equipArmorHunter',
+        preserveScroll: true,
+        onFinish: () => form.reset(),
+    });
+}
+const unequip = () => {
+    formEquip.equip = false;
+    formEquip.put(route('campaigns.hunters.armors.equip', [props.campaign, props.hunter, props.armor]), {
+        errorBag: 'unequipArmorHunter',
+        preserveScroll: true,
+        onFinish: () => form.reset(),
+    });
+}
 </script>
 
 <template>
@@ -64,14 +77,27 @@ const hunterArmorCount = (armor) => {
         class="border-t border-gray-500 pt-2"
     >
         <SecondaryButton
-            v-if="hunterArmorCount(armor)"
+            v-if="armor.equipped"
             class="w-full justify-center gap-2 group"
+            :class="{ 'opacity-25': formEquip.processing }"
+            :disabled="formEquip.processing"
+            @click="unequip"
+        >
+            <CogIcon class="w-4 h-4 group-hover:-rotate-180 group-hover:text-red-500 transition-all" />
+            <span class="group-hover:hidden">{{ $t('Equipped') }}</span>
+            <span class="hidden group-hover:inline">{{ $t('Unequip') }}</span>
+        </SecondaryButton>
+        <SecondaryButton
+            v-else-if="hunterArmorCount(armor)"
+            class="w-full justify-center gap-2 group"
+            :class="{ 'opacity-25': formEquip.processing }"
+            :disabled="formEquip.processing"
+            @click="equip"
         >
             <CogIcon class="w-4 h-4 group-hover:rotate-180 group-hover:text-green-500 transition-all" />
             {{ $t('Equip') }}
         </SecondaryButton>
         <SecondaryButton
-            v-else
             class="w-full justify-center gap-2 group"
             @click="confirmCraftArmor"
         >
@@ -149,7 +175,7 @@ const hunterArmorCount = (armor) => {
             </SecondaryButton>
 
             <PrimaryButton
-                v-if="canCraftArmor"
+                v-if="armor.can_craft"
                 id="craft-weapon-btn"
                 class="ml-3"
                 :class="{ 'opacity-25': form.processing }"

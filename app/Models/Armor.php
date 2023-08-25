@@ -46,6 +46,10 @@ class Armor extends Model
         'name',
     ];
 
+    protected $appends = [
+        'type_value'
+    ];
+
     public function skills(): BelongsToMany
     {
         return $this->belongsToMany(ArmorSkill::class, 'armor_skill')
@@ -59,6 +63,11 @@ class Armor extends Model
             ->withPivot('number')
             ->withTimestamps()
             ->using(CountItemArmor::class);
+    }
+
+    public function getTypeValueAttribute(): string
+    {
+        return strtolower($this->type->label('en'));
     }
 
     public function toSearchableArray(): array

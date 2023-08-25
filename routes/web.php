@@ -121,6 +121,8 @@ Route::middleware([
         ->name('campaigns.hunters.weapons.craft');
     Route::post('campaigns/{campaign}/hunters/{hunter}/armors/{armor}', [CampaignHunterController::class, 'craftArmor'])
         ->name('campaigns.hunters.armors.craft');
+    Route::put('campaigns/{campaign}/hunters/{hunter}/armors/{armor}', [CampaignHunterController::class, 'updateEquippedArmor'])
+        ->name('campaigns.hunters.armors.equip');
     Route::get('campaigns/{campaign}/hunters/{hunter}/{tab?}/{weaponType?}', [CampaignHunterController::class, 'show'])
         ->name('campaigns.hunters.show')
         ->where('tab', 'items|weapons|armors');
