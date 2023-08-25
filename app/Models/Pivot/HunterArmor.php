@@ -6,4 +6,5 @@ use Illuminate\Database\Eloquent\Relations\Pivot;
 
 class HunterArmor extends Pivot
 {
+    protected $fillable = ['equipped'];
 }

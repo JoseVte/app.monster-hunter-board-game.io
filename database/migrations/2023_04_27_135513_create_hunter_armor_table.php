@@ -18,7 +18,11 @@ return new class() extends Migration {
             $table->foreignIdFor(Armor::class)->constrained();
             $table->foreignIdFor(Hunter::class)->constrained();
 
+            $table->boolean('equipped')->default(false);
+
             $table->timestamps();
+
+            $table->index(['hunter_id', 'equipped']);
         });
     }
 

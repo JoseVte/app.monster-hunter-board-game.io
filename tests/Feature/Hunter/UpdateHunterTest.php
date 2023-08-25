@@ -125,3 +125,48 @@ test('hunter cannot craft armor without items', function (): void {
 
     $this->assertEquals(0, $this->hunter->armors()->count());
 });
+
+test('hunter can equip armor owned', function (): void {
+    $this->hunter->armors()->attach($this->armor);
+    $response = $this->put(route('campaigns.hunters.armors.equip', [$this->campaign, $this->hunter, $this->armor]), ['equip' => true]);
+    $response->assertStatus(303);
+
+    $this->assertEquals(1, $this->hunter->armors()->count());
+    $this->assertEquals(1, $this->hunter->equippedArmors()->count());
+});
+
+test('hunter can equip armor owned and unequip old', function (): void {
+    $this->hunter->armors()->attach($this->armor);
+    $this->hunter->armors()->attach($this->armorDefault, ['equip' => true]);
+    $response = $this->put(route('campaigns.hunters.armors.equip', [$this->campaign, $this->hunter, $this->armor]), ['equip' => true]);
+    $response->assertStatus(303);
+
+    $this->assertEquals(2, $this->hunter->armors()->count());
+    $this->assertEquals(1, $this->hunter->equippedArmors()->count());
+    $this->assertEquals($this->armor->id, $this->hunter->equippedArmors()->first()->id);
+});
+
+test('hunter cannot equip armor no owned', function (): void {
+    $response = $this->put(route('campaigns.hunters.armors.equip', [$this->campaign, $this->hunter, $this->armor]), ['equip' => true]);
+    $response->assertStatus(400);
+
+    $this->assertEquals(0, $this->hunter->armors()->count());
+    $this->assertEquals(0, $this->hunter->equippedArmors()->count());
+});
+
+test('hunter can unequip armor owned', function (): void {
+    $this->hunter->armors()->attach($this->armor, ['equip' => true]);
+    $response = $this->put(route('campaigns.hunters.armors.equip', [$this->campaign, $this->hunter, $this->armor]), ['equip' => false]);
+    $response->assertStatus(303);
+
+    $this->assertEquals(1, $this->hunter->armors()->count());
+    $this->assertEquals(0, $this->hunter->equippedArmors()->count());
+});
+
+test('hunter cannot unequip armor no owned', function (): void {
+    $response = $this->put(route('campaigns.hunters.armors.equip', [$this->campaign, $this->hunter, $this->armor]), ['equip' => false]);
+    $response->assertStatus(400);
+
+    $this->assertEquals(0, $this->hunter->armors()->count());
+    $this->assertEquals(0, $this->hunter->equippedArmors()->count());
+});
