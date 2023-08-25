@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Support\Str;
 
 class Campaign extends Model
 {
@@ -22,6 +23,11 @@ class Campaign extends Model
         'health_potions',
 
         'team_id',
+    ];
+
+    protected $appends = [
+        'description_parsed',
+        'description_parsed_html',
     ];
 
     public function team(): BelongsTo
@@ -50,6 +56,16 @@ class Campaign extends Model
             ->withPivot(['role_id', 'hunter_id'])
             ->withTimestamps()
             ->as('membership');
+    }
+
+    public function getDescriptionParsedAttribute(): string
+    {
+        return strip_tags(Str::markdown($this->description));
+    }
+
+    public function getDescriptionParsedHtmlAttribute(): string
+    {
+        return Str::markdown($this->description);
     }
 
     public function hasUserWithEmail(string $email): bool

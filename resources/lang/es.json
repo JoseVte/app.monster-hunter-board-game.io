@@ -324,6 +324,7 @@
     "The :attribute must be at least :length characters and contain at least one uppercase character and one number.": "La :attribute debe tener al menos :length caracteres y contener por lo menos una letra mayúscula y un número.",
     "The :attribute must be at least :length characters and contain at least one uppercase character and one special character.": "La :attribute debe tener al menos :length caracteres y contener por lo menos una letra mayúscula y un carácter especial.",
     "The :attribute must be a valid role.": ":Attribute debe ser un rol válido.",
+    "The armor cannot be crafted.": "La armadura no puede ser crafteada.",
     "The campaign's detail information.": "La información detallada de la campaña.",
     "The campaign's owner information.": "La información del propietario de la campaña.",
     "The campaign information.": "La información de la campaña.",

@@ -14,7 +14,9 @@ class ArmorSkillsSeeder extends Seeder
     public function run(): void
     {
         foreach (config('seeders.armors.skills') as $skill) {
-            $armorSkill = ArmorSkill::create(Arr::only($skill, ['name', 'description']));
+            $armorSkill = ArmorSkill::updateOrCreate([
+                'name->en' => $skill['name']['en'],
+            ], Arr::only($skill, ['name', 'description']));
             if (Arr::get($skill, 'bonus-set')) {
                 $armorSkill->bonus_set = true;
                 $armorSkill->bonus_set_armor = $skill['bonus-set'];

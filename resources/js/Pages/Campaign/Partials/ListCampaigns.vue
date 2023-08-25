@@ -47,7 +47,7 @@ const strLimit = function (value, size) {
                         {{ campaign.name }}
                     </h2>
                     <p class="mt-4 text-gray-500 dark:text-gray-400 leading-relaxed">
-                        {{ strLimit(campaign.description, 20) }}
+                        {{ strLimit(campaign.description_parsed, 20) }}
                     </p>
                 </div>
                 <div class="flex flex-col gap-4">

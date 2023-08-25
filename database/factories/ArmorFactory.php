@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enum\ArmorType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -17,6 +18,11 @@ class ArmorFactory extends Factory
     public function definition(): array
     {
         return [
+            'type' => $this->faker->randomElement(ArmorType::cases())->name,
+            'name' => [
+                'en' => $this->faker->name,
+                'es' => $this->faker->name,
+            ],
         ];
     }
 }

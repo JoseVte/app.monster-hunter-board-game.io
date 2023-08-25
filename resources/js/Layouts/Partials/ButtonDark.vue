@@ -13,6 +13,18 @@ const toggleDarkMode = () => {
         document.documentElement.classList.add('light');
         localStorage.setItem('color-theme', 'light');
     }
+
+    const wysiwyg = document.getElementsByClassName("toastui-editor-defaultUI");
+    for (const el of wysiwyg) {
+        if (el.classList.contains("toastui-editor-dark")) el.classList.remove("toastui-editor-dark");
+        else el.classList.add("toastui-editor-dark");
+    }
+
+    document.dispatchEvent(new CustomEvent('toggleDarkMode', {
+        detail: {
+            theme: localStorage.getItem('color-theme')
+        }
+    }))
 }
 </script>
 

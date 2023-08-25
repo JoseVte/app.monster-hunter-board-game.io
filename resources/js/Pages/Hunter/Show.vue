@@ -225,7 +225,7 @@ onMounted(() => {
                         :name="$t('Armors')"
                     >
                         <SectionBorder>
-                            <div class="flex flex-col md:flex-row items-start sm:items-end md:items-center gap-2 md:gap-0 px-4 sm:px-0">
+                            <div class="flex flex-col lg:flex-row items-start sm:items-end lg:items-center gap-2 lg:gap-0 px-4 sm:px-0">
                                 <Switch
                                     v-model:checked="showAllArmors"
                                     :label="$t('Show all armors')"

@@ -10,8 +10,8 @@ return [
                 'es' => 'Anti Veneno',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => "This hunter can't suffer the :poison_icon: status ailment.",
+                'es' => 'Este cazador no puede sufrir el :poison_icon: dolencia de estado.',
             ],
         ],
         [
@@ -20,8 +20,8 @@ return [
                 'es' => 'Velocidad al Comer',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'Once per quest, this hunter may use combat actions and preparation actions during the same turn.',
+                'es' => 'Una vez por misión, este cazador puede utilizar acciones de combate y acciones de preparación durante el mismo turno.',
             ],
         ],
         [
@@ -30,8 +30,8 @@ return [
                 'es' => 'Bonus al Aturdir',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'Once per quest, when this hunter uses a :stun_icon: status ailment attack card, place +1 :stun_icon: token.',
+                'es' => 'Una vez por misión, cuando este cazador usa una :stun_icon: carta de ataque de afección de estado, coloca +1 :stun_icon: ficha.',
             ],
         ],
         [
@@ -40,8 +40,8 @@ return [
                 'es' => 'Mejora de Camarada',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'This hunter may use their Palico ability twice per quest.',
+                'es' => 'Este cazador puede usar su habilidad Palico dos veces por misión.',
             ],
         ],
         [
@@ -50,8 +50,8 @@ return [
                 'es' => 'Bonus Evasión',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'Once per quest when this hunter successfully dodges a monster attack, discard your attack cards instead of placing them on your stamina board.',
+                'es' => 'Una vez por misión, cuando este cazador esquive con éxito el ataque de un monstruo, descarta tus cartas de ataque en lugar de colocarlas en tu tablero de resistencia.',
             ],
         ],
         [
@@ -60,8 +60,8 @@ return [
                 'es' => 'Distancia de Evasión',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'When this hunter successfully dodges a monster attack, they may move 1 additional node.',
+                'es' => 'Cuando este cazador esquiva con éxito el ataque de un monstruo, puede mover 1 nodo adicional.',
             ],
         ],
         [
@@ -70,8 +70,8 @@ return [
                 'es' => 'Ataque de Rayo',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'When this hunter plays a :thunder_icon: elemental attack, draw +1 :damage_attack_icon:.',
+                'es' => 'Cuando este cazador juega un :thunder_icon: ataque elemental, obtiene +1 :damage_attack_icon:.',
             ],
         ],
         [
@@ -80,8 +80,8 @@ return [
                 'es' => 'Ataque de Fuego',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'When this hunter plays a :fire_icon: elemental attack, draw +1 :damage_attack_icon:.',
+                'es' => 'Cuando este cazador juega un :fire_icon: ataque elemental, obtiene +1 :damage_attack_icon:.',
             ],
         ],
         [
@@ -90,8 +90,8 @@ return [
                 'es' => 'Bonus Esprint',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'When this hunter walks, they move up to 2 nodes instead of 1.',
+                'es' => 'Cuando este cazador camina, se mueven hasta 2 nodos en lugar de 1.',
             ],
         ],
         [
@@ -100,8 +100,8 @@ return [
                 'es' => 'Bonus Punto Débil',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'When you play an attack card with :combo_attack_icon: of 2 or more, draw +1 :damage_attack_icon:.',
+                'es' => 'Cuando juegas una carta de ataque con :combo_attack_icon: de 2 o más, roba +1 :damage_attack_icon:.',
             ],
         ],
         [
@@ -110,8 +110,8 @@ return [
                 'es' => 'Anti Sueño',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => "This hunter can't suffer the :sleep_icon: status ailment.",
+                'es' => 'Este cazador no puede sufrir el :sleep_icon: dolencia de estado.',
             ],
         ],
         [
@@ -120,8 +120,8 @@ return [
                 'es' => 'Intimidador',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => "This hunter can't suffer damage during the gathering phase.",
+                'es' => 'Este cazador no puede sufrir daños durante la fase de recolección.',
             ],
         ],
         [
@@ -130,8 +130,8 @@ return [
                 'es' => 'Tiempo de Carga',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'When this hunter uses an attack card with :combo_attack_icon:, reduce the :combo_attack_icon: value by 1 to a minimum of 1.',
+                'es' => 'Cuando este cazador usa una carta de ataque con :combo_attack_icon:, reduce el valor de :combo_attack_icon: en 1 hasta un mínimo de 1.',
             ],
         ],
         [
@@ -141,8 +141,8 @@ return [
                 'es' => 'Maestría de Rathalos',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => "When this hunter plays a :fire_icon: elemental attack card, instead of placing an elemental token draw 1 elemental damage card. This doesn't effect monsters with immunity :fire_icon:.",
+                'es' => 'Cuando este cazador juega una carta de ataque elemental :fire_icon:, en lugar de colocar una ficha elemental, roba 1 carta de daño elemental. Esto no afecta a los monstruos con inmunidad :fire_icon:.',
             ],
         ],
         [
@@ -152,8 +152,8 @@ return [
                 'es' => 'Maestría de Rathalos Celeste',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'When this hunter would draw an elemental damage card, draw 3 cards before choosing 1 to resolve.',
+                'es' => 'Cuando este cazador robara una carta de daño elemental, roba 3 cartas antes de elegir 1 para resolver.',
             ],
         ],
         [
@@ -162,8 +162,8 @@ return [
                 'es' => 'Escudo',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'When this hunter plays an attack card that grants additional armour, the card gains +1 :defense_icon:.',
+                'es' => 'Cuando este cazador juega una carta de ataque que otorga armadura adicional, la carta gana +1 :defense_icon:.',
             ],
         ],
         [
@@ -172,8 +172,8 @@ return [
                 'es' => 'Anti Aturdimiento',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => "This hunter can't suffer the :stun_icon: status ailment.",
+                'es' => 'Este cazador no puede sufrir el :stun_icon: dolencia de estado.',
             ],
         ],
         [
@@ -182,8 +182,8 @@ return [
                 'es' => 'Experto en Esporas',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => "When this hunter recovers health from anything that isn't a potion, recover 1 additional health.",
+                'es' => 'Cuando este cazador recupere salud de cualquier cosa que no sea una poción, recupera 1 salud adicional.',
             ],
         ],
         [
@@ -192,8 +192,8 @@ return [
                 'es' => 'Experto en Recursos',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'During the gathering phase, when the hunters gain a potion they may all immediately recover to full health without spending a potion.',
+                'es' => 'Durante la fase de recolección, cuando los cazadores obtienen una poción, todos pueden recuperar inmediatamente su salud completa sin gastar una poción.',
             ],
         ],
         [
@@ -202,8 +202,8 @@ return [
                 'es' => 'Experto Acuático',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => "When this hunter moves onto pond nodes they don't discard damage cards.",
+                'es' => 'Cuando este cazador se mueve hacia los nodos del estanque, no descarta cartas de daño.',
             ],
         ],
         [
@@ -212,8 +212,8 @@ return [
                 'es' => 'Ataque de Agua',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'When this hunter plays a :water_icon: elemental attack, draw +1 :damage_attack_icon:.',
+                'es' => 'Cuando este cazador juega un :water_icon: ataque elemental, obtiene +1 :damage_attack_icon:.',
             ],
         ],
         [
@@ -222,8 +222,8 @@ return [
                 'es' => 'Bonus Salud Baja',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'While this hunter has 2 health or less, when this hunter plays an attack card without an elemental damage symbol, draw +1 :damage_attack_icon:.',
+                'es' => 'Mientras este cazador tenga 2 de salud o menos, cuando este cazador juegue una carta de ataque sin un símbolo de daño elemental, roba +1 :damage_attack_icon:.',
             ],
         ],
         [
@@ -232,8 +232,8 @@ return [
                 'es' => 'Bonus Daño Temporal',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'If this hunter recovered health during your previous turn, the first attack card you play this turn gains +2 :damage_attack_icon:.',
+                'es' => 'Si este cazador recuperó salud durante tu turno anterior, la primera carta de ataque que juegues este turno gana +2 :damage_attack_icon:.',
             ],
         ],
         [
@@ -242,8 +242,8 @@ return [
                 'es' => 'Bonus Rompe-partes',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'When this hunter plays an attack card with 1 or more :break_icon:, the card gains +1 :break_icon:.',
+                'es' => 'Cuando este cazador juega una carta de ataque con 1 o más :break_icon:, la carta gana +1 :break_icon:.',
             ],
         ],
         [
@@ -253,8 +253,8 @@ return [
                 'es' => 'Maestría de Diablos',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'When this hunter plays an attack card without an elemental damage symbol, draw +1 :damage_attack_icon:.',
+                'es' => 'Cuando este cazador juega una carta de ataque sin un símbolo de daño elemental, roba +1 :damage_attack_icon:.',
             ],
         ],
         [
@@ -264,8 +264,8 @@ return [
                 'es' => 'Maestría de Diablos Negra',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'When this hunter plays an attack card without an elemental damage symbol, draw +1 :damage_attack_icon:.',
+                'es' => 'Cuando este cazador juega una carta de ataque sin un símbolo de daño elemental, roba +1 :damage_attack_icon:.',
             ],
         ],
         [
@@ -274,8 +274,8 @@ return [
                 'es' => 'Bonus Afinidad',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'When you draw :damage_attack_icon:, draw +1 :damage_attack_icon:, then choose 1 :damage_attack_icon: to place on top of your damage deck before inflicting damage to the monster.',
+                'es' => 'Cuando robas :damage_attack_icon:, robas +1 :damage_attack_icon:, luego elige 1 :damage_attack_icon: para colocarlo encima de tu mazo de daño antes de infligir daño al monstruo.',
             ],
         ],
         [
@@ -336,8 +336,8 @@ return [
                 'es' => 'Ataque de Hielo',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'When this hunter plays a :ice_icon: elemental attack, draw +1 :damage_attack_icon:.',
+                'es' => 'Cuando este cazador juega un :ice_icon: ataque elemental, obtiene +1 :damage_attack_icon:.',
             ],
         ],
         [
