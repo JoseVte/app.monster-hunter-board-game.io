@@ -47,17 +47,26 @@ class CampaignHunterController extends Controller
     {
         $user = $hunter->getUser();
         $canEdit = auth()->user()?->can('update', [$campaign, $hunter]);
-        $hunter->load('palico', 'items', 'weapons', 'equippedWeapons', 'armors', 'equippedArmors', 'otherItems', 'monsterItems');
+        $hunter->load(
+            'palico',
+            'items',
+            'weapons',
+            'equippedWeapons',
+            'armors',
+            'equippedArmors',
+            'otherItems',
+            'monsterItems'
+        );
         $commonItems = Item::where('type', ItemType::COMMON->name)->get();
         $otherItems = Item::where('type', ItemType::OTHER->name)->get();
         $monsterItems = Item::where('type', ItemType::MONSTER_PART->name)->get();
 
         $tabOpened = $tab;
 
-        $weaponTypes = WeaponType::all();
+        $weaponTypes = WeaponType::with('weapons')->get();
         $weapons = [];
         if ($weaponType) {
-            $weapons = create_weapon_tree($weaponType);
+            $weapons = create_weapon_tree($weaponType, $hunter);
         }
 
         $armors = Armor::with('skills', 'items')
@@ -116,6 +125,30 @@ class CampaignHunterController extends Controller
         return back(303);
     }
 
+    public function updateEquippedWeapon(EquipRequest $request, Campaign $campaign, Hunter $hunter, WeaponType $weaponType, Weapon $weapon): JsonResponse|RedirectResponse
+    {
+        if (!$hunter->weapons()->find($weapon->id)) {
+            return response()->json([
+                'error' => __('The weapon cannot be equipped.'),
+            ], 400);
+        }
+
+        DB::transaction(function () use ($weapon, $request, $hunter): void {
+            if ($request->boolean('equip')) {
+                $hunter->weapons()->where('type_id', $weapon->type_id)->each(function (Weapon $hunterWeapon): void {
+                    $hunterWeapon->pivot->equipped = false;
+                    $hunterWeapon->pivot->save();
+                });
+            }
+
+            $hunter->weapons()->updateExistingPivot($weapon->id, [
+                'equipped' => $request->boolean('equip'),
+            ]);
+        });
+
+        return back(303);
+    }
+
     public function craftArmor(Campaign $campaign, Hunter $hunter, Armor $armor): JsonResponse|RedirectResponse
     {
         if (!$hunter->canCraftArmor($armor)) {
@@ -144,9 +177,9 @@ class CampaignHunterController extends Controller
             ], 400);
         }
 
-        DB::transaction(function () use ($armor, $request, $hunter) {
+        DB::transaction(function () use ($armor, $request, $hunter): void {
             if ($request->boolean('equip')) {
-                $hunter->armors()->where('type', $armor->type->name)->each(function (Armor $hunterArmor) {
+                $hunter->armors()->where('type', $armor->type->name)->each(function (Armor $hunterArmor): void {
                     $hunterArmor->pivot->equipped = false;
                     $hunterArmor->pivot->save();
                 });

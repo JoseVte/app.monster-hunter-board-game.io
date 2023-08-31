@@ -30,9 +30,13 @@ return [
      | By default, file storage (in the storage folder) is used. Redis and PDO
      | can also be used. For PDO, run the package migrations first.
      |
+     | Warning: Enabling storage.open will allow everyone to access previous
+     | request, do not enable open storage in publicly available environments!
+     | Specify a callback if you want to limit based on IP or authentication.
      */
     'storage' => [
         'enabled' => true,
+        'open' => env('DEBUGBAR_OPEN_STORAGE', false), // bool/callback.
         'driver' => 'file', // redis, file, pdo, socket, custom
         'path' => storage_path('debugbar'), // For file driver
         'connection' => null,   // Leave null for default connection (Redis/PDO)
@@ -157,7 +161,7 @@ return [
         'db' => true,  // Show database (PDO) queries and bindings
         'views' => true,  // Views with their data
         'route' => true,  // Current route information
-        'auth' => true, // Display Laravel authentication status
+        'auth' => false, // Display Laravel authentication status
         'gate' => true,  // Display Laravel Gate checks
         'session' => true,  // Display session data
         'symfony_request' => true,  // Only one can be enabled..

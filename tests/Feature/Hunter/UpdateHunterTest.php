@@ -1,11 +1,11 @@
 <?php
 
-use App\Models\Armor;
 use App\Models\Item;
 use App\Models\User;
+use App\Models\Armor;
 use App\Models\Hunter;
-use App\Models\Campaign;
 use App\Models\Weapon;
+use App\Models\Campaign;
 
 beforeEach(function (): void {
     $this->actingAs($this->user = User::factory()->withPersonalTeam()->create());
@@ -100,6 +100,51 @@ test('hunter can craft armor', function (): void {
     $response->assertStatus(303);
 
     $this->assertEquals(1, $this->hunter->armors()->count());
+});
+
+test('hunter can equip weapon owned', function (): void {
+    $this->hunter->weapons()->attach($this->weapon);
+    $response = $this->put(route('campaigns.hunters.weapons.equip', [$this->campaign, $this->hunter, $this->weapon->type, $this->weapon]), ['equip' => true]);
+    $response->assertStatus(303);
+
+    $this->assertEquals(1, $this->hunter->weapons()->count());
+    $this->assertEquals(1, $this->hunter->equippedweapons()->count());
+});
+
+test('hunter can equip weapon owned and unequip old', function (): void {
+    $this->hunter->weapons()->attach($this->weapon);
+    $this->hunter->weapons()->attach($this->weaponDefault, ['equip' => true]);
+    $response = $this->put(route('campaigns.hunters.weapons.equip', [$this->campaign, $this->hunter, $this->weapon->type, $this->weapon]), ['equip' => true]);
+    $response->assertStatus(303);
+
+    $this->assertEquals(2, $this->hunter->weapons()->count());
+    $this->assertEquals(1, $this->hunter->equippedweapons()->count());
+    $this->assertEquals($this->weapon->id, $this->hunter->equippedweapons()->first()->id);
+});
+
+test('hunter cannot equip weapon no owned', function (): void {
+    $response = $this->put(route('campaigns.hunters.weapons.equip', [$this->campaign, $this->hunter, $this->weapon->type, $this->weapon]), ['equip' => true]);
+    $response->assertStatus(400);
+
+    $this->assertEquals(0, $this->hunter->weapons()->count());
+    $this->assertEquals(0, $this->hunter->equippedweapons()->count());
+});
+
+test('hunter can unequip weapon owned', function (): void {
+    $this->hunter->weapons()->attach($this->weapon, ['equip' => true]);
+    $response = $this->put(route('campaigns.hunters.weapons.equip', [$this->campaign, $this->hunter, $this->weapon->type, $this->weapon]), ['equip' => false]);
+    $response->assertStatus(303);
+
+    $this->assertEquals(1, $this->hunter->weapons()->count());
+    $this->assertEquals(0, $this->hunter->equippedweapons()->count());
+});
+
+test('hunter cannot unequip weapon no owned', function (): void {
+    $response = $this->put(route('campaigns.hunters.weapons.equip', [$this->campaign, $this->hunter, $this->weapon->type, $this->weapon]), ['equip' => false]);
+    $response->assertStatus(400);
+
+    $this->assertEquals(0, $this->hunter->weapons()->count());
+    $this->assertEquals(0, $this->hunter->equippedweapons()->count());
 });
 
 test('hunter cannot craft default armor', function (): void {

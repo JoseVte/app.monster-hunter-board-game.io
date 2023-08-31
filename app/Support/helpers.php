@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Hunter;
 use App\Models\Weapon;
 use App\Models\WeaponType;
 use Illuminate\Support\Collection;
@@ -31,7 +32,7 @@ if (!function_exists('arr_expand')) {
 }
 
 if (!function_exists('create_weapon_tree')) {
-    function create_weapon_tree(WeaponType $weaponType): Collection
+    function create_weapon_tree(WeaponType $weaponType, Hunter $hunter): Collection
     {
         $latestWeaponModels = $weaponType->weapons()
             ->doesntHave('children')
@@ -49,12 +50,15 @@ if (!function_exists('create_weapon_tree')) {
             ->get();
 
         $latestWeapons = collect();
-        $latestWeaponModels->each(function (Weapon $weapon) use (&$latestWeapons): void {
+        $latestWeaponModels->each(function (Weapon $weapon) use ($hunter, &$latestWeapons): void {
             $weapons = collect();
             $branch = $weapon->branch;
             $rarity = $weapon->rarity;
 
             do {
+                $weapon->equipped = $hunter->equippedWeapons->firstWhere('id', $weapon->id);
+                $weapon->can_craft = $hunter->canCraftWeapon($weapon);
+
                 while ($rarity > $weapon->rarity) {
                     $weapons->push([]);
                     --$rarity;
