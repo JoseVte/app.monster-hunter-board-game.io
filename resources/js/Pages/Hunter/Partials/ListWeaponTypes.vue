@@ -13,6 +13,13 @@ const countWeaponCrafted = (weaponType)  => {
     return _.countBy(props.hunter.weapons, (weapon) => weapon.type_id === weaponType.id).true ?? 0;
 };
 
+const weaponEquipped = (weaponType)  => {
+    const equipped = _.find(props.hunter.equipped_weapons, (weapon) => weapon.type_id === weaponType.id);
+    if (equipped) return equipped;
+
+    return _.find(weaponType.weapons, (weapon) => weapon.is_default)
+};
+
 const openWeaponType = (weaponType) => {
     const newUrl = route('campaigns.hunters.weapon-type.index', [props.campaign, props.hunter, weaponType]);
     router.visit(newUrl, {preserveScroll: true});
@@ -65,8 +72,8 @@ const clases = [
                     >
                 </div>
             </div>
-            <div class="flex flex-1 items-center justify-between truncate rounded-r-md border-b border-r border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-                <div class="flex-1 truncate px-4 py-2 text-sm">
+            <div class="flex flex-col flex-1 h-full items-center truncate rounded-r-md border-b border-r border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
+                <div class="flex flex-col flex-1 justify-center items-start h-full truncate px-4 py-2 text-sm">
                     <div
                         class="text-left font-medium text-gray-900 dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-400"
                         v-text="weaponType.name"
@@ -74,6 +81,13 @@ const clases = [
                     <p class="text-left text-gray-500">
                         {{ countWeaponCrafted(weaponType) }} {{ $t('crafted.') }}
                     </p>
+                </div>
+
+                <div
+                    v-if="weaponEquipped(weaponType)"
+                    class="text-gray-900 dark:text-white text-xs pb-2"
+                >
+                    {{ $t('Equipped') }}:<br>{{ weaponEquipped(weaponType).name }}
                 </div>
             </div>
         </button>

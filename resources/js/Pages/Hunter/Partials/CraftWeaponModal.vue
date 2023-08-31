@@ -7,6 +7,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import DialogModal from "@/Components/DialogModal.vue";
 import WeaponsIcon from "@/Components/Icons/WeaponsIcon.vue";
 import CogIcon from "@/Components/Icons/CogIcon.vue";
+import Wrench from "@/Components/Icons/Wrench.vue";
 
 const props = defineProps({
     campaign: Object,
@@ -30,17 +31,13 @@ const craftWeapon = () => {
 };
 
 const form = useForm({});
+const formEquip = useForm({equip: false});
 const closeModal = () => {
     confirmingCraftWeapon.value = false;
 
     form.reset();
 };
 
-const canCraftWeapon = computed(() => {
-    return !props.weapon.is_default && _.filter(props.weapon.items, (item) => {
-        return item.pivot.number >  countItemHunter(item.id)
-    }).length === 0 && (!props.weapon.parent || hunterWeaponCount(props.weapon.parent) > 0);
-})
 const countItemHunter = (itemId) => {
     const hunterItemCount = _.find(props.hunter.items, (hunterItem) => {
         return itemId === hunterItem.pivot.item_id
@@ -56,16 +53,65 @@ const hunterWeaponCount = (weapon) => {
         return hunterWeapon.id === weapon.id;
     }).length;
 }
+
+const equip = () => {
+    formEquip.equip = true;
+    formEquip.put(route('campaigns.hunters.weapons.equip', [props.campaign, props.hunter, props.weapon.type, props.weapon]), {
+        errorBag: 'equipWeaponHunter',
+        preserveScroll: true,
+        onFinish: () => form.reset(),
+    });
+}
+const unequip = () => {
+    formEquip.equip = false;
+    formEquip.put(route('campaigns.hunters.weapons.equip', [props.campaign, props.hunter, props.weapon.type, props.weapon]), {
+        errorBag: 'unequipWeaponHunter',
+        preserveScroll: true,
+        onFinish: () => form.reset(),
+    });
+}
 </script>
 
 <template>
-    <button
-        type="button"
+    <div
         :class="`relative border rounded border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 p-2 text-gray-800 dark:text-gray-200 ${classContainer}`"
-        @click="confirmCraftWeapon"
     >
         <slot />
-    </button>
+        <div
+            v-if="!weapon.is_default || weapon.equipped || hunterWeaponCount(weapon)"
+            class="border-t border-gray-500 mt-2 pt-2 flex flex-col gap-2"
+        >
+            <SecondaryButton
+                v-if="weapon.equipped"
+                class="w-full justify-center gap-2 group"
+                :class="{ 'opacity-25': formEquip.processing }"
+                :disabled="formEquip.processing"
+                @click="unequip"
+            >
+                <CogIcon class="w-4 h-4 group-hover:-rotate-180 group-hover:text-red-500 transition-all" />
+                <span class="group-hover:hidden">{{ $t('Equipped') }}</span>
+                <span class="hidden group-hover:inline">{{ $t('Unequip') }}</span>
+            </SecondaryButton>
+            <SecondaryButton
+                v-else-if="hunterWeaponCount(weapon)"
+                class="w-full justify-center gap-2 group"
+                :class="{ 'opacity-25': formEquip.processing }"
+                :disabled="formEquip.processing"
+                @click="equip"
+            >
+                <CogIcon class="w-4 h-4 group-hover:rotate-180 group-hover:text-green-500 transition-all" />
+                {{ $t('Equip') }}
+            </SecondaryButton>
+            <SecondaryButton
+                v-if="!weapon.is_default"
+                class="w-full justify-center gap-2 group"
+                @click="confirmCraftWeapon"
+            >
+                <Wrench class="w-4 h-4 group-hover:text-green-500 transition-all" />
+                {{ $t('Craft') }}
+            </SecondaryButton>
+        </div>
+    </div>
     <DialogModal
         :show="confirmingCraftWeapon"
         @close="closeModal"
@@ -149,7 +195,7 @@ const hunterWeaponCount = (weapon) => {
             </SecondaryButton>
 
             <PrimaryButton
-                v-if="canCraftWeapon"
+                v-if="weapon.can_craft"
                 id="craft-weapon-btn"
                 class="ml-3"
                 :class="{ 'opacity-25': form.processing }"

@@ -110,12 +110,12 @@ class Hunter extends Model
             return false;
         }
 
-        if ($weapon->parent_id && !$this->weapons()->find($weapon->parent_id)) {
+        if ($weapon->parent_id && !$this->weapons->firstWhere('id', $weapon->parent_id)) {
             return false;
         }
 
         return $weapon->items->filter(function (Item $item) {
-            $hunterItem = $this->items()->find($item->id);
+                $hunterItem = $this->items->firstWhere('id', $item->id);
             return empty($hunterItem) || $item->pivot->number > $hunterItem->pivot->number;
         })->count() === 0;
     }

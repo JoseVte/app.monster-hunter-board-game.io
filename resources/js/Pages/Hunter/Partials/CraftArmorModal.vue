@@ -74,7 +74,7 @@ const unequip = () => {
 
 <template>
     <div
-        class="border-t border-gray-500 pt-2"
+        class="border-t border-gray-500 pt-2  flex flex-col gap-2"
     >
         <SecondaryButton
             v-if="armor.equipped"
