@@ -16,5 +16,5 @@ interface TranslatableEnum
 
     public static function fromName(string $name): self;
 
-    public static function tryFromName(string $name): self|null;
+    public static function tryFromName(string $name): ?self;
 }

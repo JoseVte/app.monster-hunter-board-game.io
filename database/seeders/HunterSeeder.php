@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\Campaign;
 use App\Models\Item;
 use App\Models\User;
 use App\Models\Armor;
 use App\Models\Hunter;
 use App\Models\Weapon;
+use App\Models\Campaign;
 use Illuminate\Database\Seeder;
 
 class HunterSeeder extends Seeder
@@ -21,7 +21,7 @@ class HunterSeeder extends Seeder
         /** @var Campaign $campaign */
         $campaign = $user->campaigns()->firstOrFail();
 
-        $campaign->users()->each(function (User $user) use ($campaign) {
+        $campaign->users()->each(function (User $user) use ($campaign): void {
             $hunter = Hunter::factory()->create(['campaign_id' => $campaign]);
             $campaign->users()->updateExistingPivot($user->id, ['hunter_id' => $hunter->id]);
 

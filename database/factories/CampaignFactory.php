@@ -2,10 +2,10 @@
 
 namespace Database\Factories;
 
-use App\Models\Campaign;
 use App\Models\Team;
-use Illuminate\Database\Eloquent\Factories\Factory;
+use App\Models\Campaign;
 use Spatie\Permission\Models\Role;
+use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Campaign>

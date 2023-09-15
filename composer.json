@@ -82,6 +82,13 @@
         "pint": [
             "vendor/bin/pint --config=./pint.json"
         ],
+        "phpfix": [
+            "vendor/bin/php-cs-fixer fix app",
+            "vendor/bin/php-cs-fixer fix config",
+            "vendor/bin/php-cs-fixer fix database",
+            "vendor/bin/php-cs-fixer fix routes",
+            "vendor/bin/php-cs-fixer fix tests"
+        ],
         "coverage": [
             "vendor/bin/pest --parallel --coverage-html ./reports"
         ],

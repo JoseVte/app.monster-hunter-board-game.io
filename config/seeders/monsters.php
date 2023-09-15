@@ -41,7 +41,7 @@ return [
                     'description' => [
                         'en' => 'Each time this monster deals 1 or more damage to a hunter it regains 1 lost health.',
                         'es' => 'Cada vez que este monstruo inflige 1 o más daños a un cazador, recupera 1 de salud perdida.',
-                    ]
+                    ],
                 ],
                 'parts' => [
                     [
@@ -69,8 +69,8 @@ return [
                         'direction' => 'left-right',
                         'defense' => 0,
                         'broken' => 3,
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'difficulty' => \App\Enum\MonsterDifficulty::NORMAL,
@@ -84,7 +84,7 @@ return [
                     'description' => [
                         'en' => 'Each time this monster deals 1 or more damage to a hunter it regains 1 lost health. While this monster has at least 1 broken body part, behaviours this monster performs gain +1 :damage_monster_icon: and +1 :dodge_icon:.',
                         'es' => 'Cada vez que este monstruo inflige 1 o más daños a un cazador, recupera 1 de salud perdida. Mientras este monstruo tenga al menos 1 parte del cuerpo rota, los comportamientos que realiza este monstruo ganan +1 :damage_monster_icon: y +1 :dodge_icon:.',
-                    ]
+                    ],
                 ],
                 'parts' => [
                     [
@@ -116,8 +116,8 @@ return [
                             'en' => 'Behaviours with :claw_icon: have -1 :movement_icon:.',
                             'es' => 'Los comportamientos con :claw_icon: tienen -1 :movement_icon:.',
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'difficulty' => \App\Enum\MonsterDifficulty::HARD,
@@ -131,7 +131,7 @@ return [
                     'description' => [
                         'en' => 'Each time this monster deals 1 or more damage to a hunter it regains 1 lost health. Behaviours this monster performs gain +1 :damage_monster_icon: and +1 :dodge_icon:.',
                         'es' => 'Cada vez que este monstruo inflige 1 o más daños a un cazador, recupera 1 de salud perdida. Los comportamientos que realiza este monstruo ganan +1 :damage_monster_icon: y +1 :dodge_icon:.',
-                    ]
+                    ],
                 ],
                 'parts' => [
                     [
@@ -163,9 +163,9 @@ return [
                             'en' => 'Behaviours with :claw_icon: have -1 :movement_icon:.',
                             'es' => 'Los comportamientos con :claw_icon: tienen -1 :movement_icon:.',
                         ],
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ],
         'rewards' => [
             1 => [
@@ -188,7 +188,7 @@ return [
                 'extra' => [
                     'en' => 'Gain 1 if the :claw_icon: were broken.',
                     'es' => 'Gana 1 si el :claw_icon: estuviera roto.',
-                ]
+                ],
             ],
             7 => [
                 'name' => 'Sharp Claw',
@@ -204,7 +204,7 @@ return [
                 'extra' => [
                     'en' => 'Gain 1 if the :back_icon: were broken.',
                     'es' => 'Gana 1 si el :back_icon: estuviera roto.',
-                ]
+                ],
             ],
             11 => [
                 'name' => 'Great Jagras Scale',
@@ -214,8 +214,8 @@ return [
                 'extra' => [
                     'en' => 'Gain 1 if the :head_icon: were broken.',
                     'es' => 'Gana 1 si el :head_icon: estuviera roto.',
-                ]
-            ]
+                ],
+            ],
         ],
     ],
     'Tobi-Kadachi' => [
@@ -259,7 +259,7 @@ return [
                     'description' => [
                         'en' => "When you determine Tobi-Kadachi's target for a :thunder_icon: behaviour remove Tobi-Kadachi from the board. Place Tobi-Kadachi on the farthest rock node from its current node without changing its facing. If there are multiple farthest rock nodes, the players choose. Move any hunters on that node as if Tobi-Kadachi had moved onto the node. Then resolve the behaviour as normal.",
                         'es' => 'Cuando determines el objetivo de Tobi-Kadachi para un comportamiento :thunder_icon: elimina a Tobi-Kadachi del tablero. Coloca a Tobi-Kadachi en el nodo de roca más alejado de su nodo actual sin cambiar su orientación. Si hay varios nodos rocosos más lejanos, los jugadores eligen. Mueva cualquier cazador en ese nodo como si Tobi-Kadachi se hubiera movido al nodo. Luego resuelva el comportamiento de manera normal.',
-                    ]
+                    ],
                 ],
                 'parts' => [
                     [
@@ -283,8 +283,8 @@ return [
                             'en' => 'Behaviours with :paralysis_icon: have -1 :damage_icon:.',
                             'es' => 'Los comportamientos con :paralysis_icon: tienen -1 :damage_icon:.',
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'difficulty' => \App\Enum\MonsterDifficulty::NORMAL,
@@ -298,7 +298,7 @@ return [
                     'description' => [
                         'en' => "When you determine Tobi-Kadachi's target for a :thunder_icon: behaviour remove Tobi-Kadachi from the board. Place Tobi-Kadachi on the farthest rock node from its current node without changing its facing. If there are multiple farthest rock nodes, the players choose. Move any hunters on that node as if Tobi-Kadachi had moved onto the node. Then resolve the behaviour as normal. Behaviours with :thunder_icon: have +2 :damage_icon:.",
                         'es' => 'Cuando determines el objetivo de Tobi-Kadachi para un comportamiento :thunder_icon: elimina a Tobi-Kadachi del tablero. Coloca a Tobi-Kadachi en el nodo de roca más alejado de su nodo actual sin cambiar su orientación. Si hay varios nodos rocosos más lejanos, los jugadores eligen. Mueva cualquier cazador en ese nodo como si Tobi-Kadachi se hubiera movido al nodo. Luego resuelva el comportamiento de manera normal. Los comportamientos con :thunder_icon: tienen +2 :damage_icon:.',
-                    ]
+                    ],
                 ],
                 'parts' => [
                     [
@@ -326,8 +326,8 @@ return [
                             'en' => 'Behaviours with :paralysis_icon: have -1 :damage_icon:.',
                             'es' => 'Los comportamientos con :paralysis_icon: tienen -1 :damage_icon:.',
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'difficulty' => \App\Enum\MonsterDifficulty::HARD,
@@ -341,7 +341,7 @@ return [
                     'description' => [
                         'en' => 'Each time this monster deals 1 or more damage to a hunter it regains 1 lost health. Behaviours this monster performs gain +1 :damage_monster_icon: and +1 :dodge_icon:.',
                         'es' => 'Cada vez que este monstruo inflige 1 o más daños a un cazador, recupera 1 de salud perdida. Los comportamientos que realiza este monstruo ganan +1 :damage_monster_icon: y +1 :dodge_icon:.',
-                    ]
+                    ],
                 ],
                 'parts' => [
                     [
@@ -373,9 +373,9 @@ return [
                             'en' => 'Behaviours with :paralysis_icon: have -1 :damage_icon:.',
                             'es' => 'Los comportamientos con :paralysis_icon: tienen -1 :damage_icon:.',
                         ],
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ],
         'rewards' => [
             1 => [
@@ -386,7 +386,7 @@ return [
                 'extra' => [
                     'en' => 'Gain 1 if the :back_icon: were broken.',
                     'es' => 'Gana 1 si el :back_icon: estuviera roto.',
-                ]
+                ],
             ],
             3 => [
                 'name' => 'Tobi-Kadachi Scale',
@@ -402,19 +402,19 @@ return [
                 'extra' => [
                     'en' => 'Gain 1 if the :head_icon: were broken.',
                     'es' => 'Gana 1 si el :head_icon: estuviera roto.',
-                ]
+                ],
             ],
             7 => [
                 'name' => 'Monster Keenbone',
             ],
             8 => [
-                'name' => 'Tobi-Kadachi Claw'
+                'name' => 'Tobi-Kadachi Claw',
             ],
             9 => [
                 'name' => 'Monster Bone Medium',
             ],
             10 => [
-                'name' => 'Thunder Sac'
+                'name' => 'Thunder Sac',
             ],
             11 => [
                 'name' => 'Monster Keenbone',
@@ -424,8 +424,8 @@ return [
                 'extra' => [
                     'en' => 'Gain 1 if the :tail_icon: were broken.',
                     'es' => 'Gana 1 si el :tail_icon: estuviera roto.',
-                ]
-            ]
+                ],
+            ],
         ],
     ],
     'Anjanath' => [
@@ -469,7 +469,7 @@ return [
                     'description' => [
                         'en' => 'Each time this monster suffers 4 or more damage from an attack card, after the attack is resolved the monster moves 2 nodes toward :far_hunter_icon:.',
                         'es' => 'Cada vez que este monstruo sufre 4 o más daños de una carta de ataque, después de resolver el ataque, el monstruo se mueve 2 nodos hacia :far_hunter_icon:.',
-                    ]
+                    ],
                 ],
                 'parts' => [
                     [
@@ -503,8 +503,8 @@ return [
                         'direction' => 'down',
                         'defense' => 1,
                         'broken' => 4,
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'difficulty' => \App\Enum\MonsterDifficulty::NORMAL,
@@ -518,7 +518,7 @@ return [
                     'description' => [
                         'en' => 'Each time this monster suffers 4 or more damage from an attack card, after the attack is resolved the monster moves 2 nodes toward :far_hunter_icon:. Behaviours with :fire_icon: have +1 :damage_icon:.',
                         'es' => 'Cada vez que este monstruo sufre 4 o más daños de una carta de ataque, después de resolver el ataque, el monstruo se mueve 2 nodos hacia :far_hunter_icon:. Los comportamientos con :fire_icon: tienen +1 :damage_icon:.',
-                    ]
+                    ],
                 ],
                 'parts' => [
                     [
@@ -556,8 +556,8 @@ return [
                         'direction' => 'down',
                         'defense' => 2,
                         'broken' => 5,
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'difficulty' => \App\Enum\MonsterDifficulty::HARD,
@@ -571,7 +571,7 @@ return [
                     'description' => [
                         'en' => 'Each time this monster suffers 4 or more damage from an attack card, after the attack is resolved the monster moves 2 nodes toward :far_hunter_icon:. Behaviours with :fire_icon: have +1 :damage_icon: and +1 :dodge_icon:.',
                         'es' => 'Cada vez que este monstruo sufre 4 o más daños de una carta de ataque, después de resolver el ataque, el monstruo se mueve 2 nodos hacia :far_hunter_icon:. Los comportamientos con :fire_icon: tienen +1 :damage_icon: y +1 :dodge_icon:.',
-                    ]
+                    ],
                 ],
                 'parts' => [
                     [
@@ -613,9 +613,9 @@ return [
                             'en' => 'Behaviours with :tail_icon: have -1 :range_icon:.',
                             'es' => 'Los comportamientos con :tail_icon: tienen -1 :range_icon:.',
                         ],
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ],
         'rewards' => [
             1 => [
@@ -623,7 +623,7 @@ return [
                 'extra' => [
                     'en' => 'Gain 1 if the :leg_icon: were broken.',
                     'es' => 'Gana 1 si el :leg_icon: estuviera roto.',
-                ]
+                ],
             ],
             2 => [
                 'name' => 'Anjanath Pelt',
@@ -636,14 +636,14 @@ return [
                 'extra' => [
                     'en' => 'Gain 1 if the :tail_icon: were broken.',
                     'es' => 'Gana 1 si el :tail_icon: estuviera roto.',
-                ]
+                ],
             ],
             5 => [
                 'name' => 'Anjanath Fang',
                 'extra' => [
                     'en' => 'Gain 1 if the :head_icon: were broken.',
                     'es' => 'Gana 1 si el :head_icon: estuviera roto.',
-                ]
+                ],
             ],
             6 => [
                 'name' => 'Monster Keenbone',
@@ -668,8 +668,8 @@ return [
                 'extra' => [
                     'en' => 'Gain 1 if the :back_icon: were broken.',
                     'es' => 'Gana 1 si el :back_icon: estuviera roto.',
-                ]
-            ]
+                ],
+            ],
         ],
     ],
     'Rathalos' => [
@@ -716,7 +716,7 @@ return [
                     'description' => [
                         'en' => "When this monster has 35 health or less, remove the card with :investigation_behaviour_icon: from the behaviour deck. Then randomly add 1 of the 3 Rathalos behaviour cards with :investigation_behaviour_icon: into this monster's behaviour deck. Shuffle discarded behaviour cards into the deck.",
                         'es' => 'Cuando este monstruo tenga 35 de salud o menos, retira la carta con :investigation_behaviour_icon: del mazo de comportamiento. Luego agrega al azar 1 de las 3 cartas de comportamiento de Rathalos con :investigation_behaviour_icon: al mazo de comportamiento de este monstruo. Baraja las cartas de comportamiento descartadas en el mazo.',
-                    ]
+                    ],
                 ],
                 'parts' => [
                     [
@@ -758,8 +758,8 @@ return [
                             'en' => "Discard the top card of the monster's behaviour deck.",
                             'es' => 'Descarta la carta superior del mazo de comportamiento del monstruo.',
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'difficulty' => \App\Enum\MonsterDifficulty::NORMAL,
@@ -773,7 +773,7 @@ return [
                     'description' => [
                         'en' => "When this monster has 50 health or less, randomly add 1 additional Rathalos behaviour cards with :investigation_behaviour_icon: into this monster's behaviour deck. Shuffle discarded behaviour cards into the deck. Behaviours with :fire_icon: gain +1 :damage_icon:.",
                         'es' => 'Cuando este monstruo tenga 50 de salud o menos, agrega al azar 1 carta de comportamiento de Rathalos adicional con :investigation_behaviour_icon: al mazo de comportamiento de este monstruo. Baraja las cartas de comportamiento descartadas en el mazo. Comportamientos con :fire_icon: ganan +1 :damage_icon:.',
-                    ]
+                    ],
                 ],
                 'parts' => [
                     [
@@ -815,8 +815,8 @@ return [
                             'en' => "Discard the top card of the monster's behaviour deck.",
                             'es' => 'Descarta la carta superior del mazo de comportamiento del monstruo.',
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'difficulty' => \App\Enum\MonsterDifficulty::HARD,
@@ -830,7 +830,7 @@ return [
                     'description' => [
                         'en' => "When this monster has 55 health or less, add 2 remaining Rathalos behaviour cards with :investigation_behaviour_icon: into this monster's behaviour deck. Shuffle discarded behaviour cards into the deck. Behaviours gain +1 :damage_icon: and +1 :dodge_icon:.",
                         'es' => 'Cuando este monstruo tenga 55 de salud o menos, añade las 2 cartas de comportamiento de Rathalos restantes con :investigation_behaviour_icon: al mazo de comportamiento de este monstruo. Baraja las cartas de comportamiento descartadas en el mazo. Los comportamientos ganan +1 :damage_icon: y +1 :dodge_icon:.',
-                    ]
+                    ],
                 ],
                 'parts' => [
                     [
@@ -872,9 +872,9 @@ return [
                             'en' => "Discard the top card of the monster's behaviour deck.",
                             'es' => 'Descarta la carta superior del mazo de comportamiento del monstruo.',
                         ],
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ],
         'rewards' => [
             1 => [
@@ -897,21 +897,21 @@ return [
                 'extra' => [
                     'en' => 'Gain 1 if the :back_icon: were broken.',
                     'es' => 'Gana 1 si el :back_icon: estuviera roto.',
-                ]
+                ],
             ],
             7 => [
                 'name' => 'Rathalos Plate',
                 'extra' => [
                     'en' => 'Gain 1 if the :tail_icon: were broken.',
                     'es' => 'Gana 1 si el :tail_icon: estuviera roto.',
-                ]
+                ],
             ],
             8 => [
                 'name' => 'Rathalos Wing',
                 'extra' => [
                     'en' => 'Gain 1 if the :wing_icon: were broken.',
                     'es' => 'Gana 1 si el :wing_icon: estuviera roto.',
-                ]
+                ],
             ],
             9 => [
                 'name' => 'Rathalos Carapace',
@@ -927,8 +927,8 @@ return [
                 'extra' => [
                     'en' => 'Gain 1 if the :head_icon: were broken.',
                     'es' => 'Gana 1 si el :head_icon: estuviera roto.',
-                ]
-            ]
+                ],
+            ],
         ],
     ],
     'Azure Rathalos' => [
@@ -973,7 +973,7 @@ return [
                     'description' => [
                         'en' => 'Each time this monster suffers damage from an attack card, after the attack is resolved the monster moves 1 node away from :near_hunter_icon:.',
                         'es' => 'Cada vez que este monstruo sufre daño de una carta de ataque, después de que se resuelve el ataque, el monstruo se aleja 1 nodo de :near_hunter_icon:.',
-                    ]
+                    ],
                 ],
                 'parts' => [
                     [
@@ -1015,8 +1015,8 @@ return [
                             'en' => 'Behaviours with :tail_icon: have -1 :range_icon:.',
                             'es' => 'Los comportamientos con :tail_icon: tienen -1 :range_icon:.',
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'difficulty' => \App\Enum\MonsterDifficulty::NORMAL,
@@ -1030,7 +1030,7 @@ return [
                     'description' => [
                         'en' => 'Each time this monster suffers damage from an attack card, after the attack is resolved the monster moves 1 node away from :near_hunter_icon:. Behaviours with :fire_icon: gain +1 :damage_icon:.',
                         'es' => 'Cada vez que este monstruo sufre daño de una carta de ataque, después de que se resuelve el ataque, el monstruo se aleja 1 nodo de :near_hunter_icon:. Comportamientos con :fire_icon: ganan +1 :damage_icon:.',
-                    ]
+                    ],
                 ],
                 'parts' => [
                     [
@@ -1072,8 +1072,8 @@ return [
                             'en' => 'Behaviours with :tail_icon: have -1 :range_icon:.',
                             'es' => 'Los comportamientos con :tail_icon: tienen -1 :range_icon:.',
                         ],
-                    ]
-                ]
+                    ],
+                ],
             ],
             [
                 'difficulty' => \App\Enum\MonsterDifficulty::HARD,
@@ -1087,7 +1087,7 @@ return [
                     'description' => [
                         'en' => 'Each time this monster suffers damage from an attack card, after the attack is resolved the monster moves 1 node away from :near_hunter_icon:. Behaviours gain +1 :damage_icon:.',
                         'es' => 'Cada vez que este monstruo sufre daño de una carta de ataque, después de que se resuelve el ataque, el monstruo se aleja 1 nodo de :near_hunter_icon:. Comportamientos ganan +1 :damage_icon:.',
-                    ]
+                    ],
                 ],
                 'parts' => [
                     [
@@ -1129,9 +1129,9 @@ return [
                             'en' => 'Behaviours with :tail_icon: have -1 :range_icon:.',
                             'es' => 'Los comportamientos con :tail_icon: tienen -1 :range_icon:.',
                         ],
-                    ]
-                ]
-            ]
+                    ],
+                ],
+            ],
         ],
         'rewards' => [
             1 => [
@@ -1139,7 +1139,7 @@ return [
                 'extra' => [
                     'en' => 'Gain 1 if the :wing_icon: were broken.',
                     'es' => 'Gana 1 si el :wing_icon: estuviera roto.',
-                ]
+                ],
             ],
             2 => [
                 'name' => 'Monster Bone Large',
@@ -1158,14 +1158,14 @@ return [
                 'extra' => [
                     'en' => 'Gain 1 if the :back_icon: were broken.',
                     'es' => 'Gana 1 si el :back_icon: estuviera roto.',
-                ]
+                ],
             ],
             7 => [
                 'name' => 'Azure Rathalos Tail',
                 'extra' => [
                     'en' => 'Gain 1 if the :tail_icon: were broken.',
                     'es' => 'Gana 1 si el :tail_icon: estuviera roto.',
-                ]
+                ],
             ],
             8 => [
                 'name' => 'Azure Rathalos Carapace',
@@ -1184,8 +1184,8 @@ return [
                 'extra' => [
                     'en' => 'Gain 1 if the :head_icon: were broken.',
                     'es' => 'Gana 1 si el :head_icon: estuviera roto.',
-                ]
-            ]
+                ],
+            ],
         ],
     ],
 

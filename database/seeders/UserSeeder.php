@@ -23,7 +23,7 @@ class UserSeeder extends Seeder
 
             $personalTeam = $user->currentTeam;
 
-            User::factory(3)->create()->each(function (User $user) use ($personalTeam) {
+            User::factory(3)->create()->each(function (User $user) use ($personalTeam): void {
                 $personalTeam->users()->attach(
                     $user,
                     ['role' => 'editor']

@@ -20,19 +20,19 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class User extends Authenticatable
 {
+    use EagerLoadPivotTrait;
     use HasApiTokens;
+    use HasCampaigns;
+    use HasConnectedAccounts;
     use HasFactory;
     use HasProfilePhoto {
         profilePhotoUrl as getPhotoUrl;
     }
+    use HasRoles;
     use HasTeams;
-    use HasConnectedAccounts;
     use Notifiable;
     use SetsProfilePhotoFromUrl;
     use TwoFactorAuthenticatable;
-    use HasRoles;
-    use HasCampaigns;
-    use EagerLoadPivotTrait;
 
     /**
      * The attributes that are mass assignable.

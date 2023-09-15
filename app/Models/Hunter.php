@@ -16,8 +16,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Hunter extends Model
 {
-    use HasFactory;
     use EagerLoadPivotTrait;
+    use HasFactory;
 
     protected $fillable = [
         'name',
@@ -114,10 +114,11 @@ class Hunter extends Model
             return false;
         }
 
-        return $weapon->items->filter(function (Item $item) {
-                $hunterItem = $this->items->firstWhere('id', $item->id);
+        return 0 === $weapon->items->filter(function (Item $item) {
+            $hunterItem = $this->items->firstWhere('id', $item->id);
+
             return empty($hunterItem) || $item->pivot->number > $hunterItem->pivot->number;
-        })->count() === 0;
+        })->count();
     }
 
     public function canCraftArmor(Armor $armor): bool
@@ -126,9 +127,10 @@ class Hunter extends Model
             return false;
         }
 
-        return $armor->items->filter(function (Item $item) {
+        return 0 === $armor->items->filter(function (Item $item) {
             $hunterItem = $this->items->firstWhere('id', $item->id);
+
             return empty($hunterItem) || $item->pivot->number > $hunterItem->pivot->number;
-        })->count() === 0;
+        })->count();
     }
 }

@@ -56,5 +56,5 @@ return [
         'url' => 'https://www.google.com/recaptcha/api/siteverify',
         'site-key' => env('GOOGLE_RECAPTCHA_SITE_KEY'),
         'secret-key' => env('GOOGLE_RECAPTCHA_SECRET_SITE_KEY'),
-    ]
+    ],
 ];

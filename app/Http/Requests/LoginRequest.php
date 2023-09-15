@@ -10,7 +10,7 @@ class LoginRequest extends BaseLoginRequest
     public function rules(): array
     {
         return array_merge(parent::rules(), [
-            'captcha_token'  => [new Recaptcha(0.5)],
+            'captcha_token' => [new Recaptcha(0.5)],
         ]);
     }
 }

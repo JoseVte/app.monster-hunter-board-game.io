@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Pivot\CampaignMembership;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -9,12 +10,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Support\Str;
 
 class Campaign extends Model
 {
-    use HasFactory;
     use EagerLoadPivotTrait;
+    use HasFactory;
 
     protected $fillable = [
         'name',

@@ -14,10 +14,10 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Armor extends Model
 {
+    use EagerLoadPivotTrait;
     use HasFactory;
     use HasTranslations;
     use Searchable;
-    use EagerLoadPivotTrait;
 
     protected $fillable = [
         'type',
@@ -47,7 +47,7 @@ class Armor extends Model
     ];
 
     protected $appends = [
-        'type_value'
+        'type_value',
     ];
 
     public function skills(): BelongsToMany

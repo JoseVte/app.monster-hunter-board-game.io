@@ -97,15 +97,15 @@ class ExtractTranslations extends Command
 
         $encodedEn = json_encode(
             $oldEnTranslations
-            ->sortKeys(SORT_NATURAL | SORT_FLAG_CASE)
-            ->toArray(),
+                ->sortKeys(SORT_NATURAL | SORT_FLAG_CASE)
+                ->toArray(),
             JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
         );
 
         $encodedEs = json_encode(
             $oldEsTranslations
-            ->sortKeys(SORT_NATURAL | SORT_FLAG_CASE)
-            ->toArray(),
+                ->sortKeys(SORT_NATURAL | SORT_FLAG_CASE)
+                ->toArray(),
             JSON_THROW_ON_ERROR | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT
         );
 

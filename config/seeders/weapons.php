@@ -797,7 +797,7 @@ return [
                 ],
             ],
         ],
-        'weapon-attacks' => []
+        'weapon-attacks' => [],
     ],
     [
         'name' => [

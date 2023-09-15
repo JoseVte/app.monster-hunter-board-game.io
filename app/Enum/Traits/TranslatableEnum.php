@@ -51,7 +51,7 @@ trait TranslatableEnum
         throw new ValueError("$name is not a valid backing value for enum ".self::class);
     }
 
-    public static function tryFromName(string $name): self|null
+    public static function tryFromName(string $name): ?self
     {
         try {
             return self::fromName($name);

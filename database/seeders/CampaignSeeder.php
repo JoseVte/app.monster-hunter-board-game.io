@@ -17,7 +17,7 @@ class CampaignSeeder extends Seeder
         $user = User::where('email', config('seed.users.admin.email'))->firstOrFail();
 
         $campaign = Campaign::factory()->create(['team_id' => $user->currentTeam]);
-        User::where('email', '<>', config('seed.users.admin.email'))->each(function (User $user) use ($campaign) {
+        User::where('email', '<>', config('seed.users.admin.email'))->each(function (User $user) use ($campaign): void {
             $campaign->users()->attach($user, [
                 'role_id' => Role::findByName('member-campaign', 'sanctum')->id,
             ]);

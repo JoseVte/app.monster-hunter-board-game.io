@@ -27,6 +27,7 @@ Route::post('locale', static function () {
     App::setLocale($validated['language']);
     // Session
     session()->put('locale', $validated['language']);
+
     // Response
     return redirect()->back();
 });

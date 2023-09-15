@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Armor;
-use App\Models\ArmorSkill;
-use App\Models\DowntimeActivity;
-use App\Models\Item;
-use App\Models\Monster;
-use App\Models\Weapon;
-use App\Models\WeaponAttack;
-use App\Models\WeaponType;
 use Arr;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
+use App\Models\Item;
 use Inertia\Inertia;
+use App\Models\Armor;
+use App\Models\Weapon;
+use App\Models\Monster;
+use App\Models\ArmorSkill;
+use App\Models\WeaponType;
+use App\Models\WeaponAttack;
+use Illuminate\Http\Request;
+use App\Models\DowntimeActivity;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Collection;
 
 class SearchController extends Controller
 {
@@ -58,23 +58,23 @@ class SearchController extends Controller
                     'class' => $class,
                     'classType' => Arr::get($result, '_formatted.type'),
                     'url' => Arr::get($result, '_formatted.url'),
-                    'name' => Arr::get($result, '_formatted.' . $locale . '.name'),
-                    'type' => Arr::get($result, '_formatted.' . $locale . '.type'),
+                    'name' => Arr::get($result, '_formatted.'.$locale.'.name'),
+                    'type' => Arr::get($result, '_formatted.'.$locale.'.type'),
                 ];
             };
 
             foreach ([
-                         Armor::class,
-                         ArmorSkill::class,
-                         DowntimeActivity::class,
-                         Item::class,
-                         Monster::class,
-                         Weapon::class,
-                         WeaponType::class,
-                         WeaponAttack::class
-                     ] as $class) {
+                Armor::class,
+                ArmorSkill::class,
+                DowntimeActivity::class,
+                Item::class,
+                Monster::class,
+                Weapon::class,
+                WeaponType::class,
+                WeaponAttack::class,
+            ] as $class) {
                 $results = $results->merge(collect(Arr::get(call_user_func([$class, 'search'], $query, $searchOptions)->take($searchLimit)->raw(), 'hits', []))
-                    ->map(fn($result) => $resultsMap($result, $class)));
+                    ->map(fn ($result) => $resultsMap($result, $class)));
             }
         }
 
