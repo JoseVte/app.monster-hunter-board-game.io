@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\DeviationWeapon;
 use Laravel\Scout\Searchable;
 use App\Models\Pivot\CountItemWeapon;
 use App\Models\Traits\HasTranslations;
@@ -35,6 +36,7 @@ class Weapon extends Model
         'count_attack_4',
         'count_attack_5',
         'has_elemental_attacks',
+        'deviation',
 
         'type_id',
         'parent_id',
@@ -43,6 +45,7 @@ class Weapon extends Model
     protected $casts = [
         'has_elemental_attacks' => 'boolean',
         'is_default' => 'boolean',
+        'deviation' => DeviationWeapon::class,
     ];
 
     protected $with = [

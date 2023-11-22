@@ -33,7 +33,7 @@ Route::post('locale', static function () {
 });
 
 Route::prefix('monsters')->name('monster.')->group(function (): void {
-    Route::get('filter', static function (Illuminate\Http\Request $request): JsonResponse {
+    Route::get('filter', static function (Request $request): JsonResponse {
         $query = Monster::query();
 
         if ($request->has('name')) {

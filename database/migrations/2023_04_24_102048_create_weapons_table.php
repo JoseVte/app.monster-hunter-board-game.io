@@ -33,6 +33,7 @@ return new class() extends Migration {
             $table->integer('count_attack_5')->default(0);
 
             $table->boolean('has_elemental_attacks')->default(false);
+            $table->string('deviation')->nullable();
 
             $table->timestamps();
         });

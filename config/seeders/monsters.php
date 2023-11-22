@@ -1276,6 +1276,215 @@ return [
             'Teostra Tail',
             'Teostra Webbing',
             'Teostra Gem',
+
+            'Novacrystal',
+            'Firecell Stone',
+        ],
+        'resistance' => [
+            'fire' => null,
+            'water' => 1,
+            'thunder' => null,
+            'ice' => 1,
+            'dragon' => null,
+
+            'paralysis' => null,
+            'poison' => 2,
+            'sleep' => null,
+            'nitro' => null,
+            'stun' => 2,
+        ],
+        'difficulty' => [
+            [
+                'difficulty' => \App\Enum\MonsterDifficulty::EASY,
+                'stars' => 1,
+                'health' => 85,
+                'ability' => [
+                    'name' => [
+                        'en' => 'Fiery Presence',
+                        'es' => 'Presencia Ardiente',
+                    ],
+                    'description' => [
+                        'en' => 'When a hunter ends their turns in a node adjacent to Teostra, the hunter suffers :blast_icon:. If all 12 blackscale dust tokens are on the game board when Teostra begins its turn, resolve the Supernova :supernova_icon: behaviour card instead of drawing a behaviour card. After resolving this behaviour card remove all of the blackscale dust tokens from the board.',
+                        'es' => 'Cuando un cazador termina su turno en un nodo adyacente a Teostra, el cazador sufre :blast_icon:. Si las 12 fichas de polvo de escamas negra están en el tablero de juego cuando Teostra comienza su turno, resuelve la carta de comportamiento Supernova :supernova_icon: en lugar de robar una carta de comportamiento. Después de resolver esta carta de comportamiento, retira todas las fichas de polvo de escama negra del tablero.',
+                    ],
+                ],
+                'parts' => [
+                    [
+                        'icon' => 'head',
+                        'direction' => 'up',
+                        'defense' => 3,
+                        'broken' => 7,
+                        'ability-broken' => [
+                            'en' => 'Remove up to 6 blackscale dust tokens from the game board.',
+                            'es' => 'Retira hasta 6 fichas de polvo de escamas negras del tablero de juego.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'tail',
+                        'direction' => 'down',
+                        'defense' => 4,
+                        'broken' => 8,
+                        'ability-broken' => [
+                            'en' => 'This body part has -1 :defense_icon:',
+                            'es' => 'Esta parte del cuerpo tiene -1 :defense_icon:',
+                        ],
+                    ],
+                    [
+                        'icon' => 'wing',
+                        'direction' => 'left-right',
+                        'defense' => 4,
+                        'broken' => 8,
+                        'ability-broken' => [
+                            'en' => 'Behaviours with :wing_icon: have -1 :damage_icon:',
+                            'es' => 'Los comportamientos con :wing_icon: tienen -1 :damage_icon:',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'difficulty' => \App\Enum\MonsterDifficulty::NORMAL,
+                'stars' => 2,
+                'health' => 95,
+                'ability' => [
+                    'name' => [
+                        'en' => 'Fiery Presence',
+                        'es' => 'Presencia Ardiente',
+                    ],
+                    'description' => [
+                        'en' => 'When a hunter ends their turns in a node adjacent to Teostra, the hunter suffers :blast_icon:. If all 12 blackscale dust tokens are on the game board when Teostra begins its turn, resolve the Supernova :supernova_icon: behaviour card instead of drawing a behaviour card. After resolving this behaviour card remove all of the blackscale dust tokens from the board.',
+                        'es' => 'Cuando un cazador termina su turno en un nodo adyacente a Teostra, el cazador sufre :blast_icon:. Si las 12 fichas de polvo de escamas negra están en el tablero de juego cuando Teostra comienza su turno, resuelve la carta de comportamiento Supernova :supernova_icon: en lugar de robar una carta de comportamiento. Después de resolver esta carta de comportamiento, retira todas las fichas de polvo de escama negra del tablero.',
+                    ],
+                ],
+                'parts' => [
+                    [
+                        'icon' => 'head',
+                        'direction' => 'up',
+                        'defense' => 4,
+                        'broken' => 7,
+                        'ability-broken' => [
+                            'en' => 'Remove up to 5 blackscale dust tokens from the game board.',
+                            'es' => 'Retira hasta 5 fichas de polvo de escamas negras del tablero de juego.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'tail',
+                        'direction' => 'down',
+                        'defense' => 5,
+                        'broken' => 8,
+                        'ability-broken' => [
+                            'en' => 'This body part has -1 :defense_icon:',
+                            'es' => 'Esta parte del cuerpo tiene -1 :defense_icon:',
+                        ],
+                    ],
+                    [
+                        'icon' => 'wing',
+                        'direction' => 'left-right',
+                        'defense' => 4,
+                        'broken' => 8,
+                        'ability-broken' => [
+                            'en' => 'Remove Claw Swipe from the behaviour deck. Shuffle discarded behaviour cards into the deck.',
+                            'es' => 'Elimina Claw Swipe de la plataforma de comportamiento. Mezcla las cartas de comportamiento descartadas en el mazo.',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'difficulty' => \App\Enum\MonsterDifficulty::HARD,
+                'stars' => 5,
+                'health' => 110,
+                'ability' => [
+                    'name' => [
+                        'en' => 'Volcanic Presence',
+                        'es' => 'Presencia Volcanica',
+                    ],
+                    'description' => [
+                        'en' => 'Behaviours gain +1 :damage_icon:. When a hunter ends their turns in a node adjacent to Teostra, the hunter suffers :blast_icon:. If all 12 blackscale dust tokens are on the game board when Teostra begins its turn, resolve the Supernova :supernova_icon: behaviour card instead of drawing a behaviour card. After resolving this behaviour card remove all of the blackscale dust tokens from the board.',
+                        'es' => 'Los comportamientos ganan +1 :damage_icon:. Cuando un cazador termina su turno en un nodo adyacente a Teostra, el cazador sufre :blast_icon:. Si las 12 fichas de polvo de escamas negra están en el tablero de juego cuando Teostra comienza su turno, resuelve la carta de comportamiento Supernova :supernova_icon: en lugar de robar una carta de comportamiento. Después de resolver esta carta de comportamiento, retira todas las fichas de polvo de escama negra del tablero.',
+                    ],
+                ],
+                'parts' => [
+                    [
+                        'icon' => 'head',
+                        'direction' => 'up',
+                        'defense' => 4,
+                        'broken' => 7,
+                        'ability-broken' => [
+                            'en' => 'Remove up to 4 blackscale dust tokens from the game board.',
+                            'es' => 'Retira hasta 4 fichas de polvo de escamas negras del tablero de juego.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'tail',
+                        'direction' => 'down',
+                        'defense' => 5,
+                        'broken' => 8,
+                        'ability-broken' => [
+                            'en' => 'Behaviours with :tail_icon: have -1 :range_icon:',
+                            'es' => 'Los comportamientos con :tail_icon: tienen -1 :range_icon:',
+                        ],
+                    ],
+                    [
+                        'icon' => 'wing',
+                        'direction' => 'left-right',
+                        'defense' => 5,
+                        'broken' => 8,
+                        'ability-broken' => [
+                            'en' => 'Remove Claw Swipe from the behaviour deck. Shuffle discarded behaviour cards into the deck.',
+                            'es' => 'Elimina Claw Swipe de la plataforma de comportamiento. Mezcla las cartas de comportamiento descartadas en el mazo.',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'rewards' => [
+            1 => [
+                'name' => 'Fire Dragon Scale',
+            ],
+            2 => [
+                'name' => 'Teostra Horn',
+            ],
+            3 => [
+                'name' => 'Teostra Webbing',
+            ],
+            4 => [
+                'name' => 'Teostra Gem',
+            ],
+            5 => [
+                'name' => 'Teostra Powder',
+            ],
+            6 => [
+                'name' => 'Teostra Carapace',
+            ],
+            7 => [
+                'name' => 'Fire Dragon Scale',
+            ],
+            8 => [
+                'name' => 'Novacrystal',
+            ],
+            9 => [
+                'name' => 'Firecell Stone',
+            ],
+            10 => [
+                'name' => 'Teostra Claw',
+                'extra' => [
+                    'en' => 'Gain 1 if the :wing_icon: were broken.',
+                    'es' => 'Gana 1 si el :wing_icon: estuviera roto.',
+                ],
+            ],
+            11 => [
+                'name' => 'Teostra Mane',
+                'extra' => [
+                    'en' => 'Gain 1 if the :head_icon: were broken.',
+                    'es' => 'Gana 1 si el :head_icon: estuviera roto.',
+                ],
+            ],
+            12 => [
+                'name' => 'Teostra Tail',
+                'extra' => [
+                    'en' => 'Gain 1 if the :tail_icon: were broken.',
+                    'es' => 'Gana 1 si el :tail_icon: estuviera roto.',
+                ],
+            ],
         ],
     ],
     'Nergigante' => [

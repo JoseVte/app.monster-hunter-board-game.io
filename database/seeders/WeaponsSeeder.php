@@ -21,78 +21,100 @@ class WeaponsSeeder extends Seeder
     {
         $storage = Storage::disk(config('jetstream.profile_photo_disk', 'public'));
 
-        foreach (config('seeders.weapons') as $weaponsByType) {
-            $weaponType = WeaponType::create([
-                'name' => $weaponsByType['name'],
-                'description' => $weaponsByType['description'],
-                'image_path' => $storage->putFileAs('weapon-types', resource_path('images/'.$weaponsByType['image']), Str::slug($weaponsByType['name']['en']).'.png', 'public'),
-            ]);
+        $weaponTypes = [
+            'great-sword',
+            'sword-shield',
+            'dual-blades',
+            'longsword',
+            'hammer',
+            'hunting-horn',
+            'lance',
+            'gunlance',
+            'switch-axe',
+            'charge-blade',
+            'insect-glaive',
+            'bow',
+            'light-bowgun',
+            'heavy-bowgun',
+        ];
 
-            foreach (Arr::get($weaponsByType, 'weapons', []) as $weaponDetails) {
-                $weapon = Weapon::updateOrCreate([
-                    'name' => $weaponDetails['name'],
-                    'type_id' => $weaponType->id,
-                ], [
-                    'name' => $weaponDetails['name'],
-                    'type_id' => $weaponType->id,
-                    'branch' => Arr::get($weaponDetails, 'branch'),
-                    'is_default' => Arr::get($weaponDetails, 'default', false),
-                    'has_elemental_attacks' => Arr::get($weaponDetails, 'has_elemental_attacks', false),
-                    'rarity' => Arr::get($weaponDetails, 'rarity', 1),
-                    'defense' => Arr::get($weaponDetails, 'defense', 0),
-                    'count_attack_1' => Arr::get($weaponDetails, 'count_attack_1', 0),
-                    'count_attack_2' => Arr::get($weaponDetails, 'count_attack_2', 0),
-                    'count_attack_3' => Arr::get($weaponDetails, 'count_attack_3', 0),
-                    'count_attack_4' => Arr::get($weaponDetails, 'count_attack_4', 0),
-                    'count_attack_5' => Arr::get($weaponDetails, 'count_attack_5', 0),
+        foreach ($weaponTypes as $weaponsByType) {
+            $weaponsByType = config('seeders.weapons.'.$weaponsByType);
+
+            if (!empty($weaponsByType)) {
+                $weaponType = WeaponType::create([
+                    'name' => $weaponsByType['name'],
+                    'description' => Arr::get($weaponsByType, 'description'),
+                    'image_path' => $storage->putFileAs('weapon-types', resource_path('images/'.$weaponsByType['image']), Str::slug($weaponsByType['name']['en']).'.png', 'public'),
                 ]);
 
-                if (Arr::get($weaponDetails, 'branch') && Monster::where('name->en', $weaponDetails['branch'])->exists()) {
-                    $weapon->branch_id = Monster::where('name->en', $weaponDetails['branch'])->firstOrFail()->id;
-                    $weapon->save();
-                }
+                foreach (Arr::get($weaponsByType, 'weapons', []) as $weaponDetails) {
+                    $weapon = Weapon::updateOrCreate([
+                        'name' => $weaponDetails['name'],
+                        'type_id' => $weaponType->id,
+                    ], [
+                        'name' => $weaponDetails['name'],
+                        'type_id' => $weaponType->id,
+                        'branch' => Arr::get($weaponDetails, 'branch'),
+                        'is_default' => Arr::get($weaponDetails, 'default', false),
+                        'has_elemental_attacks' => Arr::get($weaponDetails, 'has_elemental_attacks', false),
+                        'deviation' => Arr::get($weaponDetails, 'deviation'),
+                        'rarity' => Arr::get($weaponDetails, 'rarity', 1),
+                        'defense' => Arr::get($weaponDetails, 'defense', 0),
+                        'count_attack_1' => Arr::get($weaponDetails, 'count_attack_1', 0),
+                        'count_attack_2' => Arr::get($weaponDetails, 'count_attack_2', 0),
+                        'count_attack_3' => Arr::get($weaponDetails, 'count_attack_3', 0),
+                        'count_attack_4' => Arr::get($weaponDetails, 'count_attack_4', 0),
+                        'count_attack_5' => Arr::get($weaponDetails, 'count_attack_5', 0),
+                    ]);
 
-                if (Arr::get($weaponDetails, 'parent')) {
-                    if (Weapon::where('name->en', $weaponDetails['parent'])->doesntExist()) {
-                        logger('Weapon parent: '.$weaponDetails['parent']);
+                    if (Arr::get($weaponDetails, 'branch') && Monster::where('name->en', $weaponDetails['branch'])->exists()) {
+                        $weapon->branch_id = Monster::where('name->en', $weaponDetails['branch'])->firstOrFail()->id;
+                        $weapon->save();
                     }
 
-                    $weapon->parent_id = Weapon::where('name->en', $weaponDetails['parent'])->firstOrFail()->id;
-                    $weapon->save();
-                }
-
-                if (Arr::get($weaponDetails, 'items')) {
-                    foreach ($weaponDetails['items'] as $itemName => $count) {
-                        if (Item::where('name->en', $itemName)->doesntExist()) {
-                            logger('Item: '.$itemName);
+                    if (Arr::get($weaponDetails, 'parent')) {
+                        if (Weapon::where('name->en', $weaponDetails['parent'])->doesntExist()) {
+                            logger('Weapon parent: '.$weaponDetails['parent']);
                         }
 
-                        $weaponAttack = Item::where('name->en', $itemName)->firstOrFail();
-                        $weapon->items()->attach($weaponAttack, ['number' => $count]);
+                        $weapon->parent_id = Weapon::where('name->en', $weaponDetails['parent'])->firstOrFail()->id;
+                        $weapon->save();
                     }
-                }
 
-                if (Arr::get($weaponDetails, 'attacks')) {
-                    if (Arr::get($weaponDetails, 'attacks.remove')) {
-                        foreach ($weaponDetails['attacks']['remove'] as $attackName => $count) {
-                            if (WeaponAttack::where('name->en', $attackName)->doesntExist()) {
-                                logger('Attack name: '.$attackName);
-                                WeaponAttack::create(['name' => $attackName]);
+                    if (Arr::get($weaponDetails, 'items')) {
+                        foreach ($weaponDetails['items'] as $itemName => $count) {
+                            if (Item::where('name->en', $itemName)->doesntExist()) {
+                                logger('Item: '.$itemName);
                             }
 
-                            $weaponAttack = WeaponAttack::where('name->en', $attackName)->firstOrFail();
-                            $weapon->attacksToRemove()->attach($weaponAttack, ['number' => $count]);
+                            $weaponAttack = Item::where('name->en', $itemName)->firstOrFail();
+                            $weapon->items()->attach($weaponAttack, ['number' => $count]);
                         }
                     }
-                    if (Arr::get($weaponDetails, 'attacks.add')) {
-                        foreach ($weaponDetails['attacks']['add'] as $attackName => $count) {
-                            if (WeaponAttack::where('name->en', $attackName)->doesntExist()) {
-                                logger('Attack name: '.$attackName);
-                                WeaponAttack::create(['name' => $attackName]);
-                            }
 
-                            $weaponAttack = WeaponAttack::where('name->en', $attackName)->firstOrFail();
-                            $weapon->attacksToAdd()->attach($weaponAttack, ['number' => $count]);
+                    if (Arr::get($weaponDetails, 'attacks')) {
+                        if (Arr::get($weaponDetails, 'attacks.remove')) {
+                            foreach ($weaponDetails['attacks']['remove'] as $attackName => $count) {
+                                if (WeaponAttack::where('name->en', $attackName)->doesntExist()) {
+                                    logger('Attack name: '.$attackName);
+                                    WeaponAttack::create(['name' => $attackName]);
+                                }
+
+                                $weaponAttack = WeaponAttack::where('name->en', $attackName)->firstOrFail();
+                                $weapon->attacksToRemove()->attach($weaponAttack, ['number' => $count]);
+                            }
+                        }
+                        if (Arr::get($weaponDetails, 'attacks.add')) {
+                            foreach ($weaponDetails['attacks']['add'] as $attackName => $count) {
+                                if (WeaponAttack::where('name->en', $attackName)->doesntExist()) {
+                                    logger('Attack name: '.$attackName);
+                                    WeaponAttack::create(['name' => $attackName]);
+                                }
+
+                                $weaponAttack = WeaponAttack::where('name->en', $attackName)->firstOrFail();
+                                $weapon->attacksToAdd()->attach($weaponAttack, ['number' => $count]);
+                            }
                         }
                     }
                 }

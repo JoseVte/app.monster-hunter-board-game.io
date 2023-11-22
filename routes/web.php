@@ -114,7 +114,7 @@ Route::middleware([
     Route::delete('/campaign-invitations/{invitation}', [CampaignInvitationController::class, 'destroy'])
         ->name('campaign-invitations.destroy');
 
-    Route::resource('campaigns.hunters', CampaignHunterController::class)->except('show');
+    Route::resource('campaigns.hunters', CampaignHunterController::class)->except('show')->scoped(['campaign', 'hunter']);
     Route::get('campaigns/{campaign}/hunters/{hunter}/weapons/{weaponType}', [CampaignHunterController::class, 'showWeaponType'])
         ->name('campaigns.hunters.weapon-type.index');
     Route::post('campaigns/{campaign}/hunters/{hunter}/weapons/{weaponType}/{weapon}', [CampaignHunterController::class, 'craftWeapon'])

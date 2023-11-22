@@ -315,8 +315,8 @@ return [
                 'es' => 'Poder Latente',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'If this hunter suffered damage during the monster\'s last turn, draw +1 :damage_attack_icon: for the first attack card you play this turn which inflicts damage.',
+                'es' => 'Si este cazador sufrió daño durante el último turno del monstruo, roba +1 :damage_attack_icon: para la primera carta de ataque que juegues este turno que inflige daño.',
             ],
         ],
         [
@@ -326,8 +326,8 @@ return [
                 'es' => 'Técnica de Teostra',
             ],
             'description' => [
-                'en' => '',
-                'es' => '',
+                'en' => 'Once per quest, when this hunter plays an attack card, shuffle any :damage_attack_icon: you draw into your damage deck instead of discarding them.',
+                'es' => 'Una vez por misión, cuando este cazador juega una carta de ataque, mezcla cualquier :damage_attack_icon: que saques en tu mazo de daño en lugar de descartarlos',
             ],
         ],
         [

@@ -38,6 +38,7 @@
         "amirami/localizator": "^0.12.1@alpha",
         "barryvdh/laravel-debugbar": "^3.6",
         "barryvdh/laravel-ide-helper": "^2.10",
+        "brianium/paratest": "^7.3",
         "derekmd/laravel-dusk-firefox": "^2.1",
         "envatic/laravel-vue-i18n-generator": "^0.1.60",
         "fakerphp/faker": "^1.9.1",

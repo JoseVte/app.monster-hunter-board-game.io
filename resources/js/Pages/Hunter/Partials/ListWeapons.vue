@@ -67,7 +67,7 @@ const hunterWeaponCount = (weapon) => {
                         </div>
                     </td>
                     <td class="align-middle h-full py-2 w-full">
-                        <div class="grid grid-cols-4 gap-8 items-center h-full w-full">
+                        <div class="grid grid-cols-5 gap-8 items-center h-full w-full">
                             <template
                                 v-for="(weapon, subIndex) in weaponBranch"
                                 :key="weapon.id"
@@ -79,8 +79,8 @@ const hunterWeaponCount = (weapon) => {
                                     :weapon="weapon"
                                     class-container="weapon-box"
                                 >
-                                    <div class="flex flex-col lg:flex-row items-start lg:items-center gap-2">
-                                        <div class="flex justify-between items-center w-full lg:w-auto">
+                                    <div class="flex flex-col xl:flex-row items-start xl:items-center gap-2">
+                                        <div class="flex justify-between items-center w-full xl:w-auto">
                                             <div class="bg-gray-300 dark:bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8 flex items-center justify-center">
                                                 <WeaponsIcon
                                                     class="h-4 w-4"
@@ -89,7 +89,7 @@ const hunterWeaponCount = (weapon) => {
                                             </div>
                                             <div
                                                 v-if="weapon.is_default || hunterWeaponCount(weapon)"
-                                                class="bg-gray-300 dark:bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8 flex lg:hidden items-center justify-center"
+                                                class="bg-gray-300 dark:bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8 flex xl:hidden items-center justify-center"
                                             >
                                                 <Check
                                                     class="h-6 w-6 text-green-500"
@@ -101,7 +101,7 @@ const hunterWeaponCount = (weapon) => {
                                         </div>
                                         <div
                                             v-if="weapon.is_default || hunterWeaponCount(weapon)"
-                                            class="bg-gray-300 dark:bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8  hidden lg:flex items-center justify-center"
+                                            class="bg-gray-300 dark:bg-gray-800 rounded-full h-8 w-8 min-h-8 min-w-8 hidden xl:flex items-center justify-center"
                                         >
                                             <Check
                                                 class="h-6 w-6 text-green-500"

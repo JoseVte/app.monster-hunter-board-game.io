@@ -5,6 +5,9 @@ import vue from '@vitejs/plugin-vue';
 import {VitePWA} from "vite-plugin-pwa";
 
 export default defineConfig({
+    build: {
+        manifest: 'manifest.json',
+    },
     resolve: {
         alias: {
             '~': resolve(__dirname, './resources/images')
