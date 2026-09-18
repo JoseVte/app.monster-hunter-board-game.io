@@ -30,7 +30,7 @@ const close = () => {
         :closeable="closeable"
         @close="close"
     >
-        <div class="bg-white dark:bg-gray-800 px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+        <div class="px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <div class="sm:flex sm:items-start">
                 <div class="mx-auto shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
                     <svg
@@ -61,8 +61,13 @@ const close = () => {
             </div>
         </div>
 
-        <div class="flex flex-row justify-end px-6 py-4 bg-gray-100 dark:bg-gray-800 text-right">
-            <slot name="footer" />
+        <!-- The rule the cards use, rather than a grey bar under the panel: inside a
+         frame there is nothing to sit under. The footer stacks so the rule spans
+         the whole width instead of taking its place in the row of buttons. -->
+        <div class="flex flex-col px-6 pt-4 pb-6 before:mb-4 before:block before:h-px before:w-full before:bg-[linear-gradient(to_right,transparent,var(--color-attack-line),transparent)] before:content-['']">
+            <div class="flex flex-row justify-end gap-3">
+                <slot name="footer" />
+            </div>
         </div>
     </Modal>
 </template>

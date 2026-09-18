@@ -24,11 +24,33 @@ class Hunter extends Model
         'name',
 
         'campaign_id',
+        'weapon_type_id',
     ];
+
+    /**
+     * The rulebook starts everyone on the great sword, and a hunter always has
+     * something in hand, so one is put there rather than leaving the column
+     * empty until somebody picks.
+     */
+    protected static function booted(): void
+    {
+        static::creating(function (self $hunter): void {
+            $hunter->weapon_type_id ??= WeaponType::where('name->en', 'Great Sword')->value('id');
+        });
+    }
 
     public function campaign(): BelongsTo
     {
         return $this->belongsTo(Campaign::class);
+    }
+
+    /**
+     * The type a hunter carries into a hunt. Separate from the favourite weapon
+     * kept within each type: only one type goes to the fight.
+     */
+    public function weaponType(): BelongsTo
+    {
+        return $this->belongsTo(WeaponType::class);
     }
 
     public function palico(): HasOne
@@ -144,6 +166,12 @@ class Hunter extends Model
     public function canCraftArmor(Armor $armor): bool
     {
         if ($armor->is_default) {
+            return false;
+        }
+
+        // Armour has no upgrade tree the way a weapon does, so a second copy of a
+        // piece buys nothing and only spends the parts.
+        if ($this->armors->contains($armor->id)) {
             return false;
         }
 

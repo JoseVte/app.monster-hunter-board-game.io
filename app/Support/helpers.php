@@ -32,53 +32,93 @@ if (! function_exists('arr_expand')) {
 }
 
 if (! function_exists('create_weapon_tree')) {
+    /**
+     * Every weapon type has the same shape: two starting weapons, each opening
+     * three to six paths, none longer than two more steps. The old return
+     * grouped by branch, which repeated the starting weapon under every monster
+     * that grows out of it, so one screen showed Buster Sword five times.
+     *
+     * This returns each root once with its paths hanging off it. Every weapon
+     * carries `path_ids`, the way back to its root, which is what lets hovering
+     * a card light the line that made it without the browser walking parents.
+     *
+     * @return Collection<int, array{root: Weapon, paths: Collection<int, array{branches: list<string>, weapons: Collection<int, Weapon>}>}>
+     */
     function create_weapon_tree(WeaponType $weaponType, Hunter $hunter): Collection
     {
-        $latestWeaponModels = $weaponType->weapons()
-            ->doesntHave('children')
-            ->with([
-                'recipes.items',
-                'parent',
-                'parent.recipes.items',
-                'parent.parent',
-                'parent.parent.recipes.items',
-                'parent.parent.parent',
-                'parent.parent.parent.recipes.items',
-                'parent.parent.parent.parent',
-                'parent.parent.parent.parent.recipes.items',
-            ])
+        $weapons = $weaponType->weapons()
+            ->with(['recipes.items', 'parent'])
             ->get();
 
-        $latestWeapons = collect();
-        $latestWeaponModels->each(function (Weapon $leaf) use ($hunter, &$latestWeapons): void {
-            $weapons = collect();
-            $weapon = $leaf;
-            $rarity = $weapon->rarity;
-
-            do {
-                $weapon->equipped = $hunter->equippedWeapons->firstWhere('id', $weapon->id);
-                $weapon->craftable_recipes = $hunter->craftableRecipes($weapon)->pluck('id');
-                $weapon->can_craft = $weapon->craftable_recipes->isNotEmpty();
-
-                while ($rarity > $weapon->rarity) {
-                    $weapons->push([]);
-                    $rarity--;
-                }
-                $weapons->push($weapon);
-                $weapon = $weapon->parent;
-                $rarity--;
-            } while ($weapon !== null);
-
-            $line = $weapons->reverse()->values();
-
-            // A line reachable from two monsters is listed under both, because a
-            // player coming down either tree has to be able to find it.
-            $leaf->recipes->pluck('branch')->filter()->unique()->each(
-                fn (string $branch) => $latestWeapons->put($branch, $line)
-            );
+        $weapons->each(function (Weapon $weapon) use ($hunter, $weapons): void {
+            $weapon->equipped = $hunter->equippedWeapons->firstWhere('id', $weapon->id);
+            $weapon->craftable_recipes = $hunter->craftableRecipes($weapon)->pluck('id');
+            $weapon->can_craft = $weapon->craftable_recipes->isNotEmpty();
+            $weapon->path_ids = weapon_path_ids($weapon, $weapons);
         });
 
-        return $latestWeapons;
+        $children = $weapons->groupBy('parent_id');
+
+        return $weapons->whereNull('parent_id')->values()->map(fn (Weapon $root): array => [
+            'root' => $root,
+            'paths' => weapon_paths_from($root, $children),
+        ]);
+    }
+}
+
+if (! function_exists('weapon_path_ids')) {
+    /**
+     * @param  Collection<int, Weapon>  $weapons
+     * @return list<int>
+     */
+    function weapon_path_ids(Weapon $weapon, Collection $weapons): array
+    {
+        $ids = [$weapon->id];
+        $current = $weapon;
+
+        while ($current->parent_id) {
+            $current = $weapons->firstWhere('id', $current->parent_id);
+
+            if (! $current) {
+                break;
+            }
+
+            array_unshift($ids, $current->id);
+        }
+
+        return $ids;
+    }
+}
+
+if (! function_exists('weapon_paths_from')) {
+    /**
+     * One entry per way out of this root, each already ordered from the root
+     * outwards and labelled with the branches its recipes belong to. A weapon
+     * two monsters both build appears once, carrying both names.
+     *
+     * @param  Collection<int, Collection<int, Weapon>>  $children
+     * @return Collection<int, array{branches: list<string>, weapons: Collection<int, Weapon>}>
+     */
+    function weapon_paths_from(Weapon $root, Collection $children): Collection
+    {
+        return collect($children->get($root->id, collect()))
+            ->map(function (Weapon $first) use ($children): array {
+                $line = collect([$first]);
+                $current = $first;
+
+                while ($next = collect($children->get($current->id, collect()))->first()) {
+                    $line->push($next);
+                    $current = $next;
+                }
+
+                return [
+                    'branches' => $line->flatMap(
+                        fn (Weapon $weapon) => $weapon->recipes->pluck('branch')
+                    )->filter()->unique()->values()->all(),
+                    'weapons' => $line,
+                ];
+            })
+            ->values();
     }
 }
 

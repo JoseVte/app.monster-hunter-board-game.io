@@ -25,8 +25,8 @@ console.log(monster)
             />
         </template>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="py-6 sm:py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="bg-gray-50 dark:bg-gray-800 sm:rounded-sm w-full p-4">
                     <div class="flex gap-4">
                         <img

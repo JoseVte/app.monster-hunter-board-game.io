@@ -31,9 +31,12 @@ watch(searchText, (after) => {
 </script>
 
 <template>
+    <!-- The rule divides search from the nav links beside it, which are hidden
+         below sm, so on a phone it divided search from nothing. -my-px made it a
+         pixel taller than the bar, so it also poked through the bottom. -->
     <div
         v-on-click-outside="closeResults"
-        class="-my-px sm:px-2 flex items-center border-r border-gray-200 dark:border-gray-800 relative"
+        class="sm:px-2 flex items-center sm:border-r border-gray-200 dark:border-gray-800 relative"
     >
         <button
             class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:outline-hidden focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700 transition duration-150 ease-in-out h-full capitalize"

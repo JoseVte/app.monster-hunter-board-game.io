@@ -1,6 +1,8 @@
 <script setup>
 import _ from "lodash";
 import {router} from "@inertiajs/vue3";
+import Card from "@/Components/Card.vue";
+import Check from "@/Components/Icons/Check.vue";
 
 const props = defineProps({
     canEdit: Boolean,
@@ -9,101 +11,74 @@ const props = defineProps({
     weaponTypes: [Array, Object],
 });
 
-const countWeaponCrafted = (weaponType)  => {
+const countWeaponCrafted = (weaponType) => {
     return _.countBy(props.hunter.weapons, (weapon) => weapon.type_id === weaponType.id).true ?? 0;
 };
 
-const weaponEquipped = (weaponType)  => {
+// The favourite of a type, or its starting weapon when nothing has been picked.
+const weaponEquipped = (weaponType) => {
     const equipped = _.find(props.hunter.equipped_weapons, (weapon) => weapon.type_id === weaponType.id);
     if (equipped) return equipped;
 
-    return _.find(weaponType.weapons, (weapon) => weapon.is_default)
+    return _.find(weaponType.weapons, (weapon) => weapon.is_default);
 };
 
-const openWeaponType = (weaponType) => {
-    const newUrl = route('campaigns.hunters.weapon-type.index', [props.campaign, props.hunter, weaponType]);
-    router.visit(newUrl, {preserveScroll: true});
-}
+const carried = (weaponType) => props.hunter.weapon_type_id === weaponType.id;
 
-const clases = [
-    'theme-slate',
-    'theme-gray',
-    'theme-zinc',
-    'theme-neutral',
-    'theme-stone',
-    'theme-red',
-    'theme-orange',
-    'theme-amber',
-    'theme-yellow',
-    'theme-lime',
-    'theme-green',
-    'theme-emerald',
-    'theme-teal',
-    'theme-cyan',
-    'theme-sky',
-    'theme-blue',
-    'theme-indigo',
-    'theme-violet',
-    'theme-purple',
-    'theme-fuchsia',
-    'theme-pink',
-    'theme-rose',
-];
+const openWeaponType = (weaponType) => {
+    router.visit(route('campaigns.hunters.weapon-type.index', [props.campaign, props.hunter, weaponType]), {
+        preserveScroll: true,
+    });
+};
+
 </script>
 
 <template>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-6 px-4 sm:px-0">
-        <button
+    <div class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Card
             v-for="weaponType in weaponTypes"
             :key="weaponType.id"
-            class="flex rounded-md shadow-xs group"
-            type="button"
-            @click="openWeaponType(weaponType)"
+            class="gap-2"
+            :owned="!!countWeaponCrafted(weaponType)"
+            :equipped="carried(weaponType)"
         >
-            <div
-                class="flex w-16 h-full shrink-0 items-center justify-center rounded-l-md text-sm text-white uppercase"
-                :class="_.sample(clases)"
+            <button
+                type="button"
+                class="flex cursor-pointer items-center gap-3 text-left"
+                @click="openWeaponType(weaponType)"
             >
-                <div class="w-full h-full rounded-l-md flex items-center justify-center mh-icon">
+                <span class="relative flex h-10 w-10 min-h-10 min-w-10 items-center justify-center rounded-full bg-gray-300 dark:bg-gray-900">
                     <img
-                        class="w-10 h-10 m-auto"
+                        class="h-6 w-6"
                         :src="weaponType.image_url"
                         :alt="weaponType.name"
                     >
-                </div>
-            </div>
-            <div class="flex flex-col flex-1 h-full items-center truncate rounded-r-md border-b border-r border-t border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800">
-                <div class="flex flex-col flex-1 justify-center items-start h-full truncate px-4 py-2 text-sm">
-                    <div
-                        class="text-left font-medium text-gray-900 dark:text-white group-hover:text-gray-600 dark:group-hover:text-gray-400"
-                        v-text="weaponType.name"
+                    <span
+                        v-if="countWeaponCrafted(weaponType) > 1"
+                        class="absolute -right-1 -bottom-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-gray-300 px-0.5 text-[0.6rem] leading-none font-bold text-primary-500 tabular-nums dark:bg-gray-900"
+                    >{{ countWeaponCrafted(weaponType) }}</span>
+                    <Check
+                        v-else-if="countWeaponCrafted(weaponType)"
+                        class="absolute -right-1 -bottom-1 h-4 w-4 rounded-full bg-gray-300 text-primary-500 dark:bg-gray-900"
                     />
-                    <p class="text-left text-gray-500">
-                        {{ countWeaponCrafted(weaponType) }} {{ $t('crafted.') }}
-                    </p>
-                </div>
+                </span>
+                <span class="mh-card-name flex-1 text-base">{{ weaponType.name }}</span>
+            </button>
 
-                <div
-                    v-if="weaponEquipped(weaponType)"
-                    class="text-gray-900 dark:text-white text-xs pb-2"
-                >
-                    {{ $t('Equipped') }}:<br>{{ weaponEquipped(weaponType).name }}
-                </div>
+            <div class="mh-rule" />
+
+            <div class="flex flex-wrap items-baseline gap-x-2 text-sm text-gray-600 dark:text-gray-400">
+                <span class="mh-value">{{ countWeaponCrafted(weaponType) }}</span>
+                <span>{{ $t('crafted.') }}</span>
             </div>
-        </button>
+
+            <div
+                v-if="weaponEquipped(weaponType)"
+                class="text-sm"
+            >
+                <span class="text-gray-600 dark:text-gray-400">{{ $t('Equipped') }}:</span>
+                <span class="ml-1 text-gray-900 dark:text-parchment">{{ weaponEquipped(weaponType).name }}</span>
+            </div>
+        </Card>
     </div>
 </template>
-
-<style scoped lang="scss">
-@reference "../../../../css/app.css";
-
-$themes: "slate", "gray", "zinc", "neutral", "stone", "red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal", "cyan", "sky", "blue", "indigo", "violet", "purple", "fuchsia", "pink", "rose";
-@each $theme in $themes {
-    .theme-#{$theme} {
-        @apply bg-#{$theme}-500;
-        .mh-icon {
-            @apply bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] to-#{$theme}-500 from-#{$theme}-100 group-hover:to-#{$theme}-300 dark:from-#{$theme}-900 dark:group-hover:to-#{$theme}-700 transition-all;
-        }
-    }
-}
-</style>

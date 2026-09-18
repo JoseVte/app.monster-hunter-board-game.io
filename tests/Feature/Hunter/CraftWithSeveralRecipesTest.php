@@ -93,17 +93,90 @@ test('a recipe belonging to another weapon is refused', function (): void {
     expect($this->hunter->weapons()->find($this->weapon->id))->toBeNull();
 });
 
-test('the weapon line is listed under both of its monsters', function (): void {
-    $tree = create_weapon_tree($this->weapon->type, $this->hunter);
+test('a weapon both monsters build is listed once, carrying both names', function (): void {
+    // It used to appear under each monster, which meant crafting it twice was a
+    // reasonable thing to think you could do.
+    // Twin Nails hangs off a starting weapon, so it is a path rather than a root.
+    $root = Weapon::factory()->create(['is_default' => true, 'type_id' => $this->weapon->type_id]);
+    $this->weapon->update(['parent_id' => $root->id]);
 
-    expect($tree->keys()->all())->toEqual(['Teostra', 'Kushala Daora']);
+    $tree = create_weapon_tree($this->weapon->type, $this->hunter);
+    $paths = $tree->flatMap(fn (array $entry): iterable => $entry['paths']);
+
+    expect($paths)->toHaveCount(1)
+        ->and($paths->first()['branches'])->toEqual(['Teostra', 'Kushala Daora'])
+        ->and($paths->first()['weapons'])->toHaveCount(1);
 });
 
-test('a weapon with one recipe is still listed once', function (): void {
-    $single = Weapon::factory()->create(['is_default' => false]);
+test('a weapon with one recipe carries the one branch', function (): void {
+    $root = Weapon::factory()->create(['is_default' => true]);
+    $single = Weapon::factory()->create(['is_default' => false, 'type_id' => $root->type_id, 'parent_id' => $root->id]);
     $single->recipes->first()->update(['branch' => 'mineral']);
 
-    $tree = create_weapon_tree($single->type, $this->hunter);
+    $tree = create_weapon_tree($root->type, $this->hunter);
 
-    expect($tree->keys()->all())->toEqual(['mineral']);
+    expect($tree->first()['paths']->first()['branches'])->toEqual(['mineral']);
+});
+
+test('a starting weapon can be equipped even though nothing granted it', function (): void {
+    // A hunter owns their starting weapon from the first day, but nothing ever
+    // wrote it to the pivot, so equipping it was refused and there was no way
+    // back to it once anything else had been equipped.
+    $starting = Weapon::factory()->create(['is_default' => true]);
+
+    $this->put(
+        route('campaigns.hunters.weapons.equip', [$this->campaign, $this->hunter, $starting->type, $starting]),
+        ['equip' => true],
+    )->assertStatus(303);
+
+    expect($this->hunter->weapons()->find($starting->id)?->pivot->equipped)->toBeTruthy();
+});
+
+test('equipping a starting weapon unequips the one in hand of that type', function (): void {
+    $starting = Weapon::factory()->create(['is_default' => true]);
+    $other = Weapon::factory()->create(['is_default' => false, 'type_id' => $starting->type_id]);
+    $this->hunter->weapons()->attach($other, ['equipped' => true]);
+
+    $this->put(
+        route('campaigns.hunters.weapons.equip', [$this->campaign, $this->hunter, $starting->type, $starting]),
+        ['equip' => true],
+    )->assertStatus(303);
+
+    expect($this->hunter->weapons()->find($other->id)?->pivot->equipped)->toBeFalsy()
+        ->and($this->hunter->weapons()->find($starting->id)?->pivot->equipped)->toBeTruthy();
+});
+
+test('a weapon the hunter neither owns nor started with is refused', function (): void {
+    $stranger = Weapon::factory()->create(['is_default' => false]);
+
+    $this->put(
+        route('campaigns.hunters.weapons.equip', [$this->campaign, $this->hunter, $stranger->type, $stranger]),
+        ['equip' => true],
+    )->assertStatus(400);
+});
+
+test('a starting weapon cannot be unequipped, which would leave the hunter empty handed', function (): void {
+    $starting = Weapon::factory()->create(['is_default' => true]);
+    $this->hunter->weapons()->attach($starting, ['equipped' => true]);
+
+    $this->put(
+        route('campaigns.hunters.weapons.equip', [$this->campaign, $this->hunter, $starting->type, $starting]),
+        ['equip' => false],
+    )->assertStatus(400);
+
+    expect($this->hunter->weapons()->find($starting->id)?->pivot->equipped)->toBeTruthy();
+});
+
+test('equipping something else is how a starting weapon leaves the hand', function (): void {
+    $starting = Weapon::factory()->create(['is_default' => true]);
+    $this->hunter->weapons()->attach($starting, ['equipped' => true]);
+    $other = Weapon::factory()->create(['is_default' => false, 'type_id' => $starting->type_id]);
+    $this->hunter->weapons()->attach($other, ['equipped' => false]);
+
+    $this->put(
+        route('campaigns.hunters.weapons.equip', [$this->campaign, $this->hunter, $other->type, $other]),
+        ['equip' => true],
+    )->assertStatus(303);
+
+    expect($this->hunter->weapons()->find($starting->id)?->pivot->equipped)->toBeFalsy();
 });

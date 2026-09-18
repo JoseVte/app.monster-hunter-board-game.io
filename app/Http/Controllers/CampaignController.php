@@ -71,7 +71,10 @@ class CampaignController extends Controller
             'days.hunters.pivot.downtimeActivity',
             'users',
             'users.membership.role',
-            'users.membership.hunter'
+            // The members list names what each hunter is carrying and who their
+            // palico is, so both come with the membership.
+            'users.membership.hunter.weaponType',
+            'users.membership.hunter.palico'
         );
         $campaign->loadCount('days');
 

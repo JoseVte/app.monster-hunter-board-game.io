@@ -26,21 +26,67 @@
 
   --text-xxs: 8px;
 
+  /* Two palettes, one set of utilities. Tailwind 4 compiles `bg-primary-500`
+     down to `var(--color-primary-500)`, so redefining the variables under
+     `.dark` swaps the whole scheme without a second class anywhere in the
+     markup.
+
+     Light is Iceborne: Hoarfrost Reach is pale blue and white, its panels are
+     navy, and its ornament is cyan. */
   --color-primary-50: #f0f9ff;
-  --color-primary-100: #e0f2fe;
-  --color-primary-200: #bae6fd;
-  --color-primary-300: #7dd3fc;
-  --color-primary-400: #38bdf8;
-  --color-primary-500: #0ea5e9;
-  --color-primary-600: #0284c7;
-  --color-primary-700: #0369a1;
-  --color-primary-800: #075985;
-  --color-primary-900: #0c4a6e;
-  --color-primary-950: #082f49;
+  --color-primary-100: #ddf1fd;
+  --color-primary-200: #b6e4fb;
+  --color-primary-300: #7ed1f8;
+  --color-primary-400: #3fb9f0;
+  --color-primary-500: #1a9ddc;
+  --color-primary-600: #0f7db9;
+  --color-primary-700: #106495;
+  --color-primary-800: #13537b;
+  --color-primary-900: #154667;
+  --color-primary-950: #0d2c44;
+
+  /* Light surfaces are the ice the expansion is played on, so the ramp is cool
+     rather than neutral. The dark ramp lives under `.dark` and is warm. */
+  --color-gray-50: #f7fbfd;
+  --color-gray-100: #eaf3f8;
+  --color-gray-200: #d6e6ef;
+  --color-gray-300: #b4cedd;
+  --color-gray-400: #8aa9bd;
+  --color-gray-500: #64849a;
+  --color-gray-600: #4b667a;
+  --color-gray-700: #3a4f5e;
+  --color-gray-800: #2b3b46;
+  --color-gray-900: #1b2730;
+  --color-gray-950: #0f171d;
+
+  /* The five elements were locked inside image files. As tokens they can tint a
+     badge, a border or a resistance row. */
+  /* The base game sets a value in pale gold and runs a bright line across its
+     attack cards. Both earn a token because both appear all over the hunter
+     screens. */
+  --color-parchment: #e3d7bb;
+  --color-parchment-dim: #a89570;
+  --color-attack-line: #f5c518;
+  --color-heading: #d6e8e4;
+
+  --color-fire: #f0592a;
+  --color-water: #3d8bd8;
+  --color-ice: #6fd0e8;
+  --color-thunder: #f2c230;
+  --color-dragon: #a672d4;
 
   --color-bronze: #ad8a56;
   --color-silver: #d7d7d7;
   --color-gold: #af9500;
+
+  /* Cards read as panels rather than pills. rounded-full is untouched, so
+     avatars and the stat circles keep their shape. */
+  --radius-xs: 1px;
+  --radius-sm: 2px;
+  --radius-md: 3px;
+  --radius-lg: 4px;
+  --radius-xl: 6px;
+  --radius-2xl: 8px;
 
   --min-width-8: 2rem;
   --min-width-16: 4rem;
@@ -57,6 +103,283 @@
   If we ever want to remove these styles, we need to add an explicit border
   color utility to any element that depends on these defaults.
 */
+/* Dark is the base game's own components: cards that are near black with brass
+   emblems, parchment for the physiology and time cards, and the yellow line
+   that runs across every attack card. */
+.dark {
+  --color-primary-50: #fdf9ec;
+  --color-primary-100: #faf0cc;
+  --color-primary-200: #f4df95;
+  --color-primary-300: #edc95d;
+  --color-primary-400: #e6b336;
+  --color-primary-500: #d69a1e;
+  --color-primary-600: #b87a16;
+  --color-primary-700: #935a15;
+  --color-primary-800: #7a4818;
+  --color-primary-900: #683c19;
+  --color-primary-950: #3d1f0a;
+
+  --color-gray-50: #faf9f5;
+  --color-gray-100: #efece2;
+  --color-gray-200: #ded9ca;
+  --color-gray-300: #c2bca9;
+  --color-gray-400: #9c9584;
+  --color-gray-500: #7d7768;
+  --color-gray-600: #5f5a4e;
+  --color-gray-700: #3c3931;
+  --color-gray-800: #1f1d18;
+  --color-gray-900: #131210;
+  --color-gray-950: #090908;
+
+  --color-heading: #efe6cf;
+}
+
+@layer base {
+  /* Buttons and summary elements are clickable, so the cursor should say so.
+     Tailwind 4 dropped the preflight rule that used to do this. */
+  button:not(:disabled),
+  [role='button']:not(:disabled),
+  summary {
+    cursor: pointer;
+  }
+}
+
+@layer components {
+  /* A resistance is printed as the element's symbol on a pentagon: a pale wash
+     of the element for the field, the element itself for the rim, so the dark
+     symbol keeps its contrast against both. Written by hand rather than through
+     @theme because tailwind drops a theme variable no utility asks for, and
+     nothing asks for these: the only reader is the svg replaceIcons builds. */
+  .mh-resistance polygon {
+    stroke-width: 1.6;
+    stroke-linejoin: round;
+    fill: color-mix(in srgb, var(--mh-element) 28%, white);
+    stroke: var(--mh-element);
+  }
+
+  .mh-resistance-fire { --mh-element: #f0592a; }
+  .mh-resistance-water { --mh-element: #3d8bd8; }
+  .mh-resistance-ice { --mh-element: #6fd0e8; }
+  .mh-resistance-dragon { --mh-element: #a672d4; }
+
+  /* Thunder's symbol is itself yellow, so its field is washed out further to
+     keep the black outline of the bolt readable against it. */
+  .mh-resistance-thunder { --mh-element: #f2c230; }
+  .mh-resistance-thunder polygon { fill: color-mix(in srgb, var(--mh-element) 42%, white); }
+
+  /* The three shapes World's menus are built from, as classes rather than as a
+     pile of utilities repeated per screen. */
+
+  /* A value sits in a near square box with a thin edge. Pale gold on the dark
+     panels the game uses; on the light scheme that gold is unreadable over
+     cream, so it becomes ink over paper. */
+  .mh-value {
+    @apply inline-flex items-center justify-center gap-1 px-2 py-0.5;
+    @apply border font-semibold tabular-nums;
+    @apply border-gray-400 bg-white/70 text-gray-800;
+    @apply dark:border-gray-600 dark:bg-gray-950/60 dark:text-parchment;
+  }
+
+  /* A value of nothing, said quietly. It sets its own colours rather than being
+     dimmed with opacity: the face is an oklab colour with alpha, and chrome
+     composites that wrongly inside an opacity layer, which turned every zero in
+     the defence row cyan in light mode. */
+  .mh-value-muted {
+    @apply border-gray-300 bg-transparent text-gray-400;
+    @apply dark:border-gray-700 dark:text-gray-600;
+  }
+
+  /* A section heading is cool white over a rule that fades out rather than
+     cutting the panel in half. */
+  .mh-heading {
+    @apply font-montserrat font-bold tracking-tight text-gray-900 dark:text-heading;
+  }
+
+  .mh-heading::after {
+    content: '';
+    @apply mt-1 block h-px w-full;
+    background: linear-gradient(to right, var(--color-gray-500), transparent);
+  }
+
+  /* The selected row: a wash of the accent with a brighter edge on the leading
+     side, the way the game marks the option you are on. */
+  .mh-selected {
+    @apply border-l-2 border-primary-400;
+    background: linear-gradient(
+      to right,
+      color-mix(in oklab, var(--color-primary-700) 55%, transparent),
+      transparent
+    );
+  }
+
+  /* The frame the components share: a thin rule with the corners marked, on the
+     rulebook banner, the pledge panels and every Iceborne heading.
+
+     It used to cut its corners with clip-path, which also cut the border away,
+     so a panel carrying one showed no edge at all. The card had the same problem
+     and was fixed the same way: two pseudo elements mark the corners and the
+     border stays whole. */
+  .mh-frame {
+    @apply relative border border-gray-300 dark:border-gray-700;
+    --mh-notch-size: --spacing(2.5);
+  }
+
+  /* The marks on their own, for anything that already carries its own border:
+     a button, a counter, a value. mh-frame is these plus the border.
+
+     Note they cannot go on an input or a textarea. Neither supports pseudo
+     elements, so those keep square corners and their border alone. */
+  /* A field's border thickens on focus, but inward: drawn as a second pixel
+     inside rather than a wider border, so the outer edge stays exactly where the
+     corner marks are instead of growing past them. */
+  .mh-field:focus {
+    box-shadow: inset 0 0 0 1px var(--color-primary-500);
+  }
+
+  .mh-notch {
+    @apply relative;
+    /* The same length a panel's marks have, so a control and a panel carry the
+       same corner. */
+    --mh-notch-size: --spacing(2.5);
+    /* Flush with the outside of the border rather than a pixel past it: the mark
+       sits over the border exactly, with no step where the two meet. */
+    --mh-notch-inset: 0px;
+    /* currentColor by default, which on a button is its own text: the marks come
+       out in the button's colour whatever that is. */
+    --mh-notch-color: currentColor;
+  }
+
+  .mh-frame::before,
+  .mh-frame::after,
+  .mh-notch::before,
+  .mh-notch::after {
+    content: '';
+    @apply pointer-events-none absolute z-10 border-inherit;
+    height: var(--mh-notch-size, --spacing(2));
+    width: var(--mh-notch-size, --spacing(2));
+  }
+
+  .mh-frame::before {
+    @apply -top-px -left-px border-t-2 border-l-2;
+  }
+
+  .mh-frame::after {
+    @apply -right-px -bottom-px border-r-2 border-b-2;
+  }
+
+  .mh-notch::before {
+    @apply border-t-2 border-l-2;
+    top: var(--mh-notch-inset);
+    left: var(--mh-notch-inset);
+    border-color: var(--mh-notch-color);
+  }
+
+  .mh-notch::after {
+    @apply border-r-2 border-b-2;
+    right: var(--mh-notch-inset);
+    bottom: var(--mh-notch-inset);
+    border-color: var(--mh-notch-color);
+  }
+
+  /* A weapon or armour card, the way the components are printed: a near black
+     face with the corners cut away, a brass edge, and the bright rule under the
+     name. Owning one lights the edge, the way the game marks what is yours. */
+  .mh-card {
+    /* Fills the row it is placed in, so a rail passing at the row's centre goes
+       behind the card rather than under it. */
+    @apply relative flex h-full cursor-pointer flex-col border p-2 transition-colors duration-150;
+    /* White rather than gray-100: in the light scheme gray-100 is the page
+       itself, so a card sitting on the page had no face at all. */
+    @apply border-gray-300 bg-white text-gray-800;
+    @apply dark:border-gray-700 dark:bg-gray-800 dark:text-gray-200;
+  }
+
+  /* The components mark their corners rather than cutting them: clipping the
+     shape also clips the border away, which leaves the diagonals bare. Two
+     pseudo elements draw the marks and the border stays whole. */
+  .mh-card::before,
+  .mh-card::after {
+    content: '';
+    @apply pointer-events-none absolute h-2.5 w-2.5 border-gray-500 dark:border-gray-500;
+  }
+
+  .mh-card::before {
+    @apply -top-px -left-px border-t-2 border-l-2;
+  }
+
+  .mh-card::after {
+    @apply -right-px -bottom-px border-r-2 border-b-2;
+  }
+
+  .mh-card:hover {
+    @apply border-gray-400 dark:border-gray-500;
+  }
+
+  /* The one in hand reads at a glance: a filled edge and a brass wash, so it is
+     never confused with the several others a hunter merely owns. */
+  .mh-card-equipped {
+    @apply border-2 border-primary-500 dark:border-primary-400;
+    background-image: linear-gradient(
+      to bottom,
+      color-mix(in oklab, var(--color-primary-500) 18%, transparent),
+      transparent 60%
+    );
+  }
+
+  .mh-card-equipped::before,
+  .mh-card-equipped::after {
+    @apply border-primary-500 dark:border-primary-400;
+  }
+
+  /* Owning one lights its edge and its corner marks, the way the game shows
+     what is already yours. */
+  .mh-card-owned {
+    @apply border-primary-500 dark:border-primary-600;
+  }
+
+  .mh-card-owned::before,
+  .mh-card-owned::after {
+    @apply border-primary-500 dark:border-primary-500;
+  }
+
+  .mh-card-owned:hover {
+    @apply border-primary-400 dark:border-primary-400;
+  }
+
+  /* The rows are a fixed height, so a name long enough to wrap pushed the craft
+     button out through the bottom of its own card. Two lines is what the row
+     allows, and clamping there means no name can ever push past it. */
+  .mh-card-name {
+    @apply font-montserrat text-sm font-semibold leading-tight tracking-tight;
+    /* A weapon name is often one long word, which has nowhere to break, so
+       without this it overflowed the card and the clamp cut it mid word. */
+    @apply line-clamp-2 [overflow-wrap:anywhere];
+  }
+
+  /* The monster a line comes from, set down the left edge. Both the weapon tree
+     and the armour rows use it, so it lives here rather than in one of them. */
+  .mh-branch-label {
+    @apply flex items-center justify-center;
+  }
+
+  .mh-branch-label span {
+    @apply text-xs tracking-widest whitespace-nowrap text-gray-600 uppercase dark:text-gray-400;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+  }
+
+  /* The bright rule that runs across every attack card. */
+  .mh-rule {
+    @apply block h-px w-full;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--color-attack-line),
+      transparent
+    );
+  }
+}
+
 @layer base {
   *,
   ::after,
@@ -65,28 +388,45 @@
   ::file-selector-button {
     border-color: var(--color-gray-200, currentcolor);
   }
+
+  /* Montserrat was loaded and used in one file. Headings are where a display
+     face earns its download, and the tight tracking is what separates a title
+     from body copy set slightly larger. */
+  h1, h2, h3 {
+    font-family: var(--font-montserrat);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
 }
 
 [x-cloak] {
     display: none;
 }
 
+/* Written mobile first. Every rule here used to be prefixed with sm:, so under
+   640px the tabs had no border, no background and no panel padding: the three
+   of them stacked into a 250px column that did not read as tabs at all, and the
+   panel content ran into both edges of the screen. */
 .tabs-component {
-    @apply my-8 mx-0;
+    @apply my-6 mx-0 sm:my-8;
 }
 
 .tabs-component-tabs {
-    @apply sm:rounded-sm mb-3 sm:border-0 sm:flex sm:items-stretch sm:justify-start sm:-mb-px;
+    @apply -mb-px flex items-stretch justify-start;
 }
 
 .tabs-component-tab {
-    @apply text-gray-800 dark:text-gray-400 text-sm font-bold mr-0 list-none hover:text-gray-700 dark:hover:text-gray-200;
-    @apply sm:bg-white dark:sm:bg-gray-800 sm:border sm:border-gray-400 dark:sm:border-gray-600 rounded-sm mr-2 translate-y-[3px] transition-all duration-300 ease-linear;
+    @apply list-none text-sm font-bold text-gray-800 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200;
+    @apply border border-gray-400 bg-white dark:border-gray-600 dark:bg-gray-800;
+    @apply mr-1 translate-y-[3px] transition-all duration-300 ease-linear;
+    /* Three tabs share the width of a phone; on anything wider they take only
+       what their label needs. */
+    @apply flex-1 sm:flex-none sm:mr-2;
 }
 
 .tabs-component-tab.is-active {
     @apply text-black dark:text-white;
-    @apply sm:border-b sm:border-b-white dark:sm:border-b-gray-800 z-10 translate-y-0 rounded-b-none;
+    @apply z-10 translate-y-0 border-b border-b-white dark:border-b-gray-800;
 }
 
 .tabs-component-tab.is-disabled * {
@@ -95,46 +435,123 @@
 }
 
 .tabs-component-tab-a {
-    @apply flex items-center text-inherit py-3.5 px-4 decoration-0
+    @apply flex items-center justify-center text-center text-inherit py-3 px-2 decoration-0;
+    @apply sm:justify-start sm:text-left sm:py-3.5 sm:px-4;
 }
 
 .tabs-component-panels {
-    @apply py-4 px-0;
-    @apply sm:pt-0 sm:px-6 sm:bg-white dark:sm:bg-gray-800 sm:border sm:border-gray-400 dark:sm:border-gray-600 sm:rounded-sm sm:rounded-tl-none;
+    @apply pt-0 pb-4 px-4 sm:px-6;
+    @apply border border-gray-400 bg-white dark:border-gray-600 dark:bg-gray-800;
 }
 
-.multiselect__spinner {
+/* vue-multiselect ships its own stylesheet, and it is imported from the
+   components that use it, so it loads after this file and wins every tie. Every
+   rule here is scoped under .multiselect to outweigh it, rather than reaching
+   for !important.
+
+   What it brings by default is a green highlight, blue option text and rounded
+   corners: a control borrowed from another application. These line it up with
+   the fields beside it. */
+.multiselect .multiselect__spinner {
     @apply dark:bg-gray-900;
 }
 
-.multiselect__input,
-.multiselect__single {
-    @apply dark:bg-gray-900;
+.multiselect .multiselect__input,
+.multiselect .multiselect__single {
+    @apply bg-transparent text-gray-900 dark:text-gray-100;
 }
 
-.multiselect__input:focus,
-.multiselect__single:focus {
-    @apply ring-0;
+.multiselect .multiselect__input:focus,
+.multiselect .multiselect__single:focus {
+    @apply ring-0 outline-hidden;
 }
 
-.multiselect__tags {
-    @apply border-gray-300 dark:border-gray-700 dark:bg-gray-900;
+/* The box itself, and the corner marks a field carries. The tags element is the
+   one that draws the border, so it is the one that gets them. */
+.multiselect .multiselect__tags {
+    @apply relative border border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-900;
+    --mh-notch-color: var(--color-gray-400);
 }
 
-.multiselect__tag {
-    @apply dark:text-gray-500;
+.multiselect .multiselect__tags::before,
+.multiselect .multiselect__tags::after {
+    content: '';
+    @apply pointer-events-none absolute z-10 h-2.5 w-2.5;
+    border-color: var(--mh-notch-color);
 }
 
-.multiselect__content-wrapper {
-    @apply border-gray-300 dark:border-gray-700 dark:bg-gray-900;
+.multiselect .multiselect__tags::before {
+    @apply top-0 left-0 border-t-2 border-l-2;
 }
 
+.multiselect .multiselect__tags::after {
+    @apply right-0 bottom-0 border-r-2 border-b-2;
+}
+
+.dark .multiselect .multiselect__tags {
+    --mh-notch-color: var(--color-gray-600);
+}
+
+/* Open, it reads the way a focused field does: the accent on the border and a
+   second pixel drawn inside rather than a wider one. */
+.multiselect--active .multiselect__tags {
+    @apply border-primary-500;
+    box-shadow: inset 0 0 0 1px var(--color-primary-500);
+    --mh-notch-color: var(--color-primary-800);
+}
+
+.dark .multiselect--active .multiselect__tags {
+    --mh-notch-color: var(--color-primary-200);
+}
+
+.multiselect .multiselect__tag {
+    @apply bg-primary-600 text-white dark:bg-primary-700;
+}
+
+.multiselect .multiselect__content-wrapper {
+    @apply border border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-900;
+}
+
+.multiselect .multiselect__option {
+    @apply text-gray-700 dark:text-gray-300;
+}
+
+.multiselect .multiselect__option--selected {
+    @apply bg-gray-100 text-gray-900 dark:bg-gray-800 dark:text-gray-200;
+}
+
+.multiselect .multiselect__option--highlight,
+.multiselect .multiselect__option--highlight::after {
+    @apply bg-primary-600 text-white dark:bg-primary-700;
+}
+
+.multiselect .multiselect__option--selected.multiselect__option--highlight,
+.multiselect .multiselect__option--selected.multiselect__option--highlight::after {
+    @apply bg-primary-700 text-white dark:bg-primary-800;
+}
+
+.multiselect .multiselect__placeholder,
+.multiselect .multiselect__input::placeholder {
+    @apply text-gray-500 dark:text-gray-500;
+}
+
+.multiselect .multiselect__select::before {
+    @apply border-t-gray-500 dark:border-t-gray-400;
+}
+
+/* Squared, like everything else. The library rounds them from its own sheet and
+   again under .multiselect--active. */
+.multiselect,
+.multiselect .multiselect__tags,
+.multiselect .multiselect__input,
+.multiselect .multiselect__single,
+.multiselect .multiselect__tag,
+.multiselect .multiselect__content-wrapper,
+.multiselect--active .multiselect__tags,
+.multiselect--active .multiselect__input,
+.multiselect--active .multiselect__single,
 .multiselect--above .multiselect__content-wrapper {
-    @apply border-gray-300 dark:border-gray-700;
-}
-
-.multiselect__option--selected {
-    @apply dark:bg-gray-700 dark:text-gray-400;
+    border-radius: 0;
 }
 
 .day-description table {
@@ -354,3 +771,41 @@
         src: url("../fonts/static/Montserrat-BlackItalic.ttf");
     }
 }
+
+/* The components are cut square, so nothing on the site is rounded except the
+   things that are actually round: an avatar, an icon badge, a toggle, a bar.
+   Written as one rule rather than seventy edits, and after the utilities so it
+   wins on source order at equal specificity. */
+[class*='rounded']:not([class*='rounded-full']) {
+  border-radius: 0;
+}
+
+/* Drawn here rather than left to @tailwindcss/forms, whose box is rounded, a
+   size of its own and a tick that does not match anything else on the sheet.
+   No corner marks: an input carries no pseudo elements, and on a box this small
+   they would be noise rather than a mark.
+
+   The fill is set through `color`, not `background-color`. Flowbite forces
+   `background-color: currentColor !important` and `border-color: currentColor
+   !important` on a checked box, which no selector of ours can outweigh, so the
+   box took the colour of the text beside it. Giving it the accent as its own
+   colour makes that !important resolve to the accent instead of fighting it. */
+input.mh-checkbox {
+  appearance: none;
+  height: 1.1rem;
+  width: 1.1rem;
+  color: var(--color-primary-500);
+  @apply shrink-0 border border-gray-300 bg-white dark:border-gray-700 dark:bg-gray-900;
+}
+
+input.mh-checkbox:checked {
+  border-color: var(--color-primary-500);
+  background-color: var(--color-primary-500);
+}
+
+input.mh-checkbox:focus {
+  border-color: var(--color-primary-500);
+  outline: none;
+  box-shadow: inset 0 0 0 1px var(--color-primary-500);
+}
+

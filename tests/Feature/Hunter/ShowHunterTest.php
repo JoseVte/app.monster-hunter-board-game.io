@@ -6,6 +6,7 @@ use App\Models\Armor;
 use App\Enum\ItemType;
 use App\Models\Hunter;
 use App\Models\Weapon;
+use App\Enum\ArmorType;
 use App\Models\Campaign;
 use App\Models\WeaponType;
 use Inertia\Testing\AssertableInertia;
@@ -107,4 +108,20 @@ test('hunter show is not reachable by a user outside the campaign', function ():
     $response = $this->get(route('campaigns.hunters.show', [$this->campaign, $this->hunter]));
 
     $response->assertStatus(403);
+});
+
+test('hunter show groups the armors by the monster they come from', function (): void {
+    // The tab lines the three slots up in a row per monster, so the piece for
+    // each slot has to be reachable by branch and then by slot.
+    Armor::factory()->create(['branch' => 'Rathalos', 'type' => ArmorType::HEAD]);
+    Armor::factory()->create(['branch' => 'Rathalos', 'type' => ArmorType::BODY]);
+    Armor::factory()->create(['branch' => 'Rathalos', 'type' => ArmorType::LEG]);
+
+    $response = $this->get(route('campaigns.hunters.show', [$this->campaign, $this->hunter, 'armors']));
+
+    $response->assertInertia(fn (AssertableInertia $page) => $page
+        ->has('armors.Rathalos.head')
+        ->has('armors.Rathalos.body')
+        ->has('armors.Rathalos.leg')
+        ->where('armors.Rathalos.head.branch', 'Rathalos'));
 });

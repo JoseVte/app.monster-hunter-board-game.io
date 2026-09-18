@@ -58,7 +58,7 @@ watch(showFullCalendar, (showFullCalendarValue) => storage.setStorageSync('show-
         </template>
 
         <div>
-            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:py-10 sm:px-6 lg:px-8">
                 <ActionSection>
                     <template #title>
                         {{ $t('Campaign Details') }}
@@ -96,7 +96,7 @@ watch(showFullCalendar, (showFullCalendarValue) => storage.setStorageSync('show-
                                     </div>
 
                                     <div class="ml-4 leading-tight">
-                                        <div class="text-gray-900 dark:text-white">
+                                        <div class="mh-heading text-sm">
                                             {{ $t('Health Potions') }}
                                         </div>
 
@@ -123,14 +123,16 @@ watch(showFullCalendar, (showFullCalendarValue) => storage.setStorageSync('show-
                                     </div>
 
                                     <div class="ml-4 leading-tight">
-                                        <div class="text-gray-900 dark:text-white">
+                                        <div class="mh-heading text-sm">
                                             {{ $t('Days') }}
                                         </div>
 
-                                        <div class="flex items-center gap-4">
-                                            <div>
-                                                <span class="text-gray-800 dark:text-gray-100">{{ campaign.days_count }}</span>
-                                                <span class="text-gray-600 dark:text-gray-300"> / {{ campaign.max_days }}</span>
+                                        <!-- Same shape as the potions counter above: a
+                                             value segment and a button joined into one
+                                             control, so the two rows read as siblings. -->
+                                        <div class="mh-notch mt-1 flex h-10 flex-row [--mh-notch-color:var(--color-gray-500)]">
+                                            <div class="flex items-center border border-gray-400 bg-white/70 px-3 text-center text-md font-semibold tabular-nums text-gray-800 dark:border-gray-600 dark:bg-gray-950/60 dark:text-parchment">
+                                                {{ campaign.days_count }}&nbsp;/&nbsp;{{ campaign.max_days }}
                                             </div>
                                             <AddDayToCampaignButton
                                                 v-if="permissions.canUpdateCampaign"

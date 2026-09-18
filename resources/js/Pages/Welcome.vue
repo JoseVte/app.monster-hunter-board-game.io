@@ -57,7 +57,7 @@ onMounted(() => {
 
     <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 dark:text-white selection:bg-primary-500 selection:text-white">
         <div
-            class="fixed z-50 w-full sm:w-auto top-0 sm:right-6 flex gap-6 justify-between items-center p-4 sm:py-2 text-right bg-white dark:bg-gray-800 sm:rounded-b-xl"
+            class="fixed top-0 z-50 flex w-full items-center justify-between gap-6 border-b border-gray-300 bg-white p-4 text-right sm:w-auto sm:border-x sm:py-2 sm:right-6 dark:border-gray-700 dark:bg-gray-800"
         >
             <div class="flex justify-between items-center">
                 <LocaleDropdown />
@@ -126,7 +126,7 @@ onMounted(() => {
                                     </div>
                                 </div>
                                 <div class="px-4 md:px-0 w-full md:w-1/2 lg:pl-1/12 lg:w-5/12">
-                                    <div class="p-6 xl:p-8 bg-white w-fit mx-auto dark:bg-gray-800 rounded-sm text-gray-700 sing-up">
+                                    <div class="mh-frame sing-up mx-auto w-fit bg-white p-6 text-gray-700 xl:p-8 dark:bg-gray-800">
                                         <div
                                             v-if="$page.props.auth.user"
                                             class="flex flex-col items-center justify-center"

@@ -73,9 +73,9 @@ const unequip = () => {
 </script>
 
 <template>
-    <div
-        class="border-t border-gray-500 pt-2  flex flex-col gap-2"
-    >
+    <!-- The rule is the bright one the components print, the same as a weapon
+         card's, rather than a flat grey line. -->
+    <div class="flex flex-col gap-2 pt-2 before:mb-2 before:block before:h-px before:w-full before:bg-[linear-gradient(to_right,transparent,var(--color-attack-line),transparent)] before:content-['']">
         <SecondaryButton
             v-if="armor.equipped"
             class="w-full justify-center gap-2 group"
@@ -94,14 +94,17 @@ const unequip = () => {
             :disabled="formEquip.processing"
             @click="equip"
         >
-            <CogIcon class="w-4 h-4 group-hover:rotate-180 group-hover:text-green-500 transition-all" />
+            <CogIcon class="w-4 h-4 group-hover:rotate-180 group-hover:text-primary-400 transition-all" />
             {{ $t('Equip') }}
         </SecondaryButton>
+        <!-- Armour has no upgrade tree the way a weapon does, so once a piece is
+             yours a second copy buys nothing and only spends the parts. -->
         <SecondaryButton
+            v-if="!hunterArmorCount(armor)"
             class="w-full justify-center gap-2 group"
             @click="confirmCraftArmor"
         >
-            <Wrench class="w-4 h-4 group-hover:text-green-500 transition-all" />
+            <Wrench class="w-4 h-4 group-hover:text-primary-400 transition-all" />
             {{ $t('Craft') }}
         </SecondaryButton>
     </div>
@@ -130,7 +133,7 @@ const unequip = () => {
 
         <template #content>
             <div class="mt-4 grid grid-cols-1 gap-4">
-                <div class="w-full border rounded-sm">
+                <div class="w-full rounded-sm border border-gray-300 dark:border-gray-700">
                     <table class="dark:text-white w-full">
                         <thead class="border-b">
                             <tr>

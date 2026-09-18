@@ -10,6 +10,7 @@ import breakIcon from '~/icons/break.svg';
 import poison from '~/icons/poison.webp';
 import stun from '~/icons/stun.webp';
 import sleep from '~/icons/sleep.svg';
+import lance from '~/icon_weapon_07.png';
 
 // The seed data marks a game symbol as :name_icon:. Everything with artwork
 // lives here; anything else falls back to a placeholder rather than printing the
@@ -27,7 +28,33 @@ const icons = {
     poison_icon: { src: poison, alt: 'Poison' },
     stun_icon: { src: stun, alt: 'Stun' },
     sleep_icon: { src: sleep, alt: 'Sleep' },
+    // The symbol printed on the lance's attack cards is the weapon's own,
+    // and the seeder already ships it as the weapon type image.
+    lance_icon: { src: lance, alt: 'Lance' },
 };
+
+// A resistance is the element's symbol on a pentagon, the way the board prints
+// it. Only thunder appears in the data today, but the card carries all five and
+// they are drawn the same way, so the set is complete rather than one-off.
+export const resistances = {
+    fire_resistance_icon: { src: fire, alt: 'Fire resistance', element: 'fire' },
+    water_resistance_icon: { src: water, alt: 'Water resistance', element: 'water' },
+    ice_resistance_icon: { src: ice, alt: 'Ice resistance', element: 'ice' },
+    thunder_resistance_icon: { src: thunder, alt: 'Thunder resistance', element: 'thunder' },
+    dragon_resistance_icon: { src: dragon, alt: 'Dragon resistance', element: 'dragon' },
+};
+
+// A regular pentagon, point up, inscribed in the 20x20 box at radius 9.
+export const PENTAGON = '10,1 18.56,7.22 15.29,17.28 4.71,17.28 1.44,7.22';
+
+function resistance({ src, alt, element }) {
+    return `<span class="mh-resistance mh-resistance-${element} relative inline-flex h-5 w-5 shrink-0 items-center justify-center align-text-bottom" title="${alt}">`
+        + `<svg viewBox="0 0 20 20" class="absolute inset-0 h-full w-full" aria-hidden="true">`
+        + `<polygon points="${PENTAGON}"></polygon>`
+        + `</svg>`
+        + `<img src="${src}" alt="${alt}" class="relative h-3 w-3">`
+        + `</span>`;
+}
 
 // Names the placeholder announces. The surrounding sentence usually already says
 // the word ("the Axe :switch_axe_axe_icon:"), so the badge shows a symbol rather
@@ -38,7 +65,6 @@ const pending = {
     deviation_icon_low: 'Low deviation',
     deviation_icon_average: 'Average deviation',
     deviation_icon_high: 'High deviation',
-    lance_icon: 'Lance',
     switch_axe_axe_icon: 'Axe mode',
     switch_axe_sword_icon: 'Sword mode',
     charge_hammer_icon_1: 'Charge 1',
@@ -75,6 +101,10 @@ export function replaceIcons(text) {
     }
 
     return text.replaceAll(TOKEN, (match, name) => {
+        if (resistances[name]) {
+            return resistance(resistances[name]);
+        }
+
         const icon = icons[name];
 
         return icon
@@ -83,5 +113,5 @@ export function replaceIcons(text) {
     });
 }
 
-export const iconNames = Object.keys(icons);
+export const iconNames = Object.keys(icons).concat(Object.keys(resistances));
 export const pendingIconNames = Object.keys(pending);

@@ -15,7 +15,7 @@ defineProps({
 <template>
     <div class="min-h-screen flex flex-col sm:justify-center items-center pt-6 sm:pt-0 bg-gray-100 dark:bg-gray-900">
         <div
-            class="fixed z-50 w-full sm:w-auto top-0 sm:right-6 flex gap-6 justify-between items-center p-4 sm:py-2 text-right bg-white dark:bg-gray-800 sm:rounded-b-xl"
+            class="fixed top-0 z-50 flex w-full items-center justify-between gap-6 border-b border-gray-300 bg-white p-4 text-right sm:w-auto sm:border-x sm:py-2 sm:right-6 dark:border-gray-700 dark:bg-gray-800"
         >
             <div class="block sm:hidden">
                 <slot name="logo" />
@@ -49,7 +49,7 @@ defineProps({
             <slot name="logo" />
         </div>
 
-        <div class="w-full sm:max-w-md mt-32 sm:mt-6 px-6 py-4 bg-white dark:bg-gray-800 shadow-md overflow-hidden sm:rounded-lg">
+        <div class="mh-frame mt-32 w-full bg-white px-6 py-5 sm:mt-6 sm:max-w-md dark:bg-gray-800">
             <slot />
         </div>
     </div>

@@ -17,8 +17,8 @@ import Breadcrumb from "@/Components/Breadcrumb.vue";
             />
         </template>
 
-        <div class="py-12">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
+        <div class="py-6 sm:py-12">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
                     <WikiSection
                         :href="route('wiki.monster.index')"

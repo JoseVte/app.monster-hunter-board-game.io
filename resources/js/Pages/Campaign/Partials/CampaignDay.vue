@@ -1,4 +1,5 @@
 <script setup>
+import Card from "@/Components/Card.vue";
 import Calendar from "@/Components/Icons/Calendar.vue";
 import MonstersIcon from "@/Components/Icons/MonstersIcon.vue";
 import UpdateCampaignDayModal from "@/Pages/Campaign/Partials/UpdateCampaignDayModal.vue";
@@ -20,10 +21,12 @@ defineProps({
         :monsters="monsters"
         :day="day"
     >
-        <div
-            class="py-4 px-4 h-full w-full text-gray-900 dark:text-white bg-gray-200 dark:bg-gray-700"
+        <Card
+            class="h-full w-full gap-2 p-4"
+            :owned="!!day.monster_id"
+            clickable
         >
-            <div class="flex items-center gap-4">
+            <div class="flex items-center gap-3">
                 <span>#{{ day.number }}</span>
                 <template v-if="day.monster_id">
                     <MonstersIcon class="h-4 min-h-4 w-4 min-w-4" />
@@ -34,6 +37,7 @@ defineProps({
             </div>
             <div
                 v-if="day.monster_id"
+                class="mh-card-name text-base"
             >
                 {{ day.monster.name }}
             </div>
@@ -50,7 +54,7 @@ defineProps({
                     {{ hunter.pivot.downtime_activity_id ? hunter.pivot.downtime_activity.name : '-' }}
                 </div>
             </div>
-        </div>
+        </Card>
     </component>
 </template>
 

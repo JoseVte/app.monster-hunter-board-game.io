@@ -3,6 +3,7 @@ import _ from "lodash";
 import {usePage} from "@inertiajs/vue3";
 import {useStorage} from "vue3-storage";
 import {ref, watch} from "vue";
+import Card from "@/Components/Card.vue";
 import AppLayout from '@/Layouts/AppLayout.vue';
 import Breadcrumb from "@/Components/Breadcrumb.vue";
 import Switch from "@/Components/Form/Switch.vue";
@@ -43,8 +44,8 @@ watch(showOnlyObtained, (showOnlyObtainedValue) => storage.setStorageSync('show-
         </template>
 
         <div>
-            <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <div class="px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg flex items-center gap-4">
+            <div class="max-w-7xl mx-auto py-6 px-4 sm:py-10 sm:px-6 lg:px-8">
+                <div class="mh-frame flex items-center gap-4 bg-white px-4 py-5 sm:p-6 dark:bg-gray-800">
                     <div
                         class="relative flex items-center justify-center bg-gray-200 dark:bg-gray-600 h-[80px] min-w-[80px] max-w-[80px] rounded-full font-bold"
                         :class="levelColor()"
@@ -69,7 +70,7 @@ watch(showOnlyObtained, (showOnlyObtainedValue) => storage.setStorageSync('show-
                         </div>
                         <div class="rounded-full w-full bg-gray-200 dark:bg-gray-600 mt-2">
                             <div
-                                class="rounded-full bg-gray-500 p-1.5 text-center text-xs font-medium leading-none text-gray-100"
+                                class="rounded-full bg-primary-500 p-1.5 text-center text-xs leading-none font-medium text-gray-100"
                                 :style="`width: ${$page.props.level.next_percentage}%`"
                             />
                         </div>
@@ -88,9 +89,10 @@ watch(showOnlyObtained, (showOnlyObtainedValue) => storage.setStorageSync('show-
                         v-for="achievement in achievements"
                         :key="achievement.id"
                     >
-                        <div
+                        <Card
                             v-if="!(showOnlyObtained && getUserAchievementProgress(achievement) !== 100)"
-                            class="w-full px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg flex flex-col justify-center gap-4"
+                            class="w-full justify-center gap-4 p-4 sm:p-5"
+                            :owned="getUserAchievementProgress(achievement) === 100"
                         >
                             <div class="flex justify-between items-center gap-4">
                                 <div class="flex items-center gap-4">
@@ -113,11 +115,11 @@ watch(showOnlyObtained, (showOnlyObtainedValue) => storage.setStorageSync('show-
                                 class="rounded-full w-full bg-gray-200 dark:bg-gray-600 mt-2"
                             >
                                 <div
-                                    class="rounded-full bg-gray-500 p-1 text-center text-xs font-medium leading-none text-gray-100"
+                                    class="rounded-full bg-primary-500 p-1 text-center text-xs leading-none font-medium text-gray-100"
                                     :style="`width: ${getUserAchievementProgress(achievement)}%`"
                                 />
                             </div>
-                        </div>
+                        </Card>
                     </template>
                 </div>
             </div>

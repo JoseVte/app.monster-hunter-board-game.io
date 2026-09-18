@@ -20,20 +20,20 @@ const hasActions = computed(() => !! useSlots().actions);
 
         <div class="mt-5 md:mt-0 md:col-span-2">
             <form @submit.prevent="$emit('submitted')">
-                <div
-                    class="px-4 py-5 bg-white dark:bg-gray-800 sm:p-6 shadow-sm"
-                    :class="hasActions ? 'sm:rounded-tl-md sm:rounded-tr-md' : 'sm:rounded-md'"
-                >
+                <!-- The frame the hunter sheet is drawn with. The fields and the
+                     actions share one, since a frame with its corners marked
+                     cannot be cut in half and still read as a single panel. -->
+                <div class="mh-frame bg-white px-4 py-5 sm:p-6 dark:bg-gray-800">
                     <div class="grid grid-cols-6 gap-6">
                         <slot name="form" />
                     </div>
-                </div>
 
-                <div
-                    v-if="hasActions"
-                    class="flex items-center justify-end px-4 py-3 bg-gray-50 dark:bg-gray-800 text-right sm:px-6 shadow-sm sm:rounded-bl-md sm:rounded-br-md"
-                >
-                    <slot name="actions" />
+                    <div
+                        v-if="hasActions"
+                        class="mt-6 flex items-center justify-end gap-3 pt-4 before:hidden"
+                    >
+                        <slot name="actions" />
+                    </div>
                 </div>
             </form>
         </div>

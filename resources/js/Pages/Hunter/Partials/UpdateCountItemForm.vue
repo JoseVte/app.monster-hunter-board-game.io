@@ -55,7 +55,7 @@ const decrementItem = () => {
             />
             <div
                 v-else
-                class="flex items-center justify-center h-10 rounded-sm relative bg-transparent w-20 outline-hidden px-4 border-0 focus:outline-hidden text-center bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 font-semibold text-md "
+                class="mh-notch flex h-10 w-20 items-center justify-center border border-gray-400 bg-white/70 px-4 text-center text-md font-semibold text-gray-800 [--mh-notch-color:var(--color-gray-500)] dark:border-gray-600 dark:bg-gray-950/60 dark:text-parchment"
             >
                 {{ countItem }}
             </div>

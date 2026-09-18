@@ -1,6 +1,7 @@
 <script setup>
 import { ref } from 'vue';
 import {Link, router, useForm, usePage} from '@inertiajs/vue3';
+import PalicoIcon from "@/Components/Icons/PalicoIcon.vue";
 import ActionMessage from '@/Components/ActionMessage.vue';
 import ActionSection from '@/Components/ActionSection.vue';
 import ConfirmationModal from '@/Components/ConfirmationModal.vue';
@@ -126,15 +127,15 @@ const displayableRole = (role) => {
                         <div
                             v-for="user in campaign.users"
                             :key="user.id"
-                            class="flex items-center justify-between"
+                            class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between"
                         >
                             <div class="flex items-center">
                                 <img
-                                    class="w-8 h-8 rounded-full"
+                                    class="w-8 h-8 shrink-0 rounded-full"
                                     :src="user.profile_photo_url"
                                     :alt="user.name"
                                 >
-                                <div class="ml-4 dark:text-white flex flex-col gap-2">
+                                <div class="ml-4 flex flex-col dark:text-white">
                                     <Link
                                         v-if="user.membership.hunter_id"
                                         :href="route('campaigns.hunters.show', [campaign, user.membership.hunter_id])"
@@ -145,12 +146,45 @@ const displayableRole = (role) => {
                                         v-else
                                         class="text-gray-500"
                                     >{{ $t('- Missing hunter -') }}</span>
-                                    <span class="text-gray-600 dark:text-gray-400">{{ user.name }}</span>
+
+                                    <!-- What a hunter brings to the table: the weapon
+                                         in hand and the cat beside them. -->
+                                    <span
+                                        v-if="user.membership.hunter?.weapon_type || user.membership.hunter?.palico"
+                                        class="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-gray-600 dark:text-gray-400"
+                                    >
+                                        <span
+                                            v-if="user.membership.hunter.weapon_type"
+                                            class="flex items-center gap-1.5"
+                                        >
+                                            <span class="flex h-6 w-6 min-h-6 min-w-6 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-900">
+                                                <img
+                                                    v-if="user.membership.hunter.weapon_type.image_url"
+                                                    class="h-4 w-4"
+                                                    :src="user.membership.hunter.weapon_type.image_url"
+                                                    :alt="user.membership.hunter.weapon_type.name"
+                                                >
+                                            </span>
+                                            {{ user.membership.hunter.weapon_type.name }}
+                                        </span>
+                                        <span
+                                            v-if="user.membership.hunter.palico"
+                                            class="flex items-center gap-1.5"
+                                        >
+                                            <PalicoIcon class="h-4 w-4" />
+                                            {{ user.membership.hunter.palico.name }}
+                                        </span>
+                                    </span>
+
+                                    <span class="mt-1 text-sm text-gray-600 dark:text-gray-400">{{ user.name }}</span>
                                 </div>
                             </div>
 
-                            <div class="flex items-end gap-2 flex-col">
-                                <div class="grid grid-cols-2 gap-2 w-full items-center">
+                            <!-- Four actions and a name do not fit across a phone, so
+                                 they drop under the member and wrap among themselves
+                                 rather than being squeezed into four columns. -->
+                            <div class="flex flex-col gap-2 items-start sm:items-end">
+                                <div class="flex flex-wrap items-center gap-x-5 gap-y-2 sm:grid sm:grid-cols-2 sm:gap-2 sm:w-full">
                                     <!-- Edit Hunter -->
                                     <Link
                                         v-if="(userPermissions.canAddCampaignMembers || $page.props.auth.user.id === user.id) && user.membership.hunter_id"
@@ -169,7 +203,7 @@ const displayableRole = (role) => {
                                         {{ $t('Remove Hunter') }}
                                     </button>
                                 </div>
-                                <div class="grid grid-cols-2 gap-2 w-full items-center">
+                                <div class="flex flex-wrap items-center gap-x-5 gap-y-2 sm:grid sm:grid-cols-2 sm:gap-2 sm:w-full">
                                     <!-- Manage Campaign Member Role -->
                                     <button
                                         v-if="userPermissions.canAddCampaignMembers && availableRoles.length"
@@ -284,7 +318,7 @@ const displayableRole = (role) => {
 
                                         <svg
                                             v-if="addCampaignMemberForm.role == role.key"
-                                            class="ml-2 h-5 w-5 text-green-400"
+                                            class="ml-2 h-5 w-5 text-primary-500"
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
                                             viewBox="0 0 24 24"
@@ -400,7 +434,7 @@ const displayableRole = (role) => {
 
                                     <svg
                                         v-if="updateRoleForm.role == role.key"
-                                        class="ml-2 h-5 w-5 text-green-400"
+                                        class="ml-2 h-5 w-5 text-primary-500"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
                                         viewBox="0 0 24 24"

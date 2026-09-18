@@ -1,5 +1,6 @@
 <script setup>
 import {Link} from "@inertiajs/vue3";
+import Card from "@/Components/Card.vue";
 import Potion from "@/Components/Icons/Potion.vue";
 import Calendar from "@/Components/Icons/Calendar.vue";
 
@@ -19,48 +20,55 @@ const strLimit = function (value, size) {
 </script>
 
 <template>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        <div
+    <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <!-- A campaign reads as a card, the same one the weapons and armours are
+             printed on, rather than a white panel with a shadow. -->
+        <Card
             v-for="campaign in campaigns"
             :key="campaign.id"
-            class="p-6 lg:p-8 bg-white dark:bg-gray-800 overflow-hidden shadow-xl sm:rounded-lg"
+            class="gap-3 p-4 sm:p-5"
         >
             <Link
                 :href="route('campaigns.show', campaign)"
-                class="flex justify-between"
+                class="flex cursor-pointer justify-between gap-3"
             >
-                <div class="flex flex-col">
-                    <div class="flex items-center">
+                <span class="flex min-w-0 flex-col">
+                    <span class="flex items-center gap-2">
                         <img
-                            class="w-6 h-6 rounded-full object-cover"
+                            class="h-6 w-6 rounded-full object-cover"
                             :src="campaign.team.owner.profile_photo_url"
                             :alt="campaign.team.owner.name"
                         >
+                        <span class="truncate text-xs text-gray-600 dark:text-gray-400">
+                            {{ campaign.team.name }}
+                        </span>
+                    </span>
 
-                        <div class="ml-2 leading-tight text-xs">
-                            <div class="text-gray-900 dark:text-white">
-                                {{ campaign.team.name }}
-                            </div>
-                        </div>
-                    </div>
-                    <h2 class="mt-2 text-2xl font-medium text-gray-900 dark:text-white">
-                        {{ campaign.name }}
-                    </h2>
-                    <p class="mt-4 text-gray-500 dark:text-gray-400 leading-relaxed">
+                    <span class="mh-card-name mt-2 text-xl">{{ campaign.name }}</span>
+
+                    <span class="mt-2 text-sm leading-relaxed text-gray-600 dark:text-gray-400">
                         {{ strLimit(campaign.description_parsed, 20) }}
-                    </p>
-                </div>
-                <div class="flex flex-col gap-4">
-                    <div class="w-14 h-14 rounded-full bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200 flex flex-col gap-1 items-center justify-center">
-                        <Potion class="w-6 h-6" />
-                        <span class="text-xxs">{{ campaign.health_potions }} / 3</span>
-                    </div>
-                    <div class="w-14 h-14 rounded-full bg-gray-300 text-gray-800 dark:bg-gray-700 dark:text-gray-200 flex flex-col gap-1 items-center justify-center">
-                        <Calendar class="w-6 h-6" />
-                        <span class="text-xxs">{{ campaign.days_count }} / {{ campaign.max_days }}</span>
-                    </div>
-                </div>
+                    </span>
+                </span>
+
+                <span class="flex shrink-0 flex-col gap-2">
+                    <span class="flex items-center gap-1.5">
+                        <span class="flex h-8 w-8 min-h-8 min-w-8 items-center justify-center rounded-full bg-gray-300 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+                            <Potion class="h-4 w-4" />
+                        </span>
+                        <span class="mh-value">{{ campaign.health_potions }} / 3</span>
+                    </span>
+                    <span class="flex items-center gap-1.5">
+                        <span class="flex h-8 w-8 min-h-8 min-w-8 items-center justify-center rounded-full bg-gray-300 text-gray-800 dark:bg-gray-900 dark:text-gray-200">
+                            <Calendar class="h-4 w-4" />
+                        </span>
+                        <span class="mh-value">{{ campaign.days_count }} / {{ campaign.max_days }}</span>
+                    </span>
+                </span>
             </Link>
+
+            <div class="mh-rule mt-auto" />
+
             <div class="isolate flex -space-x-2">
                 <template
                     v-for="user in campaign.users"
@@ -74,21 +82,17 @@ const strLimit = function (value, size) {
                         <img
                             :src="user.profile_photo_url"
                             :alt="user.name"
-                            class="relative inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-gray-800 hover:ring-gray-200 dark:hover:ring-gray-600"
+                            class="relative inline-block h-8 w-8 rounded-full ring-2 ring-gray-100 hover:ring-gray-300 dark:ring-gray-800 dark:hover:ring-gray-600"
                         >
                     </Link>
                     <img
                         v-else
                         :src="user.profile_photo_url"
                         :alt="user.name"
-                        class="relative inline-block h-8 w-8 rounded-full ring-2 ring-white dark:ring-gray-800"
+                        class="relative inline-block h-8 w-8 rounded-full ring-2 ring-gray-100 dark:ring-gray-800"
                     >
                 </template>
             </div>
-        </div>
+        </Card>
     </div>
 </template>
-
-<style scoped>
-
-</style>

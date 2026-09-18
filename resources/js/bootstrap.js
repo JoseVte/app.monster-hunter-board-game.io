@@ -22,23 +22,21 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 
-const connection = import.meta.env.VITE_BROADCAST_CONNECTION;
+// Pusher is the only broadcaster. Reverb was configured alongside it and never
+// used, so it was carrying two code paths and two sets of env vars for one.
+//
+// Echo is only wired up when a key is configured. Without the guard an
+// unconfigured environment opens a socket to an app that does not answer and
+// retries for as long as the page is open, filling the console.
+const key = import.meta.env.VITE_PUSHER_APP_KEY;
 
-if (connection === 'reverb' || connection === 'pusher') {
+if (key) {
     window.Pusher = Pusher;
 
-    const reverb = connection === 'reverb';
-
     window.Echo = new Echo({
-        broadcaster: connection,
-        key: reverb ? import.meta.env.VITE_REVERB_APP_KEY : import.meta.env.VITE_PUSHER_APP_KEY,
+        broadcaster: 'pusher',
+        key,
         cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER ?? 'mt1',
-        wsHost: reverb
-            ? import.meta.env.VITE_REVERB_HOST
-            : (import.meta.env.VITE_PUSHER_HOST || `ws-${import.meta.env.VITE_PUSHER_APP_CLUSTER}.pusher.com`),
-        wsPort: Number(reverb ? import.meta.env.VITE_REVERB_PORT : import.meta.env.VITE_PUSHER_PORT) || 80,
-        wssPort: Number(reverb ? import.meta.env.VITE_REVERB_PORT : import.meta.env.VITE_PUSHER_PORT) || 443,
-        forceTLS: (reverb ? import.meta.env.VITE_REVERB_SCHEME : import.meta.env.VITE_PUSHER_SCHEME) === 'https',
-        enabledTransports: ['ws', 'wss'],
+        forceTLS: import.meta.env.VITE_PUSHER_SCHEME !== 'http',
     });
 }

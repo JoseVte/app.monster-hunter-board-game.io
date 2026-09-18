@@ -14,7 +14,9 @@ import SectionTitle from './SectionTitle.vue';
         </SectionTitle>
 
         <div class="mt-5 md:mt-0 md:col-span-2">
-            <div class="px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg">
+            <!-- The frame the hunter sheet is drawn with, so a section of the
+                 site reads the same wherever it is. -->
+            <div class="mh-frame bg-white px-4 py-5 sm:p-6 dark:bg-gray-800">
                 <slot name="content" />
             </div>
         </div>

@@ -52,6 +52,7 @@ class CampaignHunterController extends Controller
         $canEdit = auth()->user()?->can('update', [$campaign, $hunter]);
         $hunter->load(
             'palico',
+            'weaponType',
             'items',
             'weapons',
             'equippedWeapons',
@@ -80,8 +81,11 @@ class CampaignHunterController extends Controller
 
                 return $armor;
             })
-            ->groupBy('type_value')
-            ->map(fn (Collection $armors) => $armors->groupBy(fn (Armor $armor) => $armor->rarity));
+            // The tab lines the three slots up in a row per monster, so a branch
+            // holds one piece for each slot rather than a list by rarity: the data
+            // is exactly seventeen branches of three.
+            ->groupBy('branch')
+            ->map(fn (Collection $pieces) => $pieces->keyBy('type_value'));
 
         return Inertia::render('Hunter/Show', compact(
             'campaign',
@@ -147,13 +151,29 @@ class CampaignHunterController extends Controller
 
     public function updateEquippedWeapon(EquipRequest $request, Campaign $campaign, Hunter $hunter, WeaponType $weaponType, Weapon $weapon): JsonResponse|RedirectResponse
     {
-        if (! $hunter->weapons()->find($weapon->id)) {
+        // A hunter owns their starting weapon from the first day, but nothing ever
+        // wrote it to the pivot, so equipping it was refused and there was no way
+        // back to it once anything else of that type had been equipped.
+        // Taking off the starting weapon would leave the hunter with nothing of
+        // that type in hand, so it is the one weapon that only ever goes on.
+        // Equipping anything else is how it leaves the hand.
+        if ($weapon->is_default && ! $request->boolean('equip')) {
+            return response()->json([
+                'error' => __('The starting weapon cannot be unequipped.'),
+            ], 400);
+        }
+
+        if (! $weapon->is_default && ! $hunter->weapons()->find($weapon->id)) {
             return response()->json([
                 'error' => __('The weapon cannot be equipped.'),
             ], 400);
         }
 
         DB::transaction(function () use ($weapon, $request, $hunter): void {
+            if ($weapon->is_default && ! $hunter->weapons()->find($weapon->id)) {
+                $hunter->weapons()->attach($weapon);
+            }
+
             if ($request->boolean('equip')) {
                 $hunter->weapons()->where('type_id', $weapon->type_id)->each(function (Weapon $hunterWeapon): void {
                     $hunterWeapon->pivot->equipped = false;
@@ -165,6 +185,20 @@ class CampaignHunterController extends Controller
                 'equipped' => $request->boolean('equip'),
             ]);
         });
+
+        return back(303);
+    }
+
+    /**
+     * A hunter carries one weapon type into a hunt, and never none: picking a
+     * second replaces the first, and picking the one already carried changes
+     * nothing.
+     */
+    public function updateHuntingWeaponType(Campaign $campaign, Hunter $hunter, WeaponType $weaponType): RedirectResponse
+    {
+        $this->authorize('update', [$campaign, $hunter]);
+
+        $hunter->update(['weapon_type_id' => $weaponType->id]);
 
         return back(303);
     }

@@ -12,10 +12,10 @@ defineProps({
 </script>
 
 <template>
-    <div class="flex flex-row h-10 rounded-lg relative bg-transparent">
+    <div class="mh-notch flex h-10 flex-row bg-transparent [--mh-notch-color:var(--color-gray-500)] dark:[--mh-notch-color:var(--color-gray-500)]">
         <button
             type="button"
-            class="bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600 flex items-center justify-center h-full w-10 rounded-l cursor-pointer outline-hidden"
+            class="border border-gray-400 bg-white/70 text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:border-gray-600 dark:bg-gray-950/60 dark:text-parchment dark:hover:bg-gray-800 dark:hover:text-white flex items-center justify-center h-full w-10 rounded-l cursor-pointer outline-hidden"
             :class="{ 'opacity-25': form.processing }"
             :disabled="form.processing"
             @click="decrement"
@@ -37,14 +37,14 @@ defineProps({
             </svg>
         </button>
         <div
-            class="outline-hidden px-2 w-auto border-0 focus:outline-hidden text-center bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 font-semibold text-md flex items-center"
+            class="flex w-auto items-center border-y border-gray-400 bg-white/70 px-2 text-center text-md font-semibold text-gray-800 outline-hidden dark:border-gray-600 dark:bg-gray-950/60 dark:text-parchment"
             :class="{ 'opacity-25': form.processing }"
         >
             {{ value }}<span v-if="max">&nbsp;/&nbsp;{{ max }}</span>
         </div>
         <button
             type="button"
-            class="bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600 flex items-center justify-center h-full w-10 rounded-r cursor-pointer outline-hidden"
+            class="border border-gray-400 bg-white/70 text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:border-gray-600 dark:bg-gray-950/60 dark:text-parchment dark:hover:bg-gray-800 dark:hover:text-white flex items-center justify-center h-full w-10 rounded-r cursor-pointer outline-hidden"
             :class="{ 'opacity-25': form.processing }"
             :disabled="form.processing"
             @click="increment"

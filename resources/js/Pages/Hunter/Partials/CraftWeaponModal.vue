@@ -93,15 +93,30 @@ const unequip = () => {
 
 <template>
     <div
-        :class="`relative border rounded-sm border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 p-2 text-gray-800 dark:text-gray-200 ${classContainer}`"
+        :class="[
+            'mh-card',
+            { 'mh-card-owned': weapon.is_default || hunterWeaponCount(weapon) },
+            { 'mh-card-equipped': weapon.equipped },
+            classContainer,
+        ]"
     >
         <slot />
         <div
-            v-if="!weapon.is_default || weapon.equipped || hunterWeaponCount(weapon)"
-            class="border-t border-gray-500 mt-2 pt-2 flex flex-col gap-2"
+            class="mt-auto flex flex-col gap-2 border-t-0 pt-2 before:mb-2 before:block before:h-px before:w-full before:bg-[linear-gradient(to_right,transparent,var(--color-attack-line),transparent)] before:content-['']"
         >
+            <!-- The starting weapon only ever goes on: taking it off would leave
+                 the hunter with nothing of that type in hand. Equipping anything
+                 else is how it leaves. -->
             <SecondaryButton
-                v-if="weapon.equipped"
+                v-if="weapon.equipped && weapon.is_default"
+                class="w-full justify-center gap-2"
+                disabled
+            >
+                <CogIcon class="w-4 h-4" />
+                {{ $t('Equipped') }}
+            </SecondaryButton>
+            <SecondaryButton
+                v-else-if="weapon.equipped"
                 class="w-full justify-center gap-2 group"
                 :class="{ 'opacity-25': formEquip.processing }"
                 :disabled="formEquip.processing"
@@ -112,13 +127,13 @@ const unequip = () => {
                 <span class="hidden group-hover:inline">{{ $t('Unequip') }}</span>
             </SecondaryButton>
             <SecondaryButton
-                v-else-if="hunterWeaponCount(weapon)"
+                v-else-if="weapon.is_default || hunterWeaponCount(weapon)"
                 class="w-full justify-center gap-2 group"
                 :class="{ 'opacity-25': formEquip.processing }"
                 :disabled="formEquip.processing"
                 @click="equip"
             >
-                <CogIcon class="w-4 h-4 group-hover:rotate-180 group-hover:text-green-500 transition-all" />
+                <CogIcon class="w-4 h-4 group-hover:rotate-180 group-hover:text-primary-400 transition-all" />
                 {{ $t('Equip') }}
             </SecondaryButton>
             <SecondaryButton
@@ -126,7 +141,7 @@ const unequip = () => {
                 class="w-full justify-center gap-2 group"
                 @click="confirmCraftWeapon"
             >
-                <Wrench class="w-4 h-4 group-hover:text-green-500 transition-all" />
+                <Wrench class="w-4 h-4 group-hover:text-primary-400 transition-all" />
                 {{ $t('Craft') }}
             </SecondaryButton>
         </div>
@@ -155,7 +170,7 @@ const unequip = () => {
 
         <template #content>
             <div class="mt-4 grid grid-cols-1 gap-4">
-                <div class="w-full border rounded-sm">
+                <div class="w-full rounded-sm border border-gray-300 dark:border-gray-700">
                     <div
                         v-if="recipes.length > 1"
                         class="mb-3 flex flex-wrap gap-2"

@@ -50,7 +50,9 @@ defineExpose({focus: () => editor.value?.focus()});
 </script>
 
 <template>
-    <div class="rounded-md shadow-xs overflow-hidden border border-gray-300 dark:border-gray-700">
+    <div
+        class="mh-notch overflow-hidden border border-gray-300 dark:border-gray-700 [--mh-notch-color:var(--color-gray-400)] focus-within:border-primary-500 focus-within:[--mh-notch-color:var(--color-primary-800)] dark:[--mh-notch-color:var(--color-gray-600)] dark:focus-within:border-primary-600 dark:focus-within:[--mh-notch-color:var(--color-primary-200)]"
+    >
         <MdEditor
             ref="editor"
             v-model="value"

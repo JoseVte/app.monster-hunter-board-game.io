@@ -11,11 +11,11 @@
             </div>
         </div>
     </div>
-    <div
-        v-else
-        class="hidden sm:block"
-    >
-        <div class="py-8">
+    <!-- This was hidden below sm, so on a phone the separator drew neither a rule
+         nor the space around it and one section ran straight into the next. It is
+         the only thing carrying the rhythm between them. -->
+    <div v-else>
+        <div class="py-6 sm:py-8">
             <div class="border-t border-gray-200 dark:border-gray-700" />
         </div>
     </div>

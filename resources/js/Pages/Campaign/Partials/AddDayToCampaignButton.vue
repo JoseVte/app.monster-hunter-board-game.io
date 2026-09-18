@@ -68,8 +68,11 @@ const closeModal = () => {
 </script>
 
 <template>
-    <PrimaryButton
-        class="h-8 w-8 p-0! inline-flex items-center justify-center rounded-full!"
+    <!-- Shaped as the right hand segment of a counter so the days row reads as a
+         sibling of the potions one, which sits directly above it. Only a plus:
+         a day is added through the modal and never taken back. -->
+    <button
+        class="border border-gray-400 bg-white/70 text-gray-700 hover:bg-gray-200 hover:text-gray-900 dark:border-gray-600 dark:bg-gray-950/60 dark:text-parchment dark:hover:bg-gray-800 dark:hover:text-white flex items-center justify-center h-full w-10 rounded-r cursor-pointer outline-hidden"
         type="button"
         @click="confirmAddDay"
     >
@@ -88,7 +91,7 @@ const closeModal = () => {
                 d="M12 6v12m6-6H6"
             />
         </svg>
-    </PrimaryButton>
+    </button>
     <DialogModal
         :show="confirmingAddDay"
         @close="closeModal"
