@@ -3,6 +3,7 @@
 use App\Models\Day;
 use App\Models\User;
 use App\Models\Armor;
+use App\Models\Craft;
 use App\Models\Hunter;
 use App\Models\Weapon;
 use App\Models\Monster;
@@ -178,4 +179,50 @@ test('a day that was not hunted does not count', function (): void {
     huntMonster($this->campaign, 2);
 
     expect(progressOf($this->user, 'monsters-10'))->toEqual(10);
+});
+
+test('upgrading a weapon still advances the progress', function (): void {
+    // An upgrade replaces the weapon it was made from, so counting what a hunter
+    // owns leaves the progress flat no matter how much they craft.
+    $parent = Weapon::factory()->create();
+    $this->hunter->weapons()->attach($parent);
+    event(new UserEquipmentCrafted($this->user, $parent));
+
+    expect(progressOf($this->user, 'craft-weapon-10'))->toEqual(10);
+
+    $child = Weapon::factory()->create(['parent_id' => $parent->id]);
+    $this->hunter->weapons()->detach($parent->id);
+    $this->hunter->weapons()->attach($child);
+    event(new UserEquipmentCrafted($this->user, $child));
+
+    expect(progressOf($this->user, 'craft-weapon-10'))->toEqual(20);
+});
+
+test('each craft is recorded, and deleting the user takes them with it', function (): void {
+    craftWeapon($this->hunter, $this->user);
+    craftArmor($this->hunter, $this->user);
+
+    expect($this->user->crafts()->count())->toEqual(2)
+        ->and($this->user->craftedWeaponsCount())->toEqual(1)
+        ->and($this->user->craftedArmorsCount())->toEqual(1);
+
+    $userId = $this->user->id;
+    $this->user->delete();
+
+    expect(Craft::where('user_id', $userId)->exists())->toBeFalse();
+});
+
+test('a weapon and an armour of the same id are counted apart', function (): void {
+    // The log is polymorphic, so nothing but the type keeps these two apart.
+    $weapon = Weapon::factory()->create();
+    $armor = Armor::factory()->create(['id' => $weapon->id]);
+
+    $this->hunter->weapons()->attach($weapon);
+    event(new UserEquipmentCrafted($this->user, $weapon));
+
+    $this->hunter->armors()->attach($armor);
+    event(new UserEquipmentCrafted($this->user, $armor));
+
+    expect($this->user->craftedWeaponsCount())->toEqual(1)
+        ->and($this->user->craftedArmorsCount())->toEqual(1);
 });

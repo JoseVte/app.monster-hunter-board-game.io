@@ -18,10 +18,10 @@ class ArmorsSeeder extends Seeder
     public function run(): void
     {
         foreach (ArmorType::cases() as $type) {
-            foreach (config('seeders.armors.'.$type->name) as $armorName => $armorDetails) {
+            foreach (SeedData::get('armors.'.$type->name) as $armorName => $armorDetails) {
                 $armor = Armor::updateOrCreate([
                     'type' => $type->name,
-                    'name' => $armorName,
+                    'name->en' => $armorName,
                 ], [
                     'type' => $type,
                     'name' => [
@@ -49,7 +49,7 @@ class ArmorsSeeder extends Seeder
                     }
 
                     $skill = ArmorSkill::where('name->en', $armorDetails['skill'])->firstOrFail();
-                    $armor->skills()->attach($skill);
+                    $armor->skills()->syncWithoutDetaching([$skill->id]);
                 }
 
                 if (Arr::get($armorDetails, 'items')) {
@@ -59,13 +59,13 @@ class ArmorsSeeder extends Seeder
                         }
 
                         $item = Item::where('name->en', $itemName)->firstOrFail();
-                        $armor->items()->attach($item, ['number' => $count]);
+                        $armor->items()->syncWithoutDetaching([$item->id => ['number' => $count]]);
                     }
                 }
             }
         }
 
-        foreach (config('seeders.armors.skills') as $skill) {
+        foreach (SeedData::get('armors.skills') as $skill) {
             if (Arr::get($skill, 'bonus-set')) {
                 $bonusSet = [];
                 foreach ($skill['bonus-set'] as $armorName) {

@@ -25,8 +25,6 @@ class Weapon extends Model
         'name',
 
         'is_default',
-        'branch_id',
-        'branch',
 
         'rarity',
         'defense',
@@ -69,6 +67,11 @@ class Weapon extends Model
     public function children(): HasMany
     {
         return $this->hasMany(__CLASS__, 'parent_id');
+    }
+
+    public function recipes(): HasMany
+    {
+        return $this->hasMany(WeaponRecipe::class)->orderBy('position');
     }
 
     public function items(): BelongsToMany

@@ -2,6 +2,7 @@
 import AppLayout from '@/Layouts/AppLayout.vue';
 import ConnectedAccountsForm from '@/Pages/Profile/Partials/ConnectedAccountsForm.vue';
 import DeleteUserForm from '@/Pages/Profile/Partials/DeleteUserForm.vue';
+import InvitationsForm from '@/Pages/Profile/Partials/InvitationsForm.vue';
 import LogoutOtherBrowserSessionsForm from '@/Pages/Profile/Partials/LogoutOtherBrowserSessionsForm.vue';
 import SectionBorder from '@/Components/SectionBorder.vue';
 import SetPasswordForm from '@/Pages/Profile/Partials/SetPasswordForm.vue';
@@ -13,6 +14,8 @@ import Breadcrumb from "@/Components/Breadcrumb.vue";
 defineProps({
     confirmsTwoFactorAuthentication: Boolean,
     sessions: Array,
+    invitations: Array,
+    invitationLimit: Number,
 });
 </script>
 
@@ -57,6 +60,14 @@ defineProps({
                 <div v-if="$page.props.socialLogin.providers.length">
                     <ConnectedAccountsForm class="mt-10 sm:mt-0" />
                 </div>
+
+                <SectionBorder />
+
+                <InvitationsForm
+                    :invitations="invitations"
+                    :invitation-limit="invitationLimit"
+                    class="mt-10 sm:mt-0"
+                />
 
                 <div v-if="$page.props.socialLogin.hasPassword">
                     <SectionBorder />

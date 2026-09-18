@@ -130,8 +130,12 @@ return [
     |
     */
 
-    'features' => [
-        Features::registration(),
+    'features' => array_values(array_filter([
+        // Registration is invitation only. Turning this off removes Fortify's
+        // register route, and `canRegister` derives from Route::has('register'),
+        // so every link to it disappears with it. The two invitation flows are
+        // routes of our own and keep working either way.
+        env('AUTH_CAN_REGISTER', false) ? Features::registration() : null,
         Features::resetPasswords(),
         Features::emailVerification(),
         Features::updateProfileInformation(),
@@ -141,5 +145,5 @@ return [
             'confirmPassword' => true,
             // 'window' => 0,
         ]),
-    ],
+    ])),
 ];

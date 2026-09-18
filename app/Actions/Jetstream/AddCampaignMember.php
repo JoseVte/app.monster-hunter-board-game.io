@@ -36,7 +36,9 @@ class AddCampaignMember
         DB::transaction(function () use ($role, $newCampaignMember, $campaign): void {
             $campaign->users()->attach(
                 $newCampaignMember,
-                ['role_id' => Role::findByName($role)->id]
+                // Campaign roles live on the sanctum guard, and findByName without
+                // one resolves against the default, which is web.
+                ['role_id' => Role::findByName($role, 'sanctum')->id]
             );
 
             if (! $campaign->team->hasUser($newCampaignMember)) {

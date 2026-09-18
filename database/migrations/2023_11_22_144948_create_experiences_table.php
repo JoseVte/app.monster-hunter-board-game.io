@@ -8,9 +8,9 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create(config('level-up.table'), function (Blueprint $table): void {
+        Schema::create('experiences', function (Blueprint $table): void {
             $table->id();
-            $table->foreignId(config('level-up.user.foreign_key'))->constrained(config('level-up.user.users_table'));
+            $table->foreignId('user_id')->constrained();
             $table->foreignId('level_id')->constrained();
             $table->unsignedBigInteger('experience_points')->default(0)->index();
             $table->timestamps();
@@ -19,6 +19,6 @@ return new class extends Migration
 
     public function down(): void
     {
-        Schema::dropIfExists(config('level-up.table'));
+        Schema::dropIfExists('experiences');
     }
 };

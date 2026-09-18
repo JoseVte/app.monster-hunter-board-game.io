@@ -9,6 +9,7 @@ use App\Models\Weapon;
 use App\Models\Monster;
 use App\Models\WeaponType;
 use App\Models\WeaponAttack;
+use App\Models\WeaponRecipe;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
 
@@ -39,23 +40,22 @@ class WeaponsSeeder extends Seeder
         ];
 
         foreach ($weaponTypes as $weaponsByType) {
-            $weaponsByType = config('seeders.weapons.'.$weaponsByType);
+            $weaponsByType = SeedData::get('weapons/'.$weaponsByType);
 
             if (! empty($weaponsByType)) {
-                $weaponType = WeaponType::create([
+                $weaponType = WeaponType::updateOrCreate(['name->en' => $weaponsByType['name']['en']], [
                     'name' => $weaponsByType['name'],
                     'description' => Arr::get($weaponsByType, 'description'),
                     'image_path' => $storage->putFileAs('weapon-types', resource_path('images/'.$weaponsByType['image']), Str::slug($weaponsByType['name']['en']).'.png', 'public'),
                 ]);
 
-                foreach (Arr::get($weaponsByType, 'weapons', []) as $weaponDetails) {
+                foreach (Arr::get($weaponsByType, 'weapons', []) as $weaponName => $weaponDetails) {
                     $weapon = Weapon::updateOrCreate([
-                        'name' => $weaponDetails['name'],
+                        'name->en' => $weaponName,
                         'type_id' => $weaponType->id,
                     ], [
-                        'name' => $weaponDetails['name'],
+                        'name' => ['en' => $weaponName, 'es' => $weaponDetails['name']],
                         'type_id' => $weaponType->id,
-                        'branch' => Arr::get($weaponDetails, 'branch'),
                         'is_default' => Arr::get($weaponDetails, 'default', false),
                         'has_elemental_attacks' => Arr::get($weaponDetails, 'has_elemental_attacks', false),
                         'deviation' => Arr::get($weaponDetails, 'deviation'),
@@ -67,11 +67,6 @@ class WeaponsSeeder extends Seeder
                         'count_attack_4' => Arr::get($weaponDetails, 'count_attack_4', 0),
                         'count_attack_5' => Arr::get($weaponDetails, 'count_attack_5', 0),
                     ]);
-
-                    if (Arr::get($weaponDetails, 'branch') && Monster::where('name->en', $weaponDetails['branch'])->exists()) {
-                        $weapon->branch_id = Monster::where('name->en', $weaponDetails['branch'])->firstOrFail()->id;
-                        $weapon->save();
-                    }
 
                     if (Arr::get($weaponDetails, 'parent')) {
                         // Scoped to the weapon type on purpose: a weapon always upgrades from
@@ -88,16 +83,7 @@ class WeaponsSeeder extends Seeder
                         $weapon->save();
                     }
 
-                    if (Arr::get($weaponDetails, 'items')) {
-                        foreach ($weaponDetails['items'] as $itemName => $count) {
-                            if (Item::where('name->en', $itemName)->doesntExist()) {
-                                logger('Item: '.$itemName);
-                            }
-
-                            $weaponAttack = Item::where('name->en', $itemName)->firstOrFail();
-                            $weapon->items()->attach($weaponAttack, ['number' => $count]);
-                        }
-                    }
+                    $this->syncRecipes($weapon, $weaponDetails);
 
                     if (Arr::get($weaponDetails, 'attacks')) {
                         if (Arr::get($weaponDetails, 'attacks.remove')) {
@@ -108,7 +94,7 @@ class WeaponsSeeder extends Seeder
                                 }
 
                                 $weaponAttack = WeaponAttack::where('name->en', $attackName)->firstOrFail();
-                                $weapon->attacksToRemove()->attach($weaponAttack, ['number' => $count]);
+                                $weapon->attacksToRemove()->syncWithoutDetaching([$weaponAttack->id => ['number' => $count]]);
                             }
                         }
                         if (Arr::get($weaponDetails, 'attacks.add')) {
@@ -119,12 +105,66 @@ class WeaponsSeeder extends Seeder
                                 }
 
                                 $weaponAttack = WeaponAttack::where('name->en', $attackName)->firstOrFail();
-                                $weapon->attacksToAdd()->attach($weaponAttack, ['number' => $count]);
+                                $weapon->attacksToAdd()->syncWithoutDetaching([$weaponAttack->id => ['number' => $count]]);
                             }
                         }
                     }
                 }
             }
         }
+    }
+
+    /**
+     * A weapon is normally craftable one way. Two dual blades can be built from
+     * either of two monsters at different prices, which the data writes as a list
+     * of branches and a matching list of material sets, paired by position.
+     *
+     * @param  array<string, mixed>  $details
+     */
+    private function syncRecipes(Weapon $weapon, array $details): void
+    {
+        $branches = (array) Arr::get($details, 'branch', [null]);
+        $sets = $this->materialSets($details);
+
+        foreach ($branches as $position => $branch) {
+            $recipe = WeaponRecipe::updateOrCreate([
+                'weapon_id' => $weapon->id,
+                'position' => $position,
+            ], [
+                'branch' => $branch,
+                'branch_id' => $branch ? Monster::where('name->en', $branch)->value('id') : null,
+            ]);
+
+            foreach ($sets[$position] ?? $sets[0] ?? [] as $itemName => $count) {
+                $item = Item::where('name->en', $itemName)->first();
+
+                if (! $item) {
+                    logger('Item: '.$itemName);
+
+                    continue;
+                }
+
+                $recipe->items()->syncWithoutDetaching([$item->id => ['number' => $count, 'weapon_id' => $weapon->id]]);
+            }
+        }
+
+        // A branch removed from the data leaves a recipe behind, which would keep
+        // offering a way to build the weapon that no longer exists.
+        $weapon->recipes()->where('position', '>=', count($branches))->delete();
+    }
+
+    /**
+     * @param  array<string, mixed>  $details
+     * @return list<array<string, int>>
+     */
+    private function materialSets(array $details): array
+    {
+        $items = Arr::get($details, 'items', []);
+
+        if ($items === [] || ! array_is_list($items)) {
+            return [$items];
+        }
+
+        return $items;
     }
 }

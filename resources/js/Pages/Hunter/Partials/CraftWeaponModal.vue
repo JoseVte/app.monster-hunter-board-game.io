@@ -1,5 +1,5 @@
 <script setup>
-import {ref} from "vue";
+import {computed, ref, watch} from "vue";
 import {useForm} from "@inertiajs/vue3";
 import _ from "lodash";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
@@ -21,7 +21,26 @@ const confirmCraftWeapon = () => {
     confirmingCraftWeapon.value = true;
 };
 
+const recipes = computed(() => props.weapon.recipes ?? []);
+
+// A weapon buildable from two monsters costs different parts each way, so the
+// player picks which to spend. The first one they can afford is the default.
+const selectedRecipeId = ref(null);
+const selectedRecipe = computed(() => recipes.value.find((recipe) => recipe.id === selectedRecipeId.value) ?? recipes.value[0]);
+
+const canAfford = (recipe) => (props.weapon.craftable_recipes ?? []).includes(recipe.id);
+
+watch(() => [confirmingCraftWeapon.value, recipes.value], () => {
+    if (! confirmingCraftWeapon.value) {
+        return;
+    }
+
+    const affordable = recipes.value.find((recipe) => canAfford(recipe));
+    selectedRecipeId.value = (affordable ?? recipes.value[0])?.id ?? null;
+}, { immediate: true });
+
 const craftWeapon = () => {
+    form.recipe = selectedRecipeId.value;
     form.post(route('campaigns.hunters.weapons.craft', [props.campaign, props.hunter, props.weapon.type, props.weapon]), {
         errorBag: 'craftWeaponHunter',
         preserveScroll: true,
@@ -30,7 +49,7 @@ const craftWeapon = () => {
     });
 };
 
-const form = useForm({});
+const form = useForm({recipe: null});
 const formEquip = useForm({equip: false});
 const closeModal = () => {
     confirmingCraftWeapon.value = false;
@@ -137,6 +156,28 @@ const unequip = () => {
         <template #content>
             <div class="mt-4 grid grid-cols-1 gap-4">
                 <div class="w-full border rounded-sm">
+                    <div
+                        v-if="recipes.length > 1"
+                        class="mb-3 flex flex-wrap gap-2"
+                    >
+                        <button
+                            v-for="recipe in recipes"
+                            :key="recipe.id"
+                            type="button"
+                            class="rounded border px-3 py-1 text-sm"
+                            :class="[
+                                recipe.id === selectedRecipe?.id
+                                    ? 'border-primary-500 bg-primary-500 text-white'
+                                    : 'border-gray-300 dark:border-gray-600',
+                                canAfford(recipe) ? '' : 'opacity-50',
+                            ]"
+                            @click="selectedRecipeId = recipe.id"
+                        >
+                            {{ recipe.branch }}
+                            <span v-if="! canAfford(recipe)">&middot;</span>
+                        </button>
+                    </div>
+
                     <table class="dark:text-white w-full">
                         <thead class="border-b">
                             <tr>
@@ -167,7 +208,7 @@ const unequip = () => {
                                 </td>
                             </tr>
                             <tr
-                                v-for="item in weapon.items"
+                                v-for="item in (selectedRecipe?.items ?? [])"
                                 :key="item.id"
                             >
                                 <td class="p-2">

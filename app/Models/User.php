@@ -6,30 +6,30 @@ use Exception;
 use App\Enum\AchievementType;
 use Laravel\Jetstream\HasTeams;
 use Laravel\Sanctum\HasApiTokens;
+use App\Events\AchievementAwarded;
 use App\Models\Traits\HasCampaigns;
+use App\Models\Traits\HasExperience;
+use App\Models\Traits\HasAchievements;
 use Laravel\Jetstream\HasProfilePhoto;
 use Spatie\Permission\Traits\HasRoles;
 use App\Models\Pivot\CampaignMembership;
 use Illuminate\Notifications\Notifiable;
-use LevelUp\Experience\Models\Achievement;
 use Laravel\Fortify\TwoFactorAuthenticatable;
-use LevelUp\Experience\Concerns\GiveExperience;
-use LevelUp\Experience\Concerns\HasAchievements;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Casts\Attribute;
-use LevelUp\Experience\Events\AchievementAwarded;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
     use EagerLoadPivotTrait;
-    use GiveExperience;
     use HasAchievements;
     use HasApiTokens;
     use HasCampaigns;
+    use HasExperience;
     use HasFactory;
     use HasProfilePhoto {
         profilePhotoUrl as getPhotoUrl;
@@ -96,7 +96,6 @@ class User extends Authenticatable
                 });
         });
         static::deleting(function (User $user): void {
-            $user->experienceHistory()->delete();
             $user->experience()->delete();
             $user->allAchievements()->detach();
         });
@@ -120,6 +119,11 @@ class User extends Authenticatable
             ->as('membership');
     }
 
+    public function sentInvitations(): HasMany
+    {
+        return $this->hasMany(Invitation::class, 'inviter_id');
+    }
+
     public function providers(): HasMany
     {
         return $this->hasMany(Provider::class);
@@ -130,14 +134,24 @@ class User extends Authenticatable
         return $this->belongsToMany(Hunter::class, CampaignMembership::class, 'user_id', 'hunter_id');
     }
 
+    public function crafts(): HasMany
+    {
+        return $this->hasMany(Craft::class);
+    }
+
+    /**
+     * Counted from the craft log rather than from what a hunter holds, because
+     * an upgrade replaces the weapon it was made from and would otherwise erase
+     * the progress it earned.
+     */
     public function craftedWeaponsCount(): int
     {
-        return $this->hunters()->withCount('weapons')->get()->sum('weapons_count');
+        return $this->crafts()->where('craftable_type', Weapon::class)->count();
     }
 
     public function craftedArmorsCount(): int
     {
-        return $this->hunters()->withCount('armors')->get()->sum('armors_count');
+        return $this->crafts()->where('craftable_type', Armor::class)->count();
     }
 
     public function huntedMonstersCount(): int

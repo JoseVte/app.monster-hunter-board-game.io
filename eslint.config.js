@@ -1,7 +1,7 @@
 import js from '@eslint/js';
 import globals from 'globals';
 import pluginVue from 'eslint-plugin-vue';
-import pluginImport from 'eslint-plugin-import';
+import pluginImport from 'eslint-plugin-import-x';
 
 export default [
     {
@@ -31,12 +31,12 @@ export default [
         },
 
         plugins: {
-            import: pluginImport,
+            'import-x': pluginImport,
         },
 
         rules: {
-            'import/no-unresolved': ['off'],
-            'import/order': ['error'],
+            'import-x/no-unresolved': ['off'],
+            'import-x/order': ['error'],
             'indent': ['error', 4],
             'no-undef': ['off'],
             'vue/html-indent': ['error', 4],

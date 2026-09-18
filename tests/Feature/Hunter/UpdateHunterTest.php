@@ -17,7 +17,7 @@ beforeEach(function (): void {
     $this->weaponDefault = Weapon::factory()->create(['is_default' => true]);
     $this->weaponChild = Weapon::factory()->create(['parent_id' => $this->weapon]);
     $this->weaponItem = Weapon::factory()->create(['is_default' => false]);
-    $this->weaponItem->items()->attach($this->item, ['number' => 1]);
+    $this->weaponItem->recipes->first()->items()->attach($this->item, ['number' => 1, 'weapon_id' => $this->weaponItem->id]);
 
     $this->armor = Armor::factory()->create(['is_default' => false]);
     $this->armorDefault = Armor::factory()->create(['is_default' => true]);

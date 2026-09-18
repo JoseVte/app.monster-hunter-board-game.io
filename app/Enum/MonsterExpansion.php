@@ -16,6 +16,8 @@ enum MonsterExpansion implements TranslatableEnumContract
     case NERGIGANTE_EXPANSION;
     case KUSHALA_EXPANSION;
 
+    case KIRIN_EXPANSION;
+
     public function label(?string $locale = null): string
     {
         return match ($this) {
@@ -25,6 +27,7 @@ enum MonsterExpansion implements TranslatableEnumContract
             self::TEOSTRA_EXPANSION => __('Teostra Expansion', [], $locale),
             self::NERGIGANTE_EXPANSION => __('Nergigante Expansion', [], $locale),
             self::KUSHALA_EXPANSION => __('Kushala Expansion', [], $locale),
+            self::KIRIN_EXPANSION => __('Kirin Expansion', [], $locale),
         };
     }
 }

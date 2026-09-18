@@ -33,6 +33,10 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function configureRateLimiting(): void
     {
+        // Ten an hour is generous for a human and useless for scripting a
+        // mailing list through somebody's account.
+        RateLimiter::for('invitations', fn (Request $request) => Limit::perHour(10)->by($request->user()->id));
+
         RateLimiter::for('api', fn (Request $request) => Limit::perMinute(60)->by($request->user()?->id ?: $request->ip()));
     }
 }

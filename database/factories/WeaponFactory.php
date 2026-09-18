@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Weapon;
 use App\Models\WeaponType;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -25,5 +26,17 @@ class WeaponFactory extends Factory
                 'es' => $this->faker->name,
             ],
         ];
+    }
+
+    /**
+     * Every seeded weapon has at least one recipe, since that is what says how it
+     * is made and from which monster. A weapon without one cannot be crafted at
+     * all, so a factory that skipped it would build something the app never sees.
+     */
+    public function configure(): static
+    {
+        return $this->afterCreating(function (Weapon $weapon): void {
+            $weapon->recipes()->create(['position' => 0]);
+        });
     }
 }

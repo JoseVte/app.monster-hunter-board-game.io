@@ -3,9 +3,9 @@
 namespace App\Listeners;
 
 use App\Models\User;
+use App\Models\Achievement;
 use App\Enum\AchievementType;
-use LevelUp\Experience\Models\Achievement;
-use LevelUp\Experience\Events\UserLevelledUp;
+use App\Events\UserLevelledUp;
 
 class UserLevelledUpListener
 {

@@ -12,12 +12,12 @@ class ItemsSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (config('seeders.items') as $type => $items) {
-            foreach ($items as $item) {
-                Item::create([
-                    'type' => $type,
-                    'name' => $item,
-                ]);
+        foreach (SeedData::get('items') as $type => $items) {
+            foreach ($items as $english => $spanish) {
+                Item::updateOrCreate(
+                    ['name->en' => $english],
+                    ['type' => $type, 'name' => ['en' => $english, 'es' => $spanish]],
+                );
             }
         }
     }

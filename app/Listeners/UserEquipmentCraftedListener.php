@@ -3,9 +3,9 @@
 namespace App\Listeners;
 
 use App\Models\Weapon;
+use App\Models\Achievement;
 use App\Enum\AchievementType;
 use App\Events\UserEquipmentCrafted;
-use LevelUp\Experience\Models\Achievement;
 
 class UserEquipmentCraftedListener
 {
@@ -16,6 +16,11 @@ class UserEquipmentCraftedListener
     {
         $user = $event->user;
         $user->addPoints($event->equipment->rarity);
+
+        $user->crafts()->create([
+            'craftable_type' => $event->equipment::class,
+            'craftable_id' => $event->equipment->getKey(),
+        ]);
 
         $isWeapon = $event->equipment instanceof Weapon;
 

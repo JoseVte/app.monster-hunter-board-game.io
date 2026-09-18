@@ -50,7 +50,7 @@ const submit = async () => {
 <template>
     <Head :title="$t('Log in')" />
 
-    <AuthenticationCard :can-register="true">
+    <AuthenticationCard :can-register="$page.props.canRegister">
         <template #logo>
             <AuthenticationCardLogo />
         </template>

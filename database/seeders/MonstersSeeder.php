@@ -12,12 +12,21 @@ class MonstersSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (config('seeders.monsters') as $monster => $details) {
-            Monster::create([
-                'name' => $monster,
-                'category' => $details['category'],
-                'expansion' => $details['expansion'],
-            ]);
+        foreach (SeedData::get('monsters') as $monster => $details) {
+            Monster::updateOrCreate(
+                ['name->en' => $monster],
+                [
+                    // Most monster names are proper nouns that do not translate,
+                    // so only the ones carrying a qualifier declare a Spanish
+                    // form and the rest fall back to the English key.
+                    'name' => [
+                        'en' => $monster,
+                        'es' => $details['name'] ?? $monster,
+                    ],
+                    'category' => $details['category'],
+                    'expansion' => $details['expansion'],
+                ],
+            );
         }
     }
 }

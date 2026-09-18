@@ -7,6 +7,7 @@ use Inertia\Middleware;
 use Tightenco\Ziggy\Ziggy;
 use Illuminate\Http\Request;
 use App\Enum\MonsterDifficulty;
+use Illuminate\Support\Facades\Route;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -40,6 +41,12 @@ class HandleInertiaRequests extends Middleware
 
             // A provider only shows up once its credentials are configured, so an
             // unconfigured button can never send anyone to a broken OAuth redirect.
+            // Shared rather than passed per page: any template that offers a way
+            // to sign up needs it, and a page that guesses can render a link to a
+            // route that does not exist, which Ziggy turns into a thrown error
+            // that takes the whole mount down with it.
+            'canRegister' => Route::has('register'),
+
             'socialLogin' => [
                 'providers' => collect(['google', 'github', 'discord'])
                     ->filter(fn (string $provider): bool => filled(config("services.$provider.client_id")))

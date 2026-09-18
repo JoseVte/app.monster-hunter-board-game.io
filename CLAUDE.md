@@ -21,7 +21,7 @@ Production domain: `app.monster-hunter-board-game.io`. Repo: `JoseVte/app.monste
 | Auth / scaffolding | Jetstream (teams) + Fortify + Socialite (Google, GitHub, Discord) |
 | Authorization | spatie/laravel-permission (roles) + policies |
 | i18n | spatie/laravel-translatable (models), vue-i18n (front), JSON lang files |
-| Gamification | `cjmellor/level-up` |
+| Gamification | local, `app/Models/Traits/Has{Experience,Achievements}.php` |
 | Queue / infra | Horizon, Redis, MySQL 8, Meilisearch (Scout), Mailpit, MinIO via Sail |
 | Testing | Pest 5 (Feature + Unit), Dusk for browser tests |
 | Monitoring | Sentry, Laravel Telescope, Debugbar |
@@ -87,6 +87,56 @@ The editor chunk is 861 kB of JS and 70 kB of CSS, up from toast-ui's 456 plus 1
 all of it is CodeMirror. It is a dynamic import, so it only loads on the campaign create and
 edit forms.
 
+### Analytics
+
+`resources/js/analytics.js` talks to `gtag.js` directly. **`vue-gtag` was removed**, not
+upgraded past 3: its whole value is a Vue plugin wrapper and a `pageTracker` driven by
+`vue-router`, and this app has no router, so all it ever did here was inject the script and
+make two calls.
+
+That is also why GA had been recording nothing. Both vue-gtag 2 and 3 default
+`send_page_view` to `false` and leave the event to the router-driven tracker, so with no
+router the only things reaching GA were the tag load and the `config` call. The local module
+sends the view itself on Inertia's `navigate`, which covers the first visit as well.
+
+**The title cannot be read when `navigate` fires.** Inertia writes the new `<title>` from a
+`debounce(..., 1)` callback that is scheduled during render, so it lands after `navigate`
+and after the page chunk has been fetched, and any fixed delay reports the previous page.
+It also skips the write entirely when the new title equals the old one. The module therefore
+waits for a mutation of the title element and falls back to a 2 second timeout, which only
+elapses in the equal-title case, where the document already holds the right value.
+
+Nothing is sent outside `import.meta.env.PROD` or without `VITE_GOOGLE_ANALYTICS_KEY`.
+
+### Invitations
+
+`invitations` is a **platform level** invitation, separate from the two that already
+existed (`team_invitations` from Jetstream and `campaign_invitations`). Any signed in user
+may hold up to `config('invitations.max_pending_per_user')` pending ones at a time, and
+sending is rate limited by the `invitations` limiter in `RouteServiceProvider`.
+
+**The table stores a hash of the token, never the token.** `CreateInvitation` returns the
+raw one exactly once, for the email, and it cannot be recovered afterwards. Lookups hash the
+incoming value, and resending revokes the row and issues a fresh one rather than reusing it,
+so a link that has already been shared stops working.
+
+The status is derived from the three timestamps rather than stored, so they cannot disagree,
+and revoked wins over accepted. Anything not pending is treated as absent when a link is
+opened, which keeps revoked, expired and already used links indistinguishable to a visitor.
+
+`AcceptInvitation::markAccepted()` re-reads the row `lockForUpdate` inside the transaction
+and re-checks it, so two near simultaneous acceptances of one link cannot both succeed no
+matter which caller forgets to check. It also owns the `Registered` event, fired through
+`DB::afterCommit` and only when the address is not already trusted, which is what keeps a
+provider sign in from sending a pointless verification mail.
+
+`profile.show` is **re-declared in `web.php` after Jetstream's own route** so
+`App\Http\Controllers\ProfileController` wins. It exists only to add the invitations to
+that page; putting them in `HandleInertiaRequests` would pay for the query everywhere.
+
+**Registration is still open.** Hiding it behind a flag is the next phase, deliberately not
+done in the same step so the platform is never closed without a way in.
+
 ### Social login
 
 Plain `laravel/socialite` with the three `socialiteproviders/*` extensions, registered in
@@ -115,6 +165,47 @@ still emits the old shape, and the failure is silent: the page and assets load, 
 stays empty, and nothing reaches the console because `createInertiaApp` rejects rather than
 throwing.
 
+### Game icons
+
+Seed data marks a game symbol as `:name_icon:`. `resources/js/icons.js` holds the whole map
+and `replaceIcons` swaps them, exposed as a global mixin method and used through `v-html`.
+The token pattern only captures `[a-z0-9_]`, so nothing from the data can reach the markup
+as anything but a name.
+
+It used to be a hand written chain of `replaceAll` inside `app.js`, which is why
+`:dragon_icon:` appeared twice and why **water, ice, thunder and dragon all carried
+`alt="Fire"`**, announcing the wrong element to a screen reader on the only page that
+renders any of this.
+
+**A token with no artwork falls back to a labelled badge, not the raw text.** The sentence
+around it usually already says the word ("the Axe :switch_axe_axe_icon:"), so the badge
+stands in for the symbol rather than repeating it, and the name goes in the tooltip.
+
+**Line breaks in seed text are `<br>`, never `\n`.** The files are single quoted PHP, where
+`\n` is a backslash and an n rather than a newline, and it reaches the database that way.
+`gunlance.php` was the one file that got this wrong.
+
+**Not every token ends in `_icon`.** The data also writes `:charged_blade_vial:`,
+`:kinsect_icon_1:` and `:deviation_icon_high:`, so a pattern anchored on that suffix walks
+past eleven of them. The match is `:([a-z0-9_]+):`.
+
+What actually reaches a page today is narrower than it looks. Of 47 distinct tokens in the
+data, **only 11 render**, all of them in armour skill descriptions, and all 11 have images.
+Fifteen sit in weapon type descriptions, which are stored but which no component displays.
+The other 19 are in the `difficulty`, `resistance` and `rewards` blocks of `monsters.php`, and
+`MonstersSeeder` reads only `name`, `category` and `expansion`, so they never reach a
+database at all.
+
+**Five armour skills have no description in either language** (Maximum Might, Agitator,
+Nergigante Hunger, Kushala Daora Flight, Handicraft) and each is attached to an armour, so
+the gap is on screen. `SeedDataTest` holds the list so a sixth fails rather than joining
+them quietly.
+
+`tests/Feature/Seeders/IconTokenTest.php` pins all of it: every token the data uses is known,
+every mapped icon has a file on disk, nothing is both drawn and pending, nothing is pending
+that the data no longer mentions, and no token is written without its leading colon, which
+had already happened once in `lance.php`.
+
 ### Styling
 
 Tailwind 4, configured **in CSS**. There is no `tailwind.config.js`: the theme lives in
@@ -134,10 +225,20 @@ apply unknown utility class". Five components rely on this: `GlobalSearch`, `For
 
 ### Linting
 
-ESLint 9 with flat config in `eslint.config.js`. `.eslintrc.cjs` and `.eslintignore` no
+ESLint 10 with flat config in `eslint.config.js`. `.eslintrc.cjs` and `.eslintignore` no
 longer exist and `--ext` is a no-op, the `files` patterns decide what is linted.
 
-ESLint 10 is blocked by `eslint-plugin-import@2.32`, which still peers `eslint: ... || ^9`.
+Import ordering comes from **`eslint-plugin-import-x`**, not `eslint-plugin-import`. The
+original still peers `eslint: ... || ^9` and has no release that accepts 10, so it pinned
+the whole toolchain. `import-x` is the maintained fork of it, accepts `^10`, and carries
+the same rules under an `import-x/` prefix, so `import/order` became `import-x/order`
+with no loss. Its two peers are optional and are not installed.
+
+`@eslint/js` has to be an explicit devDependency. ESLint 9 pulled it in transitively and
+the flat config imported it anyway; on 10 that resolves to `ERR_MODULE_NOT_FOUND`.
+
+**ESLint 10 needs Node `^22.13`**, above the `>= 20.19` floor the other packages set. The
+CI pins `node-version: '22'`, which resolves to the latest 22.x and satisfies it.
 
 ### Framework upgrade
 
@@ -193,7 +294,22 @@ from `vendor/tightenco/ziggy/dist/vue.m`, so the build fails with an unresolved 
 `Weapon`s (grouped by `WeaponType`, with a `parent_id` crafting tree and `WeaponAttack`s)
 and `Armor`s (with `ArmorSkill`s). Crafting requirements live in the `count_item_*` pivots.
 
-`Hunter::canCraftWeapon()` and `canCraftArmor()` hold the crafting rules. `Hunter::getUser()`
+A weapon is made through a **`WeaponRecipe`**, which carries the monster line it belongs to
+and what it costs. Most weapons have exactly one; `Twin Nails` and `Fire and Ice` in dual
+blades have two, because either Teostra or Kushala Daora parts will build them, at different
+prices. `weapons.branch` and `weapons.branch_id` are gone, that lives on the recipe now.
+
+The data writes this as a list of branches and a matching list of material sets, **paired by
+position**, and `SeedDataTest` refuses a weapon whose two lists disagree in length.
+
+`Hunter::craftableRecipes()` answers which recipes a hunter can afford rather than a bare
+yes, and `canCraftWeapon()` is that being non-empty. The player picks which parts to spend;
+a choice they cannot afford is refused rather than quietly swapped for one they can.
+
+**A line reachable from two monsters is listed under both**, so `create_weapon_tree()` can
+put the same line under more than one key.
+
+`Hunter::canCraftArmor()` holds the armour rule, which stays one recipe per armour. `Hunter::getUser()`
 resolves the owning user, which is how gamification events reach a `User`.
 
 ### Enums
@@ -209,6 +325,13 @@ Two separate mechanisms, do not confuse them:
 
 1. **UI strings**: `__()` in PHP, `$t()` in Vue, stored in `resources/lang/{en,es}.json`
    and mirrored into `resources/js/vue-i18n-locales.generated.js` by the generate script.
+   **Do not put a placeholder in a key a Vue file passes to `$t()`.** The generator rewrites
+   `:name` to `{name}` in the key as well as the value, so `$t(':name did a thing')` looks up
+   a key that no longer exists and the raw string is rendered. Lang files keep the `:name`
+   form because PHP's `__()` needs it. Compose the dynamic part in the template instead,
+   which is what every `$t()` call in the project does.
+   Run `composer generate-translations`, not `php artisan vue:translations` on its own: the
+   bare command writes to a path that does not exist and dies.
 2. **Model content** (monster names, item descriptions, and so on): JSON columns handled by
    `App\Models\Traits\HasTranslations`, which extends the Spatie trait. Its `toArray()`
    flattens translatable fields and translatable enum casts to the current locale before
@@ -220,28 +343,85 @@ Locale is resolved by `App\Http\Middleware\Localization`.
 
 ### Seeding
 
-Seed data lives in `config/seeders/` as plain PHP arrays (`monsters.php`, `armors.php`,
-`items.php`, `downtime-activities.php`, and one file per weapon type under
-`config/seeders/weapons/`). Seeder classes read from config and put images on the public
-disk. `LevelSeeder` creates the 50 level curve plus the achievement catalogue and is
+Seed data lives in **`database/seeders/data/`** as plain PHP arrays (`monsters.php`,
+`armors.php`, `items.php`, `downtime-activities.php`, and one file per weapon type under
+`weapons/`), read through `Database\Seeders\SeedData`. Seeder classes put images on the
+public disk. `LevelSeeder` creates the 50 level curve plus the achievement catalogue and is
 called first in `DatabaseSeeder`.
 
-### Gamification (level-up)
+**It used to live under `config/`**, which meant `config:cache` produced a 431 kB file that
+every production request loaded and unserialised to serve seven calls that only ever run
+from the console. The cache is 67 kB now. Do not move it back.
 
-- `User` uses `GiveExperience` and `HasAchievements`. `User::booted()` bootstraps a new
-  user with `addPoints(0)` and grants every achievement at its starting progress, and the
-  `deleting` hook cleans up experience, history and achievement pivots.
+**Every data file keys its entries by the English name**, with `'name'` holding the Spanish
+one. Weapons and items used to be lists of `['name' => ['en' => ..., 'es' => ...]]`; that was
+about 1100 lines of pure repetition and it let a name be duplicated inside a single file.
+Keeping the English name as the array key makes that impossible and matches what armours and
+monsters already did.
+
+**`php artisan db:seed` with no `--class` also runs `UserSeeder`, `CampaignSeeder` and
+`HunterSeeder`**, which create demo data with factories, into whatever database is
+configured. `HunterSeeder` will attach a made up hunter to a real campaign and repoint the
+membership at it. Against a database you care about, call the content seeders by name:
+`RolesSeeder`, `LevelSeeder`, `ItemsSeeder`, `MonstersSeeder`, `ArmorSkillsSeeder`,
+`ArmorsSeeder`, `DowntimeActivitiesSeeder`, `WeaponsSeeder`.
+
+**Renaming an entry creates a row rather than renaming one.** The seeders match on
+`name->en`, so the old row survives as an orphan and has to be deleted by hand.
+
+`tests/Feature/Seeders/SeedDataTest.php` walks roughly 1600 name references: weapon parents
+and materials, the monster a weapon or armour branches from, armour materials and skills,
+monster drops, plus uniqueness in both languages. Nothing else enforces them, and a typo
+otherwise surfaces as a seeder blowing up somewhere unhelpful, or worse, silently binding to
+the wrong row. Run it after editing any data file.
+
+Weapon and armour **attack names are deliberately not validated**: there are 321 distinct
+ones and 129 appear exactly once, so there is no canonical list to check against.
+
+### Crafting
+
+Achievement progress is counted from a **`crafts`** log, one row per act of crafting, not
+from the equipment a hunter holds. Crafting an upgrade detaches the weapon it was made from,
+so counting what is owned left the number flat however much a player crafted, and nothing
+covered that path. The migration backfills the log from what everyone already owns, so no
+account loses progress; it undercounts parents that were already replaced, but it never
+takes anything away.
+
+### Gamification
+
+**`cjmellor/level-up` was removed**, not upgraded. The app used seven of its methods, three
+of its models and two of its events, while twelve of its seventeen tables were dead schema
+that had to be migrated for the package to boot. The v3 line adds leagues, leaderboards and
+typed multiplier scopes, so the gap was widening rather than closing. What replaced it is
+about a hundred and fifty lines under `app/`, and four tables remain: `levels`,
+`experiences`, `achievements` and `achievement_user`.
+
+- `User` uses `App\Models\Traits\HasExperience` and `App\Models\Traits\HasAchievements`.
+  `User::booted()` bootstraps a new user with `addPoints(0)` and grants every achievement at
+  its starting progress; the `deleting` hook clears experience and the achievement pivots.
+- **The level someone holds is derived, never stored as a number.** `levels` records what
+  each level costs (`next_level_experience`), level one costs nothing and stores `null`, so
+  the current level is the dearest row a point total can afford. `addPoints()` recomputes it
+  and `levelUp()` fires one `UserLevelledUp` per level gained, which is what advances the
+  level achievements.
+- `nextLevelAt()` answers in points by default and as a percentage with its second argument.
+  Both return `0` for a user with no `experiences` row, which is the state of any account
+  created before gamification existed.
 - Custom achievement metadata (`type`, `type_count`, `has_progress`, `color`, `image`)
   is added by the local migration `..._create_achievements_table.php`, keyed by
   `App\Enum\AchievementType` (`level`, `monster`, `weapon`, `armor`).
-- Events and listeners: `UserEquipmentCrafted` (dispatched in `CampaignHunterController`
-  on craft), `UserMonsterHunted` (dispatched in `CampaignController` when a day is
-  completed) and the package's `UserLevelledUp`. All wired in `EventServiceProvider`.
+- Events: `UserEquipmentCrafted` (dispatched in `CampaignHunterController` on craft),
+  `UserMonsterHunted` (dispatched in `CampaignController` when a day is completed),
+  `UserLevelledUp` and `AchievementAwarded`, all now in `app/Events`. Their listeners live in
+  `app/Listeners` and are auto-discovered.
 - `User::setAchievementProgress()` writes absolute progress on the pivot and fires
   `AchievementAwarded` at 100.
 - Level, points and achievements are shared to every page through `HandleInertiaRequests`
-  (`$page.props.level`, `$page.props.user.achievements`) and rendered by
-  `resources/js/Pages/Profile/Level.vue`.
+  (`$page.props.level`, `$page.props['user.achievements']`, which reads
+  `achievementsWithProgress`) and rendered by `resources/js/Pages/Profile/Level.vue`.
+- Experience per monster now comes from `config/gamification.php`, not the package config.
+- `tests/Feature/Level/ExperienceTest.php` was written against the package and kept passing
+  against the replacement without a single assertion changing. Treat it as the contract.
 
 ## Conventions
 
@@ -306,36 +486,22 @@ controllers and listeners in the 90s.
 
 Verified against the code, not carried over from an earlier pass.
 
-- **Kushala Daora weapons are the only seed data missing.** `KUSHALA EXPANSION` is an empty
-  section comment in all 14 files under `config/seeders/weapons/`. Every other section, base
-  game through Ancient Forest, Wildspire Waste, Kulu-Ya-Ku, Teostra and Nergigante, is
-  filled. 250 weapons total. Grep for an empty section rather than counting entries.
-- **`Barroth Shredder` and `Jagras Hacker` each name two different weapon types.** Harmless
-  now that `WeaponsSeeder` scopes the parent lookup to `type_id`, but worth confirming it is
-  intentional rather than a copy and paste.
-- **Twelve level-up tables are dead schema**: the four `streak*` ones and the eight the
-  package's v2 migrations added (tiers, multipliers, challenges). Nothing in `app/` or
-  `resources/js/` reads or writes any of them. They ship with the package and have to be
-  migrated for it to boot.
-- **The Laravel application skeleton is still the pre-11 one.** `app/Http/Kernel.php`,
-  `app/Console/Kernel.php`, `app/Exceptions/Handler.php` and the nine providers work fine on
-  Laravel 13, but everything the framework documents now assumes `bootstrap/app.php`.
-  Adopting it is its own piece of work.
-- **ESLint stays on 9** and **`vue-gtag` on 2**, both on purpose. ESLint 10 needs
-  `eslint-plugin-import` dropped, which costs the `import/order` rule. vue-gtag 3 peers
-  `vue-router`, which was removed as unused.
-- **Achievement progress counts equipment owned, not craft events.** Upgrading a weapon
-  detaches its parent, so an upgrade replaces rather than adds. Making upgrades count needs
-  a craft log; there is no table for one.
-- Four merged branches remain locally: `feature/craft-armors`, `feature/craft-weapons`,
-  `feature/equip-armors`, `feature/equip-weapons`. Safe to delete.
+- Google Analytics no longer goes through a package, see "Analytics" above.
+- **Weapon and armour `expansion` reaches no database.** Every entry declares which box it
+  comes from and `SeedDataTest` checks it, but no seeder reads the key and no column exists.
+  Its home is `weapon_recipes`, beside `branch`, since the two dual blades pair an expansion
+  with each recipe.
+- **`MonstersSeeder` reads three of the seven keys a monster declares.** `setup`, `mechanics`,
+  `difficulty`, `resistance` and `rewards` are written and validated but never seeded, and
+  there are no tables for them. That is where the Kirin and Kushala rules live.
 - Sqlite is used for tests while production is MySQL, so `scopeSearchTranslate`, which
   relies on MySQL JSON functions, cannot be covered by the Feature suite.
 
 ### Suggested next step
 
-The Kushala Daora weapons are the last of the seed data, and adopting the Laravel 11+
-application skeleton is the last structural leftover. Neither blocks anything.
+The two gaps above are both the same shape: data that is written, validated and going
+nowhere. The expansion column is the smaller of the two and unlocks filtering the weapon
+tree by the boxes a group owns.
 
 Before deploying: **production has to be on PHP 8.5** (`require.php` is `^8.5`, so an older
 binary dies in `vendor/composer/platform_check.php`), and **the OAuth callback URLs

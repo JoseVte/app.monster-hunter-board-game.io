@@ -3,9 +3,9 @@
 namespace App\Listeners;
 
 use App\Models\User;
+use App\Models\Achievement;
 use App\Enum\AchievementType;
 use App\Events\UserMonsterHunted;
-use LevelUp\Experience\Models\Achievement;
 
 class UserMonsterHuntedListener
 {

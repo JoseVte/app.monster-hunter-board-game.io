@@ -37,27 +37,28 @@ if (! function_exists('create_weapon_tree')) {
         $latestWeaponModels = $weaponType->weapons()
             ->doesntHave('children')
             ->with([
-                'items',
+                'recipes.items',
                 'parent',
-                'parent.items',
+                'parent.recipes.items',
                 'parent.parent',
-                'parent.parent.items',
+                'parent.parent.recipes.items',
                 'parent.parent.parent',
-                'parent.parent.parent.items',
+                'parent.parent.parent.recipes.items',
                 'parent.parent.parent.parent',
-                'parent.parent.parent.parent.items',
+                'parent.parent.parent.parent.recipes.items',
             ])
             ->get();
 
         $latestWeapons = collect();
-        $latestWeaponModels->each(function (Weapon $weapon) use ($hunter, &$latestWeapons): void {
+        $latestWeaponModels->each(function (Weapon $leaf) use ($hunter, &$latestWeapons): void {
             $weapons = collect();
-            $branch = $weapon->branch;
+            $weapon = $leaf;
             $rarity = $weapon->rarity;
 
             do {
                 $weapon->equipped = $hunter->equippedWeapons->firstWhere('id', $weapon->id);
-                $weapon->can_craft = $hunter->canCraftWeapon($weapon);
+                $weapon->craftable_recipes = $hunter->craftableRecipes($weapon)->pluck('id');
+                $weapon->can_craft = $weapon->craftable_recipes->isNotEmpty();
 
                 while ($rarity > $weapon->rarity) {
                     $weapons->push([]);
@@ -68,7 +69,13 @@ if (! function_exists('create_weapon_tree')) {
                 $rarity--;
             } while ($weapon !== null);
 
-            $latestWeapons->put($branch, $weapons->reverse()->values());
+            $line = $weapons->reverse()->values();
+
+            // A line reachable from two monsters is listed under both, because a
+            // player coming down either tree has to be able to find it.
+            $leaf->recipes->pluck('branch')->filter()->unique()->each(
+                fn (string $branch) => $latestWeapons->put($branch, $line)
+            );
         });
 
         return $latestWeapons;

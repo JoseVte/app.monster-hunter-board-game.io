@@ -30,7 +30,7 @@ enum MonsterDifficulty implements TranslatableEnumContract
 
     public function experience(): int
     {
-        $baseExp = config('level-up.experience.monster');
+        $baseExp = config('gamification.monster_experience');
 
         return match ($this) {
             self::EASY, self::ARENA_EASY => $baseExp,

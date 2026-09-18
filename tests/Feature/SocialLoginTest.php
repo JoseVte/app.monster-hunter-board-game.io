@@ -4,6 +4,8 @@ use Mockery as m;
 use App\Models\User;
 use App\Models\Provider;
 use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Auth\Notifications\VerifyEmail;
 use Laravel\Fortify\Features as FortifyFeatures;
 use Laravel\Socialite\Two\User as SocialiteUser;
 
@@ -139,4 +141,34 @@ test('unlinking requires authentication', function (): void {
     $response = $this->delete(route('profile.social.unlink', 'google'));
 
     $response->assertRedirect(route('login'));
+});
+
+test('signing in through a provider needs no verification email', function (): void {
+    if (! FortifyFeatures::enabled(FortifyFeatures::registration())) {
+        $this->markTestSkipped('Registration support is not enabled.');
+    }
+
+    Notification::fake();
+
+    fakeProviderUser('google');
+
+    $this->get(route('auth.social.callback', 'google'));
+
+    $user = User::where('email', 'janedoe@example.com')->firstOrFail();
+
+    expect($user->hasVerifiedEmail())->toBeTrue();
+    Notification::assertNotSentTo($user, VerifyEmail::class);
+});
+
+test('a provider cannot create an account while registration is closed', function (): void {
+    if (FortifyFeatures::enabled(FortifyFeatures::registration())) {
+        $this->markTestSkipped('Registration is open, so a provider may create accounts.');
+    }
+
+    fakeProviderUser('google');
+
+    $this->get(route('auth.social.callback', 'google'));
+
+    expect(User::where('email', 'janedoe@example.com')->exists())->toBeFalse();
+    $this->assertGuest();
 });

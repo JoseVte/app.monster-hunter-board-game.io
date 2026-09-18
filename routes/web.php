@@ -11,13 +11,16 @@ use App\Enum\MonsterExpansion;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SearchController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\ProfileLevelController;
 use App\Http\Controllers\CampaignHunterController;
 use App\Http\Controllers\CampaignMemberController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\CampaignHunterItemController;
 use App\Http\Controllers\CampaignInvitationController;
+use App\Http\Controllers\Auth\InvitationAcceptController;
 
 /*
 |--------------------------------------------------------------------------
@@ -106,10 +109,6 @@ Route::middleware([
     Route::delete('campaigns/{campaign}/members/{user}', [CampaignMemberController::class, 'destroy'])
         ->name('campaign-members.destroy');
 
-    Route::get('/campaign-invitations/{invitation}', [CampaignInvitationController::class, 'accept'])
-        ->middleware(['signed'])
-        ->name('campaign-invitations.accept');
-
     Route::delete('/campaign-invitations/{invitation}', [CampaignInvitationController::class, 'destroy'])
         ->name('campaign-invitations.destroy');
 
@@ -142,6 +141,17 @@ Route::get('auth/{provider}/callback', [SocialAuthController::class, 'callback']
     ->name('auth.social.callback');
 
 Route::middleware(['auth:sanctum', 'verified'])->group(function (): void {
+    Route::post('invitations', [InvitationController::class, 'store'])
+        ->middleware('throttle:invitations')
+        ->name('invitations.store');
+    Route::put('invitations/{invitation}', [InvitationController::class, 'update'])
+        ->middleware('throttle:invitations')
+        ->whereNumber('invitation')
+        ->name('invitations.resend');
+    Route::delete('invitations/{invitation}', [InvitationController::class, 'destroy'])
+        ->whereNumber('invitation')
+        ->name('invitations.destroy');
+
     Route::get('profile/social/{provider}', [SocialAuthController::class, 'redirectFromProfile'])
         ->whereIn('provider', ['google', 'github', 'discord'])
         ->name('profile.social.redirect');
@@ -149,3 +159,22 @@ Route::middleware(['auth:sanctum', 'verified'])->group(function (): void {
         ->whereIn('provider', ['google', 'github', 'discord'])
         ->name('profile.social.unlink');
 });
+
+// Declared after Jetstream's own route so this one wins: it renders the same
+// page with the invitations the profile needs.
+Route::get('user/profile', [ProfileController::class, 'show'])
+    ->middleware(['auth:sanctum', 'verified'])
+    ->name('profile.show');
+
+// Accepting sits outside the auth group on purpose: the invitation may be the
+// first the person has ever heard of the platform, so a login wall would be a
+// dead end. The signature is what proves the link came from us.
+Route::get('/campaign-invitations/{invitation}', [CampaignInvitationController::class, 'accept'])
+    ->middleware(['signed'])
+    ->name('campaign-invitations.accept');
+Route::post('/campaign-invitations/{invitation}', [CampaignInvitationController::class, 'acceptAsNewUser'])
+    ->middleware(['signed'])
+    ->name('campaign-invitations.register');
+
+Route::get('invite/{token}', [InvitationAcceptController::class, 'show'])->name('invitations.show');
+Route::post('invite/{token}', [InvitationAcceptController::class, 'store'])->name('invitations.accept');

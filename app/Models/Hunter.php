@@ -5,6 +5,7 @@ namespace App\Models;
 use App\Enum\ItemType;
 use App\Models\Pivot\HunterArmor;
 use App\Models\Pivot\HunterWeapon;
+use Illuminate\Support\Collection;
 use App\Models\Pivot\CountItemHunter;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Pivot\DayDowntimeActivityHunter;
@@ -106,19 +107,38 @@ class Hunter extends Model
 
     public function canCraftWeapon(Weapon $weapon): bool
     {
+        return $this->craftableRecipes($weapon)->isNotEmpty();
+    }
+
+    /**
+     * A weapon with more than one recipe can be built from whichever the hunter
+     * can afford, so this answers which of them those are rather than a bare yes.
+     *
+     * @return Collection<int, WeaponRecipe>
+     */
+    public function craftableRecipes(Weapon $weapon): Collection
+    {
         if ($weapon->is_default) {
-            return false;
+            return collect();
         }
 
         if ($weapon->parent_id && ! $this->weapons->firstWhere('id', $weapon->parent_id)) {
-            return false;
+            return collect();
         }
 
-        return $weapon->items->filter(function (Item $item) {
-            $hunterItem = $this->items->firstWhere('id', $item->id);
+        return $weapon->recipes->filter(fn (WeaponRecipe $recipe): bool => $this->canAfford($recipe->items))->values();
+    }
 
-            return empty($hunterItem) || $item->pivot->number > $hunterItem->pivot->number;
-        })->count() === 0;
+    /**
+     * @param  Collection<int, Item>  $items
+     */
+    private function canAfford(Collection $items): bool
+    {
+        return $items->every(function (Item $item): bool {
+            $owned = $this->items->firstWhere('id', $item->id);
+
+            return $owned && $owned->pivot->number >= $item->pivot->number;
+        });
     }
 
     public function canCraftArmor(Armor $armor): bool
@@ -127,10 +147,6 @@ class Hunter extends Model
             return false;
         }
 
-        return $armor->items->filter(function (Item $item) {
-            $hunterItem = $this->items->firstWhere('id', $item->id);
-
-            return empty($hunterItem) || $item->pivot->number > $hunterItem->pivot->number;
-        })->count() === 0;
+        return $this->canAfford($armor->items);
     }
 }

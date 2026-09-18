@@ -10,7 +10,6 @@
     "require": {
         "php": "^8.5",
         "ajcastro/eager-load-pivot-relations": "^0.3.0",
-        "cjmellor/level-up": "^2.0",
         "guzzlehttp/guzzle": "^7.2",
         "http-interop/http-factory-guzzle": "^1.2",
         "inertiajs/inertia-laravel": "^3.0",

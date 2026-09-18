@@ -13,7 +13,7 @@ class ArmorSkillsSeeder extends Seeder
      */
     public function run(): void
     {
-        foreach (config('seeders.armors.skills') as $skill) {
+        foreach (SeedData::get('armors.skills') as $skill) {
             $armorSkill = ArmorSkill::updateOrCreate([
                 'name->en' => $skill['name']['en'],
             ], Arr::only($skill, ['name', 'description']));

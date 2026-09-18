@@ -13,6 +13,7 @@ use App\Models\Hunter;
 use App\Models\Weapon;
 use App\Models\Campaign;
 use App\Models\WeaponType;
+use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use App\Http\Requests\EquipRequest;
@@ -103,16 +104,31 @@ class CampaignHunterController extends Controller
         return $this->show($campaign, $hunter, 'weapons', $weaponType);
     }
 
-    public function craftWeapon(Campaign $campaign, Hunter $hunter, WeaponType $weaponType, Weapon $weapon): JsonResponse|RedirectResponse
+    public function craftWeapon(Request $request, Campaign $campaign, Hunter $hunter, WeaponType $weaponType, Weapon $weapon): JsonResponse|RedirectResponse
     {
-        if (! $hunter->canCraftWeapon($weapon)) {
+        $affordable = $hunter->craftableRecipes($weapon);
+
+        if ($affordable->isEmpty()) {
             return response()->json([
                 'error' => __('The weapon cannot be crafted.'),
             ], 400);
         }
 
-        DB::transaction(function () use ($hunter, $weapon): void {
-            $weapon->items->each(function (Item $item) use ($hunter): void {
+        // A weapon buildable from two monsters lets the hunter say which parts to
+        // spend. Without a choice the only recipe is the one they can afford, and
+        // a choice they cannot afford is refused rather than quietly swapped.
+        $recipe = $request->filled('recipe')
+            ? $affordable->firstWhere('id', (int) $request->input('recipe'))
+            : $affordable->first();
+
+        if (! $recipe) {
+            return response()->json([
+                'error' => __('The weapon cannot be crafted with those materials.'),
+            ], 400);
+        }
+
+        DB::transaction(function () use ($hunter, $weapon, $recipe): void {
+            $recipe->items->each(function (Item $item) use ($hunter): void {
                 $hunterItem = $hunter->items()->findOrFail($item->id);
                 $hunterItem->pivot->decrement('number', $item->pivot->number);
             });

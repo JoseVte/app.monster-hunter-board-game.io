@@ -1,7 +1,7 @@
 <?php
 
 use App\Models\User;
-use LevelUp\Experience\Models\Achievement;
+use App\Models\Achievement;
 
 beforeEach(function (): void {
     $this->actingAs($this->user = User::factory()->withPersonalTeam()->create());
