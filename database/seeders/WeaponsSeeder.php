@@ -80,10 +80,6 @@ class WeaponsSeeder extends Seeder
                         $parent = Weapon::where('name->en', $weaponDetails['parent'])
                             ->where('type_id', $weaponType->id);
 
-                        if ($parent->doesntExist()) {
-                            logger('Weapon parent: '.$weaponDetails['parent']);
-                        }
-
                         $weapon->parent_id = $parent->firstOrFail()->id;
                         $weapon->save();
                     }
@@ -94,7 +90,6 @@ class WeaponsSeeder extends Seeder
                         if (Arr::get($weaponDetails, 'attacks.remove')) {
                             foreach ($weaponDetails['attacks']['remove'] as $attackName => $count) {
                                 if (WeaponAttack::where('name->en', $attackName)->doesntExist()) {
-                                    logger('Attack name: '.$attackName);
                                     WeaponAttack::create(['name' => $attackName]);
                                 }
 
@@ -105,7 +100,6 @@ class WeaponsSeeder extends Seeder
                         if (Arr::get($weaponDetails, 'attacks.add')) {
                             foreach ($weaponDetails['attacks']['add'] as $attackName => $count) {
                                 if (WeaponAttack::where('name->en', $attackName)->doesntExist()) {
-                                    logger('Attack name: '.$attackName);
                                     WeaponAttack::create(['name' => $attackName]);
                                 }
 
@@ -150,8 +144,6 @@ class WeaponsSeeder extends Seeder
                 $item = Item::where('name->en', $itemName)->first();
 
                 if (! $item) {
-                    logger('Item: '.$itemName);
-
                     continue;
                 }
 

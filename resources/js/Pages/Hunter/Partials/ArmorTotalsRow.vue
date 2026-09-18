@@ -1,7 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 import Resistance from '@/Components/Icons/Resistance.vue';
-import defenseIcon from '~/icons/defense.png';
+import defenseIcon from '~/icons/defense-icon.png';
 import { DEFENSE_ELEMENTS, totalDefense } from '@/armorDefense';
 
 // Defence and the five resistances, added up from what is worn. The tab's panel

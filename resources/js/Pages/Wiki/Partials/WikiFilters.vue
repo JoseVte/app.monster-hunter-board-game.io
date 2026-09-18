@@ -34,12 +34,14 @@ const {t} = useI18n();
 const query = ref(props.filters.q ?? '');
 const rarity = ref(props.filters.rarity ?? '');
 const expansion = ref(props.filters.expansion ?? '');
+const branch = ref(props.filters.branch ?? '');
 
 const send = () => {
     router.get(route(props.routeName, props.routeParams), {
         q: query.value || undefined,
         rarity: rarity.value || undefined,
         expansion: expansion.value || undefined,
+        branch: branch.value || undefined,
     }, {
         preserveState: true,
         preserveScroll: true,
@@ -55,15 +57,16 @@ const send = () => {
 const sendSoon = _.debounce(send, 350);
 
 watch(query, sendSoon);
-watch([rarity, expansion], send);
+watch([rarity, expansion, branch], send);
 
 const clear = () => {
     query.value = '';
     rarity.value = '';
     expansion.value = '';
+    branch.value = '';
 };
 
-const anyFilter = () => query.value || rarity.value || expansion.value;
+const anyFilter = () => query.value || rarity.value || expansion.value || branch.value;
 
 // SelectInput reads its options as value to label, and its placeholder option is
 // disabled, so Any is a real option or a filter could never be cleared from the
@@ -77,11 +80,16 @@ const expansionOptions = computed(() => ({
     '': t('Any'),
     ...Object.fromEntries(props.options.expansions.map((option) => [option.key, option.label])),
 }));
+
+const branchOptions = computed(() => ({
+    '': t('Any'),
+    ...Object.fromEntries(props.options.branches.map((option) => [option.key, option.label])),
+}));
 </script>
 
 <template>
     <div class="mh-frame bg-white p-4 dark:bg-gray-800">
-        <div class="grid grid-cols-1 gap-4 sm:grid-cols-[2fr_1fr_1.5fr_auto] sm:items-end">
+        <div class="grid grid-cols-1 gap-4 sm:grid-cols-[1.6fr_0.7fr_1fr_1fr_auto]">
             <div>
                 <InputLabel
                     for="wiki-q"
@@ -111,6 +119,19 @@ const expansionOptions = computed(() => ({
 
             <div>
                 <InputLabel
+                    for="wiki-branch"
+                    :value="$t('Monster')"
+                />
+                <SelectInput
+                    id="wiki-branch"
+                    v-model="branch"
+                    class="mt-1 block w-full"
+                    :options="branchOptions"
+                />
+            </div>
+
+            <div>
+                <InputLabel
                     for="wiki-expansion"
                     :value="$t('Expansion')"
                 />
@@ -122,13 +143,22 @@ const expansionOptions = computed(() => ({
                 />
             </div>
 
-            <SecondaryButton
-                class="justify-center"
-                :disabled="!anyFilter()"
-                @click="clear"
-            >
-                {{ $t('Clear') }}
-            </SecondaryButton>
+            <!-- The invisible label matches the real labels' height so the
+                 button's own box, stretched to fill what is left, comes out
+                 exactly as tall as the fields beside it. -->
+            <div class="flex flex-col">
+                <InputLabel
+                    value="Clear"
+                    class="invisible"
+                />
+                <SecondaryButton
+                    class="mt-1 w-full flex-1 justify-center"
+                    :disabled="!anyFilter()"
+                    @click="clear"
+                >
+                    {{ $t('Clear') }}
+                </SecondaryButton>
+            </div>
         </div>
     </div>
 </template>

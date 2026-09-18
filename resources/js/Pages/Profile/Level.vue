@@ -47,7 +47,7 @@ watch(showOnlyObtained, (showOnlyObtainedValue) => storage.setStorageSync('show-
             <div class="max-w-7xl mx-auto py-6 px-4 sm:py-10 sm:px-6 lg:px-8">
                 <div class="mh-frame flex items-center gap-4 bg-white px-4 py-5 sm:p-6 dark:bg-gray-800">
                     <div
-                        class="relative flex items-center justify-center bg-gray-200 dark:bg-gray-600 h-[80px] min-w-[80px] max-w-[80px] rounded-full font-bold"
+                        class="relative flex items-center justify-center bg-gray-200 dark:bg-gray-600 h-20 min-w-20 max-w-20 rounded-full font-bold"
                         :class="levelColor()"
                     >
                         <svg
@@ -58,7 +58,7 @@ watch(showOnlyObtained, (showOnlyObtainedValue) => storage.setStorageSync('show-
                             class="min-h-16 min-w-16 max-h-16 max-w-16 m-auto"
                             fill="currentColor"
                         ><g><path d="m48.87 16.18h-3.35v-4.18a.75.75 0 0 0 -.75-.75h-25.54a.75.75 0 0 0 -.75.75v4.18h-3.35a3.88 3.88 0 0 0 -3.88 3.88v4.71a8 8 0 0 0 7.34 8 13.53 13.53 0 0 0 12.66 11.74v6.74h-8.64a.75.75 0 0 0 0 1.5h18.78a.75.75 0 0 0 0-1.5h-8.64v-6.74a13.53 13.53 0 0 0 12.66-11.79 8 8 0 0 0 7.34-7.95v-4.71a3.88 3.88 0 0 0 -3.88-3.88zm-30.39 15a6.5 6.5 0 0 1 -5.73-6.44v-4.68a2.39 2.39 0 0 1 2.38-2.38h3.35zm13.52 11.87a12 12 0 0 1 -12-12.05v-18.25h24v18.25a12 12 0 0 1 -12 12.05zm19.25-18.28a6.5 6.5 0 0 1 -5.73 6.44v-13.53h3.35a2.39 2.39 0 0 1 2.38 2.38z" /><path d="m32 60.75a28.75 28.75 0 1 1 28.75-28.75 28.79 28.79 0 0 1 -28.75 28.75zm0-56a27.25 27.25 0 1 0 27.25 27.25 27.28 27.28 0 0 0 -27.25-27.25z" /></g></svg>
-                        <span class="absolute top-[23px] font-montserrat text-center inset-x-0">{{ $page.props.level.current }}</span>
+                        <span class="absolute top-5.75 font-montserrat text-center inset-x-0">{{ $page.props.level.current }}</span>
                     </div>
                     <div class="w-full">
                         <div class="w-full flex justify-between text-xs text-gray-700 dark:text-gray-300">

@@ -39,8 +39,8 @@ const localeImg = computed(() => {
                         width="150"
                         height="150"
                         :src="localeImg"
-                        alt="Locale flag"
-                        title="Locale flag"
+                        :alt="$t('Locale flag')"
+                        :title="$t('Locale flag')"
                     >
 
                     <svg
@@ -72,8 +72,8 @@ const localeImg = computed(() => {
                             width="150"
                             height="150"
                             :src="enImg"
-                            alt="Locale en flag"
-                            title="Locale en flag"
+                            :alt="$t('Locale en flag')"
+                            :title="$t('Locale en flag')"
                         >
 
                         <div class="hidden sm:block">
@@ -105,8 +105,8 @@ const localeImg = computed(() => {
                             width="150"
                             height="150"
                             :src="esImg"
-                            alt="Locale es flag"
-                            title="Locale es flag"
+                            :alt="$t('Locale es flag')"
+                            :title="$t('Locale es flag')"
                         >
 
                         <div class="hidden sm:block">

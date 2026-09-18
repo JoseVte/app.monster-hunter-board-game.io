@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use App\Models\Armor;
 use Inertia\Response;
 use App\Models\Hunter;
+use App\Models\Monster;
 use Illuminate\Http\Request;
 use App\Enum\MonsterExpansion;
 use Illuminate\Support\Collection;
@@ -26,6 +27,7 @@ class ArmorController extends Controller
             ->whereNameLike($filters['q'])
             ->when($filters['rarity'], fn (Builder $q, int $rarity) => $q->where('rarity', $rarity))
             ->when($filters['expansion'], fn (Builder $q, string $expansion) => $q->where('expansion', $expansion))
+            ->when($filters['branch'], fn (Builder $q, string $branch) => $q->where('branch', $branch))
             ->get()
             ->groupBy('branch')
             ->map(fn (Collection $pieces, string $branch): array => [
@@ -40,6 +42,9 @@ class ArmorController extends Controller
             'options' => [
                 'rarities' => Armor::query()->distinct()->orderBy('rarity')->pluck('rarity')->all(),
                 'expansions' => MonsterExpansion::asKeyLabelObjectSelectable(),
+                'branches' => $this->branchOptions(
+                    Armor::query()->whereNotNull('branch')->distinct()->pluck('branch'),
+                ),
             ],
         ]);
     }
@@ -85,7 +90,7 @@ class ArmorController extends Controller
     }
 
     /**
-     * @return array{q: ?string, rarity: ?int, expansion: ?string}
+     * @return array{q: ?string, rarity: ?int, expansion: ?string, branch: ?string}
      */
     private function filters(Request $request): array
     {
@@ -93,6 +98,31 @@ class ArmorController extends Controller
             'q' => $request->string('q')->trim()->value() ?: null,
             'rarity' => $request->integer('rarity') ?: null,
             'expansion' => $request->string('expansion')->value() ?: null,
+            'branch' => $request->string('branch')->value() ?: null,
         ];
+    }
+
+    /**
+     * `branch` is a plain, non-translatable string, frozen at seed time to the
+     * monster's English name (or a raw material key such as `mineral`, for the
+     * handful of pieces that are not built from a monster). Its matching
+     * `Monster`, if there is one, is what carries a display label for the
+     * reader's own locale.
+     *
+     * @param  Collection<int, string>  $branches
+     * @return list<array{key: string, label: string}>
+     */
+    private function branchOptions(Collection $branches): array
+    {
+        $monsters = Monster::all()->keyBy(fn (Monster $monster): string => $monster->getTranslation('name', 'en'));
+
+        return $branches
+            ->map(fn (string $branch): array => [
+                'key' => $branch,
+                'label' => $monsters->get($branch)?->name ?? $branch,
+            ])
+            ->sortBy('label')
+            ->values()
+            ->all();
     }
 }

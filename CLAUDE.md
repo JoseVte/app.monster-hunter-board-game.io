@@ -240,8 +240,22 @@ suite runs on sqlite, which has no `FIELD()` function.
 The former is the emblem printed on the physical card (all 15 sourced from Kiranico, in
 `resources/images/monsters/`), seeded the same way `WeaponType.image_path` already was, and
 falls back to a generated initials avatar when the file is absent. The latter, which body
-part (`head`/`back`/`claw`, ...) a break row refers to, has no artwork at all and renders as
-a humanized text label plus a Unicode arrow instead; see "Known gaps" below.
+part (`head`/`back`/`claw`, ...) a break row refers to, now has one: seven original pictogram
+icons (`Head`/`Back`/`Claw`/`Tail`/`Leg`/`Wing`/`Paw`Icon.vue`), generic anatomical shapes
+rather than any specific illustration, used on `Show.vue`'s and `Card.vue`'s body-part rows
+in place of the plain text label the humanized name used to be alone.
+
+**`Wiki/Monster/Card.vue` is a third, separate thing again: a data-only recreation of the
+physical card's layout**, on its own route (`wiki.monster.card`, linked from `Show.vue`),
+not a modal: header, difficulty tier selector, star/health, resistances, the active tier's
+ability and body parts, on a parchment frame distinct from the app's usual panel. It shows
+`icon_url` (the same small emblem as everywhere else) a little larger than its usual
+24-40px badge size, but deliberately not blown up further: that emblem is also cropped from
+the physical card, and a hero-image-sized reproduction of it would trade one version of that
+problem for another. An earlier pass tried to source a full-body portrait per monster from
+physiology-card reference photos; that was reverted; a radial fade could hide the source
+photos' own corner UI boxes well enough, but the illustration itself was still too close a
+reproduction of Steamforged's board-game art even faded, so the card stays data-only.
 
 ### Weapon and monster icons
 
@@ -544,35 +558,28 @@ controllers and listeners in the 90s.
 Verified against the code, not carried over from an earlier pass.
 
 - Google Analytics no longer goes through a package, see "Analytics" above.
-- **`Wiki/Weapon/Detail.vue` loads `attacksToAdd`/`attacksToRemove` but renders neither.**
-  `WeaponController::detail()` eager-loads both relations; the page shows defense, rarity,
-  the damage/combo counts and the recipe/upgrade tree, but nothing about which attack cards
-  an upgrade adds or removes, and nothing about elemental or status attacks either.
-- **Armour resistance icons are drawn but unwired.** The five `*_resistance_icon` pentagons
-  in `resources/js/icons.js` exist and only `Wiki/Armor` would use them. `Wiki/Armor/Index.vue`
-  and every page's breadcrumb have since had their own, narrower phone fixes (a collapsible
-  monster list and a collapsed breadcrumb trail below `sm:`), but that is not the broader
-  mobile responsive pass `tests/Browser/ShotsTest.php` tracks (`dashboard`, `campaigns`,
-  `items`, `weapons-types`, `weapons-tree`, `armors`, `profile`, `level`, none of them Wiki
-  Armor) — wiring the icons in is still open on its own.
-- **A monster's body-part icon and direction have no artwork.** `Show.vue` renders a
-  humanized label (`Head`, `Claw`, ...) and a Unicode arrow instead of the icon shown on the
-  physical card, and a full "paper card" recreation view (parchment layout, per-monster
-  portrait) is designed but not built. Both are blocked on the same thing: a pasted chat
-  image has no file path to crop from, so this needs the reference art saved to disk first.
+- **`Wiki/Weapon/Detail.vue` renders which attack cards an upgrade adds and removes, but not
+  elemental or status attacks.** The seed data has no field for either yet, so this is a
+  schema and data-entry gap, not a template fix: nothing to load until that is added.
 - Sqlite is used for tests while production is MySQL, so `scopeSearchTranslate`, which
   relies on MySQL JSON functions, cannot be covered by the Feature suite.
 
 ### Suggested next step
 
 No single gap dominates the way the `expansion` column used to (that one is done: it lives
-on `weapon_recipes` and `armors`, seeded, filterable from the wiki). What is left is a set of
-independent, smaller items, in roughly the order they unblock the most:
+on `weapon_recipes` and `armors`, seeded, filterable from the wiki, and the wiki's Monster,
+Weapon and Armor detail pages all cross-link their monster, expansion, rarity and material
+items to the matching filtered list or item page). Armour resistance icons are wired in too
+(`Resistance.vue`, used by `ArmorDefenseRow.vue` on both `Wiki/Armor/Index.vue` and
+`Wiki/Armor/Detail.vue`), every item has its own icon (`Item::icon_path`/`icon_url`,
+the same pattern as `Monster` and `WeaponType`), a monster's body-part rows have their own
+original icon per part (see "Monster wiki page" above), and the monster's own "paper card"
+recreation view is built (`Wiki/Monster/Card.vue`, linked from `Show.vue`), data-only rather
+than carrying a portrait image. What is left is a set of independent, smaller items:
 
-1. `Wiki/Weapon/Detail.vue`'s attack cards and element/status display, since the data is
-   already loaded and only the template is missing.
-2. Monster body-part icons and the paper-card view, once reference art is on disk.
-3. Armour resistance icons. No longer blocked on anything specific, just not done yet.
+1. `Wiki/Weapon/Detail.vue`'s elemental/status attack display, which needs new schema
+   (nothing in the seed data carries it yet) and per-weapon data entry, not just a
+   template change.
 
 Before deploying: **production has to be on PHP 8.5** (`require.php` is `^8.5`, so an older
 binary dies in `vendor/composer/platform_check.php`), and **the OAuth callback URLs

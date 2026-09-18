@@ -38,7 +38,7 @@ const submit = () => {
 </script>
 
 <template>
-    <Head :title="('Two-factor Confirmation')" />
+    <Head :title="$t('Two-factor Confirmation')" />
 
     <AuthenticationCard>
         <template #logo>

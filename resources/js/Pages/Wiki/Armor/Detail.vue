@@ -1,5 +1,6 @@
 <script setup>
 import {h} from "vue";
+import {Link} from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Breadcrumb from "@/Components/Breadcrumb.vue";
 import ArmorsIcon from "@/Components/Icons/ArmorsIcon.vue";
@@ -54,10 +55,13 @@ const currentIcon = () => h(icon, {class: getRarityColor(props.armor.rarity)});
                             />
                         </span>
                         <span class="mh-card-name flex-1 text-xl">{{ armor.name }}</span>
-                        <span
+                        <Link
                             class="mh-value"
                             :class="getRarityColor(armor.rarity)"
-                        >{{ $t('Rarity') }} {{ armor.rarity }}</span>
+                            :href="route('wiki.armor.index', { rarity: armor.rarity })"
+                        >
+                            {{ $t('Rarity') }} {{ armor.rarity }}
+                        </Link>
                     </div>
 
                     <div class="mh-rule" />
@@ -98,7 +102,12 @@ const currentIcon = () => h(icon, {class: getRarityColor(props.armor.rarity)});
                                 :key="item.id"
                                 class="flex items-center justify-between gap-3"
                             >
-                                <span class="text-gray-900 dark:text-parchment">{{ item.name }}</span>
+                                <Link
+                                    :href="route('wiki.item.show', [item.id])"
+                                    class="text-gray-900 hover:underline dark:text-parchment"
+                                >
+                                    {{ item.name }}
+                                </Link>
                                 <span class="mh-value">{{ item.pivot.number }}</span>
                             </li>
                         </ul>
@@ -112,8 +121,13 @@ const currentIcon = () => h(icon, {class: getRarityColor(props.armor.rarity)});
                             class="flex gap-2"
                         >
                             <dt>{{ $t('Monster') }}</dt>
-                            <dd class="text-gray-900 dark:text-parchment">
-                                {{ armor.branch }}
+                            <dd>
+                                <Link
+                                    class="text-gray-900 hover:underline dark:text-parchment"
+                                    :href="route('wiki.armor.index', { branch: armor.branch })"
+                                >
+                                    {{ armor.branch }}
+                                </Link>
                             </dd>
                         </div>
                         <div
@@ -121,8 +135,13 @@ const currentIcon = () => h(icon, {class: getRarityColor(props.armor.rarity)});
                             class="flex gap-2"
                         >
                             <dt>{{ $t('Expansion') }}</dt>
-                            <dd class="text-gray-900 dark:text-parchment">
-                                {{ armor.expansion }}
+                            <dd>
+                                <Link
+                                    class="text-gray-900 hover:underline dark:text-parchment"
+                                    :href="route('wiki.armor.index', { expansion: armor.expansion_value })"
+                                >
+                                    {{ armor.expansion }}
+                                </Link>
                             </dd>
                         </div>
                     </dl>

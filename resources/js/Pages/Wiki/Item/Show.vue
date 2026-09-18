@@ -1,16 +1,26 @@
 <script setup>
+import {h} from "vue";
 import {Link} from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Breadcrumb from "@/Components/Breadcrumb.vue";
 import ItemsIcon from "@/Components/Icons/ItemsIcon.vue";
-import MonstersIcon from "@/Components/Icons/MonstersIcon.vue";
-import WeaponsIcon from "@/Components/Icons/WeaponsIcon.vue";
 import ArmorsIcon from "@/Components/Icons/ArmorsIcon.vue";
+import HelmetIcon from "@/Components/Icons/HelmetIcon.vue";
+import LegArmor from "@/Components/Icons/LegArmor.vue";
 import Card from "@/Components/Card.vue";
+import WeaponTypeIcon from "@/Components/WeaponTypeIcon.vue";
+import {getRarityColor} from "@/rarity";
 
-defineProps({
+const props = defineProps({
     item: Object,
 });
+
+// Breadcrumb's icon slot wants a component, not a URL, so the item's own icon
+// is wrapped in one rather than falling back to the generic items glyph.
+const currentIcon = () => h('img', {src: props.item.icon_url, alt: props.item.name});
+
+// The same three slots the armour card itself keys its icon by.
+const ARMOR_ICONS = {head: HelmetIcon, body: ArmorsIcon, leg: LegArmor};
 </script>
 
 <template>
@@ -20,9 +30,9 @@ defineProps({
                 :current-title="item.name"
                 :breadcrumbs="[
                     { url: route('wiki.index'), title: $t('Wiki') },
-                    { url: route('wiki.item.index'), title: $t('Items') },
+                    { url: route('wiki.item.index'), title: $t('Items'), icon: ItemsIcon },
                 ]"
-                :icon="ItemsIcon"
+                :icon="currentIcon"
             />
         </template>
 
@@ -30,8 +40,12 @@ defineProps({
             <div class="mx-auto max-w-2xl px-4 sm:px-6 lg:px-8">
                 <Card class="gap-3 p-5">
                     <div class="flex items-center gap-3">
-                        <span class="flex h-10 w-10 min-h-10 min-w-10 items-center justify-center rounded-full bg-gray-300 dark:bg-gray-900">
-                            <ItemsIcon class="h-5 w-5 text-gray-600 dark:text-gray-400" />
+                        <span class="flex h-10 w-10 min-h-10 min-w-10 items-center justify-center overflow-hidden rounded-full bg-gray-300 dark:bg-gray-900">
+                            <img
+                                :src="item.icon_url"
+                                :alt="item.name"
+                                class="h-8 w-8 object-contain"
+                            >
                         </span>
                         <span class="mh-card-name flex-1 text-xl">{{ item.name }}</span>
                         <span class="mh-value">{{ item.type }}</span>
@@ -51,7 +65,11 @@ defineProps({
                                 :key="monster.id"
                                 class="flex items-center gap-2"
                             >
-                                <MonstersIcon class="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                                <img
+                                    :src="monster.icon_url"
+                                    :alt="monster.name"
+                                    class="h-4 w-4 rounded-full object-contain"
+                                >
                                 <Link
                                     :href="route('wiki.monster.show', [monster.id])"
                                     class="text-gray-900 underline dark:text-parchment"
@@ -81,7 +99,11 @@ defineProps({
                                 :key="weapon.id"
                                 class="flex items-center gap-2"
                             >
-                                <WeaponsIcon class="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                                <WeaponTypeIcon
+                                    :weapon-type="weapon.type"
+                                    class="h-4 w-4"
+                                    :class="getRarityColor(weapon.rarity)"
+                                />
                                 <Link
                                     :href="route('wiki.weapon.show', [weapon.id])"
                                     class="text-gray-900 underline dark:text-parchment"
@@ -102,7 +124,11 @@ defineProps({
                                 :key="armor.id"
                                 class="flex items-center gap-2"
                             >
-                                <ArmorsIcon class="h-4 w-4 text-gray-600 dark:text-gray-400" />
+                                <component
+                                    :is="ARMOR_ICONS[armor.type_value]"
+                                    class="h-4 w-4"
+                                    :class="getRarityColor(armor.rarity)"
+                                />
                                 <Link
                                     :href="route('wiki.armor.show', [armor.id])"
                                     class="text-gray-900 underline dark:text-parchment"

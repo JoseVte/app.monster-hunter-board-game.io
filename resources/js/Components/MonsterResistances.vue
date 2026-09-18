@@ -19,19 +19,19 @@ const props = defineProps({
 const { t } = useI18n();
 
 const ELEMENTS = [
-    { key: 'fire', src: fire, alt: 'Fire' },
-    { key: 'water', src: water, alt: 'Water' },
-    { key: 'thunder', src: thunder, alt: 'Thunder' },
-    { key: 'ice', src: ice, alt: 'Ice' },
-    { key: 'dragon', src: dragon, alt: 'Dragon' },
+    { key: 'fire', src: fire, alt: t('Fire') },
+    { key: 'water', src: water, alt: t('Water') },
+    { key: 'thunder', src: thunder, alt: t('Thunder') },
+    { key: 'ice', src: ice, alt: t('Ice') },
+    { key: 'dragon', src: dragon, alt: t('Dragon') },
 ];
 
 const STATUSES = [
-    { key: 'paralysis', src: paralysis, alt: 'Paralysis' },
-    { key: 'poison', src: poison, alt: 'Poison' },
-    { key: 'sleep', src: sleep, alt: 'Sleep' },
-    { key: 'nitro', src: nitro, alt: 'Nitro' },
-    { key: 'stun', src: stun, alt: 'Stun' },
+    { key: 'paralysis', src: paralysis, alt: t('Paralysis') },
+    { key: 'poison', src: poison, alt: t('Poison') },
+    { key: 'sleep', src: sleep, alt: t('Sleep') },
+    { key: 'nitro', src: nitro, alt: t('Nitro') },
+    { key: 'stun', src: stun, alt: t('Stun') },
 ];
 
 const withValues = (resistances) => resistances.map((resistance) => ({

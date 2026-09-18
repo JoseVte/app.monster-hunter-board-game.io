@@ -66,7 +66,7 @@ test('every icon token the data uses is known to the frontend', function (): voi
     $notSeededYet = [
         'back_icon', 'claw_icon', 'dodge_icon', 'head_icon', 'leg_icon',
         'movement_icon', 'range_icon', 'black_spike_icon', 'nergigante_icon',
-        'paw_icon', 'person_icon', 'spike_icon', 'supernova_icon', 'tail_icon',
+        'paw_icon', 'spike_icon', 'supernova_icon', 'tail_icon',
         'tornado_icon', 'wing_icon',
     ];
 

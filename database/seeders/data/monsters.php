@@ -1488,8 +1488,8 @@ return [
                         'defense' => 1,
                         'broken' => 3,
                         'ability-broken' => [
-                            'en' => 'Behaviours with :claw_icon: have +1 :person_icon:.',
-                            'es' => 'Los comportamientos con :claw_icon: tienen +1 :person_icon:.',
+                            'en' => 'Behaviours with :claw_icon: have +1 :card_behaviour_icon:.',
+                            'es' => 'Los comportamientos con :claw_icon: tienen +1 :card_behaviour_icon:.',
                         ],
                     ],
                 ],
@@ -1531,8 +1531,8 @@ return [
                         'defense' => 2,
                         'broken' => 4,
                         'ability-broken' => [
-                            'en' => 'Behaviours with :claw_icon: have +1 :person_icon:.',
-                            'es' => 'Los comportamientos con :claw_icon: tienen +1 :person_icon:.',
+                            'en' => 'Behaviours with :claw_icon: have +1 :card_behaviour_icon:.',
+                            'es' => 'Los comportamientos con :claw_icon: tienen +1 :card_behaviour_icon:.',
                         ],
                     ],
                 ],
@@ -1578,8 +1578,8 @@ return [
                         'defense' => 3,
                         'broken' => 5,
                         'ability-broken' => [
-                            'en' => 'Behaviours with :claw_icon: have +1 :person_icon:.',
-                            'es' => 'Los comportamientos con :claw_icon: tienen +1 :person_icon:.',
+                            'en' => 'Behaviours with :claw_icon: have +1 :card_behaviour_icon:.',
+                            'es' => 'Los comportamientos con :claw_icon: tienen +1 :card_behaviour_icon:.',
                         ],
                     ],
                 ],
@@ -3346,8 +3346,8 @@ return [
                         'defense' => 3,
                         'broken' => 6,
                         'ability-broken' => [
-                            'en' => 'Behaviours with :head_icon: have +1 :person_icon:',
-                            'es' => 'Los comportamientos con :head_icon: tienen +1 :person_icon:',
+                            'en' => 'Behaviours with :head_icon: have +1 :card_behaviour_icon:',
+                            'es' => 'Los comportamientos con :head_icon: tienen +1 :card_behaviour_icon:',
                         ],
                     ],
                     [
@@ -3403,8 +3403,8 @@ return [
                         'defense' => 4,
                         'broken' => 7,
                         'ability-broken' => [
-                            'en' => 'Behaviours with :head_icon: have +1 :person_icon:',
-                            'es' => 'Los comportamientos con :head_icon: tienen +1 :person_icon:',
+                            'en' => 'Behaviours with :head_icon: have +1 :card_behaviour_icon:',
+                            'es' => 'Los comportamientos con :head_icon: tienen +1 :card_behaviour_icon:',
                         ],
                     ],
                     [

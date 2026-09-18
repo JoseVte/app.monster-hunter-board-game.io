@@ -1,6 +1,6 @@
 <script setup>
 import Resistance from "@/Components/Icons/Resistance.vue";
-import defenseIcon from '~/icons/defense.png';
+import defenseIcon from '~/icons/defense-icon.png';
 
 // One piece's numbers. Shared by the card and by the panel showing what is worn.
 const props = defineProps({

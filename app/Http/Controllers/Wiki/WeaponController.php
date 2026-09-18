@@ -6,6 +6,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Hunter;
 use App\Models\Weapon;
+use App\Models\Monster;
 use App\Models\WeaponType;
 use App\Models\WeaponRecipe;
 use Illuminate\Http\Request;
@@ -100,7 +101,7 @@ class WeaponController extends Controller
     }
 
     /**
-     * @return array{q: ?string, rarity: ?int, expansion: ?string}
+     * @return array{q: ?string, rarity: ?int, expansion: ?string, branch: ?string}
      */
     private function filters(Request $request): array
     {
@@ -108,12 +109,13 @@ class WeaponController extends Controller
             'q' => $request->string('q')->trim()->value() ?: null,
             'rarity' => $request->integer('rarity') ?: null,
             'expansion' => $request->string('expansion')->value() ?: null,
+            'branch' => $request->string('branch')->value() ?: null,
         ];
     }
 
     /**
      * @param  Builder<Weapon>  $query
-     * @param  array{q: ?string, rarity: ?int, expansion: ?string}  $filters
+     * @param  array{q: ?string, rarity: ?int, expansion: ?string, branch: ?string}  $filters
      * @return Builder<Weapon>
      */
     private function apply(Builder $query, array $filters): Builder
@@ -124,17 +126,46 @@ class WeaponController extends Controller
             ->when($filters['expansion'], fn (Builder $q, string $expansion) => $q->whereHas(
                 'recipes',
                 fn (Builder $recipes) => $recipes->where('expansion', $expansion),
+            ))
+            ->when($filters['branch'], fn (Builder $q, string $branch) => $q->whereHas(
+                'recipes',
+                fn (Builder $recipes) => $recipes->where('branch', $branch),
             ));
     }
 
     /**
-     * @return array{rarities: list<int>, expansions: list<array{key: string, label: string}>}
+     * @return array{rarities: list<int>, expansions: list<array{key: string, label: string}>, branches: list<array{key: string, label: string}>}
      */
     private function options(): array
     {
         return [
             'rarities' => Weapon::query()->distinct()->orderBy('rarity')->pluck('rarity')->all(),
             'expansions' => MonsterExpansion::asKeyLabelObjectSelectable(),
+            'branches' => $this->branchOptions(
+                WeaponRecipe::query()->whereNotNull('branch')->distinct()->pluck('branch'),
+            ),
         ];
+    }
+
+    /**
+     * `branch` is a plain, non-translatable string, frozen at seed time to the
+     * monster's English name. Its matching `Monster`, if there is one, is what
+     * carries a display label for the reader's own locale.
+     *
+     * @param  Collection<int, string>  $branches
+     * @return list<array{key: string, label: string}>
+     */
+    private function branchOptions(Collection $branches): array
+    {
+        $monsters = Monster::all()->keyBy(fn (Monster $monster): string => $monster->getTranslation('name', 'en'));
+
+        return $branches
+            ->map(fn (string $branch): array => [
+                'key' => $branch,
+                'label' => $monsters->get($branch)?->name ?? $branch,
+            ])
+            ->sortBy('label')
+            ->values()
+            ->all();
     }
 }

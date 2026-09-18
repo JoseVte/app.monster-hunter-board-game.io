@@ -1,7 +1,6 @@
 <script setup>
 import Card from "@/Components/Card.vue";
 import Calendar from "@/Components/Icons/Calendar.vue";
-import MonstersIcon from "@/Components/Icons/MonstersIcon.vue";
 import UpdateCampaignDayModal from "@/Pages/Campaign/Partials/UpdateCampaignDayModal.vue";
 
 defineProps({
@@ -29,7 +28,11 @@ defineProps({
             <div class="flex items-center gap-3">
                 <span>#{{ day.number }}</span>
                 <template v-if="day.monster_id">
-                    <MonstersIcon class="h-4 min-h-4 w-4 min-w-4" />
+                    <img
+                        :src="day.monster.icon_url"
+                        :alt="day.monster.name"
+                        class="h-4 min-h-4 w-4 min-w-4 rounded-full object-contain"
+                    >
                 </template>
                 <template v-else>
                     <Calendar class="h-4 min-h-4 w-4 min-w-4" />

@@ -39,7 +39,6 @@
         "barryvdh/laravel-debugbar": "^4.4",
         "barryvdh/laravel-ide-helper": "^3.0",
         "derekmd/laravel-dusk-firefox": "^3.0",
-        "testmonitor/laravel-vue-i18n-generator": "^3.1",
         "fakerphp/faker": "^1.9.1",
         "laravel-lang/common": "^6.0",
         "laravel-lang/lang": "^15.0",
@@ -52,7 +51,9 @@
         "pestphp/pest": "^5.0",
         "pestphp/pest-plugin-laravel": "^5.0",
         "roave/security-advisories": "dev-latest",
-        "spatie/laravel-ignition": "^2.0"
+        "spatie/laravel-ignition": "^2.0",
+        "spatie/laravel-typescript-transformer": "^3.3",
+        "testmonitor/laravel-vue-i18n-generator": "^3.1"
     },
     "autoload": {
         "psr-4": {
@@ -91,6 +92,9 @@
             "@php artisan localize es,en",
             "@php artisan translations:extract-vue",
             "@php artisan vue:translations --output=resources/js/vue-i18n-locales.generated.js"
+        ],
+        "generate-types": [
+            "@php artisan typescript:transform"
         ]
     },
     "extra": {

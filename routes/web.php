@@ -31,6 +31,36 @@ use App\Http\Controllers\Wiki\MonsterController as WikiMonsterController;
 |
 */
 
+// Local-only: logs straight in as the QA account (see UserSeeder/tinker
+// note below) without going through the login form, whose recaptcha check
+// a headless browser session can never reliably pass. Never registered
+// outside `local`, so it cannot exist in a deployed environment.
+if (app()->environment('local')) {
+    Route::get('/__qa_login', static function () {
+        $user = User::firstOrCreate(
+            ['email' => 'claude@test.local'],
+            [
+                'name' => 'Claude QA',
+                'password' => bcrypt('claude-qa-local'),
+                'email_verified_at' => now(),
+            ],
+        );
+
+        if (! $user->currentTeam) {
+            $user->ownedTeams()->save(\App\Models\Team::forceCreate([
+                'user_id' => $user->id,
+                'name' => 'Claude QA\'s Team',
+                'personal_team' => true,
+            ]));
+            $user->refresh()->switchTeam($user->ownedTeams()->first());
+        }
+
+        auth()->login($user);
+
+        return redirect('/dashboard');
+    })->name('qa-login');
+}
+
 Route::get('/', static fn () => Inertia::render('Welcome', [
     'canLogin' => Route::has('login'),
     'canRegister' => Route::has('register'),
@@ -69,6 +99,7 @@ Route::middleware([
         Route::prefix('monsters')->name('monster.')->group(function (): void {
             Route::get('/', [WikiMonsterController::class, 'index'])->name('index');
             Route::get('{monster}', [WikiMonsterController::class, 'detail'])->name('show');
+            Route::get('{monster}/card', [WikiMonsterController::class, 'card'])->name('card');
         });
 
         Route::prefix('items')->name('item.')->group(function (): void {

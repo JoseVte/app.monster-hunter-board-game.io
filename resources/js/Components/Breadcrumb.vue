@@ -23,7 +23,7 @@ const mobileBack = computed(() => props.breadcrumbs?.length
 <template>
     <nav
         class="flex"
-        aria-label="Breadcrumb"
+        :aria-label="$t('Breadcrumb')"
     >
         <ol class="inline-flex items-center space-x-1 md:space-x-3">
             <li class="hidden sm:block">

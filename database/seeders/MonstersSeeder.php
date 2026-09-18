@@ -113,10 +113,6 @@ class MonstersSeeder extends Seeder
     private function syncRewards(Monster $monster, array $rewards): void
     {
         foreach ($rewards as $roll => $reward) {
-            if (Item::where('name->en', $reward['name'])->doesntExist()) {
-                logger('Monster reward item: '.$reward['name']);
-            }
-
             $item = Item::where('name->en', $reward['name'])->firstOrFail();
 
             MonsterReward::updateOrCreate(

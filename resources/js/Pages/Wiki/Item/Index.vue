@@ -73,6 +73,7 @@ const sortBy = (field) => {
                         class="mt-6"
                     >
                         <template #header>
+                            <CellHeader />
                             <CellHeader
                                 v-for="column in [{ field: 'name', label: $t('Name') }, { field: 'type', label: $t('Type') }]"
                                 :key="column.field"
@@ -106,6 +107,13 @@ const sortBy = (field) => {
                             v-for="item in items"
                             :key="item.id"
                         >
+                            <Cell :url="route('wiki.item.show', [item.id])">
+                                <img
+                                    :src="item.icon_url"
+                                    :alt="item.name"
+                                    class="h-6 w-6 rounded-full object-contain"
+                                >
+                            </Cell>
                             <Cell :url="route('wiki.item.show', [item.id])">
                                 {{ item.name }}
                             </Cell>

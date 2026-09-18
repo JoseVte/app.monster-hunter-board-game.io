@@ -51,6 +51,7 @@ class Armor extends Model
 
     protected $appends = [
         'type_value',
+        'expansion_value',
     ];
 
     public function skills(): BelongsToMany
@@ -71,6 +72,15 @@ class Armor extends Model
     public function getTypeValueAttribute(): string
     {
         return strtolower($this->type->label('en'));
+    }
+
+    /**
+     * The raw enum name, since HasTranslations::toArray() already flattens
+     * `expansion` itself down to its translated label for the page.
+     */
+    public function getExpansionValueAttribute(): ?string
+    {
+        return $this->expansion?->name;
     }
 
     public function toSearchableArray(): array

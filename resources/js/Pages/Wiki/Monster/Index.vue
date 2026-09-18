@@ -1,12 +1,10 @@
 <script setup>
 import {ref} from "vue";
+import {Link} from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import MonstersIcon from "@/Components/Icons/MonstersIcon.vue";
+import Card from "@/Components/Card.vue";
 import LoadingOverlay from "@/Components/LoadingOverlay.vue";
-import TableBase from "@/Components/Table/TableBase.vue";
-import Row from "@/Components/Table/Row.vue";
-import CellHeader from "@/Components/Table/CellHeader.vue";
-import Cell from "@/Components/Table/Cell.vue";
 import Breadcrumb from "@/Components/Breadcrumb.vue";
 import MonsterFilters from "@/Pages/Wiki/Partials/MonsterFilters.vue";
 
@@ -39,49 +37,47 @@ const loading = ref(false);
                     @loading="loading = $event"
                 />
 
-                <p class="my-4 text-sm dark:text-white">
-                    {{ monsters.length + ' ' + $t('results found.') }}
-                </p>
-
                 <LoadingOverlay :loading="loading">
-                    <TableBase>
-                        <template #header>
-                            <CellHeader />
-                            <CellHeader>{{ $t('Name') }}</CellHeader>
-                            <CellHeader>{{ $t('Category') }}</CellHeader>
-                            <CellHeader>{{ $t('Expansion') }}</CellHeader>
-                            <CellHeader />
-                        </template>
+                    <p
+                        v-if="!monsters.length"
+                        class="mt-6 text-sm text-gray-600 dark:text-parchment-dim"
+                    >
+                        {{ $t('Nothing matches those filters.') }}
+                    </p>
 
-                        <Row v-if="monsters.length === 0">
-                            <Cell colspan="5">
-                                {{ $t('No results found.') }}
-                            </Cell>
-                        </Row>
-                        <Row
+                    <div
+                        v-else
+                        class="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3"
+                    >
+                        <Link
                             v-for="monster in monsters"
-                            v-else
                             :key="monster.id"
+                            :href="route('wiki.monster.show', [monster.id])"
                         >
-                            <Cell :url="route('wiki.monster.show', [monster.id])">
-                                <img
-                                    :src="monster.icon_url"
-                                    :alt="monster.name"
-                                    class="h-6 w-6 rounded-full object-contain"
-                                >
-                            </Cell>
-                            <Cell :url="route('wiki.monster.show', [monster.id])">
-                                {{ monster.name }}
-                            </Cell>
-                            <Cell :url="route('wiki.monster.show', [monster.id])">
-                                {{ monster.category }}
-                            </Cell>
-                            <Cell :url="route('wiki.monster.show', [monster.id])">
-                                {{ monster.expansion }}
-                            </Cell>
-                            <Cell />
-                        </Row>
-                    </TableBase>
+                            <Card
+                                clickable
+                                class="gap-2"
+                            >
+                                <div class="flex items-center gap-3">
+                                    <span class="flex h-10 w-10 min-h-10 min-w-10 items-center justify-center overflow-hidden rounded-full bg-gray-300 dark:bg-gray-900">
+                                        <img
+                                            :src="monster.icon_url"
+                                            :alt="monster.name"
+                                            class="h-8 w-8 object-contain"
+                                        >
+                                    </span>
+                                    <span class="mh-card-name flex-1 text-base">{{ monster.name }}</span>
+                                </div>
+
+                                <div class="mh-rule" />
+
+                                <div class="flex flex-wrap items-center gap-2 text-sm text-gray-600 dark:text-gray-400">
+                                    <span class="mh-value">{{ monster.category }}</span>
+                                    <span class="mh-value">{{ monster.expansion }}</span>
+                                </div>
+                            </Card>
+                        </Link>
+                    </div>
                 </LoadingOverlay>
             </div>
         </div>

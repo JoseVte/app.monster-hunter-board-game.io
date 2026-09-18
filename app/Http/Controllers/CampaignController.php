@@ -85,7 +85,13 @@ class CampaignController extends Controller
             'campaign' => $campaign,
             'downtimeDays' => $downtimeDays,
             'monsters' => $monsters,
-            'availableRoles' => array_values(config('permission.campaign-roles')),
+            'availableRoles' => collect(config('permission.campaign-roles'))
+                ->map(fn (array $role): array => [
+                    ...$role,
+                    'name' => __($role['name']),
+                    'description' => __($role['description']),
+                ])
+                ->values(),
             'permissions' => [
                 'canAddCampaignMembers' => Gate::check('addCampaignMember', $campaign),
                 'canDeleteCampaign' => Gate::check('delete', $campaign),

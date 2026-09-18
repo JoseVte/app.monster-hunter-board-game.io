@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "target": "esnext",
+        "module": "esnext",
+        "moduleResolution": "bundler",
+        "paths": {
+            "@/*": ["./resources/js/*"],
+            "~/*": ["./resources/images/*"]
+        },
+        "types": ["vite/client"],
+        "allowJs": true,
+        "checkJs": false,
+        "resolveJsonModule": true,
+        "skipLibCheck": true,
+        "isolatedModules": true,
+        "noEmit": true,
+        "strict": true,
+        "esModuleInterop": true
+    },
+    "include": ["resources/js/**/*.js", "resources/js/**/*.ts", "resources/js/**/*.vue", "resources/js/types/**/*.d.ts"],
+    "exclude": ["node_modules", "public", "vendor", "storage", "bootstrap", "resources/js/vue-i18n-locales.generated.js"]
+}

@@ -72,7 +72,7 @@ class ItemController extends Controller
      */
     public function detail(Item $item): Response
     {
-        $item->load(['monsters', 'weapons', 'armors']);
+        $item->load(['monsters', 'weapons.type', 'armors']);
 
         return Inertia::render('Wiki/Item/Show', [
             'item' => $item,

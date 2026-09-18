@@ -32,6 +32,8 @@ npm-debug.log
 /public/manifest.webmanifest*
 /public/mix-manifest.json
 /reports
+/resources/images/icons/pending
+/resources/js/types/typescript-transformer-manifest.json
 /tools
 .editorconfig
 .phpstorm.meta.php

@@ -45,20 +45,12 @@ class ArmorsSeeder extends Seeder
                     $armor->save();
                 }
                 if (Arr::get($armorDetails, 'skill')) {
-                    if (ArmorSkill::where('name->en', $armorDetails['skill'])->doesntExist()) {
-                        logger('Armor skill: '.$armorDetails['skill']);
-                    }
-
                     $skill = ArmorSkill::where('name->en', $armorDetails['skill'])->firstOrFail();
                     $armor->skills()->syncWithoutDetaching([$skill->id]);
                 }
 
                 if (Arr::get($armorDetails, 'items')) {
                     foreach ($armorDetails['items'] as $itemName => $count) {
-                        if (Item::where('name->en', $itemName)->doesntExist()) {
-                            logger('Item: '.$itemName);
-                        }
-
                         $item = Item::where('name->en', $itemName)->firstOrFail();
                         $armor->items()->syncWithoutDetaching([$item->id => ['number' => $count]]);
                     }
@@ -70,9 +62,6 @@ class ArmorsSeeder extends Seeder
             if (Arr::get($skill, 'bonus-set')) {
                 $bonusSet = [];
                 foreach ($skill['bonus-set'] as $armorName) {
-                    if (Armor::where('name->en', $armorName)->doesntExist()) {
-                        logger($armorName);
-                    }
                     $armor = Armor::where('name->en', $armorName)->firstOrFail();
                     $bonusSet[] = $armor->id;
                 }

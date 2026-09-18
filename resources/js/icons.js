@@ -3,16 +3,37 @@ import water from '~/types/water.png';
 import thunder from '~/types/thunder.png';
 import ice from '~/types/ice.png';
 import dragon from '~/types/dragon.png';
-import damageAttack from '~/icons/damage-attack.png';
-import comboAttack from '~/icons/combo-attack.png';
-import defense from '~/icons/defense.png';
-import breakIcon from '~/icons/break.svg';
+import damageAttack from '~/icons/damage-icon.png';
+import comboAttack from '~/icons/combo-icon.png';
+import defense from '~/icons/defense-icon.png';
+import breakIcon from '~/icons/break-icon.png';
 import poison from '~/icons/poison.webp';
 import stun from '~/icons/stun.webp';
 import sleep from '~/icons/sleep.svg';
 import lance from '~/weapon-types/lance.svg';
 import paralysis from '~/icons/paralysis.png';
 import nitro from '~/icons/nitro.png';
+import movement from '~/icons/movement-icon.png';
+import dodge from '~/icons/dodge-icon.png';
+import range from '~/icons/range-icon.png';
+import hunterBehaviour from '~/icons/hunter-behaviour-icon.png';
+import dodgeMonster from '~/icons/dodge-monster-icon.png';
+import damageMonster from '~/icons/damage-monster-icon.png';
+import attackNode from '~/icons/attack-node-icon.png';
+import fireMonsterDamage from '~/icons/fire-monster-damage-icon.png';
+import headImg from '~/monster-parts/head.png';
+import backImg from '~/monster-parts/back.png';
+import clawImg from '~/monster-parts/claw.png';
+import tailImg from '~/monster-parts/tail.png';
+import legImg from '~/monster-parts/leg.png';
+import wingImg from '~/monster-parts/wing.png';
+import pawImg from '~/monster-parts/paw.png';
+import cardBehaviour from '~/icons/card-behaviour-icon.png';
+import nearHunter from '~/icons/near-hunter-icon.png';
+import farHunter from '~/icons/far-hunter-icon.png';
+import bushMap from '~/icons/bush-map-icon.png';
+import rockMap from '~/icons/rock-map-icon.png';
+import mudMap from '~/icons/mud-map-icon.png';
 
 // The seed data marks a game symbol as :name_icon:. Everything with artwork
 // lives here; anything else falls back to a placeholder rather than printing the
@@ -40,6 +61,30 @@ const icons = {
     blast_icon: { src: nitro, alt: 'Nitro' },
     // Likewise "damage" and "damage attack" are the same symbol under two names.
     damage_icon: { src: damageAttack, alt: 'Damage attack' },
+    movement_icon: { src: movement, alt: 'Movement' },
+    dodge_icon: { src: dodge, alt: 'Dodge' },
+    range_icon: { src: range, alt: 'Range' },
+    hunter_behaviour_icon: { src: hunterBehaviour, alt: 'Hunter behaviour' },
+    dodge_monster_icon: { src: dodgeMonster, alt: 'Dodge monster' },
+    damage_monster_icon: { src: damageMonster, alt: 'Damage to monster' },
+    attack_node_icon: { src: attackNode, alt: 'Attack node' },
+    fire_monster_damage_icon: { src: fireMonsterDamage, alt: 'Fire monster damage' },
+    // Same pictograms MonsterPartBox uses for a part's structured display,
+    // reused here so the same body part named inline in ability/mechanics
+    // text (e.g. ":head_icon:") renders the icon instead of a placeholder.
+    head_icon: { src: headImg, alt: 'Head' },
+    back_icon: { src: backImg, alt: 'Back' },
+    claw_icon: { src: clawImg, alt: 'Claw' },
+    tail_icon: { src: tailImg, alt: 'Tail' },
+    leg_icon: { src: legImg, alt: 'Leg' },
+    wing_icon: { src: wingImg, alt: 'Wing' },
+    paw_icon: { src: pawImg, alt: 'Paw' },
+    card_behaviour_icon: { src: cardBehaviour, alt: 'Behaviour card' },
+    near_hunter_icon: { src: nearHunter, alt: 'Near hunter' },
+    far_hunter_icon: { src: farHunter, alt: 'Far hunter' },
+    bush_map_icon: { src: bushMap, alt: 'Bush' },
+    rock_map_icon: { src: rockMap, alt: 'Rock' },
+    mud_map_icon: { src: mudMap, alt: 'Mud' },
 };
 
 // A resistance is the element's symbol on a pentagon, the way the board prints
@@ -86,12 +131,7 @@ const pending = {
     kinsect_icon_2: 'Kinsect 2',
     kinsect_icon_3: 'Kinsect 3',
     // Monster ability, mechanics and reward text, now seeded, carries these.
-    card_behaviour_icon: 'Behaviour card',
-    damage_monster_icon: 'Damage to monster',
-    far_hunter_icon: 'Far hunter',
-    hunter_behaviour_icon: 'Hunter behaviour',
     investigation_behaviour_icon: 'Investigation behaviour',
-    near_hunter_icon: 'Near hunter',
 };
 
 // Not every token ends in `_icon`: the data also writes :charged_blade_vial:,

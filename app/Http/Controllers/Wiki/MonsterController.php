@@ -51,6 +51,19 @@ class MonsterController extends Controller
     }
 
     /**
+     * The same monster recreated as its physical card: resistances, body
+     * parts and the ability of whichever difficulty tier the reader picks.
+     */
+    public function card(Monster $monster): Response
+    {
+        $monster->load('difficulties.parts');
+
+        return Inertia::render('Wiki/Monster/Card', [
+            'monster' => $monster,
+        ]);
+    }
+
+    /**
      * @return array{q: ?string, category: ?string, expansion: ?string}
      */
     private function filters(Request $request): array

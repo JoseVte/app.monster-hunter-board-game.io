@@ -8,9 +8,9 @@ import Card from "@/Components/Card.vue";
 import WeaponTypeIcon from "@/Components/WeaponTypeIcon.vue";
 import CraftWithHunter from "@/Pages/Wiki/Partials/CraftWithHunter.vue";
 import {getRarityColor} from "@/rarity";
-import damageAttack from '~/icons/damage-attack.png';
-import comboAttack from '~/icons/combo-attack.png';
-import defenseIcon from '~/icons/defense.png';
+import damageAttack from '~/icons/damage-icon.png';
+import comboAttack from '~/icons/combo-icon.png';
+import defenseIcon from '~/icons/defense-icon.png';
 
 const props = defineProps({
     weapon: Object,
@@ -59,10 +59,13 @@ const currentIcon = () => h(WeaponTypeIcon, {weaponType: props.weapon.type, clas
                             />
                         </span>
                         <span class="mh-card-name flex-1 text-xl">{{ weapon.name }}</span>
-                        <span
+                        <Link
                             class="mh-value"
                             :class="getRarityColor(weapon.rarity)"
-                        >{{ $t('Rarity') }} {{ weapon.rarity }}</span>
+                            :href="route('wiki.weapon.type', [weapon.type_id, { rarity: weapon.rarity }])"
+                        >
+                            {{ $t('Rarity') }} {{ weapon.rarity }}
+                        </Link>
                     </div>
 
                     <div class="mh-rule" />
@@ -100,11 +103,23 @@ const currentIcon = () => h(WeaponTypeIcon, {weaponType: props.weapon.type, clas
                         :key="recipe.id"
                     >
                         <h3 class="mh-heading mt-2 text-xs tracking-widest uppercase">
-                            {{ recipe.branch ?? $t('Materials') }}
-                            <span
+                            <Link
+                                v-if="recipe.branch"
+                                class="hover:underline"
+                                :href="route('wiki.weapon.type', [weapon.type_id, { branch: recipe.branch }])"
+                            >
+                                {{ recipe.branch }}
+                            </Link>
+                            <template v-else>
+                                {{ $t('Materials') }}
+                            </template>
+                            <Link
                                 v-if="recipe.expansion"
-                                class="text-parchment-dim"
-                            >· {{ recipe.expansion_label }}</span>
+                                class="text-parchment-dim hover:underline"
+                                :href="route('wiki.weapon.type', [weapon.type_id, { expansion: recipe.expansion }])"
+                            >
+                                · {{ recipe.expansion_label }}
+                            </Link>
                         </h3>
                         <ul class="flex flex-col gap-1 text-sm">
                             <li
@@ -112,7 +127,12 @@ const currentIcon = () => h(WeaponTypeIcon, {weaponType: props.weapon.type, clas
                                 :key="item.id"
                                 class="flex items-center justify-between gap-3"
                             >
-                                <span class="text-gray-900 dark:text-parchment">{{ item.name }}</span>
+                                <Link
+                                    :href="route('wiki.item.show', [item.id])"
+                                    class="text-gray-900 hover:underline dark:text-parchment"
+                                >
+                                    {{ item.name }}
+                                </Link>
                                 <span class="mh-value">{{ item.pivot.number }}</span>
                             </li>
                         </ul>

@@ -66,7 +66,7 @@ const loading = ref(false);
                     <details
                         v-for="group in branches"
                         :key="group.branch"
-                        :open="!!(filters.q || filters.rarity || filters.expansion)"
+                        :open="!!(filters.q || filters.rarity || filters.expansion || filters.branch)"
                         class="mt-6"
                     >
                         <summary class="mh-heading cursor-pointer text-xs tracking-widest uppercase">
