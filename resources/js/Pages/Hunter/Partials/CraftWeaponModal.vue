@@ -1,6 +1,6 @@
 <script setup>
 import {computed, ref, watch} from "vue";
-import {useForm} from "@inertiajs/vue3";
+import {Link, useForm} from "@inertiajs/vue3";
 import _ from "lodash";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
@@ -13,7 +13,7 @@ const props = defineProps({
     campaign: Object,
     hunter: Object,
     weapon: Object,
-    classContainer: String,
+    classContainer: [String, Array],
 })
 
 const confirmingCraftWeapon = ref(false);
@@ -58,7 +58,7 @@ const closeModal = () => {
 };
 
 const countItemHunter = (itemId) => {
-    const hunterItemCount = _.find(props.hunter.items, (hunterItem) => {
+    const hunterItemCount = _.find(props.hunter?.items ?? [], (hunterItem) => {
         return itemId === hunterItem.pivot.item_id
     });
     if (hunterItemCount) {
@@ -68,7 +68,7 @@ const countItemHunter = (itemId) => {
     return 0;
 }
 const hunterWeaponCount = (weapon) => {
-    return _.filter(props.hunter.weapons, (hunterWeapon) => {
+    return _.filter(props.hunter?.weapons ?? [], (hunterWeapon) => {
         return hunterWeapon.id === weapon.id;
     }).length;
 }
@@ -92,16 +92,21 @@ const unequip = () => {
 </script>
 
 <template>
-    <div
+    <component
+        :is="hunter ? 'div' : Link"
+        :href="hunter ? undefined : route('wiki.weapon.show', weapon.id)"
         :class="[
             'mh-card',
-            { 'mh-card-owned': weapon.is_default || hunterWeaponCount(weapon) },
+            { 'mh-card-owned': hunter && (weapon.is_default || hunterWeaponCount(weapon)) },
             { 'mh-card-equipped': weapon.equipped },
             classContainer,
         ]"
     >
         <slot />
+        <!-- Nothing to equip or craft when nobody is holding it, which is how the
+             wiki draws the same card. -->
         <div
+            v-if="hunter"
             class="mt-auto flex flex-col gap-2 border-t-0 pt-2 before:mb-2 before:block before:h-px before:w-full before:bg-[linear-gradient(to_right,transparent,var(--color-attack-line),transparent)] before:content-['']"
         >
             <!-- The starting weapon only ever goes on: taking it off would leave
@@ -145,7 +150,7 @@ const unequip = () => {
                 {{ $t('Craft') }}
             </SecondaryButton>
         </div>
-    </div>
+    </component>
     <DialogModal
         :show="confirmingCraftWeapon"
         @close="closeModal"

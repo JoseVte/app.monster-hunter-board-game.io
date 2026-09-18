@@ -224,7 +224,7 @@ const hunterEquippedArmor = computed(() => {
                                 <span class="flex h-8 w-8 min-h-8 min-w-8 items-center justify-center rounded-full bg-gray-300 dark:bg-gray-900">
                                     <img
                                         v-if="hunter.weapon_type.image_url"
-                                        class="h-5 w-5"
+                                        class="h-5 w-5 drop-shadow-sm"
                                         :src="hunter.weapon_type.image_url"
                                         :alt="hunter.weapon_type.name"
                                     >
@@ -333,6 +333,7 @@ const hunterEquippedArmor = computed(() => {
                                     :campaign="campaign"
                                     :hunter="hunter"
                                     :items="monsterItems"
+                                    grouped
                                     :label="$t('Add Monter Part')"
                                     :label-btn="$t('Add Monter Part')"
                                 />

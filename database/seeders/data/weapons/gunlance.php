@@ -9,7 +9,7 @@ return [
         'en' => 'During setup, place the 5 shelling cards face up in a row above your stamina board.<br>When you play an attack card with one or more :shelling_up_icon:, flip a number of shelling cards face down equal to the number of :shelling_up_icon: on the attack card. If there aren\'t enough face up shelling cards for the attack, flip as many as you can.<br>Draw +1 :damage_card_icon: for each shelling card flipped face down while resolving the attack card.<br>When you sharpen your weapon, fill all your shelling cards face up.',
         'es' => 'Durante la configuración, coloca las 5 cartas de bombardeo boca arriba en una fila sobre tu tablero de resistencia.<br>Cuando juegues una carta de ataque con uno o más :shelling_up_icon:, voltea una cantidad de cartas de bombardeo boca abajo igual a la cantidad de :shelling_up_icon: en la carta de ataque. Si no hay suficientes cartas de bombardeo boca arriba para el ataque, voltee todas las que pueda.<br>Obtenga +1 :damage_card_icon: por cada carta de bombardeo volteada boca abajo mientras resuelve la carta de ataque.<br>Cuando afile su arma, rellene todas tus cartas de bombardeo boca arriba.',
     ],
-    'image' => 'icon_weapon_08.png',
+    'image' => 'weapon-types/gunlance.svg',
     'weapons' => [
         'Iron Gunlance' => [
             'default' => true,

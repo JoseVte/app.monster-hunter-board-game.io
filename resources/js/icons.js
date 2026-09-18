@@ -10,7 +10,9 @@ import breakIcon from '~/icons/break.svg';
 import poison from '~/icons/poison.webp';
 import stun from '~/icons/stun.webp';
 import sleep from '~/icons/sleep.svg';
-import lance from '~/icon_weapon_07.png';
+import lance from '~/weapon-types/lance.svg';
+import paralysis from '~/icons/paralysis.png';
+import nitro from '~/icons/nitro.png';
 
 // The seed data marks a game symbol as :name_icon:. Everything with artwork
 // lives here; anything else falls back to a placeholder rather than printing the
@@ -31,6 +33,13 @@ const icons = {
     // The symbol printed on the lance's attack cards is the weapon's own,
     // and the seeder already ships it as the weapon type image.
     lance_icon: { src: lance, alt: 'Lance' },
+    paralysis_icon: { src: paralysis, alt: 'Paralysis' },
+    nitro_icon: { src: nitro, alt: 'Nitro' },
+    // Monster mechanics text calls this effect "blast" where weapon text calls
+    // it "nitro", the same game symbol either way.
+    blast_icon: { src: nitro, alt: 'Nitro' },
+    // Likewise "damage" and "damage attack" are the same symbol under two names.
+    damage_icon: { src: damageAttack, alt: 'Damage attack' },
 };
 
 // A resistance is the element's symbol on a pentagon, the way the board prints
@@ -76,6 +85,13 @@ const pending = {
     kinsect_icon_1: 'Kinsect 1',
     kinsect_icon_2: 'Kinsect 2',
     kinsect_icon_3: 'Kinsect 3',
+    // Monster ability, mechanics and reward text, now seeded, carries these.
+    card_behaviour_icon: 'Behaviour card',
+    damage_monster_icon: 'Damage to monster',
+    far_hunter_icon: 'Far hunter',
+    hunter_behaviour_icon: 'Hunter behaviour',
+    investigation_behaviour_icon: 'Investigation behaviour',
+    near_hunter_icon: 'Near hunter',
 };
 
 // Not every token ends in `_icon`: the data also writes :charged_blade_vial:,

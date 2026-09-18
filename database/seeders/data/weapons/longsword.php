@@ -15,7 +15,7 @@ Las cartas de ataque te indicarán cuándo rotar la carta espiritual y en qué d
 Solo puedes jugar cartas de ataque con un símbolo de espíritu si todos los colores del símbolo están actualmente en la posición de la carta de espíritu.<br>
 Cuando el símbolo del espíritu solo blanco está en la parte superior, la carta del espíritu no se puede girar en el sentido contrario a las agujas del reloj. Cuando el símbolo del espíritu rojo está en la parte superior, la carta del espíritu no se puede girar en el sentido de las agujas del reloj.',
     ],
-    'image' => 'icon_weapon_02.png',
+    'image' => 'weapon-types/longsword.svg',
     'weapons' => [
         'Iron Katana' => [
             'default' => true,

@@ -7,6 +7,7 @@ use App\Enum\ItemType;
 use App\Models\Hunter;
 use App\Models\Weapon;
 use App\Enum\ArmorType;
+use App\Models\Monster;
 use App\Models\Campaign;
 use App\Models\WeaponType;
 use Inertia\Testing\AssertableInertia;
@@ -47,7 +48,10 @@ test('hunter show groups the items by type', function (): void {
         fn (AssertableInertia $page) => $page
             ->has('commonItems', 1)
             ->has('otherItems', 2)
-            ->has('monsterItems', 3)
+            // The monster parts come grouped, and these three belong to no
+            // monster, so they land in the one group for the rest.
+            ->has('monsterItems', 1)
+            ->has('monsterItems.0.items', 3)
     );
 });
 
@@ -124,4 +128,21 @@ test('hunter show groups the armors by the monster they come from', function ():
         ->has('armors.Rathalos.body')
         ->has('armors.Rathalos.leg')
         ->where('armors.Rathalos.head.branch', 'Rathalos'));
+});
+
+test('hunter show groups the monster parts under the monster they drop from', function (): void {
+    $jagras = Monster::factory()->create(['name' => ['en' => 'Great Jagras', 'es' => 'Gran Jagras']]);
+    $hide = Item::factory()->create(['type' => ItemType::MONSTER_PART->name]);
+    $jagras->items()->attach($hide);
+
+    // Belongs to no monster, so it goes in the group for the rest.
+    Item::factory()->create(['type' => ItemType::MONSTER_PART->name]);
+
+    $response = $this->get(route('campaigns.hunters.show', [$this->campaign, $this->hunter]));
+
+    $response->assertInertia(fn (AssertableInertia $page) => $page
+        ->has('monsterItems', 2)
+        ->where('monsterItems.0.monster', $jagras->name)
+        ->has('monsterItems.0.items', 1)
+        ->has('monsterItems.1.items', 1));
 });

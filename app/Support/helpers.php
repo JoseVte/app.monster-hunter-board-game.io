@@ -44,15 +44,17 @@ if (! function_exists('create_weapon_tree')) {
      *
      * @return Collection<int, array{root: Weapon, paths: Collection<int, array{branches: list<string>, weapons: Collection<int, Weapon>}>}>
      */
-    function create_weapon_tree(WeaponType $weaponType, Hunter $hunter): Collection
+    function create_weapon_tree(WeaponType $weaponType, ?Hunter $hunter = null): Collection
     {
         $weapons = $weaponType->weapons()
             ->with(['recipes.items', 'parent'])
             ->get();
 
         $weapons->each(function (Weapon $weapon) use ($hunter, $weapons): void {
-            $weapon->equipped = $hunter->equippedWeapons->firstWhere('id', $weapon->id);
-            $weapon->craftable_recipes = $hunter->craftableRecipes($weapon)->pluck('id');
+            // The wiki draws the same tree with nobody holding it, so what a
+            // hunter owns or can afford is only asked for when there is one.
+            $weapon->equipped = $hunter?->equippedWeapons->firstWhere('id', $weapon->id);
+            $weapon->craftable_recipes = $hunter ? $hunter->craftableRecipes($weapon)->pluck('id') : collect();
             $weapon->can_craft = $weapon->craftable_recipes->isNotEmpty();
             $weapon->path_ids = weapon_path_ids($weapon, $weapons);
         });

@@ -2373,7 +2373,7 @@ return [
                 ],
             ],
             12 => [
-                'name' => 'Black Diablos Horn',
+                'name' => 'Twisted Horn',
                 'extra' => [
                     'en' => 'Gain 1 if the :claw_icon: were broken.',
                     'es' => 'Gana 1 si el :claw_icon: estuviera roto.',
@@ -2543,7 +2543,7 @@ return [
                 'name' => 'Kulu-Ya-Ku Plume',
             ],
             3 => [
-                'name' => 'Kulu-Ya-Ku Peak',
+                'name' => 'Kulu-Ya-Ku Beak',
             ],
             4 => [
                 'name' => 'Earth Crystal',

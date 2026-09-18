@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enum\MonsterExpansion;
 use App\Models\Pivot\CountItemWeapon;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -17,8 +18,25 @@ class WeaponRecipe extends Model
         'weapon_id',
         'branch',
         'branch_id',
+        'expansion',
         'position',
     ];
+
+    protected $casts = [
+        'expansion' => MonsterExpansion::class,
+    ];
+
+    /**
+     * The recipe has no translatable field of its own, so it does not carry the
+     * trait that flattens a translatable enum for the frontend. Without this the
+     * expansion reaches a page as KULU_YA_KU_EXPANSION rather than its name.
+     */
+    protected $appends = ['expansion_label'];
+
+    public function getExpansionLabelAttribute(): ?string
+    {
+        return $this->expansion?->label();
+    }
 
     public function weapon(): BelongsTo
     {

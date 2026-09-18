@@ -49,7 +49,7 @@ const openWeaponType = (weaponType) => {
             >
                 <span class="relative flex h-10 w-10 min-h-10 min-w-10 items-center justify-center rounded-full bg-gray-300 dark:bg-gray-900">
                     <img
-                        class="h-6 w-6"
+                        class="h-6 w-6 drop-shadow-sm"
                         :src="weaponType.image_url"
                         :alt="weaponType.name"
                     >

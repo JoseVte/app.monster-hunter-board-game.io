@@ -388,3 +388,116 @@ test('a weapon under an expansion section declares that expansion', function ():
 
     expect($wrong)->toBeEmpty();
 });
+
+test('every monster reward is a real item', function (): void {
+    $items = itemNames();
+    $dangling = [];
+
+    foreach (SeedData::get('monsters') as $monster => $details) {
+        foreach ($details['rewards'] ?? [] as $roll => $reward) {
+            if (! in_array($reward['name'], $items, true)) {
+                $dangling[] = "$monster: roll $roll -> {$reward['name']}";
+            }
+        }
+    }
+
+    expect($dangling)->toBeEmpty();
+});
+
+test('every monster reward table has all twelve rolls', function (): void {
+    $wrong = [];
+
+    foreach (SeedData::get('monsters') as $monster => $details) {
+        $rolls = array_keys($details['rewards'] ?? []);
+        sort($rolls);
+
+        if ($rolls !== range(1, 12)) {
+            $wrong[] = $monster;
+        }
+    }
+
+    expect($wrong)->toBeEmpty();
+});
+
+test('every monster difficulty tier has at least one body part', function (): void {
+    $incomplete = [];
+
+    foreach (SeedData::get('monsters') as $monster => $details) {
+        foreach ($details['difficulty'] ?? [] as $tier) {
+            if (empty($tier['parts'])) {
+                $incomplete[] = "$monster: {$tier['difficulty']->name}";
+            }
+        }
+    }
+
+    expect($incomplete)->toBeEmpty();
+});
+
+test('every body part direction is one of a known set', function (): void {
+    // Show.vue maps each of these to an arrow glyph. A new value here would
+    // silently render blank rather than failing loudly.
+    $known = ['up', 'down', 'left', 'right', 'left-right', 'left-right-down', 'up-left-right'];
+    $unknown = [];
+
+    foreach (SeedData::get('monsters') as $monster => $details) {
+        foreach ($details['difficulty'] ?? [] as $tier) {
+            foreach ($tier['parts'] ?? [] as $part) {
+                if (! in_array($part['direction'], $known, true)) {
+                    $unknown[] = "$monster: {$tier['difficulty']->name} -> {$part['icon']} -> {$part['direction']}";
+                }
+            }
+        }
+    }
+
+    expect($unknown)->toBeEmpty();
+});
+
+test('every monster resistance declares exactly the ten known elements', function (): void {
+    $known = [
+        'fire', 'water', 'thunder', 'ice', 'dragon',
+        'paralysis', 'poison', 'sleep', 'nitro', 'stun',
+    ];
+    $wrong = [];
+
+    foreach (SeedData::get('monsters') as $monster => $details) {
+        $keys = array_keys($details['resistance'] ?? []);
+        sort($keys);
+        $sortedKnown = $known;
+        sort($sortedKnown);
+
+        if ($keys !== $sortedKnown) {
+            $wrong[] = $monster;
+        }
+    }
+
+    expect($wrong)->toBeEmpty();
+});
+
+test('every monster mechanics section is shaped bilingually', function (): void {
+    // Monster::localizeMechanics() walks this structure with no guards and
+    // would throw a TypeError on a malformed entry.
+    $isBilingual = fn ($value): bool => is_array($value) && array_key_exists('en', $value) && array_key_exists('es', $value);
+    $malformed = [];
+
+    foreach (SeedData::get('monsters') as $monster => $details) {
+        foreach ($details['mechanics'] ?? [] as $section) {
+            if (! $isBilingual($section['title'] ?? null)) {
+                $malformed[] = "$monster: section title";
+
+                continue;
+            }
+
+            foreach ($section['description'] ?? [] as $item) {
+                if (! $isBilingual($item['title'] ?? null)) {
+                    $malformed[] = "$monster: {$section['title']['en']} -> item title";
+                }
+
+                if (! $isBilingual($item['description'] ?? null)) {
+                    $malformed[] = "$monster: {$section['title']['en']} -> item description";
+                }
+            }
+        }
+    }
+
+    expect($malformed)->toBeEmpty();
+});

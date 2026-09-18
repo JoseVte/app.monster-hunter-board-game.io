@@ -1,13 +1,7 @@
 <?php
 
-use App\Models\Item;
 use App\Models\User;
 use Inertia\Inertia;
-use App\Models\Armor;
-use App\Models\Weapon;
-use App\Models\Monster;
-use App\Enum\MonsterCategory;
-use App\Enum\MonsterExpansion;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SearchController;
@@ -21,6 +15,10 @@ use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\CampaignHunterItemController;
 use App\Http\Controllers\CampaignInvitationController;
 use App\Http\Controllers\Auth\InvitationAcceptController;
+use App\Http\Controllers\Wiki\ItemController as WikiItemController;
+use App\Http\Controllers\Wiki\ArmorController as WikiArmorController;
+use App\Http\Controllers\Wiki\WeaponController as WikiWeaponController;
+use App\Http\Controllers\Wiki\MonsterController as WikiMonsterController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,29 +67,24 @@ Route::middleware([
         Route::get('/', fn () => Inertia::render('Wiki/Index'))->name('index');
 
         Route::prefix('monsters')->name('monster.')->group(function (): void {
-            Route::get('/', fn () => Inertia::render('Wiki/Monster/Index', [
-                'filter' => [
-                    'category' => MonsterCategory::asSelectable(),
-                    'expansion' => MonsterExpansion::asSelectable(),
-                ],
-            ]))->name('index');
-
-            Route::get('{monster}', fn (Monster $monster) => Inertia::render('Wiki/Monster/Show', compact('monster')))->name('show');
+            Route::get('/', [WikiMonsterController::class, 'index'])->name('index');
+            Route::get('{monster}', [WikiMonsterController::class, 'detail'])->name('show');
         });
 
         Route::prefix('items')->name('item.')->group(function (): void {
-            Route::get('/', fn () => Inertia::render('Wiki/Item/Index'))->name('index');
-            Route::get('{item}', fn (Item $item) => Inertia::render('Wiki/Item/Show', compact('item')))->name('show');
+            Route::get('/', [WikiItemController::class, 'index'])->name('index');
+            Route::get('{item}', [WikiItemController::class, 'detail'])->name('show');
         });
 
         Route::prefix('armors')->name('armor.')->group(function (): void {
-            Route::get('/', fn () => Inertia::render('Wiki/Armor/Index'))->name('index');
-            Route::get('{armor}', fn (Armor $armor) => Inertia::render('Wiki/Armor/Show', compact('armor')))->name('show');
+            Route::get('/', [WikiArmorController::class, 'index'])->name('index');
+            Route::get('{armor}', [WikiArmorController::class, 'detail'])->name('show');
         });
 
         Route::prefix('weapons')->name('weapon.')->group(function (): void {
-            Route::get('/', fn () => Inertia::render('Wiki/Weapon/Index'))->name('index');
-            Route::get('{weapon}', fn (Weapon $weapon) => Inertia::render('Wiki/Weapon/Show', compact('weapon')))->name('show');
+            Route::get('/', [WikiWeaponController::class, 'index'])->name('index');
+            Route::get('type/{weaponType}', [WikiWeaponController::class, 'show'])->name('type');
+            Route::get('{weapon}', [WikiWeaponController::class, 'detail'])->name('show');
         });
     });
 
@@ -128,6 +121,8 @@ Route::middleware([
     Route::get('campaigns/{campaign}/hunters/{hunter}/{tab?}/{weaponType?}', [CampaignHunterController::class, 'show'])
         ->name('campaigns.hunters.show')
         ->where('tab', 'items|weapons|armors');
+    Route::put('campaigns/{campaign}/hunters/{hunter}/items', [CampaignHunterItemController::class, 'storeMany'])
+        ->name('campaigns.hunters.items.store-many');
     Route::put('campaigns/{campaign}/hunters/{hunter}/items/{item}/update-count', [CampaignHunterItemController::class, 'updateCount'])
         ->name('campaigns.hunters.items.update-count');
 

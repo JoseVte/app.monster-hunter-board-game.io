@@ -11,6 +11,7 @@ use Inertia\Response;
 use App\Enum\ItemType;
 use App\Models\Hunter;
 use App\Models\Weapon;
+use App\Models\Monster;
 use App\Models\Campaign;
 use App\Models\WeaponType;
 use Illuminate\Http\Request;
@@ -63,7 +64,22 @@ class CampaignHunterController extends Controller
         );
         $commonItems = Item::where('type', ItemType::COMMON->name)->get();
         $otherItems = Item::where('type', ItemType::OTHER->name)->get();
-        $monsterItems = Item::where('type', ItemType::MONSTER_PART->name)->get();
+        // Grouped by the monster they come from, so the picker can put a heading
+        // over each set. A part dropped by more than one monster is listed under
+        // each, and the handful that belong to none go last under their own.
+        $monsterItems = Item::with('monsters')
+            ->where('type', ItemType::MONSTER_PART->name)
+            ->get()
+            ->flatMap(fn (Item $item) => $item->monsters->isEmpty()
+                ? [['monster' => __('Other'), 'item' => $item]]
+                : $item->monsters->map(fn (Monster $monster) => ['monster' => $monster->name, 'item' => $item]))
+            ->groupBy('monster')
+            ->map(fn (Collection $entries, string $monster): array => [
+                'monster' => $monster,
+                'items' => $entries->pluck('item')->values(),
+            ])
+            ->sortBy(fn (array $group): string => $group['monster'] === __('Other') ? 'zzz' : $group['monster'])
+            ->values();
 
         $tabOpened = $tab;
 

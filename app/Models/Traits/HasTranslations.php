@@ -22,6 +22,31 @@ trait HasTranslations
         );
     }
 
+    /**
+     * A name in any language the app carries. The wiki is read in one locale but
+     * the pieces are as often known by the other, so a search that only looked
+     * at the current one would miss half of what a player types.
+     *
+     * json_extract rather than the `->` operator: on MySQL the extracted value
+     * keeps a binary collation and compares case sensitively, so it is lowered
+     * on both sides. Both MySQL and sqlite carry the function, so this one is
+     * covered by the suite where scopeSearchTranslate could not be.
+     */
+    public function scopeWhereNameLike(Builder $builder, ?string $value): Builder
+    {
+        if (blank($value)) {
+            return $builder;
+        }
+
+        $term = '%'.mb_strtolower(trim($value)).'%';
+
+        return $builder->where(function (Builder $query) use ($term): void {
+            foreach (config('app.locales-available') as $locale) {
+                $query->orWhere(DB::raw("lower(json_extract(name, '$.".$locale."'))"), 'like', $term);
+            }
+        });
+    }
+
     public function toArray(): array
     {
         $attributes = parent::toArray();

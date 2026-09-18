@@ -189,12 +189,13 @@ stands in for the symbol rather than repeating it, and the name goes in the tool
 `:kinsect_icon_1:` and `:deviation_icon_high:`, so a pattern anchored on that suffix walks
 past eleven of them. The match is `:([a-z0-9_]+):`.
 
-What actually reaches a page today is narrower than it looks. Of 47 distinct tokens in the
-data, **only 11 render**, all of them in armour skill descriptions, and all 11 have images.
-Fifteen sit in weapon type descriptions, which are stored but which no component displays.
-The other 19 are in the `difficulty`, `resistance` and `rewards` blocks of `monsters.php`, and
-`MonstersSeeder` reads only `name`, `category` and `expansion`, so they never reach a
-database at all.
+What reaches a page has grown since `MonstersSeeder` started reading and seeding
+`resistance`, `setup`, `mechanics` (with its `ability` and `parts`) and `rewards`, not just
+`name`, `category` and `expansion`. Monster ability, mechanics and reward text now carries
+its tokens all the way to the Monster Show page. Some of those tokens have real artwork or
+a curated label; several still render through the auto-humanized fallback badge, which is
+a plain but safe rendering, not a missing seed path. Fifteen tokens still sit only in weapon
+type descriptions, which are stored but which no component displays.
 
 **Five armour skills have no description in either language** (Maximum Might, Agitator,
 Nergigante Hunger, Kushala Daora Flight, Handicraft) and each is attached to an armour, so
@@ -205,6 +206,62 @@ them quietly.
 every mapped icon has a file on disk, nothing is both drawn and pending, nothing is pending
 that the data no longer mentions, and no token is written without its leading colon, which
 had already happened once in `lance.php`.
+
+### Monster wiki page
+
+`Monster` gained real schema for what the seed data had always declared but
+`MonstersSeeder` never read: `resistance_{fire,water,thunder,ice,dragon,paralysis,poison,
+sleep,nitro,stun}` (nullable ints, null meaning the monster has no rating for it, not zero),
+`setup` and `mechanics`, plus three child tables, `monster_difficulties` (one row per
+Easy/Normal/Hard tier: stars, health, ability), `monster_parts` (the body-part break rows
+under a tier, positional) and `monster_rewards` (the roll-1-to-12 table).
+
+**`App\Models\MonsterDifficulty` and `App\Enum\MonsterDifficulty` are two different things
+that share a name.** The enum (`EASY`, `NORMAL`, `HARD`, `ARENA_EASY`, `ARENA_NORMAL`,
+`ARENA_HARD`) already existed and is what `Day::$difficulty` casts to, the difficulty a hunt
+is played at. The model is the new one, a monster's own per-tier stats row, and its
+`difficulty` column happens to be cast to that same enum. Nothing joins the two; a `Day`'s
+difficulty and a `MonsterDifficulty` row are unrelated facts that happen to share a value.
+
+**`mechanics` is not translatable the normal way.** It is a list of
+`{title, description: [{title, description}]}` sections, every leaf already bilingual in the
+seed data, and Spatie's trait only flattens a flat string per locale. `Monster::mechanics()`
+is a custom `Attribute::make(get:, set:)` instead, walking the structure by hand and
+resolving the current locale on read.
+
+**`Monster::difficulties()` orders by a portable `CASE WHEN`, not `stars`.** Ordering by
+`stars` alone only happens to work while no monster pairs an arena tier with a non-arena one
+at the same rating; the enum has six cases (`EASY, NORMAL, HARD, ARENA_EASY, ARENA_NORMAL,
+ARENA_HARD`) and the relation orders on that declared order via `orderByRaw`. MySQL's
+`FIELD()` would have been the obvious tool here and was deliberately not used, since the test
+suite runs on sqlite, which has no `FIELD()` function.
+
+**A monster's own icon (`icon_path`/`icon_url`) is a separate thing from a body-part icon.**
+The former is the emblem printed on the physical card (all 15 sourced from Kiranico, in
+`resources/images/monsters/`), seeded the same way `WeaponType.image_path` already was, and
+falls back to a generated initials avatar when the file is absent. The latter, which body
+part (`head`/`back`/`claw`, ...) a break row refers to, has no artwork at all and renders as
+a humanized text label plus a Unicode arrow instead; see "Known gaps" below.
+
+### Weapon and monster icons
+
+The 14 weapon type icons were raster PNGs, numbered rather than named
+(`icon_weapon_01.png`...`icon_weapon_14.png`). They are now SVGs, traced with `potrace` plus
+an ImageMagick posterize/mask preprocessing step, named after the weapon type they actually
+are (`resources/images/weapon-types/great-sword.svg`, and so on), with the seed data's
+`'image'` key updated to match. `WeaponsSeeder`'s upload used to hardcode the destination
+extension to `.png` regardless of the source file, harmless while every source was a PNG and
+silently wrong the moment one was not; it now preserves the real extension.
+
+**A second, `currentColor` variant exists for one reason: an `<img src="...svg">` cannot be
+recoloured with CSS.** It loads as an opaque external resource, which is why the crafting
+tree's existing rarity tinting only ever worked on `WeaponsIcon.vue` (an inline `<svg>`
+component using `stroke="currentColor"`). `resources/images/weapon-types/mono/*.svg` swaps
+the traced icons' hardcoded grays for `currentColor` plus `fill-opacity` (still three tones,
+now driven by one colour), and `WeaponTypeIcon.vue` inlines the right one via
+`import.meta.glob(..., { query: '?raw' })` and `v-html`, keyed by parsing the slug out of
+`weaponType.image_url`. The plain full-colour SVG is still what every non-tree `<img
+:src="weaponType.image_url">` uses.
 
 ### Styling
 
@@ -475,7 +532,7 @@ Where the project landed:
 
 Verified on every step: the full CI job in a clean checkout, the seeders against a scratch
 sqlite database, and the app driven in a real browser. The seeders produce 250 weapons,
-14 monsters and 18 achievements.
+15 monsters and 18 achievements.
 
 **`composer coverage` does not run locally.** pcov is not built for the Herd PHP 8.5 binary
 and the project now requires 8.5, so there is no coverage driver to fall back on. The last
@@ -487,21 +544,35 @@ controllers and listeners in the 90s.
 Verified against the code, not carried over from an earlier pass.
 
 - Google Analytics no longer goes through a package, see "Analytics" above.
-- **Weapon and armour `expansion` reaches no database.** Every entry declares which box it
-  comes from and `SeedDataTest` checks it, but no seeder reads the key and no column exists.
-  Its home is `weapon_recipes`, beside `branch`, since the two dual blades pair an expansion
-  with each recipe.
-- **`MonstersSeeder` reads three of the seven keys a monster declares.** `setup`, `mechanics`,
-  `difficulty`, `resistance` and `rewards` are written and validated but never seeded, and
-  there are no tables for them. That is where the Kirin and Kushala rules live.
+- **`Wiki/Weapon/Detail.vue` loads `attacksToAdd`/`attacksToRemove` but renders neither.**
+  `WeaponController::detail()` eager-loads both relations; the page shows defense, rarity,
+  the damage/combo counts and the recipe/upgrade tree, but nothing about which attack cards
+  an upgrade adds or removes, and nothing about elemental or status attacks either.
+- **Armour resistance icons are drawn but unwired.** The five `*_resistance_icon` pentagons
+  in `resources/js/icons.js` exist and only `Wiki/Armor` would use them. `Wiki/Armor/Index.vue`
+  and every page's breadcrumb have since had their own, narrower phone fixes (a collapsible
+  monster list and a collapsed breadcrumb trail below `sm:`), but that is not the broader
+  mobile responsive pass `tests/Browser/ShotsTest.php` tracks (`dashboard`, `campaigns`,
+  `items`, `weapons-types`, `weapons-tree`, `armors`, `profile`, `level`, none of them Wiki
+  Armor) — wiring the icons in is still open on its own.
+- **A monster's body-part icon and direction have no artwork.** `Show.vue` renders a
+  humanized label (`Head`, `Claw`, ...) and a Unicode arrow instead of the icon shown on the
+  physical card, and a full "paper card" recreation view (parchment layout, per-monster
+  portrait) is designed but not built. Both are blocked on the same thing: a pasted chat
+  image has no file path to crop from, so this needs the reference art saved to disk first.
 - Sqlite is used for tests while production is MySQL, so `scopeSearchTranslate`, which
   relies on MySQL JSON functions, cannot be covered by the Feature suite.
 
 ### Suggested next step
 
-The two gaps above are both the same shape: data that is written, validated and going
-nowhere. The expansion column is the smaller of the two and unlocks filtering the weapon
-tree by the boxes a group owns.
+No single gap dominates the way the `expansion` column used to (that one is done: it lives
+on `weapon_recipes` and `armors`, seeded, filterable from the wiki). What is left is a set of
+independent, smaller items, in roughly the order they unblock the most:
+
+1. `Wiki/Weapon/Detail.vue`'s attack cards and element/status display, since the data is
+   already loaded and only the template is missing.
+2. Monster body-part icons and the paper-card view, once reference art is on disk.
+3. Armour resistance icons. No longer blocked on anything specific, just not done yet.
 
 Before deploying: **production has to be on PHP 8.5** (`require.php` is `^8.5`, so an older
 binary dies in `vendor/composer/platform_check.php`), and **the OAuth callback URLs

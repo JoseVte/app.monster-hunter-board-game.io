@@ -11,7 +11,7 @@ You have attack cards with :charge_hammer_icon_1: or :charge_hammer_icon_2: in y
         'es' => 'Cuando juegas una carta de ataque que inflige daño, si seleccionas una parte del cuerpo de la cabeza para atacar, la carta de ataque gana +1 :break_icon:.<br>
 Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en tu mazo. Algunas de tus cartas de ataque tienen reglas especiales que atraen cartas de daño adicionales para estos símbolos.',
     ],
-    'image' => 'icon_weapon_05.png',
+    'image' => 'weapon-types/hammer.svg',
     'weapons' => [
         'Iron Hammer' => [
             'default' => true,

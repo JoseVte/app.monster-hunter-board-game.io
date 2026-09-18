@@ -530,6 +530,28 @@
     @apply bg-primary-700 text-white dark:bg-primary-800;
 }
 
+/* A group heading is the monster a set of parts drops from, not something to
+   pick, so it reads as a heading rather than as a pale option.
+
+   The library writes #ededed !important on a disabled option, which is what a
+   heading is to it, so this answers in kind. Nowhere else here needs it. */
+.multiselect .multiselect__option--group,
+.multiselect .multiselect__option--disabled,
+.multiselect .multiselect__option--group.multiselect__option--highlight,
+.multiselect .multiselect__option--disabled.multiselect__option--highlight {
+    background: var(--color-gray-100) !important;
+    color: var(--color-gray-600) !important;
+    @apply text-xs font-semibold tracking-widest uppercase;
+}
+
+.dark .multiselect .multiselect__option--group,
+.dark .multiselect .multiselect__option--disabled,
+.dark .multiselect .multiselect__option--group.multiselect__option--highlight,
+.dark .multiselect .multiselect__option--disabled.multiselect__option--highlight {
+    background: var(--color-gray-800) !important;
+    color: var(--color-parchment-dim) !important;
+}
+
 .multiselect .multiselect__placeholder,
 .multiselect .multiselect__input::placeholder {
     @apply text-gray-500 dark:text-gray-500;

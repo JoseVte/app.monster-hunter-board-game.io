@@ -11,7 +11,7 @@ When you draw attack cards you may choose any number of cards from either attack
         'es' => 'Durante la configuración, divide las cartas de ataque Hacha :switch_axe_axe_icon: y Espada :switch_axe_sword_icon: en dos mazos de ataque separados. Los símbolos de hacha y espada se encuentran en la parte posterior de las cartas de ataque del cazador de hachas.<br>
 Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cualquier mazo de ataque, hasta que el tamaño de tu mano sea 5. Las cartas de ataque de Hacha y Espada tienen cada una sus propias pilas de descarte.',
     ],
-    'image' => 'icon_weapon_09.png',
+    'image' => 'weapon-types/switch-axe.svg',
     'weapons' => [
         'Proto Iron Axe' => [
             'default' => true,

@@ -13,7 +13,7 @@ Song effects last until the start of your next turn.',
 Durante tu turno puedes tocar una canción siguiendo las instrucciones en la carta de Actuación.<br>
 Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
     ],
-    'image' => 'icon_weapon_06.png',
+    'image' => 'weapon-types/hunting-horn.svg',
     'song-effects' => [
         [
             'name' => [

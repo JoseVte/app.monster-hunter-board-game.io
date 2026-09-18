@@ -10,6 +10,7 @@ import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { useRegisterSW } from 'virtual:pwa-register/vue'
 import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
 import { replaceIcons } from './icons';
+import { getRarityColor } from './rarity';
 import { startAnalytics } from './analytics';
 import localeMessages from "./vue-i18n-locales.generated";
 useRegisterSW();
@@ -38,23 +39,6 @@ createInertiaApp({
         return createApp({ render: () => h(App, props) })
             .use({
                 install: async (app) => {
-                    const getRarityColor = (rarity) => {
-                        switch (rarity) {
-                        case 1:
-                            return 'text-gray-400 dark:text-gray-300';
-                        case 2:
-                            return 'text-lime-600';
-                        case 3:
-                            return 'text-green-600';
-                        case 4:
-                            return 'text-blue-500';
-                        case 5:
-                            return 'text-orange-500';
-                        default:
-                            return 'text-black dark:text-white';
-                        }
-                    };
-
                     app.mixin({
                         methods: {
                             getRarityColor: getRarityColor,

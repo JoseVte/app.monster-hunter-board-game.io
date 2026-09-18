@@ -46,7 +46,12 @@ class WeaponsSeeder extends Seeder
                 $weaponType = WeaponType::updateOrCreate(['name->en' => $weaponsByType['name']['en']], [
                     'name' => $weaponsByType['name'],
                     'description' => Arr::get($weaponsByType, 'description'),
-                    'image_path' => $storage->putFileAs('weapon-types', resource_path('images/'.$weaponsByType['image']), Str::slug($weaponsByType['name']['en']).'.png', 'public'),
+                    'image_path' => $storage->putFileAs(
+                        'weapon-types',
+                        resource_path('images/'.$weaponsByType['image']),
+                        Str::slug($weaponsByType['name']['en']).'.'.pathinfo($weaponsByType['image'], PATHINFO_EXTENSION),
+                        'public',
+                    ),
                 ]);
 
                 foreach (Arr::get($weaponsByType, 'weapons', []) as $weaponName => $weaponDetails) {
@@ -126,6 +131,11 @@ class WeaponsSeeder extends Seeder
         $branches = (array) Arr::get($details, 'branch', [null]);
         $sets = $this->materialSets($details);
 
+        // The expansion pairs with the branch by position, the way the materials
+        // do. A branch generic to every box declares none.
+        $expansions = Arr::get($details, 'expansion');
+        $expansions = is_array($expansions) ? $expansions : [$expansions];
+
         foreach ($branches as $position => $branch) {
             $recipe = WeaponRecipe::updateOrCreate([
                 'weapon_id' => $weapon->id,
@@ -133,6 +143,7 @@ class WeaponsSeeder extends Seeder
             ], [
                 'branch' => $branch,
                 'branch_id' => $branch ? Monster::where('name->en', $branch)->value('id') : null,
+                'expansion' => $expansions[$position] ?? $expansions[0] ?? null,
             ]);
 
             foreach ($sets[$position] ?? $sets[0] ?? [] as $itemName => $count) {

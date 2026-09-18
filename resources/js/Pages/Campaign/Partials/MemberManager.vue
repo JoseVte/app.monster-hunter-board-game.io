@@ -160,7 +160,7 @@ const displayableRole = (role) => {
                                             <span class="flex h-6 w-6 min-h-6 min-w-6 items-center justify-center rounded-full bg-gray-200 dark:bg-gray-900">
                                                 <img
                                                     v-if="user.membership.hunter.weapon_type.image_url"
-                                                    class="h-4 w-4"
+                                                    class="h-4 w-4 drop-shadow-sm"
                                                     :src="user.membership.hunter.weapon_type.image_url"
                                                     :alt="user.membership.hunter.weapon_type.name"
                                                 >

@@ -29,7 +29,7 @@ Cuando juegas cartas de ataque, ignoras los arcos de monstruos. Cuando juegues c
 Si la carta de desviación que eliges falla, no resuelvas tu carta de ataque. Sin embargo, aún coloca la carta de ataque boca arriba en tu tablero de resistencia.<br>
 Después de colocar la carta de ataque boca arriba en tu tablero de resistencia, descarta ambas cartas de desviación. Cuando el mazo de desviación esté vacío, baraja su pila de descarte para crear un nuevo mazo de desviación.',
     ],
-    'image' => 'icon_weapon_13.png',
+    'image' => 'weapon-types/light-bowgun.svg',
     'weapons' => [
         'Chain Blitz' => [
             'default' => true,

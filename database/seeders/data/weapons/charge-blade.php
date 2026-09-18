@@ -9,7 +9,7 @@ return [
         'en' => 'When you play an attack card with :charged_blade_vial_plus:, draw +1 :damage_attack_icon: for every :charged_blade_vial: on face up attack cards on your stamina board. Then discard the rightmost face up attack card with :charged_blade_vial: on your stamina board.',
         'es' => 'Cuando juegas una carta de ataque con :charged_blade_vial_plus:, roba +1 :damage_attack_icon: por cada :charged_blade_vial: en cartas de ataque boca arriba en tu tablero de resistencia. Luego descarta la carta de ataque boca arriba situada más a la derecha con :charged_blade_vial: en tu tablero de resistencia.',
     ],
-    'image' => 'icon_weapon_10.png',
+    'image' => 'weapon-types/charge-blade.svg',
     'weapons' => [
         'Proto Commission Axe' => [
             'default' => true,

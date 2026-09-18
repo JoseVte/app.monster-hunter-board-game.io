@@ -5,7 +5,7 @@ return [
         'en' => 'Sword & Shield',
         'es' => 'Espada y Escudo',
     ],
-    'image' => 'icon_weapon_03.png',
+    'image' => 'weapon-types/sword-shield.svg',
     'weapons' => [
         'Hunter\'s Knife' => [
             'default' => true,

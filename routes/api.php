@@ -1,8 +1,6 @@
 <?php
 
-use App\Models\Monster;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -30,22 +28,4 @@ Route::post('locale', static function () {
 
     // Response
     return redirect()->back();
-});
-
-Route::prefix('monsters')->name('monster.')->group(function (): void {
-    Route::get('filter', static function (Request $request): JsonResponse {
-        $query = Monster::query();
-
-        if ($request->has('name')) {
-            $query->searchTranslate('name', $request->get('name'));
-        }
-        if ($request->has('category')) {
-            $query->whereCategory($request->get('category'));
-        }
-        if ($request->has('expansion')) {
-            $query->whereExpansion($request->get('category'));
-        }
-
-        return response()->json($query->paginate(5));
-    })->name('filter');
 });

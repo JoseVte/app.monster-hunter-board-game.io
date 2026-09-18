@@ -29,6 +29,7 @@ class ArmorsSeeder extends Seeder
                         'es' => Arr::get($armorDetails, 'name', $armorName),
                     ],
                     'branch' => Arr::get($armorDetails, 'branch'),
+                    'expansion' => Arr::get($armorDetails, 'expansion'),
                     'is_default' => Arr::get($armorDetails, 'default', false),
                     'rarity' => Arr::get($armorDetails, 'rarity', 1),
                     'defense' => Arr::get($armorDetails, 'defense', 0),

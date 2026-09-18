@@ -156,11 +156,28 @@ class Hunter extends Model
      */
     private function canAfford(Collection $items): bool
     {
-        return $items->every(function (Item $item): bool {
-            $owned = $this->items->firstWhere('id', $item->id);
+        return $this->missingItems($items)->isEmpty();
+    }
 
-            return $owned && $owned->pivot->number >= $item->pivot->number;
-        });
+    /**
+     * The gap between what a recipe or an armour needs and what the hunter
+     * carries, only the items actually short. An empty list says the materials
+     * are not what is holding this back.
+     *
+     * @param  Collection<int, Item>  $items
+     * @return Collection<int, array{name: string, missing: int}>
+     */
+    public function missingItems(Collection $items): Collection
+    {
+        return $items
+            ->map(function (Item $item): ?array {
+                $owned = $this->items->firstWhere('id', $item->id)?->pivot->number ?? 0;
+                $missing = $item->pivot->number - $owned;
+
+                return $missing > 0 ? ['name' => $item->name, 'missing' => $missing] : null;
+            })
+            ->filter()
+            ->values();
     }
 
     public function canCraftArmor(Armor $armor): bool

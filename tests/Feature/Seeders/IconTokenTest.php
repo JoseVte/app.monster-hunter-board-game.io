@@ -56,18 +56,18 @@ test('no icon token is written without its leading colon', function (): void {
 test('every icon token the data uses is known to the frontend', function (): void {
     $known = array_merge(mappedIcons(), pendingIcons());
 
-    // Monster abilities and rewards carry tokens too, but MonstersSeeder reads
-    // only name, category and expansion, so none of that reaches a page yet.
-    // They are listed rather than ignored: the day those blocks are seeded this
-    // fails and says exactly which symbols still need artwork.
+    // Monster abilities, mechanics and rewards carry tokens too, and MonstersSeeder
+    // now reads and seeds resistance, setup, mechanics (with ability and parts) and
+    // rewards, so all of that reaches a page. Most of what it carries already has
+    // artwork or a pending label; what is left here still renders, through the
+    // auto-humanized fallback badge rather than a curated one. They are listed
+    // rather than ignored: a genuinely new, unmapped token still fails this test
+    // and says exactly which symbol needs triage.
     $notSeededYet = [
-        'back_icon', 'blast_icon', 'card_behaviour_icon', 'claw_icon', 'damage_icon',
-        'damage_monster_icon', 'dodge_icon', 'far_hunter_icon', 'head_icon',
-        'hunter_behaviour_icon', 'investigation_behaviour_icon', 'leg_icon',
-        'movement_icon', 'near_hunter_icon', 'paralysis_icon', 'range_icon',
-        'black_spike_icon', 'nergigante_icon', 'nitro_icon', 'paw_icon', 'person_icon',
-        'spike_icon', 'supernova_icon', 'tail_icon', 'thunder_resistance_icon', 'tornado_icon',
-        'wing_icon',
+        'back_icon', 'claw_icon', 'dodge_icon', 'head_icon', 'leg_icon',
+        'movement_icon', 'range_icon', 'black_spike_icon', 'nergigante_icon',
+        'paw_icon', 'person_icon', 'spike_icon', 'supernova_icon', 'tail_icon',
+        'tornado_icon', 'wing_icon',
     ];
 
     $unknown = array_values(array_diff(seedDataTokens(), $known, $notSeededYet));

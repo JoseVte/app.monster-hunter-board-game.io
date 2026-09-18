@@ -6,7 +6,7 @@ return [
         'es' => 'Arco',
     ],
     'description' => '',
-    'image' => 'icon_weapon_12.png',
+    'image' => 'weapon-types/bow.svg',
     'weapons' => [
         'Iron Bow' => [
             'default' => true,

@@ -9,7 +9,7 @@ return [
         'en' => 'After you resolve an attack card, if there are at least 3 face up attack cards with :lance_icon: on your stamina board you may discard 3 face up attack cards with :lance_icon: from your stamina board.',
         'es' => 'Después de resolver una carta de ataque, si hay al menos 3 cartas de ataque boca arriba con :lance_icon: en tu tablero de resistencia, puedes descartar 3 cartas de ataque boca arriba con :lance_icon: de tu tablero de resistencia.',
     ],
-    'image' => 'icon_weapon_07.png',
+    'image' => 'weapon-types/lance.svg',
     'weapons' => [
         'Iron Lance' => [
             'default' => true,

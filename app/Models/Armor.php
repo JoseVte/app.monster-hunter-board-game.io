@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Enum\ArmorType;
 use Laravel\Scout\Searchable;
+use App\Enum\MonsterExpansion;
 use App\Models\Pivot\CountItemArmor;
 use App\Models\Traits\HasTranslations;
 use Illuminate\Database\Eloquent\Model;
@@ -20,6 +21,7 @@ class Armor extends Model
     use Searchable;
 
     protected $fillable = [
+        'expansion',
         'type',
         'name',
 
@@ -34,6 +36,7 @@ class Armor extends Model
     ];
 
     protected $casts = [
+        'expansion' => MonsterExpansion::class,
         'type' => ArmorType::class,
         'is_default' => 'boolean',
     ];

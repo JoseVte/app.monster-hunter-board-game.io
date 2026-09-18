@@ -4,7 +4,7 @@ import { Link, useForm } from "@inertiajs/vue3";
 import _ from "lodash";
 import CogIcon from "@/Components/Icons/CogIcon.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
-import WeaponsIcon from "@/Components/Icons/WeaponsIcon.vue";
+import WeaponTypeIcon from "@/Components/WeaponTypeIcon.vue";
 import Check from "@/Components/Icons/Check.vue";
 import CraftWeaponModal from "@/Pages/Hunter/Partials/CraftWeaponModal.vue";
 
@@ -14,10 +14,21 @@ const props = defineProps({
     hunter: Object,
     weaponType: Object,
     weapons: [Array, Object],
+    // The wiki passes the ids that match its filters; everything else is dimmed.
+    matching: {
+        type: Array,
+        default: null,
+    },
 });
 
+const dimmed = (weapon) => props.matching !== null
+    && props.matching.length > 0
+    && ! props.matching.includes(weapon.id);
+
+// The wiki draws the same tree with nobody holding it, so everything that asks
+// what a hunter owns answers zero and the way back and the carry button go.
 const hunterWeaponCount = (weapon) => _.filter(
-    props.hunter.weapons,
+    props.hunter?.weapons ?? [],
     (hunterWeapon) => hunterWeapon.id === weapon.id,
 ).length;
 
@@ -103,7 +114,7 @@ const linkClass = (path, step, root, weapon, row) => {
 
 // One type goes to the fight and a hunter never goes out empty handed, so the
 // one in hand cannot be put down, only replaced by picking another.
-const carried = computed(() => props.hunter.weapon_type_id === props.weaponType.id);
+const carried = computed(() => props.hunter?.weapon_type_id === props.weaponType.id);
 
 const form = useForm({});
 const carry = () => {
@@ -123,6 +134,7 @@ const maxRarity = computed(() => Math.max(
 <template>
     <div class="mt-6 px-4 sm:px-0">
         <Link
+            v-if="hunter"
             :href="route('campaigns.hunters.show', [campaign, hunter, 'weapons'])"
             class="flex items-center text-sm text-gray-800 dark:text-gray-200"
             preserve-scroll
@@ -148,7 +160,7 @@ const maxRarity = computed(() => Math.max(
         <!-- The choice of what to hunt with lives with the tree, where a player
              can see the weapon before taking it. -->
         <div
-            v-if="canEdit"
+            v-if="canEdit && hunter"
             class="mt-4 flex items-center gap-3"
         >
             <SecondaryButton
@@ -183,6 +195,7 @@ const maxRarity = computed(() => Math.max(
                 v-for="entry in weapons"
                 :key="entry.root.id"
                 class="mh-tree mt-8 grid min-w-max items-stretch gap-x-6 gap-y-4"
+                :class="{ 'mh-tree-flat': !hunter }"
                 :style="{ gridTemplateColumns: `2.25rem repeat(${maxRarity}, var(--mh-col))` }"
             >
                 <!-- The root and the path that continues its own material share a
@@ -197,7 +210,7 @@ const maxRarity = computed(() => Math.max(
                             :campaign="campaign"
                             :hunter="hunter"
                             :weapon="entry.root"
-                            :class-container="isLit(entry.root) ? 'mh-card-lit' : ''"
+                            :class-container="[isLit(entry.root) ? 'mh-card-lit' : '', dimmed(entry.root) ? 'opacity-40' : '']"
                         >
                             <div class="flex items-center gap-3">
                                 <!-- The owned mark rides on the icon. On its own line it took
@@ -205,12 +218,13 @@ const maxRarity = computed(() => Math.max(
                                  names in this tree too little room and clipped the longest
                                  of them mid word. -->
                                 <span class="relative flex h-8 w-8 min-h-8 min-w-8 items-center justify-center rounded-full bg-gray-300 dark:bg-gray-900">
-                                    <WeaponsIcon
+                                    <WeaponTypeIcon
+                                        :weapon-type="weaponType"
                                         class="h-4 w-4"
                                         :class="getRarityColor(entry.root.rarity)"
                                     />
                                     <Check
-                                        v-if="entry.root.is_default || hunterWeaponCount(entry.root)"
+                                        v-if="hunter && (entry.root.is_default || hunterWeaponCount(entry.root))"
                                         class="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-gray-300 text-primary-500 dark:bg-gray-900"
                                     />
                                 </span>
@@ -253,11 +267,12 @@ const maxRarity = computed(() => Math.max(
                                 :campaign="campaign"
                                 :hunter="hunter"
                                 :weapon="weapon"
-                                :class-container="isLit(weapon) ? 'mh-card-lit' : ''"
+                                :class-container="[isLit(weapon) ? 'mh-card-lit' : '', dimmed(weapon) ? 'opacity-40' : '']"
                             >
                                 <div class="flex items-center gap-3">
                                     <span class="relative flex h-8 w-8 min-h-8 min-w-8 items-center justify-center rounded-full bg-gray-300 dark:bg-gray-900">
-                                        <WeaponsIcon
+                                        <WeaponTypeIcon
+                                            :weapon-type="weaponType"
                                             class="h-4 w-4"
                                             :class="getRarityColor(weapon.rarity)"
                                         />
@@ -270,7 +285,7 @@ const maxRarity = computed(() => Math.max(
                                             class="absolute -bottom-1 -right-1 flex h-4 min-w-4 items-center justify-center rounded-full bg-gray-300 px-0.5 text-[0.6rem] font-bold leading-none text-primary-500 tabular-nums dark:bg-gray-900"
                                         >{{ hunterWeaponCount(weapon) }}</span>
                                         <Check
-                                            v-else-if="weapon.is_default || hunterWeaponCount(weapon)"
+                                            v-else-if="hunter && (weapon.is_default || hunterWeaponCount(weapon))"
                                             class="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-gray-300 text-primary-500 dark:bg-gray-900"
                                         />
                                     </span>
@@ -310,6 +325,13 @@ const maxRarity = computed(() => Math.max(
         --mh-col: 220px;
         --mh-row: 9.5rem;
     }
+}
+
+/* Nobody holding it means no equip and no craft button, so the row only has to
+   hold an icon and a name. */
+.mh-tree-flat,
+.mh-tree-flat.mh-tree {
+    --mh-row: 5rem;
 }
 
 .dark .mh-tree {

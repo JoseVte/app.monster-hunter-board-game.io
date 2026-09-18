@@ -6,7 +6,7 @@ return [
         'es' => 'Espadas Dobles',
     ],
     'description' => '',
-    'image' => 'icon_weapon_04.png',
+    'image' => 'weapon-types/dual-blades.svg',
     'weapons' => [
         'Matched Slicers' => [
             'default' => true,

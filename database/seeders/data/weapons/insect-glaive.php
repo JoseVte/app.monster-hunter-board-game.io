@@ -13,7 +13,7 @@ If you have three face up Kinsect: Harvest Extract cards at the end of your turn
 Al comienzo de tu turno, voltea la carta Kinsect: Harvest Extract boca abajo boca arriba. Cuando juegas una carta de ataque con una :kinsect_icon_1: :kinsect_icon_2: :kinsect_icon_3: que coincide con una carta de Kinsect: Harvest Extract boca arriba, obtiene el efecto de bonificación de la carta de Kinsect: Harvest Extract correspondiente.<br>
 Si tienes tres cartas boca arriba de Kinsect: Harvest Extract al final de tu turno, recógelas todas, barájalas y colócalas boca abajo en una fila sobre tu tablero de resistencia.',
     ],
-    'image' => 'icon_weapon_11.png',
+    'image' => 'weapon-types/insect-glaive.svg',
     'weapons' => [
         'Iron Blade' => [
             'default' => true,

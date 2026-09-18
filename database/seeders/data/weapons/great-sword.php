@@ -6,7 +6,7 @@ return [
         'es' => 'Gran Espada',
     ],
     'description' => '',
-    'image' => 'icon_weapon_01.png',
+    'image' => 'weapon-types/great-sword.svg',
     'weapons' => [
         'Buster Sword' => [
             'default' => true,

@@ -18,7 +18,8 @@ npm-debug.log
 /.fleet
 /.idea
 /.vscode
-
+/.claude
+/docs
 /mysql_backup
 /public/css
 /public/js
