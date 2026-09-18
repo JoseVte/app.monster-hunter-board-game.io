@@ -20,7 +20,7 @@ class SearchController extends Controller
 {
     public function search(Request $request): \Inertia\Response
     {
-        $results = $this->performanceSearch($request->query('query'), 100)->groupBy('class');
+        $results = $this->performanceSearch($request->query('query', ''), 100)->groupBy('class');
 
         return Inertia::render('Search', [
             'results' => $results,
@@ -30,7 +30,7 @@ class SearchController extends Controller
 
     public function globalSearch(Request $request): JsonResponse
     {
-        $results = $this->performanceSearch($request->get('keyword'));
+        $results = $this->performanceSearch($request->get('keyword', ''));
 
         return response()->json($results);
     }

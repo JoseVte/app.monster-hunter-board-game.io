@@ -10,5 +10,5 @@ test('campaigns can be deleted', function (): void {
     $response = $this->delete(route('campaigns.destroy', $campaign));
     $response->assertRedirectToRoute('dashboard');
 
-    $this->assertEquals(0, Campaign::count());
+    expect(Campaign::count())->toEqual(0);
 });

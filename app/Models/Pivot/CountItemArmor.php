@@ -4,6 +4,4 @@ namespace App\Models\Pivot;
 
 use Illuminate\Database\Eloquent\Relations\Pivot;
 
-class CountItemArmor extends Pivot
-{
-}
+class CountItemArmor extends Pivot {}

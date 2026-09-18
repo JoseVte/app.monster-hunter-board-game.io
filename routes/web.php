@@ -10,8 +10,8 @@ use App\Enum\MonsterCategory;
 use App\Enum\MonsterExpansion;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
-use Illuminate\Foundation\Application;
 use App\Http\Controllers\SearchController;
+use LevelUp\Experience\Models\Achievement;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\CampaignHunterController;
 use App\Http\Controllers\CampaignMemberController;
@@ -29,12 +29,10 @@ use App\Http\Controllers\CampaignInvitationController;
 |
 */
 
-Route::get('/', static function () {
-    return Inertia::render('Welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-    ]);
-})->name('welcome');
+Route::get('/', static fn () => Inertia::render('Welcome', [
+    'canLogin' => Route::has('login'),
+    'canRegister' => Route::has('register'),
+]))->name('welcome');
 
 Route::get('language/{language}', static function ($language) {
     session()->put('locale', $language);
@@ -130,4 +128,10 @@ Route::middleware([
         ->where('tab', 'items|weapons|armors');
     Route::put('campaigns/{campaign}/hunters/{hunter}/items/{item}/update-count', [CampaignHunterItemController::class, 'updateCount'])
         ->name('campaigns.hunters.items.update-count');
+
+    Route::get('user/level', function () {
+        $achievements = Achievement::all();
+
+        return Inertia::render('Profile/Level', compact('achievements'));
+    })->name('profile.level');
 });

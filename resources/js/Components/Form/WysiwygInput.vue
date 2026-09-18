@@ -1,84 +1,66 @@
 <script setup>
-import '@toast-ui/editor/dist/toastui-editor.css';
-import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
-import '@toast-ui/editor-plugin-table-merged-cell/dist/toastui-editor-plugin-table-merged-cell.css';
-import 'tui-color-picker/dist/tui-color-picker.css';
-import '@toast-ui/editor-plugin-color-syntax/dist/toastui-editor-plugin-color-syntax.css';
-import 'prismjs/themes/prism.css';
-import '@toast-ui/editor-plugin-code-syntax-highlight/dist/toastui-editor-plugin-code-syntax-highlight.css';
+import 'md-editor-v3/lib/style.css';
 
-import {Editor} from '@toast-ui/editor';
-import tableMergedCell from '@toast-ui/editor-plugin-table-merged-cell';
-import colorSyntax from '@toast-ui/editor-plugin-color-syntax';
-import codeSyntaxHighlight from '@toast-ui/editor-plugin-code-syntax-highlight';
-import {onMounted, ref} from 'vue';
+import {MdEditor, config} from 'md-editor-v3';
+import {computed, onBeforeUnmount, onMounted, ref} from 'vue';
+
+// The stored markdown is rendered server side with CommonMark's `html_input: strip`.
+// Turning raw HTML off here keeps the preview honest about what readers will see.
+config({
+    markdownItConfig: (md) => md.set({html: false}),
+});
 
 const props = defineProps({
     modelValue: String,
-    wysiwygOptions: {
-        type: String,
-        default: 'public'
-    }
 });
-
-let theme = localStorage.getItem('color-theme')
 
 const emit = defineEmits(['update:modelValue']);
-const container = ref(null);
-const input = ref(null);
 
-const publicWysiwygOptions = [
-    ['heading', 'bold', 'italic', 'strike'],
-    ['hr', 'quote'],
-    ['ul', 'ol', 'task', 'indent', 'outdent'],
-    ['table', 'link'],
-    ['code'],
-]
-const completeWysiwygOptions = [
-    ['heading', 'bold', 'italic', 'strike'],
-    ['hr', 'quote'],
-    ['ul', 'ol', 'task', 'indent', 'outdent'],
-    ['table', 'image', 'link'],
-    ['code', 'codeblock'],
-]
+const editor = ref(null);
 
-const publicWysiwygPlugins = [
-    tableMergedCell,
-    colorSyntax,
-]
-const completeWysiwygPlugins = [
-    tableMergedCell,
-    colorSyntax,
-    codeSyntaxHighlight,
-]
-
-onMounted(() => {
-    const e = new Editor({
-        autofocus: container.value.hasAttribute('autofocus'),
-        el: input.value,
-        height: '500px',
-        theme: theme,
-        initialValue: props.modelValue,
-        initialEditType: 'wysiwyg',
-        events: {
-            change: () => emit('update:modelValue', e.getMarkdown()),
-        },
-        toolbarItems: props.wysiwygOptions === 'public' ? publicWysiwygOptions : completeWysiwygOptions,
-        plugins: props.wysiwygOptions === 'public' ? publicWysiwygPlugins : completeWysiwygPlugins
-    });
+const value = computed({
+    get: () => props.modelValue ?? '',
+    set: (markdown) => emit('update:modelValue', markdown),
 });
 
-defineExpose({ focus: () => input.value.focus() });
+// The `dark` class on <html> is the source of truth, not localStorage: the key is unset
+// until the user toggles the theme at least once, so a fresh visitor following the OS
+// preference would otherwise always get the light editor.
+const isDark = () => document.documentElement.classList.contains('dark');
+
+const theme = ref(isDark() ? 'dark' : 'light');
+const syncTheme = () => theme.value = isDark() ? 'dark' : 'light';
+
+onMounted(() => document.addEventListener('toggleDarkMode', syncTheme));
+onBeforeUnmount(() => document.removeEventListener('toggleDarkMode', syncTheme));
+
+const toolbars = [
+    'title', 'bold', 'italic', 'strikeThrough',
+    '-',
+    'quote', 'unorderedList', 'orderedList', 'task',
+    '-',
+    'table', 'link', 'codeRow', 'code',
+    '-',
+    'revoke', 'next',
+    '=',
+    'preview', 'pageFullscreen',
+];
+
+defineExpose({focus: () => editor.value?.focus()});
 </script>
 
-/>
 <template>
-    <div
-        ref="container"
-        class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary-500 dark:focus:border-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 rounded-md shadow-sm"
-    >
-        <div
-            ref="input"
+    <div class="rounded-md shadow-sm overflow-hidden border border-gray-300 dark:border-gray-700">
+        <MdEditor
+            ref="editor"
+            v-model="value"
+            :theme="theme"
+            :toolbars="toolbars"
+            :footers="[]"
+            :no-upload-img="true"
+            :preview="false"
+            language="en-US"
+            style="height: 500px"
         />
     </div>
 </template>

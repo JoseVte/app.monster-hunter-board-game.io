@@ -13,7 +13,7 @@ enum ItemType implements TranslatableEnumContract
     case OTHER;
     case MONSTER_PART;
 
-    public function label(string $locale = null): string
+    public function label(?string $locale = null): string
     {
         return match ($this) {
             self::COMMON => __('Common', [], $locale),

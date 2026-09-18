@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB;
+use Event;
 use App\Models\Item;
 use Inertia\Inertia;
 use App\Models\Armor;
@@ -15,6 +16,7 @@ use App\Models\WeaponType;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use App\Http\Requests\EquipRequest;
+use App\Events\UserEquipmentCrafted;
 use App\Http\Requests\HunterRequest;
 use Illuminate\Http\RedirectResponse;
 
@@ -43,7 +45,7 @@ class CampaignHunterController extends Controller
         return redirect()->route('campaigns.hunters.edit', [$campaign, $hunter]);
     }
 
-    public function show(Campaign $campaign, Hunter $hunter, string $tab = 'items', WeaponType $weaponType = null): Response
+    public function show(Campaign $campaign, Hunter $hunter, string $tab = 'items', ?WeaponType $weaponType = null): Response
     {
         $user = $hunter->getUser();
         $canEdit = auth()->user()?->can('update', [$campaign, $hunter]);
@@ -103,7 +105,7 @@ class CampaignHunterController extends Controller
 
     public function craftWeapon(Campaign $campaign, Hunter $hunter, WeaponType $weaponType, Weapon $weapon): JsonResponse|RedirectResponse
     {
-        if (!$hunter->canCraftWeapon($weapon)) {
+        if (! $hunter->canCraftWeapon($weapon)) {
             return response()->json([
                 'error' => __('The weapon cannot be crafted.'),
             ], 400);
@@ -120,6 +122,8 @@ class CampaignHunterController extends Controller
             }
 
             $hunter->weapons()->attach($weapon);
+
+            Event::dispatch(new UserEquipmentCrafted($hunter->getUser(), $weapon));
         });
 
         return back(303);
@@ -127,7 +131,7 @@ class CampaignHunterController extends Controller
 
     public function updateEquippedWeapon(EquipRequest $request, Campaign $campaign, Hunter $hunter, WeaponType $weaponType, Weapon $weapon): JsonResponse|RedirectResponse
     {
-        if (!$hunter->weapons()->find($weapon->id)) {
+        if (! $hunter->weapons()->find($weapon->id)) {
             return response()->json([
                 'error' => __('The weapon cannot be equipped.'),
             ], 400);
@@ -151,7 +155,7 @@ class CampaignHunterController extends Controller
 
     public function craftArmor(Campaign $campaign, Hunter $hunter, Armor $armor): JsonResponse|RedirectResponse
     {
-        if (!$hunter->canCraftArmor($armor)) {
+        if (! $hunter->canCraftArmor($armor)) {
             return response()->json([
                 'error' => __('The armor cannot be crafted.'),
             ], 400);
@@ -164,6 +168,8 @@ class CampaignHunterController extends Controller
             });
 
             $hunter->armors()->attach($armor);
+
+            Event::dispatch(new UserEquipmentCrafted($hunter->getUser(), $armor));
         });
 
         return back(303);
@@ -171,7 +177,7 @@ class CampaignHunterController extends Controller
 
     public function updateEquippedArmor(EquipRequest $request, Campaign $campaign, Hunter $hunter, Armor $armor): JsonResponse|RedirectResponse
     {
-        if (!$hunter->armors()->find($armor->id)) {
+        if (! $hunter->armors()->find($armor->id)) {
             return response()->json([
                 'error' => __('The armor cannot be equipped.'),
             ], 400);

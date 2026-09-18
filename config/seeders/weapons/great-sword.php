@@ -357,7 +357,7 @@ return [
                 ],
             ],
         ],
-        // KULU YA KU EXPANSION
+        // KULU YA KU EXPANSION <NONE>
         // NERGIGANTE EXPANSION
         [
             'parent' => 'Buster Sword',

@@ -3,8 +3,8 @@
 return [
     'Great Jagras' => [
         'name' => 'Gran Jagras',
-        'category' => \App\Enum\MonsterCategory::FANGED_WYVERN,
-        'expansion' => \App\Enum\MonsterExpansion::ANCIENT_FOREST,
+        'category' => App\Enum\MonsterCategory::FANGED_WYVERN,
+        'expansion' => App\Enum\MonsterExpansion::ANCIENT_FOREST,
         'items' => [
             'Great Jagras Hide',
             'Great Jagras Mane',
@@ -30,7 +30,7 @@ return [
         ],
         'difficulty' => [
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::EASY,
+                'difficulty' => App\Enum\MonsterDifficulty::EASY,
                 'stars' => 1,
                 'health' => 50,
                 'ability' => [
@@ -73,7 +73,7 @@ return [
                 ],
             ],
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::NORMAL,
+                'difficulty' => App\Enum\MonsterDifficulty::NORMAL,
                 'stars' => 2,
                 'health' => 60,
                 'ability' => [
@@ -120,7 +120,7 @@ return [
                 ],
             ],
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::HARD,
+                'difficulty' => App\Enum\MonsterDifficulty::HARD,
                 'stars' => 3,
                 'health' => 65,
                 'ability' => [
@@ -219,8 +219,8 @@ return [
         ],
     ],
     'Tobi-Kadachi' => [
-        'category' => \App\Enum\MonsterCategory::FANGED_WYVERN,
-        'expansion' => \App\Enum\MonsterExpansion::ANCIENT_FOREST,
+        'category' => App\Enum\MonsterCategory::FANGED_WYVERN,
+        'expansion' => App\Enum\MonsterExpansion::ANCIENT_FOREST,
         'items' => [
             'Tobi-Kadachi Pelt',
             'Tobi-Kadachi Claw',
@@ -248,7 +248,7 @@ return [
         ],
         'difficulty' => [
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::EASY,
+                'difficulty' => App\Enum\MonsterDifficulty::EASY,
                 'stars' => 1,
                 'health' => 60,
                 'ability' => [
@@ -287,7 +287,7 @@ return [
                 ],
             ],
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::NORMAL,
+                'difficulty' => App\Enum\MonsterDifficulty::NORMAL,
                 'stars' => 2,
                 'health' => 65,
                 'ability' => [
@@ -330,7 +330,7 @@ return [
                 ],
             ],
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::HARD,
+                'difficulty' => App\Enum\MonsterDifficulty::HARD,
                 'stars' => 3,
                 'health' => 70,
                 'ability' => [
@@ -429,8 +429,8 @@ return [
         ],
     ],
     'Anjanath' => [
-        'category' => \App\Enum\MonsterCategory::BRUTE_WYVERN,
-        'expansion' => \App\Enum\MonsterExpansion::ANCIENT_FOREST,
+        'category' => App\Enum\MonsterCategory::BRUTE_WYVERN,
+        'expansion' => App\Enum\MonsterExpansion::ANCIENT_FOREST,
         'items' => [
             'Anjanath Pelt',
             'Anjanath Scale',
@@ -458,7 +458,7 @@ return [
         ],
         'difficulty' => [
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::EASY,
+                'difficulty' => App\Enum\MonsterDifficulty::EASY,
                 'stars' => 1,
                 'health' => 65,
                 'ability' => [
@@ -507,7 +507,7 @@ return [
                 ],
             ],
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::NORMAL,
+                'difficulty' => App\Enum\MonsterDifficulty::NORMAL,
                 'stars' => 2,
                 'health' => 70,
                 'ability' => [
@@ -560,7 +560,7 @@ return [
                 ],
             ],
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::HARD,
+                'difficulty' => App\Enum\MonsterDifficulty::HARD,
                 'stars' => 3,
                 'health' => 75,
                 'ability' => [
@@ -673,8 +673,8 @@ return [
         ],
     ],
     'Rathalos' => [
-        'category' => \App\Enum\MonsterCategory::FLYING_WYVERN,
-        'expansion' => \App\Enum\MonsterExpansion::ANCIENT_FOREST,
+        'category' => App\Enum\MonsterCategory::FLYING_WYVERN,
+        'expansion' => App\Enum\MonsterExpansion::ANCIENT_FOREST,
         'items' => [
             'Rathalos Scale',
             'Rathalos Shell',
@@ -705,7 +705,7 @@ return [
         ],
         'difficulty' => [
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::EASY,
+                'difficulty' => App\Enum\MonsterDifficulty::EASY,
                 'stars' => 1,
                 'health' => 80,
                 'ability' => [
@@ -762,7 +762,7 @@ return [
                 ],
             ],
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::NORMAL,
+                'difficulty' => App\Enum\MonsterDifficulty::NORMAL,
                 'stars' => 2,
                 'health' => 85,
                 'ability' => [
@@ -819,7 +819,7 @@ return [
                 ],
             ],
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::HARD,
+                'difficulty' => App\Enum\MonsterDifficulty::HARD,
                 'stars' => 4,
                 'health' => 90,
                 'ability' => [
@@ -933,8 +933,8 @@ return [
     ],
     'Azure Rathalos' => [
         'name' => 'Rathalos Celeste',
-        'category' => \App\Enum\MonsterCategory::FLYING_WYVERN,
-        'expansion' => \App\Enum\MonsterExpansion::ANCIENT_FOREST,
+        'category' => App\Enum\MonsterCategory::FLYING_WYVERN,
+        'expansion' => App\Enum\MonsterExpansion::ANCIENT_FOREST,
         'items' => [
             'Azure Rathalos Scale',
             'Azure Rathalos Carapace',
@@ -962,7 +962,7 @@ return [
         ],
         'difficulty' => [
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::EASY,
+                'difficulty' => App\Enum\MonsterDifficulty::EASY,
                 'stars' => 1,
                 'health' => 80,
                 'ability' => [
@@ -1019,7 +1019,7 @@ return [
                 ],
             ],
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::NORMAL,
+                'difficulty' => App\Enum\MonsterDifficulty::NORMAL,
                 'stars' => 2,
                 'health' => 85,
                 'ability' => [
@@ -1076,7 +1076,7 @@ return [
                 ],
             ],
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::HARD,
+                'difficulty' => App\Enum\MonsterDifficulty::HARD,
                 'stars' => 4,
                 'health' => 90,
                 'ability' => [
@@ -1190,8 +1190,8 @@ return [
     ],
 
     'Barroth' => [
-        'category' => \App\Enum\MonsterCategory::BRUTE_WYVERN,
-        'expansion' => \App\Enum\MonsterExpansion::WILDSPIRE_WASTE,
+        'category' => App\Enum\MonsterCategory::BRUTE_WYVERN,
+        'expansion' => App\Enum\MonsterExpansion::WILDSPIRE_WASTE,
         'items' => [
             'Barroth Ridge',
             'Barroth Tail',
@@ -1201,8 +1201,8 @@ return [
         ],
     ],
     'Pukei-Pukei' => [
-        'category' => \App\Enum\MonsterCategory::BIRD_WYVERN,
-        'expansion' => \App\Enum\MonsterExpansion::WILDSPIRE_WASTE,
+        'category' => App\Enum\MonsterCategory::BIRD_WYVERN,
+        'expansion' => App\Enum\MonsterExpansion::WILDSPIRE_WASTE,
         'items' => [
             'Pukei-Pukei Carapace',
             'Pukei-Pukei Tail',
@@ -1215,8 +1215,8 @@ return [
         ],
     ],
     'Jyuratodus' => [
-        'category' => \App\Enum\MonsterCategory::PISCINE_WYVERN,
-        'expansion' => \App\Enum\MonsterExpansion::WILDSPIRE_WASTE,
+        'category' => App\Enum\MonsterCategory::PISCINE_WYVERN,
+        'expansion' => App\Enum\MonsterExpansion::WILDSPIRE_WASTE,
         'items' => [
             'Jyuratodus Scale',
             'Jyuratodus Carapace',
@@ -1229,8 +1229,8 @@ return [
         ],
     ],
     'Diablos' => [
-        'category' => \App\Enum\MonsterCategory::FLYING_WYVERN,
-        'expansion' => \App\Enum\MonsterExpansion::WILDSPIRE_WASTE,
+        'category' => App\Enum\MonsterCategory::FLYING_WYVERN,
+        'expansion' => App\Enum\MonsterExpansion::WILDSPIRE_WASTE,
         'items' => [
             'Diablos Ridge',
             'Diablos Fang',
@@ -1243,8 +1243,8 @@ return [
     ],
     'Black Diablos' => [
         'name' => 'Diablos Negra',
-        'category' => \App\Enum\MonsterCategory::FLYING_WYVERN,
-        'expansion' => \App\Enum\MonsterExpansion::WILDSPIRE_WASTE,
+        'category' => App\Enum\MonsterCategory::FLYING_WYVERN,
+        'expansion' => App\Enum\MonsterExpansion::WILDSPIRE_WASTE,
         'items' => [
             'Black Diablos Ridge',
             'Black Diablos Carapace',
@@ -1253,8 +1253,8 @@ return [
     ],
 
     'Kulu-Ya-Ku' => [
-        'category' => \App\Enum\MonsterCategory::BIRD_WYVERN,
-        'expansion' => \App\Enum\MonsterExpansion::KULU_YA_KU_EXPANSION,
+        'category' => App\Enum\MonsterCategory::BIRD_WYVERN,
+        'expansion' => App\Enum\MonsterExpansion::KULU_YA_KU_EXPANSION,
         'items' => [
             'Kulu-Ya-Ku Scale',
             'Kulu-Ya-Ku Hide',
@@ -1264,8 +1264,8 @@ return [
     ],
 
     'Teostra' => [
-        'category' => \App\Enum\MonsterCategory::ELDER_DRAGON,
-        'expansion' => \App\Enum\MonsterExpansion::TEOSTRA_EXPANSION,
+        'category' => App\Enum\MonsterCategory::ELDER_DRAGON,
+        'expansion' => App\Enum\MonsterExpansion::TEOSTRA_EXPANSION,
         'items' => [
             'Fire Dragon Scale',
             'Teostra Claw',
@@ -1295,7 +1295,7 @@ return [
         ],
         'difficulty' => [
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::EASY,
+                'difficulty' => App\Enum\MonsterDifficulty::EASY,
                 'stars' => 1,
                 'health' => 85,
                 'ability' => [
@@ -1342,7 +1342,7 @@ return [
                 ],
             ],
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::NORMAL,
+                'difficulty' => App\Enum\MonsterDifficulty::NORMAL,
                 'stars' => 2,
                 'health' => 95,
                 'ability' => [
@@ -1389,7 +1389,7 @@ return [
                 ],
             ],
             [
-                'difficulty' => \App\Enum\MonsterDifficulty::HARD,
+                'difficulty' => App\Enum\MonsterDifficulty::HARD,
                 'stars' => 5,
                 'health' => 110,
                 'ability' => [
@@ -1488,8 +1488,8 @@ return [
         ],
     ],
     'Nergigante' => [
-        'category' => \App\Enum\MonsterCategory::ELDER_DRAGON,
-        'expansion' => \App\Enum\MonsterExpansion::NERGIGANTE_EXPANSION,
+        'category' => App\Enum\MonsterCategory::ELDER_DRAGON,
+        'expansion' => App\Enum\MonsterExpansion::NERGIGANTE_EXPANSION,
         'items' => [
             'Nergigante Horn',
             'Nergigante Carapace',
@@ -1501,8 +1501,8 @@ return [
         ],
     ],
     'Kushala Daora' => [
-        'category' => \App\Enum\MonsterCategory::ELDER_DRAGON,
-        'expansion' => \App\Enum\MonsterExpansion::KUSHALA_EXPANSION,
+        'category' => App\Enum\MonsterCategory::ELDER_DRAGON,
+        'expansion' => App\Enum\MonsterExpansion::KUSHALA_EXPANSION,
         'items' => [
             'Daora Dragon Scale',
             'Daora Carapace',

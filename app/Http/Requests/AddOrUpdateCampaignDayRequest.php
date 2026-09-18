@@ -32,16 +32,17 @@ class AddOrUpdateCampaignDayRequest extends FormRequest
             'type_day' => ['required', Rule::in(DayType::rule())],
         ];
 
-        if ('DOWNTIME' === $this->input('type_day')) {
-            $rules = array_merge([
+        if ($this->input('type_day') === DayType::DOWNTIME->name) {
+            $rules = array_merge($rules, [
                 'all_hunters_same_activity' => ['sometimes', 'boolean'],
                 'day_id' => ['nullable', 'required_if:all_hunters_same_activity,true', Rule::exists(DowntimeActivity::class, 'id')],
                 'hunter_day_id' => ['array', 'required_if:all_hunters_same_activity,false'],
                 'hunter_day_id.*' => ['required_if:all_hunters_same_activity,false', Rule::exists(DowntimeActivity::class, 'id')],
             ]);
         }
-        if ('MONSTER' === $this->input('type_day')) {
-            $rules = array_merge([
+
+        if ($this->input('type_day') === DayType::MONSTER->name) {
+            $rules = array_merge($rules, [
                 'monster_id' => ['required', Rule::exists(Monster::class, 'id')],
                 'difficulty' => ['required', Rule::in(MonsterDifficulty::rule())],
                 'hunted' => ['sometimes', 'boolean'],

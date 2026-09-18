@@ -362,6 +362,60 @@ return [
             ],
         ],
         // KULU YA KU EXPANSION
+        [
+            'parent' => 'Matched Slicers',
+            'branch' => 'Kulu-Ya-Ku',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Rending Beaks',
+                'es' => 'Picos Desgarradores',
+            ],
+            'count_attack_1' => 2,
+            'count_attack_2' => 10,
+            'count_attack_3' => 2,
+            'items' => [
+                'Kulu-Ya-Ku Beak' => 1,
+                'Kulu-Ya-Ku Hide' => 2,
+                'Kulu-Ya-Ku Scale' => 4,
+                'Earth Crystal' => 3,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Lunging Stab' => 2,
+                ],
+                'add' => [
+                    'Evasive Stab' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Rending Beaks',
+            'branch' => 'Kulu-Ya-Ku',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Arcanaria',
+                'es' => 'Arcanaria',
+            ],
+            'count_attack_1' => 2,
+            'count_attack_2' => 10,
+            'count_attack_3' => 4,
+            'items' => [
+                'Kulu-Ya-Ku Beak' => 2,
+                'Kulu-Ya-Ku Hide' => 3,
+                'Kulu-Ya-Ku Plume' => 3,
+                'Boulder Bone' => 4,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Lunging Stab' => 2,
+                    'Double Spin' => 2,
+                ],
+                'add' => [
+                    'Evasive Stab' => 2,
+                    'Dream Spin' => 2,
+                ],
+            ],
+        ],
         // TEOSTRA EXPANSION
         [
             'parent' => 'Matched Slicers',

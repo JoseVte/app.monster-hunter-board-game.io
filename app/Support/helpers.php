@@ -5,7 +5,7 @@ use App\Models\Weapon;
 use App\Models\WeaponType;
 use Illuminate\Support\Collection;
 
-if (!function_exists('arr_expand')) {
+if (! function_exists('arr_expand')) {
     function arr_expand(&$data): void
     {
         if (is_array($data)) {
@@ -13,7 +13,7 @@ if (!function_exists('arr_expand')) {
                 $e = explode('.', $k);
                 $a = array_shift($e);
 
-                if (1 === count($e)) {
+                if (count($e) === 1) {
                     $data[$a][$e[0]] = $v;
                 } elseif (count($e) > 1) {
                     $data[$a][implode('.', $e)] = $v;
@@ -31,7 +31,7 @@ if (!function_exists('arr_expand')) {
     }
 }
 
-if (!function_exists('create_weapon_tree')) {
+if (! function_exists('create_weapon_tree')) {
     function create_weapon_tree(WeaponType $weaponType, Hunter $hunter): Collection
     {
         $latestWeaponModels = $weaponType->weapons()
@@ -61,16 +61,27 @@ if (!function_exists('create_weapon_tree')) {
 
                 while ($rarity > $weapon->rarity) {
                     $weapons->push([]);
-                    --$rarity;
+                    $rarity--;
                 }
                 $weapons->push($weapon);
                 $weapon = $weapon->parent;
-                --$rarity;
-            } while (null !== $weapon);
+                $rarity--;
+            } while ($weapon !== null);
 
             $latestWeapons->put($branch, $weapons->reverse()->values());
         });
 
         return $latestWeapons;
+    }
+}
+
+if (! function_exists('achievement_progress')) {
+    function achievement_progress(int $achieved, ?int $target): int
+    {
+        if (! $target) {
+            return 0;
+        }
+
+        return (int) min($achieved / $target * 100, 100);
     }
 }

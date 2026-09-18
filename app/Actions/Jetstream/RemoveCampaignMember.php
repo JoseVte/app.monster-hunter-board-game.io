@@ -22,8 +22,8 @@ class RemoveCampaignMember
     protected function authorize(User $user, Campaign $campaign, User $campaignMember): void
     {
         if ($user->id !== $campaignMember->id
-            && !Gate::forUser($user)->check('removeCampaignMember', $campaign)) {
-            throw new AuthorizationException();
+            && ! Gate::forUser($user)->check('removeCampaignMember', $campaign)) {
+            throw new AuthorizationException;
         }
     }
 }

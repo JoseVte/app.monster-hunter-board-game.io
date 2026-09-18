@@ -14,7 +14,7 @@ enum DeviationWeapon implements TranslatableEnumContract
     case AVERAGE;
     case HIGH;
 
-    public function label(string $locale = null): string
+    public function label(?string $locale = null): string
     {
         return match ($this) {
             self::NONE => __('None', [], $locale),

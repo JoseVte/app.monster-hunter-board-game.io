@@ -21,6 +21,6 @@ test('hunter can create', function (): void {
     $response->assertRedirect(route('campaigns.hunters.edit', [$this->campaign, 1]));
 
     $hunter = Hunter::findOrFail(1);
-    $this->assertEquals($this->campaign->id, $hunter->campaign_id);
-    $this->assertEquals('Test Hunter', $hunter->name);
+    expect($hunter->campaign_id)->toEqual($this->campaign->id)
+        ->and($hunter->name)->toEqual('Test Hunter');
 });

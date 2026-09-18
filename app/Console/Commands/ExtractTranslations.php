@@ -42,7 +42,7 @@ class ExtractTranslations extends Command
         $translations = [];
 
         foreach ($rii as $file) {
-            if (!$file->isDir()) {
+            if (! $file->isDir()) {
                 $translations = array_merge($translations, $this->extractTranslations($file->getPathname()));
             }
         }
@@ -56,20 +56,20 @@ class ExtractTranslations extends Command
         preg_match_all('/\$t\(\'(?<translations>[^)]+)\'\)/', $data, $matches);
 
         $translations = [];
-        if (!empty($matches['translations'])) {
+        if (! empty($matches['translations'])) {
             $translations = array_values(array_unique($matches['translations']));
             sort($translations);
         }
 
         // What about the ones inside {{ }}?
         preg_match_all('/__\(\'(?<translations>[^)]+)\'\)/', $data, $matches);
-        if (!empty($matches['translations'])) {
+        if (! empty($matches['translations'])) {
             $translations = array_merge($translations, array_values(array_unique($matches['translations'])));
             sort($translations);
         }
 
         $slug = str_replace($path.'/', '', $path);
-        if (!empty($translations)) {
+        if (! empty($translations)) {
             $this->info($slug.':');
             $this->info(print_r($translations, 1));
         }
@@ -87,10 +87,10 @@ class ExtractTranslations extends Command
 
         $translations = array_values(array_unique($translations));
         foreach ($translations as $translation) {
-            if (!$oldEnTranslations->has($translation)) {
+            if (! $oldEnTranslations->has($translation)) {
                 $oldEnTranslations = $oldEnTranslations->merge([$translation => $translation]);
             }
-            if (!$oldEsTranslations->has($translation)) {
+            if (! $oldEsTranslations->has($translation)) {
                 $oldEsTranslations = $oldEsTranslations->merge([$translation => '']);
             }
         }

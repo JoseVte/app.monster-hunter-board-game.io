@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use DB;
+use Event;
 use App\Models\Day;
 use Inertia\Inertia;
 use Inertia\Response;
@@ -10,6 +11,7 @@ use App\Models\Hunter;
 use App\Models\Monster;
 use App\Models\Campaign;
 use App\Models\DowntimeActivity;
+use App\Events\UserMonsterHunted;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Http\RedirectResponse;
@@ -115,16 +117,20 @@ class CampaignController extends Controller
     public function addDay(AddOrUpdateCampaignDayRequest $request, Campaign $campaign): RedirectResponse
     {
         DB::transaction(static function () use ($campaign, $request): void {
-            if ('MONSTER' === $request->get('type_day')) {
-                $campaign->days()->create([
+            if ($request->get('type_day') === 'MONSTER') {
+                $day = $campaign->days()->create([
                     'number' => $campaign->days()->count() + 1,
                     'monster_id' => $request->get('monster_id'),
                     'difficulty' => $request->get('difficulty'),
                     'hunted' => $request->boolean('hunted'),
                 ]);
+
+                if ($request->boolean('hunted')) {
+                    Event::dispatch(new UserMonsterHunted($campaign, $day));
+                }
             }
 
-            if ('DOWNTIME' === $request->get('type_day')) {
+            if ($request->get('type_day') === 'DOWNTIME') {
                 $day = $campaign->days()->create([
                     'number' => $campaign->days()->count() + 1,
                 ]);
@@ -156,7 +162,7 @@ class CampaignController extends Controller
     public function updateDay(AddOrUpdateCampaignDayRequest $request, Campaign $campaign, Day $day): RedirectResponse
     {
         DB::transaction(static function () use ($campaign, $day, $request): void {
-            if ('MONSTER' === $request->get('type_day')) {
+            if ($request->get('type_day') === 'MONSTER') {
                 $day->update([
                     'downtime_activity_id' => null,
                     'all_hunters_same_activity' => false,
@@ -169,7 +175,7 @@ class CampaignController extends Controller
                 $day->hunters()->detach();
             }
 
-            if ('DOWNTIME' === $request->get('type_day')) {
+            if ($request->get('type_day') === 'DOWNTIME') {
                 $day->update([
                     'downtime_activity_id' => $request->get('day_id'),
                     'all_hunters_same_activity' => $request->boolean('all_hunters_same_activity'),

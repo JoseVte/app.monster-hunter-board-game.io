@@ -16,7 +16,7 @@ enum MonsterCategory implements TranslatableEnumContract
     case BRUTE_WYVERN;
     case ELDER_DRAGON;
 
-    public function label(string $locale = null): string
+    public function label(?string $locale = null): string
     {
         return match ($this) {
             self::FANGED_WYVERN => __('Fanged Wyvern', [], $locale),

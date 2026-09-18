@@ -5,8 +5,8 @@
 [![forks - app.monster-hunter-board-game.io](https://img.shields.io/github/forks/JoseVte/app.monster-hunter-board-game.io?style=social)](https://github.com/JoseVte/app.monster-hunter-board-game.io)
 
 [![Made with Node.js](https://img.shields.io/badge/10-FF2D20?logo=laravel&logoColor=white)](https://laravel.com "Go to Laravel homepage")
-[![Made with Node.js](https://img.shields.io/badge/8.2-777BB4?logo=php&logoColor=white)](https://php.net "Go to PHP homepage")
-[![Made with Node.js](https://img.shields.io/badge/>=16-339933?logo=node.js&logoColor=white)](https://nodejs.org "Go to Node.js homepage")
+[![Made with Node.js](https://img.shields.io/badge/8.3-777BB4?logo=php&logoColor=white)](https://php.net "Go to PHP homepage")
+[![Made with Node.js](https://img.shields.io/badge/>=22-339933?logo=node.js&logoColor=white)](https://nodejs.org "Go to Node.js homepage")
 [![Made with Vue](https://img.shields.io/badge/3-4FC08D?logo=vue.js&logoColor=white)](https://v3.vuejs.org "Go to Vue homepage")
 
 [![Laravel](https://github.com/JoseVte/app.monster-hunter-board-game.io/workflows/Laravel/badge.svg)](https://github.com/JoseVte/app.monster-hunter-board-game.io/actions?query=workflow:"Laravel")
@@ -40,8 +40,12 @@ terminal for other things.
 
 ### Build frontend assets
 
+The project uses **npm** as its only package manager. Do not add a `yarn.lock`.
+
 ```shell
-./vendor/bin/sail npm dev
+./vendor/bin/sail npm install
+./vendor/bin/sail npm run dev      # Vite dev server
+./vendor/bin/sail npm run build    # client build, SSR build and webmanifest copy
 ```
 
 ### Run Tests

@@ -27,9 +27,402 @@ Cuando el símbolo del espíritu solo blanco está en la parte superior, la cart
             'count_attack_1' => 9,
             'count_attack_2' => 3,
         ],
+        [
+            'parent' => 'Iron Katana',
+            'branch' => 'mineral',
+            'rarity' => 2,
+            'name' => [
+                'en' => 'Iron Grace',
+                'es' => 'Gracia Férrea',
+            ],
+            'count_attack_1' => 7,
+            'count_attack_2' => 5,
+            'items' => [
+                'Dragonite Ore' => 1,
+                'Machalite Ore' => 1,
+                'Monster Bone Medium' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Spirit Thrust' => 2,
+                ],
+                'add' => [
+                    'Enhanced Spirit Thrust' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Iron Grace',
+            'branch' => 'mineral',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Iron Gospel',
+                'es' => 'Palabra Férrea',
+            ],
+            'count_attack_1' => 5,
+            'count_attack_2' => 5,
+            'count_attack_3' => 2,
+            'items' => [
+                'Fucium Ore' => 2,
+                'Carbalite Ore' => 2,
+                'Dragonite Ore' => 3,
+                'Dragonvein Crystal' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Spirit Thrust' => 2,
+                    'Overhead Slash' => 2,
+                ],
+                'add' => [
+                    'Enhanced Spirit Thrust' => 2,
+                    'Enhanced Overhead Slash' => 2,
+                ],
+            ],
+        ],
+        [
+            'branch' => 'bone',
+            'name' => [
+                'en' => 'Bone Shotel',
+                'es' => 'Shotel Óseo',
+            ],
+            'count_attack_1' => 6,
+            'count_attack_2' => 4,
+            'items' => [
+                'Monster Bone Small' => 1,
+            ],
+        ],
+        [
+            'parent' => 'Bone Shotel',
+            'branch' => 'bone',
+            'rarity' => 2,
+            'name' => [
+                'en' => 'Hard Bone Shotel',
+                'es' => 'Shotel Hueso Pétreo',
+            ],
+            'count_attack_1' => 4,
+            'count_attack_2' => 5,
+            'count_attack_3' => 1,
+            'items' => [
+                'Monster Bone Large' => 1,
+                'Monster Bone Medium' => 1,
+                'Boulder Bone' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Foresight Slash' => 2,
+                ],
+                'add' => [
+                    'Enhanced Foresight Slash' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Hard Bone Shotel',
+            'branch' => 'bone',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Bone Reaper',
+                'es' => 'Segadora Ósea',
+            ],
+            'count_attack_1' => 1,
+            'count_attack_2' => 5,
+            'count_attack_3' => 2,
+            'items' => [
+                'Monster Hardbone' => 2,
+                'Monster Keenbone' => 2,
+                'Quality Bone' => 3,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Foresight Slash' => 2,
+                    'Thrust' => 3,
+                ],
+                'add' => [
+                    'Enhanced Foresight Slash' => 2,
+                    'Enhanced Thrust' => 3,
+                ],
+            ],
+        ],
         // ANCIENT FOREST
+        [
+            'parent' => 'Bone Shotel',
+            'branch' => 'Tobi-Kadachi',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Pulsar Shotel',
+                'es' => 'Shotel Púlsar',
+            ],
+            'has_elemental_attacks' => true,
+            'count_attack_1' => 1,
+            'count_attack_2' => 7,
+            'count_attack_3' => 2,
+            'items' => [
+                'Tobi-Kadachi Claw' => 1,
+                'Tobi-Kadachi Pelt' => 3,
+                'Tobi-Kadachi Scale' => 3,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Fade Slash' => 2,
+                ],
+                'add' => [
+                    'Thunder Fade Slash' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Pulsar Shotel',
+            'branch' => 'Tobi-Kadachi',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Kadachi Fang',
+                'es' => 'Colmillo Kadachi',
+            ],
+            'has_elemental_attacks' => true,
+            'count_attack_1' => 1,
+            'count_attack_2' => 8,
+            'count_attack_3' => 3,
+            'items' => [
+                'Tobi-Kadachi Claw' => 3,
+                'Tobi-Kadachi Scale' => 1,
+                'Tobi-Kadachi Pelt' => 1,
+                'Dragonvein Crystal' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Fade Slash' => 2,
+                    'Rising Slash' => 2,
+                ],
+                'add' => [
+                    'Thunder Fade Slash' => 2,
+                    'Shocking Rising Slash' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Bone Shotel',
+            'branch' => 'Anjanath',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Blazing Shotel',
+                'es' => 'Shotel Flameante',
+            ],
+            'count_attack_1' => 1,
+            'count_attack_2' => 9,
+            'count_attack_3' => 2,
+            'items' => [
+                'Anjanath Fang' => 2,
+                'Anjanath Scale' => 3,
+                'Flame Sac' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Ready Stance' => 2,
+                ],
+                'add' => [
+                    'Poised Stance' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Blazing Shotel',
+            'branch' => 'Anjanath',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Anja Scimitar',
+                'es' => 'Cimitarra Anja',
+            ],
+            'defense' => 1,
+            'has_elemental_attacks' => true,
+            'count_attack_1' => 1,
+            'count_attack_2' => 9,
+            'count_attack_3' => 4,
+            'items' => [
+                'Anjanath Fang' => 2,
+                'Anjanath Scale' => 2,
+                'Inferno Sac' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Ready Stance' => 2,
+                    'Helm Breaker' => 2,
+                ],
+                'add' => [
+                    'Poised Stance' => 2,
+                    'Flaming Helm Breaker' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Iron Katana',
+            'branch' => 'Rathalos',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Wyvern Blade "Fall"',
+                'es' => 'Filo Wyvern "Otoño"',
+            ],
+            'has_elemental_attacks' => true,
+            'count_attack_1' => 2,
+            'count_attack_2' => 8,
+            'count_attack_3' => 2,
+            'items' => [
+                'Rathalos Scale' => 2,
+                'Rathalos Webbing' => 2,
+                'Inferno Sac' => 1,
+                'Rathalos Marrow' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Rising Slash' => 2,
+                ],
+                'add' => [
+                    'Blazing Rising Slash' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Wyvern Blade "Fall"',
+            'branch' => 'Rathalos',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Wyvern Blade "Blood"',
+                'es' => 'Filo Wyvern "Sangre"',
+            ],
+            'defense' => 1,
+            'has_elemental_attacks' => true,
+            'count_attack_1' => 2,
+            'count_attack_2' => 8,
+            'count_attack_3' => 4,
+            'items' => [
+                'Rathalos Scale' => 2,
+                'Rathalos Carapace' => 1,
+                'Rathalos Wing' => 1,
+                'Rathalos Medulla' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Rising Slash' => 2,
+                    'Spirit Helm Breaker' => 2,
+                ],
+                'add' => [
+                    'Blazing Rising Slash' => 2,
+                    'Blazing Helm Breaker' => 2,
+                ],
+            ],
+        ],
         // WILDSPIRE WASTE
+        [
+            'parent' => 'Bone Shotel',
+            'branch' => 'Jyuratodus',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Jyura Shotel',
+                'es' => 'Shotel Jyura',
+            ],
+            'has_elemental_attacks' => true,
+            'count_attack_1' => 2,
+            'count_attack_2' => 6,
+            'count_attack_3' => 2,
+            'items' => [
+                'Jyuratodus Fin' => 1,
+                'Jyuratodus Shell' => 2,
+                'Jyuratodus Scale' => 3,
+                'Aqua Sac' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Helm Breaker' => 2,
+                ],
+                'add' => [
+                    'Mud Helm Breaker' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Jyura Shotel',
+            'branch' => 'Jyuratodus',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Dipterus',
+                'es' => 'Díptero',
+            ],
+            'has_elemental_attacks' => true,
+            'count_attack_1' => 2,
+            'count_attack_2' => 7,
+            'count_attack_4' => 3,
+            'items' => [
+                'Jyuratodus Fin' => 1,
+                'Jyuratodus Carapace' => 2,
+                'Jyuratodus Scale' => 2,
+                'Aqua Sac' => 1,
+                'Gajau Scale' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Helm Breaker' => 2,
+                    'Spirit Thrust' => 2,
+                ],
+                'add' => [
+                    'Mud Helm Breaker' => 2,
+                    'Water Spirit Thrust' => 2,
+                ],
+            ],
+        ],
         // KULU YA KU EXPANSION
+        [
+            'parent' => 'Iron Katana',
+            'branch' => 'Kulu-Ya-Ku',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'First Dance',
+                'es' => 'Primer Baile',
+            ],
+            'count_attack_1' => 6,
+            'count_attack_2' => 3,
+            'count_attack_3' => 5,
+            'items' => [
+                'Kulu-Ya-Ku Beak' => 1,
+                'Kulu-Ya-Ku Hide' => 2,
+                'Kulu-Ya-Ku Scale' => 4,
+                'Earth Crystal' => 3,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Thrust' => 2,
+                ],
+                'add' => [
+                    'Evasive Thrust' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'First Dance',
+            'branch' => 'Kulu-Ya-Ku',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Last Dance',
+                'es' => 'Último Baile',
+            ],
+            'count_attack_1' => 5,
+            'count_attack_2' => 7,
+            'count_attack_3' => 4,
+            'items' => [
+                'Kulu-Ya-Ku Beak' => 2,
+                'Kulu-Ya-Ku Hide' => 3,
+                'Kulu-Ya-Ku Plume' => 3,
+                'Boulder Bone' => 4,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Thrust' => 2,
+                    'Overhead Slash' => 2,
+                ],
+                'add' => [
+                    'Evasive Thrust' => 2,
+                    'Evasive Overhead Slash' => 2,
+                ],
+            ],
+        ],
         // TEOSTRA EXPANSION
         [
             'parent' => 'Iron Katana',

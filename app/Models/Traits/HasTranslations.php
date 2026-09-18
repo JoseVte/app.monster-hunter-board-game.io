@@ -11,7 +11,7 @@ trait HasTranslations
 {
     use BaseHasTranslations;
 
-    public function scopeSearchTranslate(Builder $builder, string $field, string $value, string $locale = null): Builder
+    public function scopeSearchTranslate(Builder $builder, string $field, string $value, ?string $locale = null): Builder
     {
         $locale = $locale ?: app()->getLocale();
 
@@ -30,7 +30,7 @@ trait HasTranslations
             $attributes[$field] = $this->getTranslation($field, $locale);
         }
         foreach ($this->casts as $field => $cast) {
-            if (!empty($this->getAttribute($field)) && class_exists($cast) && in_array(TranslatableEnum::class, class_uses_recursive($cast), true)) {
+            if (! empty($this->getAttribute($field)) && class_exists($cast) && in_array(TranslatableEnum::class, class_uses_recursive($cast), true)) {
                 $attributes[$field] = $this->getAttribute($field)->label($locale);
             }
         }

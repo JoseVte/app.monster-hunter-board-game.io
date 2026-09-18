@@ -13,7 +13,7 @@ enum ArmorType implements TranslatableEnumContract
     case BODY;
     case LEG;
 
-    public function label(string $locale = null): string
+    public function label(?string $locale = null): string
     {
         return match ($this) {
             self::HEAD => __('Head', [], $locale),

@@ -143,6 +143,122 @@ return [
             ],
         ],
         // ANCIENT FOREST
+        [
+            'parent' => 'Bone Lance',
+            'branch' => 'Tobi-Kadachi',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Thunder Lance',
+                'es' => 'Lanza Trueno',
+            ],
+            'has_elemental_attacks' => true,
+            'defense' => 1,
+            'count_attack_1' => 3,
+            'count_attack_2' => 6,
+            'count_attack_3' => 3,
+            'items' => [
+                'Dragonite Ore' => 2,
+                'Tobi-Kadachi Electrode' => 1,
+                'Tobi-Kadachi Claw' => 2,
+                'Electro Sac' => 1,
+                'Coral Crystal' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Mid Thrust' => 3,
+                ],
+                'add' => [
+                    'Static Thrust' => 3,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Thunder Lance',
+            'branch' => 'Tobi-Kadachi',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Lightning Spire',
+                'es' => 'Aguja Relámpago',
+            ],
+            'has_elemental_attacks' => true,
+            'defense' => 1,
+            'count_attack_1' => 2,
+            'count_attack_2' => 7,
+            'count_attack_3' => 5,
+            'items' => [
+                'Fucium Ore' => 2,
+                'Tobi-Kadachi Electrode' => 2,
+                'Tobi-Kadachi Claw' => 2,
+                'Thunder Sac' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Mid Thrust' => 3,
+                    'Guard Thrust' => 2,
+                ],
+                'add' => [
+                    'Static Thrust' => 3,
+                    'Static Guard' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Iron Lance',
+            'branch' => 'Rathalos',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Flame Lance',
+                'es' => 'Lanza Abrasadora',
+            ],
+            'has_elemental_attacks' => true,
+            'defense' => 1,
+            'count_attack_1' => 4,
+            'count_attack_2' => 4,
+            'count_attack_3' => 4,
+            'items' => [
+                'Rathalos Scale' => 2,
+                'Rathalos Webbing' => 2,
+                'Inferno Sac' => 1,
+                'Rathalos Marrow' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Counter Thrust' => 2,
+                ],
+                'add' => [
+                    'Flaming Thrust' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Flame Lance',
+            'branch' => 'Rathalos',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Red Tail',
+                'es' => 'Cola Roja',
+            ],
+            'has_elemental_attacks' => true,
+            'defense' => 1,
+            'count_attack_2' => 7,
+            'count_attack_3' => 7,
+            'items' => [
+                'Rathalos Scale' => 2,
+                'Rathalos Carapace' => 1,
+                'Rathalos Wing' => 1,
+                'Rathalos Medulla' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Counter Thrust' => 2,
+                    'Guard Dash' => 2,
+                ],
+                'add' => [
+                    'Flaming Thrust' => 2,
+                    'Flaming Dash' => 2,
+                ],
+            ],
+        ],
         // WILDSPIRE WASTE
         [
             'parent' => 'Bone Lance',
@@ -256,6 +372,62 @@ return [
             ],
         ],
         // KULU YA KU EXPANSION
+        [
+            'parent' => 'Iron Lance',
+            'branch' => 'Kulu-Ya-Ku',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Kulu Lance',
+                'es' => 'Lanza Kulu',
+            ],
+            'defense' => 1,
+            'count_attack_1' => 6,
+            'count_attack_3' => 2,
+            'count_attack_4' => 2,
+            'items' => [
+                'Kulu-Ya-Ku Beak' => 1,
+                'Kulu-Ya-Ku Hide' => 2,
+                'Kulu-Ya-Ku Scale' => 4,
+                'Earth Crystal' => 3,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'High Thrust' => 3,
+                ],
+                'add' => [
+                    'Diving Thrust' => 3,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Kulu Lance',
+            'branch' => 'Kulu-Ya-Ku',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Kulu Hasta',
+                'es' => 'Pilum Kulu',
+            ],
+            'defense' => 1,
+            'count_attack_1' => 6,
+            'count_attack_3' => 4,
+            'count_attack_4' => 2,
+            'items' => [
+                'Kulu-Ya-Ku Beak' => 2,
+                'Kulu-Ya-Ku Hide' => 3,
+                'Kulu-Ya-Ku Plume' => 3,
+                'Boulder Bone' => 4,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'High Thrust' => 3,
+                    'Mid Thrust' => 2,
+                ],
+                'add' => [
+                    'Diving Thrust' => 3,
+                    'Dream Thrust' => 2,
+                ],
+            ],
+        ],
         // NERGIGANTE EXPANSION
         [
             'parent' => 'Iron Lance',
@@ -286,7 +458,7 @@ return [
             ],
         ],
         [
-            'parent' => 'Nergal Judicator',
+            'parent' => 'Nergal Impaler',
             'branch' => 'Nergigante',
             'rarity' => 5,
             'name' => [

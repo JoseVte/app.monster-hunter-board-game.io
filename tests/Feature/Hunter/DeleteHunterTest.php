@@ -12,5 +12,5 @@ test('hunters can be deleted', function (): void {
     $response = $this->delete(route('campaigns.hunters.destroy', [$campaign, $hunter]));
     $response->assertRedirectToRoute('campaigns.show', $campaign);
 
-    $this->assertEquals(0, Hunter::count());
+    expect(Hunter::count())->toEqual(0);
 });

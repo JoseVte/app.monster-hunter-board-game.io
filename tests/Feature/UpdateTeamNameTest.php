@@ -1,24 +1,16 @@
 <?php
 
-namespace Tests\Feature;
-
-use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class UpdateTeamNameTest extends TestCase
-{
-    use RefreshDatabase;
+uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
-    public function testTeamNamesCanBeUpdated(): void
-    {
-        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+test('team names can be updated', function (): void {
+    $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
-        $response = $this->put('/teams/'.$user->currentTeam->id, [
-            'name' => 'Test Team',
-        ]);
+    $response = $this->put('/teams/'.$user->currentTeam->id, [
+        'name' => 'Test Team',
+    ]);
 
-        $this->assertCount(1, $user->fresh()->ownedTeams);
-        $this->assertEquals('Test Team', $user->currentTeam->fresh()->name);
-    }
-}
+    expect($user->fresh()->ownedTeams)->toHaveCount(1)
+        ->and($user->currentTeam->fresh()->name)->toEqual('Test Team');
+});

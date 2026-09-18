@@ -42,16 +42,15 @@ class HandleInertiaRequests extends Middleware
             'current_campaign_id' => $campaign->id ?? null,
             'has_campaign_hunter' => $user ? $user->hasCampaignHunter($campaign) : false,
 
-            'ziggy' => function () use ($request) {
-                return array_merge((new Ziggy())->toArray(), [
-                    'location' => $request->url(),
-                    'query' => $request->query(),
-                ]);
-            },
+            'ziggy' => fn () => array_merge((new Ziggy)->toArray(), [
+                'location' => $request->url(),
+                'query' => $request->query(),
+            ]),
             'locale' => app()->getLocale(),
             'user.campaigns' => $user->campaigns ?? [],
             'user.roles' => $user ? $user->roles->pluck('name') : [],
             'user.permissions' => $user ? $user->getPermissionsViaRoles()->pluck('name') : [],
+            'user.achievements' => $user->achievementsWithProgress ?? [],
 
             // Enums
             'dayType' => DayType::asKeyLabelObjectSelectable(),
@@ -61,6 +60,12 @@ class HandleInertiaRequests extends Middleware
                 'terms_of_service' => '<a target="_blank" href="'.route('terms.show').'" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">'.__('Terms of Service').'</a>',
                 'privacy_policy' => '<a target="_blank" href="'.route('policy.show').'" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800">'.__('Privacy Policy').'</a>',
             ]),
+            'level' => [
+                'current' => $user ? $user->getLevel() : null,
+                'next' => $user ? $user->nextLevelAt() : null,
+                'next_percentage' => $user ? $user->nextLevelAt(null, true) : null,
+                'points' => $user ? $user->getPoints() : null,
+            ],
         ]);
     }
 }

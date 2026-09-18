@@ -38,13 +38,364 @@ Después de colocar la carta de ataque boca arriba en tu tablero de resistencia,
                 'en' => 'Chain Blitz',
                 'es' => 'Saeta Cadena',
             ],
-            'deviation' => \App\Enum\DeviationWeapon::LOW,
+            'deviation' => App\Enum\DeviationWeapon::LOW,
             'count_attack_1' => 10,
             'count_attack_2' => 2,
         ],
+        [
+            'parent' => 'Chain Blitz',
+            'branch' => 'mineral',
+            'rarity' => 2,
+            'name' => [
+                'en' => 'High Chain Blitz',
+                'es' => 'Saeta Cadena Mayor',
+            ],
+            'deviation' => App\Enum\DeviationWeapon::LOW,
+            'count_attack_1' => 6,
+            'count_attack_2' => 6,
+            'items' => [
+                'Dragonite Ore' => 1,
+                'Machalite Ore' => 1,
+                'Monster Bone Medium' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Normal Ammo 1' => 5,
+                ],
+                'add' => [
+                    'Rapid Normal Ammo 1' => 5,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'High Chain Blitz',
+            'branch' => 'mineral',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Cross Blitz',
+                'es' => 'Saeta Cruzada',
+            ],
+            'deviation' => App\Enum\DeviationWeapon::LOW,
+            'count_attack_1' => 6,
+            'count_attack_2' => 4,
+            'count_attack_3' => 2,
+            'items' => [
+                'Fucium Ore' => 2,
+                'Carbalite Ore' => 2,
+                'Dragonite Ore' => 3,
+                'Dragonvein Crystal' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Normal Ammo 1' => 5,
+                    'Normal Ammo 2' => 2,
+                ],
+                'add' => [
+                    'Rapid Normal Ammo 1' => 5,
+                    'Normal Ammo 3' => 2,
+                ],
+            ],
+        ],
+        [
+            'branch' => 'bone',
+            'name' => [
+                'en' => 'Hunter\'s Rifle',
+                'es' => 'Rifle de Cazador',
+            ],
+            'deviation' => App\Enum\DeviationWeapon::AVERAGE,
+            'count_attack_1' => 6,
+            'count_attack_2' => 4,
+            'items' => [
+                'Monster Bone Small' => 1,
+            ],
+        ],
+        [
+            'parent' => 'Hunter\'s Rifle',
+            'branch' => 'bone',
+            'rarity' => 2,
+            'name' => [
+                'en' => 'Power Rifle',
+                'es' => 'Rifle de Poder',
+            ],
+            'deviation' => App\Enum\DeviationWeapon::AVERAGE,
+            'count_attack_1' => 3,
+            'count_attack_2' => 5,
+            'count_attack_3' => 2,
+            'items' => [
+                'Monster Bone Large' => 1,
+                'Monster Bone Medium' => 1,
+                'Boulder Bone' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Poison Ammo 1' => 2,
+                ],
+                'add' => [
+                    'Recover Ammo 1' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Power Rifle',
+            'branch' => 'bone',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Sniper Shot',
+                'es' => 'Francotirador',
+            ],
+            'deviation' => App\Enum\DeviationWeapon::AVERAGE,
+            'count_attack_1' => 3,
+            'count_attack_2' => 4,
+            'count_attack_3' => 3,
+            'items' => [
+                'Monster Hardbone' => 2,
+                'Monster Keenbone' => 2,
+                'Quality Bone' => 3,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Poison Ammo 1' => 2,
+                    'Spread Ammo 1' => 2,
+                ],
+                'add' => [
+                    'Recover Ammo 1' => 2,
+                    'Spread Ammo 2' => 2,
+                ],
+            ],
+        ],
         // ANCIENT FOREST
+        [
+            'parent' => 'Chain Blitz',
+            'branch' => 'Great Jagras',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Jagras Blitz',
+                'es' => 'Saeta Jagras',
+            ],
+            'deviation' => App\Enum\DeviationWeapon::AVERAGE,
+            'has_elemental_attacks' => true,
+            'count_attack_1' => 3,
+            'count_attack_2' => 7,
+            'count_attack_3' => 2,
+            'items' => [
+                'Great Jagras Claw' => 1,
+                'Great Jagras Hide' => 1,
+                'Great Jagras Scale' => 3,
+                'Sharp Claw' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Normal Ammo 1' => 5,
+                ],
+                'add' => [
+                    'Water Ammo' => 5,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Jagras Blitz',
+            'branch' => 'Great Jagras',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Jagras Fire',
+                'es' => 'Fuego Jagras',
+            ],
+            'deviation' => App\Enum\DeviationWeapon::AVERAGE,
+            'has_elemental_attacks' => true,
+            'count_attack_2' => 5,
+            'count_attack_3' => 8,
+            'count_attack_4' => 1,
+            'items' => [
+                'Great Jagras Scale' => 2,
+                'Great Jagras Claw' => 2,
+                'Great Jagras Mane' => 2,
+                'Piercing Claw' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Normal Ammo 1' => 5,
+                    'Poison Ammo 1' => 2,
+                ],
+                'add' => [
+                    'Water Ammo' => 5,
+                    'Recover Ammo 2' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Chain Blitz',
+            'branch' => 'Rathalos',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Flame Blitz',
+                'es' => 'Saeta Abrasadora',
+            ],
+            'deviation' => App\Enum\DeviationWeapon::LOW,
+            'has_elemental_attacks' => true,
+            'count_attack_1' => 3,
+            'count_attack_2' => 5,
+            'count_attack_3' => 4,
+            'items' => [
+                'Rathalos Scale' => 2,
+                'Rathalos Webbing' => 2,
+                'Inferno Sac' => 1,
+                'Rathalos Marrow' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Normal Ammo 1' => 5,
+                ],
+                'add' => [
+                    'Rapid Flaming Ammo' => 5,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Flame Blitz',
+            'branch' => 'Rathalos',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Rathbuster',
+                'es' => 'Rathcazadora',
+            ],
+            'deviation' => App\Enum\DeviationWeapon::LOW,
+            'has_elemental_attacks' => true,
+            'count_attack_1' => 4,
+            'count_attack_2' => 4,
+            'count_attack_3' => 4,
+            'count_attack_4' => 2,
+            'items' => [
+                'Rathalos Scale' => 2,
+                'Rathalos Carapace' => 1,
+                'Rathalos Wing' => 1,
+                'Rathalos Medulla' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Normal Ammo 1' => 5,
+                    'Normal Ammo 2' => 2,
+                ],
+                'add' => [
+                    'Rapid Flaming Ammo' => 5,
+                    'Flaming Ammo' => 2,
+                ],
+            ],
+        ],
         // WILDSPIRE WASTE
-        // KULU YA KU EXPANSION
+        [
+            'parent' => 'Hunter\'s Rifle',
+            'branch' => 'Barroth',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Carapace Rifle',
+                'es' => 'Rifle Acorazada',
+            ],
+            'deviation' => App\Enum\DeviationWeapon::AVERAGE,
+            'count_attack_1' => 3,
+            'count_attack_2' => 2,
+            'count_attack_3' => 5,
+            'items' => [
+                'Barroth Claw' => 1,
+                'Barroth Shell' => 4,
+                'Barroth Ridge' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Poison Ammo 1' => 2,
+                ],
+                'add' => [
+                    'Armour Ammo 1' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Carapace Rifle',
+            'branch' => 'Barroth',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Barroth Shot',
+                'es' => 'Tiro Barroth',
+            ],
+            'deviation' => App\Enum\DeviationWeapon::AVERAGE,
+            'count_attack_2' => 9,
+            'count_attack_3' => 2,
+            'count_attack_4' => 1,
+            'items' => [
+                'Barroth Claw' => 2,
+                'Barroth Carapace' => 3,
+                'Barroth Ridge' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Poison Ammo 1' => 2,
+                    'Pierce Ammo 1' => 2,
+                ],
+                'add' => [
+                    'Armour Ammo 1' => 2,
+                    'Paralysis Ammo' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Hunter\'s Rifle',
+            'branch' => 'Jyuratodus',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Madness Rifle',
+                'es' => 'Rifle Maníaco',
+            ],
+            'deviation' => App\Enum\DeviationWeapon::LOW,
+            'has_elemental_attacks' => true,
+            'count_attack_1' => 4,
+            'count_attack_2' => 3,
+            'count_attack_3' => 3,
+            'items' => [
+                'Jyuratodus Fin' => 1,
+                'Jyuratodus Shell' => 2,
+                'Jyuratodus Scale' => 3,
+                'Aqua Sac' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Normal Ammo 2' => 2,
+                ],
+                'add' => [
+                    'Rapid Water Ammo' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Madness Rifle',
+            'branch' => 'Jyuratodus',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Jyura Bullet',
+                'es' => 'Bala Jyura',
+            ],
+            'deviation' => App\Enum\DeviationWeapon::LOW,
+            'has_elemental_attacks' => true,
+            'count_attack_1' => 3,
+            'count_attack_2' => 5,
+            'count_attack_3' => 4,
+            'items' => [
+                'Jyuratodus Fin' => 1,
+                'Jyuratodus Carapace' => 2,
+                'Jyuratodus Scale' => 2,
+                'Aqua Sac' => 1,
+                'Gajau Scale' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Normal Ammo 2' => 2,
+                    'Poison Ammo 1' => 2,
+                ],
+                'add' => [
+                    'Rapid Water Ammo' => 2,
+                    'Sleep Ammo' => 2,
+                ],
+            ],
+        ],
+        // KULU YA KU EXPANSION <NONE>
         // NERGIGANTE EXPANSION
         [
             'parent' => 'Chain Blitz',
@@ -54,7 +405,7 @@ Después de colocar la carta de ataque boca arriba en tu tablero de resistencia,
                 'en' => 'Nergal Spitter',
                 'es' => 'Escupidora Nergal',
             ],
-            'deviation' => \App\Enum\DeviationWeapon::AVERAGE,
+            'deviation' => App\Enum\DeviationWeapon::AVERAGE,
             'has_elemental_attacks' => true,
             'count_attack_1' => 1,
             'count_attack_2' => 7,
@@ -83,7 +434,7 @@ Después de colocar la carta de ataque boca arriba en tu tablero de resistencia,
                 'en' => 'Cataclysm\'s Trigger',
                 'es' => 'Gatillo Catastrófico',
             ],
-            'deviation' => \App\Enum\DeviationWeapon::AVERAGE,
+            'deviation' => App\Enum\DeviationWeapon::AVERAGE,
             'has_elemental_attacks' => true,
             'count_attack_2' => 2,
             'count_attack_3' => 7,

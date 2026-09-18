@@ -145,7 +145,7 @@ Tienes cartas de ataque con :charge_hummer_icon_1: o :charge_hummer_icon_2: en t
         // ANCIENT FOREST
         [
             'parent' => 'Bone Bludgeon',
-            'branch' => 'bone',
+            'branch' => 'Anjanath',
             'rarity' => 3,
             'name' => [
                 'en' => 'Blazing Hammer',
@@ -170,7 +170,7 @@ Tienes cartas de ataque con :charge_hummer_icon_1: o :charge_hummer_icon_2: en t
         ],
         [
             'parent' => 'Blazing Hammer',
-            'branch' => 'bone',
+            'branch' => 'Anjanath',
             'rarity' => 4,
             'name' => [
                 'en' => 'Anja Striker',
@@ -358,6 +358,60 @@ Tienes cartas de ataque con :charge_hummer_icon_1: o :charge_hummer_icon_2: en t
             ],
         ],
         // KULU YA KU EXPANSION
+        [
+            'parent' => 'Bone Bludgeon',
+            'branch' => 'Kulu-Ya-Ku',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Kulu Beak',
+                'es' => 'Pico Kulu',
+            ],
+            'count_attack_1' => 5,
+            'count_attack_2' => 2,
+            'count_attack_3' => 5,
+            'items' => [
+                'Kulu-Ya-Ku Beak' => 1,
+                'Kulu-Ya-Ku Hide' => 2,
+                'Kulu-Ya-Ku Scale' => 4,
+                'Earth Crystal' => 3,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Spinning Bludgeon' => 2,
+                ],
+                'add' => [
+                    'Divine Spiral Bludgeon' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Kulu Beak',
+            'branch' => 'Kulu-Ya-Ku',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Crushing Beak',
+                'es' => 'Pico Aplastador',
+            ],
+            'count_attack_1' => 5,
+            'count_attack_2' => 3,
+            'count_attack_3' => 6,
+            'items' => [
+                'Kulu-Ya-Ku Beak' => 2,
+                'Kulu-Ya-Ku Hide' => 3,
+                'Kulu-Ya-Ku Plume' => 3,
+                'Boulder Bone' => 4,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Spinning Bludgeon' => 2,
+                    'Side Smash' => 2,
+                ],
+                'add' => [
+                    'Divine Spiral Bludgeon' => 2,
+                    'Knock Out Side Smash' => 2,
+                ],
+            ],
+        ],
         // NERGIGANTE EXPANSION
         [
             'parent' => 'Iron Hammer',

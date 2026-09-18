@@ -13,7 +13,7 @@ class Localization
             $locale = session()->get('locale');
         } else {
             $locale = substr($request->server('HTTP_ACCEPT_LANGUAGE'), 0, 2);
-            if (!in_array($locale, config('app.locales-available'), true)) {
+            if (! in_array($locale, config('app.locales-available'), true)) {
                 $locale = 'en';
             }
         }

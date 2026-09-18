@@ -57,7 +57,7 @@ class WeaponType extends Model
     public function toSearchableArray(): array
     {
         $searchable = [
-            'url' => 'TODO',
+            'url' => null,
         ];
         foreach (config('app.locales-available') as $locale) {
             $searchable[$locale.'.name'] = $this->getTranslation('name', $locale);

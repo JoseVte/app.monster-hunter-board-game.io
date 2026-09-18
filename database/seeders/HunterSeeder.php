@@ -32,7 +32,7 @@ class HunterSeeder extends Seeder
             });
 
             Weapon::each(static function (Weapon $weapon) use ($hunter): void {
-                if (!$weapon->is_default && fake()->boolean(20)) {
+                if (! $weapon->is_default && fake()->boolean(20)) {
                     $hunter->weapons()->attach($weapon);
                 }
             });

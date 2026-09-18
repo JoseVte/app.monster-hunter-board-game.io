@@ -1,24 +1,16 @@
 <?php
 
-namespace Tests\Feature;
-
-use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CreateTeamTest extends TestCase
-{
-    use RefreshDatabase;
+uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
-    public function testTeamsCanBeCreated(): void
-    {
-        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+test('teams can be created', function (): void {
+    $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
-        $response = $this->post('/teams', [
-            'name' => 'Test Team',
-        ]);
+    $response = $this->post('/teams', [
+        'name' => 'Test Team',
+    ]);
 
-        $this->assertCount(2, $user->fresh()->ownedTeams);
-        $this->assertEquals('Test Team', $user->fresh()->ownedTeams()->latest('id')->first()->name);
-    }
-}
+    expect($user->fresh()->ownedTeams)->toHaveCount(2)
+        ->and($user->fresh()->ownedTeams()->latest('id')->first()->name)->toEqual('Test Team');
+});

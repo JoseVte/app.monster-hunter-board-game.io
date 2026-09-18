@@ -18,10 +18,10 @@ test('users can leave campaigns', function (): void {
 
     $this->actingAs($otherUser);
 
-    $this->assertCount(2, $campaign->fresh()->users);
+    expect($campaign->fresh()->users)->toHaveCount(2);
     $response = $this->delete(route('campaign-members.destroy', [$campaign, $otherUser]));
-    $this->assertCount(1, $campaign->fresh()->users);
+    expect($campaign->fresh()->users)->toHaveCount(1);
     $this->actingAs($user);
     $response = $this->delete(route('campaign-members.destroy', [$campaign, $user]));
-    $this->assertCount(0, $campaign->fresh()->users);
+    expect($campaign->fresh()->users)->toHaveCount(0);
 });

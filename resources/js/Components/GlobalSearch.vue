@@ -77,8 +77,10 @@ watch(searchText, (after) => {
                 :key="`${result.id}-${result.class}`"
                 class="result"
             >
-                <a
-                    class="block px-3 py-2 bg-white hover:bg-gray-50 dark:text-white dark:bg-gray-800 dark:hover:bg-gray-700 transition duration-150 ease-in-out"
+                <component
+                    :is="result.url ? 'a' : 'span'"
+                    class="block px-3 py-2 bg-white dark:text-white dark:bg-gray-800 transition duration-150 ease-in-out"
+                    :class="result.url ? 'hover:bg-gray-50 dark:hover:bg-gray-700' : 'cursor-default'"
                     :href="result.url"
                     v-html="result.name"
                 />

@@ -1,41 +1,32 @@
 <?php
 
-namespace Tests\Feature;
-
-use Tests\TestCase;
 use App\Models\Team;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class DeleteTeamTest extends TestCase
-{
-    use RefreshDatabase;
+uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
-    public function testTeamsCanBeDeleted(): void
-    {
-        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+test('teams can be deleted', function (): void {
+    $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
-        $user->ownedTeams()->save($team = Team::factory()->make([
-            'personal_team' => false,
-        ]));
+    $user->ownedTeams()->save($team = Team::factory()->make([
+        'personal_team' => false,
+    ]));
 
-        $team->users()->attach(
-            $otherUser = User::factory()->create(),
-            ['role' => 'test-role']
-        );
+    $team->users()->attach(
+        $otherUser = User::factory()->create(),
+        ['role' => 'test-role']
+    );
 
-        $response = $this->delete('/teams/'.$team->id);
+    $response = $this->delete('/teams/'.$team->id);
 
-        $this->assertNull($team->fresh());
-        $this->assertCount(0, $otherUser->fresh()->teams);
-    }
+    expect($team->fresh())->toBeNull()
+        ->and($otherUser->fresh()->teams)->toHaveCount(0);
+});
 
-    public function testPersonalTeamsCantBeDeleted(): void
-    {
-        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+test('personal teams cant be deleted', function (): void {
+    $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
-        $response = $this->delete('/teams/'.$user->currentTeam->id);
+    $response = $this->delete('/teams/'.$user->currentTeam->id);
 
-        $this->assertNotNull($user->currentTeam->fresh());
-    }
-}
+    expect($user->currentTeam->fresh())->not->toBeNull();
+});

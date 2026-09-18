@@ -45,9 +45,7 @@ class CreateUserFromProvider implements CreatesUserFromProvider
                     }
                 }
 
-                $user->switchConnectedAccount(
-                    $this->createsConnectedAccounts->create($user, $provider, $providerUser)
-                );
+                $this->createsConnectedAccounts->create($user, $provider, $providerUser);
 
                 $this->createTeam($user);
             });

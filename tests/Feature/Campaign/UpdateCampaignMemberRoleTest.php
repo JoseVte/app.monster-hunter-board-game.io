@@ -20,8 +20,8 @@ test('campaign member roles can be updated', function (): void {
         'role' => 'member-campaign',
     ]);
 
-    $this->assertTrue($otherUser->fresh()->hasCampaignRole(
+    expect($otherUser->fresh()->hasCampaignRole(
         $campaign->fresh(),
         'member-campaign'
-    ));
+    ))->toBeTrue();
 });

@@ -7,6 +7,7 @@ use App\Models\Monster;
 use App\Models\Campaign;
 use App\Enum\MonsterDifficulty;
 use App\Models\DowntimeActivity;
+use App\Events\UserMonsterHunted;
 
 beforeEach(function (): void {
     $this->actingAs($this->user = User::factory()->withPersonalTeam()->create());
@@ -28,11 +29,11 @@ test('campaign can update', function (): void {
     $response->assertStatus(303);
 
     $this->campaign->refresh();
-    $this->assertEquals(1, $this->campaign->team_id);
-    $this->assertEquals('Test Campaign', $this->campaign->name);
-    $this->assertEquals('Test Campaign Description', $this->campaign->description);
-    $this->assertEquals(40, $this->campaign->max_days);
-    $this->assertEquals(2, $this->campaign->health_potions);
+    expect($this->campaign->team_id)->toEqual(1)
+        ->and($this->campaign->name)->toEqual('Test Campaign')
+        ->and($this->campaign->description)->toEqual('Test Campaign Description')
+        ->and($this->campaign->max_days)->toEqual(40)
+        ->and($this->campaign->health_potions)->toEqual(2);
 });
 
 test('campaign can update potions', function (): void {
@@ -42,10 +43,11 @@ test('campaign can update potions', function (): void {
     $response->assertStatus(303);
 
     $this->campaign->refresh();
-    $this->assertEquals(1, $this->campaign->health_potions);
+    expect($this->campaign->health_potions)->toEqual(1);
 });
 
 test('campaign can add hunt monster days', function (): void {
+    Event::fake(UserMonsterHunted::class);
     Monster::factory(5)->create();
 
     $response = $this->put(route('campaigns.add-day', $this->campaign), [
@@ -57,7 +59,7 @@ test('campaign can add hunt monster days', function (): void {
     $response->assertStatus(303);
 
     $this->campaign->refresh();
-    $this->assertEquals(1, $this->campaign->days()->count());
+    expect($this->campaign->days()->count())->toEqual(1);
 
     $response = $this->put(route('campaigns.add-day', $this->campaign), [
         'type_day' => DayType::MONSTER->name,
@@ -69,7 +71,8 @@ test('campaign can add hunt monster days', function (): void {
     $response->assertStatus(303);
 
     $this->campaign->refresh();
-    $this->assertEquals(2, $this->campaign->days()->count());
+    expect($this->campaign->days()->count())->toEqual(2);
+    Event::assertDispatchedTimes(UserMonsterHunted::class);
 });
 
 test('campaign can add downtime activity days', function (): void {
@@ -85,7 +88,7 @@ test('campaign can add downtime activity days', function (): void {
     $response->assertStatus(303);
 
     $this->campaign->refresh();
-    $this->assertEquals(1, $this->campaign->days()->count());
+    expect($this->campaign->days()->count())->toEqual(1);
 
     $hunterDays = Hunter::all()->keyBy('id')->map(fn () => DowntimeActivity::inRandomOrder()->firstOrFail()->id)->toArray();
     $response = $this->put(route('campaigns.add-day', $this->campaign), [
@@ -97,7 +100,7 @@ test('campaign can add downtime activity days', function (): void {
     $response->assertStatus(303);
 
     $this->campaign->refresh();
-    $this->assertEquals(2, $this->campaign->days()->count());
+    expect($this->campaign->days()->count())->toEqual(2);
 });
 
 test('campaign can update hunt monster days to downtime activity day', function (): void {
@@ -114,7 +117,7 @@ test('campaign can update hunt monster days to downtime activity day', function 
     $response->assertStatus(303);
 
     $this->campaign->refresh();
-    $this->assertEquals(1, $this->campaign->days()->count());
+    expect($this->campaign->days()->count())->toEqual(1);
 
     $response = $this->put(route('campaigns.update-day', [$this->campaign, 1]), [
         'type_day' => DayType::DOWNTIME->name,
@@ -125,7 +128,7 @@ test('campaign can update hunt monster days to downtime activity day', function 
     $response->assertStatus(303);
 
     $this->campaign->refresh();
-    $this->assertEquals(1, $this->campaign->days()->count());
+    expect($this->campaign->days()->count())->toEqual(1);
 });
 
 test('campaign can update downtime activity days to hunt monster day', function (): void {
@@ -142,7 +145,7 @@ test('campaign can update downtime activity days to hunt monster day', function 
     $response->assertStatus(303);
 
     $this->campaign->refresh();
-    $this->assertEquals(1, $this->campaign->days()->count());
+    expect($this->campaign->days()->count())->toEqual(1);
 
     $response = $this->put(route('campaigns.update-day', [$this->campaign, 1]), [
         'type_day' => DayType::MONSTER->name,
@@ -153,5 +156,30 @@ test('campaign can update downtime activity days to hunt monster day', function 
     $response->assertStatus(303);
 
     $this->campaign->refresh();
-    $this->assertEquals(1, $this->campaign->days()->count());
+    expect($this->campaign->days()->count())->toEqual(1);
+});
+
+test('a day rejects an unknown type', function (): void {
+    $response = $this->put(route('campaigns.add-day', $this->campaign), [
+        'type_day' => 'PICNIC',
+    ]);
+
+    $response->assertSessionHasErrors('type_day', errorBag: 'addOrUpdateCampaignDay');
+    expect($this->campaign->days()->count())->toEqual(0);
+});
+
+test('a day rejects a missing type', function (): void {
+    $response = $this->put(route('campaigns.add-day', $this->campaign), []);
+
+    $response->assertSessionHasErrors('type_day', errorBag: 'addOrUpdateCampaignDay');
+    expect($this->campaign->days()->count())->toEqual(0);
+});
+
+test('a monster day still requires its monster and difficulty', function (): void {
+    $response = $this->put(route('campaigns.add-day', $this->campaign), [
+        'type_day' => DayType::MONSTER->name,
+    ]);
+
+    $response->assertSessionHasErrors(['monster_id', 'difficulty'], errorBag: 'addOrUpdateCampaignDay');
+    expect($this->campaign->days()->count())->toEqual(0);
 });

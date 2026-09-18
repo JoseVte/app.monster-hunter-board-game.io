@@ -26,12 +26,16 @@ module.exports = {
             },
             fontFamily: {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
+                montserrat: ['Montserrat', ...defaultTheme.fontFamily.sans],
             },
             fontSize: {
                 'xxs': '8px',
             },
             colors: {
-                primary: colors.sky
+                primary: colors.sky,
+                bronze: '#AD8A56',
+                silver: '#D7D7D7',
+                gold: '#AF9500',
             },
             minWidth: {
                 8: '2rem',

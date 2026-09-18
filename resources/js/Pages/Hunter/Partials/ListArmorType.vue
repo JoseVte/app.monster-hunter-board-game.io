@@ -3,7 +3,6 @@ import {ref} from "vue";
 import {Collapse} from "vue-collapsed";
 import ListArmors from "@/Pages/Hunter/Partials/ListArmors.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
-import WeaponsIcon from "@/Components/Icons/WeaponsIcon.vue";
 import KnightIcon from "@/Components/Icons/KnightIcon.vue";
 
 defineProps({

@@ -14,6 +14,220 @@ Durante tu turno puedes tocar una canción siguiendo las instrucciones en la car
 Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
     ],
     'image' => 'icon_weapon_06.png',
+    'song-effects' => [
+        [
+            'name' => [
+                'en' => 'Self Improvement',
+                'es' => '',
+            ],
+            'description' => [
+                'en' => 'Only this hunter is affected. When this hunter walks, they move up to nodes instead of 1.',
+                'es' => '',
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Attack Up',
+                'es' => '',
+            ],
+            'description' => [
+                'en' => 'The next time each affected hunter inflicts damage, they draw +2 :damage_attack_icon:.',
+                'es' => '',
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Defence Up',
+                'es' => '',
+            ],
+            'description' => [
+                'en' => 'Each affected hunter gains +1 :defense_icon:.',
+                'es' => '',
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Health Recovery',
+                'es' => '',
+            ],
+            'description' => [
+                'en' => 'The next time each affected hunter takes a turn, they recover 2 lost health.',
+                'es' => '',
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Earplugs',
+                'es' => '',
+            ],
+            'description' => [
+                'en' => 'Each affected hunter may immediately discard 1 attack card from their hand to move up to 2 nodes.',
+                'es' => '',
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Stamina Use Reduced',
+                'es' => '',
+            ],
+            'description' => [
+                'en' => 'The next time each affected hunter plays an attack card onto their stamina board, they may discard it.',
+                'es' => '',
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Environment Effects Negated',
+                'es' => '',
+            ],
+            'description' => [
+                'en' => 'Each affected hunter ignores the effects of pond nodes.',
+                'es' => '',
+            ],
+        ],
+    ],
+    'song-lists' => [
+        [
+            'name' => [
+                'en' => 'Ore Song List',
+                'es' => 'Lista de Canciones de Metal',
+            ],
+            'songs' => [
+                'Self Improvement' => [
+                    'range' => 0,
+                    'notes' => ['white', 'white'],
+                ],
+                'Attack Up' => [
+                    'range' => 1,
+                    'notes' => ['white', 'red', 'red'],
+                ],
+                'Defence Up' => [
+                    'range' => 1,
+                    'notes' => ['white', 'blue', 'blue'],
+                ],
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Bone Song List',
+                'es' => 'Lista de Canciones de Huesos',
+            ],
+            'songs' => [
+                'Self Improvement' => [
+                    'range' => 0,
+                    'notes' => ['white', 'white'],
+                ],
+                'Attack Up' => [
+                    'range' => 1,
+                    'notes' => ['white', 'red', 'red'],
+                ],
+                'Environment Effects Negated' => [
+                    'range' => 3,
+                    'notes' => ['red', 'red', 'blue'],
+                ],
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Tobi-Kadachi Song List',
+                'es' => 'Lista de Canciones de Tobi-Kadachi',
+            ],
+            'songs' => [
+                'Self Improvement' => [
+                    'range' => 0,
+                    'notes' => ['white', 'white'],
+                ],
+                'Health Recovery' => [
+                    'range' => 1,
+                    'notes' => ['white', 'red', 'white'],
+                ],
+                'Earplugs' => [
+                    'range' => 2,
+                    'notes' => ['blue', 'blue', 'red', 'white'],
+                ],
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Anjanath Song List',
+                'es' => 'Lista de Canciones de Anjanath',
+            ],
+            'songs' => [
+                'Self Improvement' => [
+                    'range' => 0,
+                    'notes' => ['white', 'white'],
+                ],
+                'Stamina Use Reduced' => [
+                    'range' => 2,
+                    'notes' => ['white', 'blue', 'red'],
+                ],
+                'Defence Up' => [
+                    'range' => 1,
+                    'notes' => ['white', 'red', 'red'],
+                ],
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Pukei-Pukei Song List',
+                'es' => 'Lista de Canciones de Pukei-Pukei',
+            ],
+            'songs' => [
+                'Self Improvement' => [
+                    'range' => 0,
+                    'notes' => ['white', 'white'],
+                ],
+                'Health Recovery' => [
+                    'range' => 1,
+                    'notes' => ['white', 'red', 'white'],
+                ],
+                'Earplugs' => [
+                    'range' => 2,
+                    'notes' => ['blue', 'blue', 'red', 'white'],
+                ],
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Jyuratodus Song List',
+                'es' => 'Lista de Canciones de Jyuratodus',
+            ],
+            'songs' => [
+                'Self Improvement' => [
+                    'range' => 0,
+                    'notes' => ['white', 'white'],
+                ],
+                'Attack Up' => [
+                    'range' => 1,
+                    'notes' => ['white', 'red', 'red'],
+                ],
+                'Environment Effects Negated' => [
+                    'range' => 3,
+                    'notes' => ['red', 'red', 'blue'],
+                ],
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Kulu-Ya-Ku Song List',
+                'es' => 'Lista de Canciones de Kulu-Ya-Ku',
+            ],
+            'songs' => [
+                'Self Improvement' => [
+                    'range' => 0,
+                    'notes' => ['white', 'white'],
+                ],
+                'Stamina Use Reduced' => [
+                    'range' => 2,
+                    'notes' => ['white', 'blue', 'red'],
+                ],
+                'Defence Up' => [
+                    'range' => 1,
+                    'notes' => ['white', 'blue', 'blue'],
+                ],
+            ],
+        ],
+    ],
     'weapons' => [
         [
             'default' => true,
@@ -22,6 +236,7 @@ Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
                 'en' => 'Metal Bagpipe',
                 'es' => 'Gaita Metálica',
             ],
+            'song_list' => 'Ore Song List',
             'count_attack_1' => 10,
             'count_attack_2' => 2,
         ],
@@ -33,6 +248,7 @@ Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
                 'en' => 'Great Bagpipe',
                 'es' => 'Gaita Mayor',
             ],
+            'song_list' => 'Ore Song List',
             'count_attack_1' => 8,
             'count_attack_2' => 3,
             'count_attack_3' => 1,
@@ -58,6 +274,7 @@ Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
                 'en' => 'Fortissimo',
                 'es' => 'Fortissimo',
             ],
+            'song_list' => 'Ore Song List',
             'count_attack_1' => 5,
             'count_attack_2' => 5,
             'count_attack_3' => 2,
@@ -84,6 +301,7 @@ Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
                 'en' => 'Bone Horn',
                 'es' => 'Cuerno Óseo',
             ],
+            'song_list' => 'Bone Song List',
             'count_attack_1' => 7,
             'count_attack_2' => 3,
             'items' => [
@@ -98,6 +316,7 @@ Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
                 'en' => 'Hard Bone Horn',
                 'es' => 'Cuerno Hueso Pétreo',
             ],
+            'song_list' => 'Bone Song List',
             'count_attack_1' => 5,
             'count_attack_2' => 5,
             'items' => [
@@ -122,6 +341,7 @@ Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
                 'en' => 'Heavy Bone Horn',
                 'es' => 'Cuerno Hueso Pesado',
             ],
+            'song_list' => 'Bone Song List',
             'count_attack_1' => 3,
             'count_attack_2' => 5,
             'count_attack_3' => 2,
@@ -142,6 +362,121 @@ Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
             ],
         ],
         // ANCIENT FOREST
+        [
+            'parent' => 'Bone Horn',
+            'branch' => 'Tobi-Kadachi',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Thunder Gaida',
+                'es' => 'Gaita Trueno',
+            ],
+            'song_list' => 'Tobi-Kadachi Song List',
+            'has_elemental_attacks' => true,
+            'count_attack_1' => 3,
+            'count_attack_2' => 5,
+            'count_attack_3' => 4,
+            'items' => [
+                'Dragonite Ore' => 2,
+                'Tobi-Kadachi Electrode' => 1,
+                'Tobi-Kadachi Claw' => 2,
+                'Electro Sac' => 1,
+                'Coral Crystal' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Left Swing' => 2,
+                ],
+                'add' => [
+                    'Static Swing' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Thunder Gaida',
+            'branch' => 'Tobi-Kadachi',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Lightning Drm',
+                'es' => 'Tambor Relámpago',
+            ],
+            'song_list' => 'Tobi-Kadachi Song List',
+            'has_elemental_attacks' => true,
+            'count_attack_1' => 3,
+            'count_attack_2' => 4,
+            'count_attack_3' => 7,
+            'items' => [
+                'Fucium Ore' => 2,
+                'Tobi-Kadachi Electrode' => 2,
+                'Tobi-Kadachi Claw' => 2,
+                'Thunder Sac' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Left Swing' => 2,
+                    'Hilt Stab' => 3,
+                ],
+                'add' => [
+                    'Static Swing' => 2,
+                    'Static Strike' => 3,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Metal Bagpipe',
+            'branch' => 'Anjanath',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Blazing Horn',
+                'es' => 'Cuerno Flameante',
+            ],
+            'song_list' => 'Anjanath Song List',
+            'has_elemental_attacks' => true,
+            'count_attack_1' => 2,
+            'count_attack_2' => 6,
+            'count_attack_3' => 4,
+            'items' => [
+                'Anjanath Scale' => 3,
+                'Anjanath Fang' => 2,
+                'Flame Sac' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Forward Smash' => 2,
+                ],
+                'add' => [
+                    'Forward Blazing Smash' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Blazing Horn',
+            'branch' => 'Anjanath',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Anja Barone',
+                'es' => 'Barone Anja',
+            ],
+            'song_list' => 'Anjanath Song List',
+            'has_elemental_attacks' => true,
+            'count_attack_1' => 3,
+            'count_attack_2' => 5,
+            'count_attack_3' => 6,
+            'items' => [
+                'Anjanath Fang' => 4,
+                'Anjanath Pelt' => 4,
+                'Firecell Stone' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Forward Smash' => 2,
+                    'Backwards Strike' => 2,
+                ],
+                'add' => [
+                    'Forward Blazing Smash' => 2,
+                    'Blazing Strike' => 2,
+                ],
+            ],
+        ],
         // WILDSPIRE WASTE
         [
             'parent' => 'Bone Horn',
@@ -151,6 +486,7 @@ Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
                 'en' => 'Blooming Horn',
                 'es' => 'Cuerno Floral',
             ],
+            'song_list' => 'Pukei-Pukei Song List',
             'count_attack_1' => 3,
             'count_attack_2' => 5,
             'count_attack_3' => 4,
@@ -177,6 +513,7 @@ Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
                 'en' => 'Datura Horn',
                 'es' => 'Cuerno Datura',
             ],
+            'song_list' => 'Pukei-Pukei Song List',
             'count_attack_1' => 3,
             'count_attack_2' => 4,
             'count_attack_3' => 7,
@@ -205,6 +542,7 @@ Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
                 'en' => 'Aqua Bagpipe',
                 'es' => 'Gaita Aqua',
             ],
+            'song_list' => 'Jyuratodus Song List',
             'has_elemental_attacks' => true,
             'count_attack_1' => 2,
             'count_attack_2' => 6,
@@ -232,6 +570,7 @@ Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
                 'en' => 'Water Tamtam',
                 'es' => 'Tamtam Acuático',
             ],
+            'song_list' => 'Jyuratodus Song List',
             'has_elemental_attacks' => true,
             'count_attack_1' => 2,
             'count_attack_2' => 6,
@@ -255,6 +594,62 @@ Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
             ],
         ],
         // KULU YA KU EXPANSION
+        [
+            'parent' => 'Metal Bagpipe',
+            'branch' => 'Kulu-Ya-Ku',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Kulu Duda',
+                'es' => 'Duta Kulu',
+            ],
+            'song_list' => 'Kulu-Ya-Ku Song List',
+            'count_attack_1' => 3,
+            'count_attack_2' => 5,
+            'count_attack_3' => 4,
+            'items' => [
+                'Kulu-Ya-Ku Beak' => 1,
+                'Kulu-Ya-Ku Hide' => 2,
+                'Kulu-Ya-Ku Scale' => 4,
+                'Earth Crystal' => 3,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Left Swing' => 2,
+                ],
+                'add' => [
+                    'Dive Swing' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Kulu Duda',
+            'branch' => 'Kulu-Ya-Ku',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Dancing Duval',
+                'es' => 'Davul Danzante',
+            ],
+            'song_list' => 'Kulu-Ya-Ku Song List',
+            'count_attack_1' => 1,
+            'count_attack_2' => 4,
+            'count_attack_3' => 7,
+            'items' => [
+                'Kulu-Ya-Ku Beak' => 2,
+                'Kulu-Ya-Ku Hide' => 3,
+                'Kulu-Ya-Ku Plume' => 3,
+                'Boulder Bone' => 4,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Left Swing' => 2,
+                    'Upward Swing' => 2,
+                ],
+                'add' => [
+                    'Dive Swing' => 2,
+                    'Lullaby Smash' => 1,
+                ],
+            ],
+        ],
         // TEOSTRA EXPANSION
         [
             'parent' => 'Metal Bagpipe',

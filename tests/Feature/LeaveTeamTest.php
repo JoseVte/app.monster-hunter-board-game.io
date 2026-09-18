@@ -1,39 +1,30 @@
 <?php
 
-namespace Tests\Feature;
-
-use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class LeaveTeamTest extends TestCase
-{
-    use RefreshDatabase;
+uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
-    public function testUsersCanLeaveTeams(): void
-    {
-        $user = User::factory()->withPersonalTeam()->create();
+test('users can leave teams', function (): void {
+    $user = User::factory()->withPersonalTeam()->create();
 
-        $user->currentTeam->users()->attach(
-            $otherUser = User::factory()->create(),
-            ['role' => 'admin']
-        );
+    $user->currentTeam->users()->attach(
+        $otherUser = User::factory()->create(),
+        ['role' => 'admin']
+    );
 
-        $this->actingAs($otherUser);
+    $this->actingAs($otherUser);
 
-        $response = $this->delete('/teams/'.$user->currentTeam->id.'/members/'.$otherUser->id);
+    $response = $this->delete('/teams/'.$user->currentTeam->id.'/members/'.$otherUser->id);
 
-        $this->assertCount(0, $user->currentTeam->fresh()->users);
-    }
+    expect($user->currentTeam->fresh()->users)->toHaveCount(0);
+});
 
-    public function testTeamOwnersCantLeaveTheirOwnTeam(): void
-    {
-        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+test('team owners cant leave their own team', function (): void {
+    $this->actingAs($user = User::factory()->withPersonalTeam()->create());
 
-        $response = $this->delete('/teams/'.$user->currentTeam->id.'/members/'.$user->id);
+    $response = $this->delete('/teams/'.$user->currentTeam->id.'/members/'.$user->id);
 
-        $response->assertSessionHasErrorsIn('removeTeamMember', ['team']);
+    $response->assertSessionHasErrorsIn('removeTeamMember', ['team']);
 
-        $this->assertNotNull($user->currentTeam->fresh());
-    }
-}
+    expect($user->currentTeam->fresh())->not->toBeNull();
+});

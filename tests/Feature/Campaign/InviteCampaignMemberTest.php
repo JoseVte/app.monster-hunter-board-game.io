@@ -8,7 +8,7 @@ use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Mail;
 
 test('campaign members can be invited to campaign', function (): void {
-    if (!Features::sendsTeamInvitations()) {
+    if (! Features::sendsTeamInvitations()) {
         $this->markTestSkipped('Team invitations not enabled.');
 
         return;
@@ -26,11 +26,11 @@ test('campaign members can be invited to campaign', function (): void {
 
     Mail::assertSent(CampaignInvitation::class);
 
-    $this->assertCount(1, $campaign->fresh()->campaignInvitations);
+    expect($campaign->fresh()->campaignInvitations)->toHaveCount(1);
 });
 
 test('campaign members invitations can be cancelled', function (): void {
-    if (!Features::sendsTeamInvitations()) {
+    if (! Features::sendsTeamInvitations()) {
         $this->markTestSkipped('Team invitations not enabled.');
 
         return;
@@ -46,8 +46,8 @@ test('campaign members invitations can be cancelled', function (): void {
         'role_id' => Role::findByName('admin-campaign', 'sanctum')->id,
     ]);
 
-    $this->assertCount(1, $campaign->fresh()->campaignInvitations);
+    expect($campaign->fresh()->campaignInvitations)->toHaveCount(1);
     $response = $this->delete(route('campaign-invitations.destroy', $invitation));
 
-    $this->assertCount(0, $campaign->fresh()->campaignInvitations);
+    expect($campaign->fresh()->campaignInvitations)->toHaveCount(0);
 });

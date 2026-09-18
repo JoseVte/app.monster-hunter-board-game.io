@@ -38,11 +38,11 @@ class CampaignPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Campaign $campaign, Hunter $hunter = null): bool
+    public function update(User $user, Campaign $campaign, ?Hunter $hunter = null): bool
     {
         return (
             $user->ownsCampaign($campaign) || (
-                null !== $hunter && $user->belongsToCampaign($campaign) && $campaign->users()->wherePivot('hunter_id', $hunter->id)->find($user->id)
+                $hunter !== null && $user->belongsToCampaign($campaign) && $campaign->users()->wherePivot('hunter_id', $hunter->id)->find($user->id)
             )
         ) && ($user->hasCampaignRole($campaign, 'member-campaign') || $user->hasCampaignRole($campaign, 'admin-campaign'));
     }

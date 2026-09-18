@@ -12,7 +12,7 @@ enum DayType implements TranslatableEnumContract
     case MONSTER;
     case DOWNTIME;
 
-    public function label(string $locale = null): string
+    public function label(?string $locale = null): string
     {
         return match ($this) {
             self::MONSTER => __('Hunt a monster', [], $locale),

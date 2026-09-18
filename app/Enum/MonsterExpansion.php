@@ -16,7 +16,7 @@ enum MonsterExpansion implements TranslatableEnumContract
     case NERGIGANTE_EXPANSION;
     case KUSHALA_EXPANSION;
 
-    public function label(string $locale = null): string
+    public function label(?string $locale = null): string
     {
         return match ($this) {
             self::ANCIENT_FOREST => __('Ancient Forest', [], $locale),

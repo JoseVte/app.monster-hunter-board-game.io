@@ -60,12 +60,19 @@ class Campaign extends Model
 
     public function getDescriptionParsedAttribute(): string
     {
-        return strip_tags(Str::markdown($this->description));
+        return strip_tags($this->description_parsed_html);
     }
 
+    /**
+     * The description is user authored markdown that reaches other members through
+     * `v-html`, so raw HTML is dropped and unsafe link schemes are not rendered.
+     */
     public function getDescriptionParsedHtmlAttribute(): string
     {
-        return Str::markdown($this->description);
+        return Str::markdown($this->description ?? '', [
+            'html_input' => 'strip',
+            'allow_unsafe_links' => false,
+        ]);
     }
 
     public function hasUserWithEmail(string $email): bool

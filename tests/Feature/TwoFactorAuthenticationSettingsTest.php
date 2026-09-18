@@ -1,75 +1,65 @@
 <?php
 
-namespace Tests\Feature;
-
-use Tests\TestCase;
 use App\Models\User;
 use Laravel\Fortify\Features;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class TwoFactorAuthenticationSettingsTest extends TestCase
-{
-    use RefreshDatabase;
+uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
-    public function testTwoFactorAuthenticationCanBeEnabled(): void
-    {
-        if (!Features::canManageTwoFactorAuthentication()) {
-            $this->markTestSkipped('Two factor authentication is not enabled.');
+test('two factor authentication can be enabled', function (): void {
+    if (! Features::canManageTwoFactorAuthentication()) {
+        $this->markTestSkipped('Two factor authentication is not enabled.');
 
-            return;
-        }
-
-        $this->actingAs($user = User::factory()->create());
-
-        $this->withSession(['auth.password_confirmed_at' => time()]);
-
-        $response = $this->post('/user/two-factor-authentication');
-
-        $this->assertNotNull($user->fresh()->two_factor_secret);
-        $this->assertCount(8, $user->fresh()->recoveryCodes());
+        return;
     }
 
-    public function testRecoveryCodesCanBeRegenerated(): void
-    {
-        if (!Features::canManageTwoFactorAuthentication()) {
-            $this->markTestSkipped('Two factor authentication is not enabled.');
+    $this->actingAs($user = User::factory()->create());
 
-            return;
-        }
+    $this->withSession(['auth.password_confirmed_at' => time()]);
 
-        $this->actingAs($user = User::factory()->create());
+    $response = $this->post('/user/two-factor-authentication');
 
-        $this->withSession(['auth.password_confirmed_at' => time()]);
+    expect($user->fresh()->two_factor_secret)->not->toBeNull()
+        ->and($user->fresh()->recoveryCodes())->toHaveCount(8);
+});
 
-        $this->post('/user/two-factor-authentication');
-        $this->post('/user/two-factor-recovery-codes');
+test('recovery codes can be regenerated', function (): void {
+    if (! Features::canManageTwoFactorAuthentication()) {
+        $this->markTestSkipped('Two factor authentication is not enabled.');
 
-        $user = $user->fresh();
-
-        $this->post('/user/two-factor-recovery-codes');
-
-        $this->assertCount(8, $user->recoveryCodes());
-        $this->assertCount(8, array_diff($user->recoveryCodes(), $user->fresh()->recoveryCodes()));
+        return;
     }
 
-    public function testTwoFactorAuthenticationCanBeDisabled(): void
-    {
-        if (!Features::canManageTwoFactorAuthentication()) {
-            $this->markTestSkipped('Two factor authentication is not enabled.');
+    $this->actingAs($user = User::factory()->create());
 
-            return;
-        }
+    $this->withSession(['auth.password_confirmed_at' => time()]);
 
-        $this->actingAs($user = User::factory()->create());
+    $this->post('/user/two-factor-authentication');
+    $this->post('/user/two-factor-recovery-codes');
 
-        $this->withSession(['auth.password_confirmed_at' => time()]);
+    $user = $user->fresh();
 
-        $this->post('/user/two-factor-authentication');
+    $this->post('/user/two-factor-recovery-codes');
 
-        $this->assertNotNull($user->fresh()->two_factor_secret);
+    expect($user->recoveryCodes())->toHaveCount(8)
+        ->and(array_diff($user->recoveryCodes(), $user->fresh()->recoveryCodes()))->toHaveCount(8);
+});
 
-        $this->delete('/user/two-factor-authentication');
+test('two factor authentication can be disabled', function (): void {
+    if (! Features::canManageTwoFactorAuthentication()) {
+        $this->markTestSkipped('Two factor authentication is not enabled.');
 
-        $this->assertNull($user->fresh()->two_factor_secret);
+        return;
     }
-}
+
+    $this->actingAs($user = User::factory()->create());
+
+    $this->withSession(['auth.password_confirmed_at' => time()]);
+
+    $this->post('/user/two-factor-authentication');
+
+    expect($user->fresh()->two_factor_secret)->not->toBeNull();
+
+    $this->delete('/user/two-factor-authentication');
+
+    expect($user->fresh()->two_factor_secret)->toBeNull();
+});

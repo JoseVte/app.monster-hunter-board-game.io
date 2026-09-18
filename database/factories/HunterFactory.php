@@ -29,7 +29,7 @@ class HunterFactory extends Factory
     {
         return $this->afterCreating(function (Hunter $hunter) {
             $campaign = $hunter->campaign;
-            if (null === $campaign->users()->find($campaign->team->owner)) {
+            if ($campaign->users()->find($campaign->team->owner) === null) {
                 $campaign->users()->attach($campaign->team->owner, [
                     'role_id' => Role::findByName('member-campaign', 'sanctum')->id,
                 ]);

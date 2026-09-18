@@ -7,9 +7,7 @@ use Illuminate\Contracts\Validation\Rule;
 
 readonly class Recaptcha implements Rule
 {
-    public function __construct(private float $score = 0.5)
-    {
-    }
+    public function __construct(private float $score = 0.5) {}
 
     public function passes($attribute, $value): bool
     {

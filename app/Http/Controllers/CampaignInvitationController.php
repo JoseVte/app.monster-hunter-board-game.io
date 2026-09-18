@@ -32,8 +32,8 @@ class CampaignInvitationController extends Controller
     {
         $invitation = CampaignInvitation::whereKey($invitationId)->firstOrFail();
 
-        if (!Gate::forUser($request->user())->check('removeCampaignMember', $invitation->campaign)) {
-            throw new AuthorizationException();
+        if (! Gate::forUser($request->user())->check('removeCampaignMember', $invitation->campaign)) {
+            throw new AuthorizationException;
         }
 
         $invitation->delete();

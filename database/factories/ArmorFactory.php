@@ -19,6 +19,7 @@ class ArmorFactory extends Factory
     {
         return [
             'type' => $this->faker->randomElement(ArmorType::cases())->name,
+            'rarity' => $this->faker->numberBetween(1, 8),
             'name' => [
                 'en' => $this->faker->name,
                 'es' => $this->faker->name,

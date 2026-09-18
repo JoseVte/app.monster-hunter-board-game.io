@@ -41,7 +41,7 @@ class WeaponsSeeder extends Seeder
         foreach ($weaponTypes as $weaponsByType) {
             $weaponsByType = config('seeders.weapons.'.$weaponsByType);
 
-            if (!empty($weaponsByType)) {
+            if (! empty($weaponsByType)) {
                 $weaponType = WeaponType::create([
                     'name' => $weaponsByType['name'],
                     'description' => Arr::get($weaponsByType, 'description'),
@@ -74,11 +74,17 @@ class WeaponsSeeder extends Seeder
                     }
 
                     if (Arr::get($weaponDetails, 'parent')) {
-                        if (Weapon::where('name->en', $weaponDetails['parent'])->doesntExist()) {
+                        // Scoped to the weapon type on purpose: a weapon always upgrades from
+                        // another weapon of its own type, and several names are reused across
+                        // types, so an unscoped lookup would silently bind to the wrong tree.
+                        $parent = Weapon::where('name->en', $weaponDetails['parent'])
+                            ->where('type_id', $weaponType->id);
+
+                        if ($parent->doesntExist()) {
                             logger('Weapon parent: '.$weaponDetails['parent']);
                         }
 
-                        $weapon->parent_id = Weapon::where('name->en', $weaponDetails['parent'])->firstOrFail()->id;
+                        $weapon->parent_id = $parent->firstOrFail()->id;
                         $weapon->save();
                     }
 

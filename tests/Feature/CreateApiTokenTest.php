@@ -1,37 +1,29 @@
 <?php
 
-namespace Tests\Feature;
-
-use Tests\TestCase;
 use App\Models\User;
 use Laravel\Jetstream\Features;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class CreateApiTokenTest extends TestCase
-{
-    use RefreshDatabase;
+uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
-    public function testApiTokensCanBeCreated(): void
-    {
-        if (!Features::hasApiFeatures()) {
-            $this->markTestSkipped('API support is not enabled.');
+test('api tokens can be created', function (): void {
+    if (! Features::hasApiFeatures()) {
+        $this->markTestSkipped('API support is not enabled.');
 
-            return;
-        }
-
-        $this->actingAs($user = User::factory()->withPersonalTeam()->create());
-
-        $response = $this->post('/user/api-tokens', [
-            'name' => 'Test Token',
-            'permissions' => [
-                'read',
-                'update',
-            ],
-        ]);
-
-        $this->assertCount(1, $user->fresh()->tokens);
-        $this->assertEquals('Test Token', $user->fresh()->tokens->first()->name);
-        $this->assertTrue($user->fresh()->tokens->first()->can('read'));
-        $this->assertFalse($user->fresh()->tokens->first()->can('delete'));
+        return;
     }
-}
+
+    $this->actingAs($user = User::factory()->withPersonalTeam()->create());
+
+    $response = $this->post('/user/api-tokens', [
+        'name' => 'Test Token',
+        'permissions' => [
+            'read',
+            'update',
+        ],
+    ]);
+
+    expect($user->fresh()->tokens)->toHaveCount(1)
+        ->and($user->fresh()->tokens->first()->name)->toEqual('Test Token')
+        ->and($user->fresh()->tokens->first()->can('read'))->toBeTrue()
+        ->and($user->fresh()->tokens->first()->can('delete'))->toBeFalse();
+});

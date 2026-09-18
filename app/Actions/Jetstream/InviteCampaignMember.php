@@ -16,7 +16,7 @@ use Illuminate\Support\Facades\Validator;
 
 class InviteCampaignMember
 {
-    public function invite(User $user, Campaign $campaign, string $email, string $role = null): void
+    public function invite(User $user, Campaign $campaign, string $email, ?string $role = null): void
     {
         Gate::forUser($user)->authorize('addCampaignMember', $campaign);
 

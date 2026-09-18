@@ -3,6 +3,7 @@
 namespace Tests;
 
 use AllowDynamicProperties;
+use Database\Seeders\LevelSeeder;
 use Database\Seeders\RolesSeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
@@ -21,6 +22,7 @@ use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
 
         if (isset($uses[RefreshDatabase::class])) {
             $this->artisan('db:seed', ['--class' => RolesSeeder::class]);
+            $this->artisan('db:seed', ['--class' => LevelSeeder::class]);
         }
     }
 }

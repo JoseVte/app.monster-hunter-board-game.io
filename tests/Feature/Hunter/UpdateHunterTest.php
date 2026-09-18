@@ -6,6 +6,7 @@ use App\Models\Armor;
 use App\Models\Hunter;
 use App\Models\Weapon;
 use App\Models\Campaign;
+use App\Events\UserEquipmentCrafted;
 
 beforeEach(function (): void {
     $this->actingAs($this->user = User::factory()->withPersonalTeam()->create());
@@ -36,7 +37,7 @@ test('hunter can update', function (): void {
     $response->assertStatus(303);
 
     $this->hunter->refresh();
-    $this->assertEquals('Test Hunter', $this->hunter->name);
+    expect($this->hunter->name)->toEqual('Test Hunter');
 });
 
 test('hunter can update common items', function (): void {
@@ -45,61 +46,76 @@ test('hunter can update common items', function (): void {
     ]);
     $response->assertStatus(303);
 
-    $this->assertEquals(1, $this->hunter->items()->count());
-    $this->assertEquals(10, $this->hunter->items()->first()->pivot->number);
+    expect($this->hunter->items()->count())->toEqual(1)
+        ->and($this->hunter->items()->first()->pivot->number)->toEqual(10);
 });
 
 test('hunter can craft weapon', function (): void {
+    Event::fake(UserEquipmentCrafted::class);
+
     $response = $this->post(route('campaigns.hunters.weapons.craft', [$this->campaign, $this->hunter, $this->weapon->type, $this->weapon]));
     $response->assertStatus(303);
 
-    $this->assertEquals(1, $this->hunter->weapons()->count());
+    expect($this->hunter->weapons()->count())->toEqual(1);
+    Event::assertDispatched(UserEquipmentCrafted::class);
 });
 
 test('hunter cannot craft default weapon', function (): void {
+    Event::fake(UserEquipmentCrafted::class);
     $response = $this->post(route('campaigns.hunters.weapons.craft', [$this->campaign, $this->hunter, $this->weaponDefault->type, $this->weaponDefault]));
     $response->assertStatus(400);
 
-    $this->assertEquals(0, $this->hunter->weapons()->count());
+    expect($this->hunter->weapons()->count())->toEqual(0);
+    Event::assertNotDispatched(UserEquipmentCrafted::class);
 });
 
 test('hunter cannot craft child weapon without previous weapon', function (): void {
+    Event::fake(UserEquipmentCrafted::class);
     $response = $this->post(route('campaigns.hunters.weapons.craft', [$this->campaign, $this->hunter, $this->weaponChild->type, $this->weaponChild]));
     $response->assertStatus(400);
 
-    $this->assertEquals(0, $this->hunter->weapons()->count());
+    expect($this->hunter->weapons()->count())->toEqual(0);
+    Event::assertNotDispatched(UserEquipmentCrafted::class);
 });
 
 test('hunter can craft child weapon', function (): void {
+    Event::fake(UserEquipmentCrafted::class);
     $this->hunter->weapons()->attach($this->weapon);
     $response = $this->post(route('campaigns.hunters.weapons.craft', [$this->campaign, $this->hunter, $this->weaponChild->type, $this->weaponChild]));
     $response->assertStatus(303);
 
-    $this->assertEquals(1, $this->hunter->weapons()->count());
+    expect($this->hunter->weapons()->count())->toEqual(1);
+    Event::assertDispatched(UserEquipmentCrafted::class);
 });
 
 test('hunter can craft weapon with items', function (): void {
+    Event::fake(UserEquipmentCrafted::class);
     $this->hunter->items()->attach($this->item, ['number' => 1]);
     $response = $this->post(route('campaigns.hunters.weapons.craft', [$this->campaign, $this->hunter, $this->weaponItem->type, $this->weaponItem]));
     $response->assertStatus(303);
 
-    $this->assertEquals(1, $this->hunter->weapons()->count());
-    $this->assertEquals(1, $this->hunter->items()->count());
-    $this->assertEquals(0, $this->hunter->items()->find($this->item)->pivot->number);
+    expect($this->hunter->weapons()->count())->toEqual(1)
+        ->and($this->hunter->items()->count())->toEqual(1)
+        ->and($this->hunter->items()->find($this->item)->pivot->number)->toEqual(0);
+    Event::assertDispatched(UserEquipmentCrafted::class);
 });
 
 test('hunter cannot craft weapon without items', function (): void {
+    Event::fake(UserEquipmentCrafted::class);
     $response = $this->post(route('campaigns.hunters.weapons.craft', [$this->campaign, $this->hunter, $this->weaponItem->type, $this->weaponItem]));
     $response->assertStatus(400);
 
-    $this->assertEquals(0, $this->hunter->weapons()->count());
+    expect($this->hunter->weapons()->count())->toEqual(0);
+    Event::assertNotDispatched(UserEquipmentCrafted::class);
 });
 
 test('hunter can craft armor', function (): void {
+    Event::fake(UserEquipmentCrafted::class);
     $response = $this->post(route('campaigns.hunters.armors.craft', [$this->campaign, $this->hunter, $this->armor]));
     $response->assertStatus(303);
 
-    $this->assertEquals(1, $this->hunter->armors()->count());
+    expect($this->hunter->armors()->count())->toEqual(1);
+    Event::assertDispatched(UserEquipmentCrafted::class);
 });
 
 test('hunter can equip weapon owned', function (): void {
@@ -107,8 +123,8 @@ test('hunter can equip weapon owned', function (): void {
     $response = $this->put(route('campaigns.hunters.weapons.equip', [$this->campaign, $this->hunter, $this->weapon->type, $this->weapon]), ['equip' => true]);
     $response->assertStatus(303);
 
-    $this->assertEquals(1, $this->hunter->weapons()->count());
-    $this->assertEquals(1, $this->hunter->equippedweapons()->count());
+    expect($this->hunter->weapons()->count())->toEqual(1)
+        ->and($this->hunter->equippedweapons()->count())->toEqual(1);
 });
 
 test('hunter can equip weapon owned and unequip old', function (): void {
@@ -117,17 +133,17 @@ test('hunter can equip weapon owned and unequip old', function (): void {
     $response = $this->put(route('campaigns.hunters.weapons.equip', [$this->campaign, $this->hunter, $this->weapon->type, $this->weapon]), ['equip' => true]);
     $response->assertStatus(303);
 
-    $this->assertEquals(2, $this->hunter->weapons()->count());
-    $this->assertEquals(1, $this->hunter->equippedweapons()->count());
-    $this->assertEquals($this->weapon->id, $this->hunter->equippedweapons()->first()->id);
+    expect($this->hunter->weapons()->count())->toEqual(2)
+        ->and($this->hunter->equippedweapons()->count())->toEqual(1)
+        ->and($this->hunter->equippedweapons()->first()->id)->toEqual($this->weapon->id);
 });
 
 test('hunter cannot equip weapon no owned', function (): void {
     $response = $this->put(route('campaigns.hunters.weapons.equip', [$this->campaign, $this->hunter, $this->weapon->type, $this->weapon]), ['equip' => true]);
     $response->assertStatus(400);
 
-    $this->assertEquals(0, $this->hunter->weapons()->count());
-    $this->assertEquals(0, $this->hunter->equippedweapons()->count());
+    expect($this->hunter->weapons()->count())->toEqual(0)
+        ->and($this->hunter->equippedweapons()->count())->toEqual(0);
 });
 
 test('hunter can unequip weapon owned', function (): void {
@@ -135,40 +151,46 @@ test('hunter can unequip weapon owned', function (): void {
     $response = $this->put(route('campaigns.hunters.weapons.equip', [$this->campaign, $this->hunter, $this->weapon->type, $this->weapon]), ['equip' => false]);
     $response->assertStatus(303);
 
-    $this->assertEquals(1, $this->hunter->weapons()->count());
-    $this->assertEquals(0, $this->hunter->equippedweapons()->count());
+    expect($this->hunter->weapons()->count())->toEqual(1)
+        ->and($this->hunter->equippedweapons()->count())->toEqual(0);
 });
 
 test('hunter cannot unequip weapon no owned', function (): void {
     $response = $this->put(route('campaigns.hunters.weapons.equip', [$this->campaign, $this->hunter, $this->weapon->type, $this->weapon]), ['equip' => false]);
     $response->assertStatus(400);
 
-    $this->assertEquals(0, $this->hunter->weapons()->count());
-    $this->assertEquals(0, $this->hunter->equippedweapons()->count());
+    expect($this->hunter->weapons()->count())->toEqual(0)
+        ->and($this->hunter->equippedweapons()->count())->toEqual(0);
 });
 
 test('hunter cannot craft default armor', function (): void {
+    Event::fake(UserEquipmentCrafted::class);
     $response = $this->post(route('campaigns.hunters.armors.craft', [$this->campaign, $this->hunter, $this->armorDefault]));
     $response->assertStatus(400);
 
-    $this->assertEquals(0, $this->hunter->armors()->count());
+    expect($this->hunter->armors()->count())->toEqual(0);
+    Event::assertNotDispatched(UserEquipmentCrafted::class);
 });
 
 test('hunter can craft armor with items', function (): void {
+    Event::fake(UserEquipmentCrafted::class);
     $this->hunter->items()->attach($this->item, ['number' => 1]);
     $response = $this->post(route('campaigns.hunters.armors.craft', [$this->campaign, $this->hunter, $this->armorItem]));
     $response->assertStatus(303);
 
-    $this->assertEquals(1, $this->hunter->armors()->count());
-    $this->assertEquals(1, $this->hunter->items()->count());
-    $this->assertEquals(0, $this->hunter->items()->find($this->item)->pivot->number);
+    expect($this->hunter->armors()->count())->toEqual(1)
+        ->and($this->hunter->items()->count())->toEqual(1)
+        ->and($this->hunter->items()->find($this->item)->pivot->number)->toEqual(0);
+    Event::assertDispatched(UserEquipmentCrafted::class);
 });
 
 test('hunter cannot craft armor without items', function (): void {
+    Event::fake(UserEquipmentCrafted::class);
     $response = $this->post(route('campaigns.hunters.armors.craft', [$this->campaign, $this->hunter, $this->armorItem]));
     $response->assertStatus(400);
 
-    $this->assertEquals(0, $this->hunter->armors()->count());
+    expect($this->hunter->armors()->count())->toEqual(0);
+    Event::assertNotDispatched(UserEquipmentCrafted::class);
 });
 
 test('hunter can equip armor owned', function (): void {
@@ -176,8 +198,8 @@ test('hunter can equip armor owned', function (): void {
     $response = $this->put(route('campaigns.hunters.armors.equip', [$this->campaign, $this->hunter, $this->armor]), ['equip' => true]);
     $response->assertStatus(303);
 
-    $this->assertEquals(1, $this->hunter->armors()->count());
-    $this->assertEquals(1, $this->hunter->equippedArmors()->count());
+    expect($this->hunter->armors()->count())->toEqual(1)
+        ->and($this->hunter->equippedArmors()->count())->toEqual(1);
 });
 
 test('hunter can equip armor owned and unequip old', function (): void {
@@ -186,17 +208,17 @@ test('hunter can equip armor owned and unequip old', function (): void {
     $response = $this->put(route('campaigns.hunters.armors.equip', [$this->campaign, $this->hunter, $this->armor]), ['equip' => true]);
     $response->assertStatus(303);
 
-    $this->assertEquals(2, $this->hunter->armors()->count());
-    $this->assertEquals(1, $this->hunter->equippedArmors()->count());
-    $this->assertEquals($this->armor->id, $this->hunter->equippedArmors()->first()->id);
+    expect($this->hunter->armors()->count())->toEqual(2)
+        ->and($this->hunter->equippedArmors()->count())->toEqual(1)
+        ->and($this->hunter->equippedArmors()->first()->id)->toEqual($this->armor->id);
 });
 
 test('hunter cannot equip armor no owned', function (): void {
     $response = $this->put(route('campaigns.hunters.armors.equip', [$this->campaign, $this->hunter, $this->armor]), ['equip' => true]);
     $response->assertStatus(400);
 
-    $this->assertEquals(0, $this->hunter->armors()->count());
-    $this->assertEquals(0, $this->hunter->equippedArmors()->count());
+    expect($this->hunter->armors()->count())->toEqual(0)
+        ->and($this->hunter->equippedArmors()->count())->toEqual(0);
 });
 
 test('hunter can unequip armor owned', function (): void {
@@ -204,14 +226,14 @@ test('hunter can unequip armor owned', function (): void {
     $response = $this->put(route('campaigns.hunters.armors.equip', [$this->campaign, $this->hunter, $this->armor]), ['equip' => false]);
     $response->assertStatus(303);
 
-    $this->assertEquals(1, $this->hunter->armors()->count());
-    $this->assertEquals(0, $this->hunter->equippedArmors()->count());
+    expect($this->hunter->armors()->count())->toEqual(1)
+        ->and($this->hunter->equippedArmors()->count())->toEqual(0);
 });
 
 test('hunter cannot unequip armor no owned', function (): void {
     $response = $this->put(route('campaigns.hunters.armors.equip', [$this->campaign, $this->hunter, $this->armor]), ['equip' => false]);
     $response->assertStatus(400);
 
-    $this->assertEquals(0, $this->hunter->armors()->count());
-    $this->assertEquals(0, $this->hunter->equippedArmors()->count());
+    expect($this->hunter->armors()->count())->toEqual(0)
+        ->and($this->hunter->equippedArmors()->count())->toEqual(0);
 });

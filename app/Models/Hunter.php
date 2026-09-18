@@ -110,15 +110,15 @@ class Hunter extends Model
             return false;
         }
 
-        if ($weapon->parent_id && !$this->weapons->firstWhere('id', $weapon->parent_id)) {
+        if ($weapon->parent_id && ! $this->weapons->firstWhere('id', $weapon->parent_id)) {
             return false;
         }
 
-        return 0 === $weapon->items->filter(function (Item $item) {
+        return $weapon->items->filter(function (Item $item) {
             $hunterItem = $this->items->firstWhere('id', $item->id);
 
             return empty($hunterItem) || $item->pivot->number > $hunterItem->pivot->number;
-        })->count();
+        })->count() === 0;
     }
 
     public function canCraftArmor(Armor $armor): bool
@@ -127,10 +127,10 @@ class Hunter extends Model
             return false;
         }
 
-        return 0 === $armor->items->filter(function (Item $item) {
+        return $armor->items->filter(function (Item $item) {
             $hunterItem = $this->items->firstWhere('id', $item->id);
 
             return empty($hunterItem) || $item->pivot->number > $hunterItem->pivot->number;
-        })->count();
+        })->count() === 0;
     }
 }

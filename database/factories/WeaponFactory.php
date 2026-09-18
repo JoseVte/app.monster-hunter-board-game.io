@@ -19,6 +19,7 @@ class WeaponFactory extends Factory
     {
         return [
             'type_id' => WeaponType::factory(),
+            'rarity' => $this->faker->numberBetween(1, 8),
             'name' => [
                 'en' => $this->faker->name,
                 'es' => $this->faker->name,

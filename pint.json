@@ -1,7 +1,7 @@
 {
     "preset": "laravel",
     "rules": {
-        "@PHP81Migration": true,
+        "@PHP83Migration": true,
         "array_push": true,
         "ordered_imports":
         {

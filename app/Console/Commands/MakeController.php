@@ -43,7 +43,7 @@ class MakeController extends ControllerMakeCommand
     {
         $requestClass = $this->parseRequest($this->option('model')).'Request';
 
-        if (!class_exists($requestClass) && $this->confirm("A $requestClass model does not exist. Do you want to generate it?", true)) {
+        if (! class_exists($requestClass) && $this->confirm("A $requestClass model does not exist. Do you want to generate it?", true)) {
             $this->call('make:request', ['name' => $requestClass]);
         }
 
@@ -61,7 +61,7 @@ class MakeController extends ControllerMakeCommand
     {
         $modelClass = $this->parseModel($this->option('model'));
 
-        if (!class_exists($modelClass) && $this->confirm("A $modelClass model does not exist. Do you want to generate it?", true)) {
+        if (! class_exists($modelClass) && $this->confirm("A $modelClass model does not exist. Do you want to generate it?", true)) {
             $this->call('make:model', ['name' => $modelClass]);
         }
 

@@ -265,6 +265,22 @@ const logout = () => {
 
                                             <div class="border-t border-gray-200 dark:border-gray-600" />
 
+                                            <DropdownLink :href="route('profile.level')">
+                                                <div class="w-full flex justify-between text-xs text-gray-700 dark:text-gray-300">
+                                                    <strong>{{ $t('Level') }} {{ $page.props.level.current }}</strong>
+
+                                                    {{ $page.props.level.next_percentage }}%
+                                                </div>
+                                                <div class="rounded-full w-full bg-gray-200 dark:bg-gray-600 mt-2">
+                                                    <div
+                                                        class="rounded-full bg-gray-500 p-1.5 text-center text-xs font-medium leading-none text-gray-100"
+                                                        :style="`width: ${$page.props.level.next_percentage}%`"
+                                                    />
+                                                </div>
+                                            </DropdownLink>
+
+                                            <div class="border-t border-gray-200 dark:border-gray-600" />
+
                                             <!-- Authentication -->
                                             <form @submit.prevent="logout">
                                                 <DropdownLink as="button">
@@ -421,6 +437,23 @@ const logout = () => {
                                 :active="route().current('api-tokens.index')"
                             >
                                 {{ $t('API Tokens') }}
+                            </ResponsiveNavLink>
+
+                            <ResponsiveNavLink
+                                :href="route('profile.level')"
+                                :active="route().current('profile.level')"
+                            >
+                                <div class="w-full flex justify-between text-xs text-gray-700 dark:text-gray-300">
+                                    <strong>{{ $t('Level') }} {{ $page.props.level.current }}</strong>
+
+                                    {{ $page.props.level.next_percentage }}%
+                                </div>
+                                <div class="rounded-full w-full bg-gray-200 dark:bg-gray-600 mt-2">
+                                    <div
+                                        class="rounded-full bg-gray-500 p-1.5 text-center text-xs font-medium leading-none text-gray-100"
+                                        :style="`width: ${$page.props.level.next_percentage}%`"
+                                    />
+                                </div>
                             </ResponsiveNavLink>
 
                             <!-- Authentication -->

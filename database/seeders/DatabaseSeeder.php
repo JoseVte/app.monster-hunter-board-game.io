@@ -14,6 +14,7 @@ class DatabaseSeeder extends Seeder
     {
         App::setLocale('en');
 
+        $this->call(LevelSeeder::class);
         $this->call(RolesSeeder::class);
         $this->call(UserSeeder::class);
 

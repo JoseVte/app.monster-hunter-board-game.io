@@ -22,7 +22,7 @@ class AddCampaignMember
     /**
      * @throws Throwable
      */
-    public function add(User $user, Campaign $campaign, string $email, string $role = null): void
+    public function add(User $user, Campaign $campaign, string $email, ?string $role = null): void
     {
         Gate::forUser($user)->authorize('addCampaignMember', $campaign);
 
@@ -39,7 +39,7 @@ class AddCampaignMember
                 ['role_id' => Role::findByName($role)->id]
             );
 
-            if (!$campaign->team->hasUser($newCampaignMember)) {
+            if (! $campaign->team->hasUser($newCampaignMember)) {
                 $campaign->team->users()->attach(
                     $newCampaignMember,
                     ['role' => 'editor']

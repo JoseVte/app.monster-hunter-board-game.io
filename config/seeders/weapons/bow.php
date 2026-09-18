@@ -380,6 +380,60 @@ return [
             ],
         ],
         // KULU YA KU EXPANSION
+        [
+            'parent' => 'Iron Bow',
+            'branch' => 'Kulu-Ya-Ku',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Kulu Arrow',
+                'es' => 'Flecha Kulu',
+            ],
+            'count_attack_1' => 3,
+            'count_attack_2' => 7,
+            'count_attack_3' => 4,
+            'items' => [
+                'Kulu-Ya-Ku Beak' => 1,
+                'Kulu-Ya-Ku Hide' => 2,
+                'Kulu-Ya-Ku Scale' => 4,
+                'Earth Crystal' => 3,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Power Coating' => 2,
+                ],
+                'add' => [
+                    'Sleep Coating' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Kulu Arrow',
+            'branch' => 'Kulu-Ya-Ku',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Archer\'s Dance',
+                'es' => 'Danza del Arquero',
+            ],
+            'count_attack_1' => 2,
+            'count_attack_2' => 5,
+            'count_attack_3' => 9,
+            'items' => [
+                'Kulu-Ya-Ku Beak' => 2,
+                'Kulu-Ya-Ku Hide' => 3,
+                'Kulu-Ya-Ku Plume' => 3,
+                'Boulder Bone' => 4,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Power Coating' => 2,
+                    'Charged Shot' => 3,
+                ],
+                'add' => [
+                    'Sleep Coating' => 2,
+                    'Blast Charged Shot' => 3,
+                ],
+            ],
+        ],
         // NERGIGANTE EXPANSION
         [
             'parent' => 'Iron Bow',

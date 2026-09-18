@@ -1,45 +1,35 @@
 <?php
 
-namespace Tests\Feature;
-
-use Tests\TestCase;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class AuthenticationTest extends TestCase
-{
-    use RefreshDatabase;
+uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
-    public function testLoginScreenCanBeRendered(): void
-    {
-        $response = $this->get('/login');
+test('login screen can be rendered', function (): void {
+    $response = $this->get('/login');
 
-        $response->assertStatus(200);
-    }
+    $response->assertStatus(200);
+});
 
-    public function testUsersCanAuthenticateUsingTheLoginScreen(): void
-    {
-        $user = User::factory()->create();
+test('users can authenticate using the login screen', function (): void {
+    $user = User::factory()->create();
 
-        $response = $this->post('/login', [
-            'email' => $user->email,
-            'password' => 'password',
-        ]);
+    $response = $this->post('/login', [
+        'email' => $user->email,
+        'password' => 'password',
+    ]);
 
-        $this->assertAuthenticated();
-        $response->assertRedirect(RouteServiceProvider::HOME);
-    }
+    $this->assertAuthenticated();
+    $response->assertRedirect(RouteServiceProvider::HOME);
+});
 
-    public function testUsersCanNotAuthenticateWithInvalidPassword(): void
-    {
-        $user = User::factory()->create();
+test('users can not authenticate with invalid password', function (): void {
+    $user = User::factory()->create();
 
-        $this->post('/login', [
-            'email' => $user->email,
-            'password' => 'wrong-password',
-        ]);
+    $this->post('/login', [
+        'email' => $user->email,
+        'password' => 'wrong-password',
+    ]);
 
-        $this->assertGuest();
-    }
-}
+    $this->assertGuest();
+});

@@ -1,25 +1,17 @@
 <?php
 
-namespace Tests\Feature;
-
-use Tests\TestCase;
 use App\Models\User;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 
-class ProfileInformationTest extends TestCase
-{
-    use RefreshDatabase;
+uses(Illuminate\Foundation\Testing\RefreshDatabase::class);
 
-    public function testProfileInformationCanBeUpdated(): void
-    {
-        $this->actingAs($user = User::factory()->create());
+test('profile information can be updated', function (): void {
+    $this->actingAs($user = User::factory()->create());
 
-        $response = $this->put('/user/profile-information', [
-            'name' => 'Test Name',
-            'email' => 'test@example.com',
-        ]);
+    $response = $this->put('/user/profile-information', [
+        'name' => 'Test Name',
+        'email' => 'test@example.com',
+    ]);
 
-        $this->assertEquals('Test Name', $user->fresh()->name);
-        $this->assertEquals('test@example.com', $user->fresh()->email);
-    }
-}
+    expect($user->fresh()->name)->toEqual('Test Name')
+        ->and($user->fresh()->email)->toEqual('test@example.com');
+});

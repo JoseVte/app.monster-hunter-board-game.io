@@ -16,9 +16,9 @@ test('campaign member can be removed from campaigns', function (): void {
         'role_id' => Role::findByName('admin-campaign', 'sanctum')->id,
     ]);
 
-    $this->assertCount(2, $campaign->fresh()->users);
+    expect($campaign->fresh()->users)->toHaveCount(2);
     $response = $this->delete(route('campaign-members.destroy', [$campaign, $otherUser]));
-    $this->assertCount(1, $campaign->fresh()->users);
+    expect($campaign->fresh()->users)->toHaveCount(1);
     $response = $this->delete(route('campaign-members.destroy', [$campaign, $user]));
-    $this->assertCount(0, $campaign->fresh()->users);
+    expect($campaign->fresh()->users)->toHaveCount(0);
 });

@@ -22,8 +22,8 @@ test('campaign can create', function (): void {
     $response->assertRedirect(route('campaigns.edit', 1));
 
     $campaign = Campaign::findOrFail(1);
-    $this->assertEquals(1, $campaign->team_id);
-    $this->assertEquals('Test Campaign', $campaign->name);
-    $this->assertEquals('Test Campaign Description', $campaign->description);
-    $this->assertEquals(40, $campaign->max_days);
+    expect($campaign->team_id)->toEqual(1)
+        ->and($campaign->name)->toEqual('Test Campaign')
+        ->and($campaign->description)->toEqual('Test Campaign Description')
+        ->and($campaign->max_days)->toEqual(40);
 });

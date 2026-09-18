@@ -145,6 +145,121 @@ return [
             ],
         ],
         // ANCIENT FOREST
+        [
+            'parent' => 'Bone Gunlance',
+            'branch' => 'Great Jagras',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Jagras Gunlance',
+                'es' => 'Lanza Pistola Jagras',
+            ],
+            'defense' => 1,
+            'count_attack_1' => 2,
+            'count_attack_2' => 5,
+            'count_attack_3' => 3,
+            'items' => [
+                'Great Jagras Claw' => 1,
+                'Great Jagras Hide' => 1,
+                'Great Jagras Scale' => 3,
+                'Sharp Claw' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Rising Slash' => 2,
+                ],
+                'add' => [
+                    'Gluttonous Rising Slash' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Jagras Gunlance',
+            'branch' => 'Great Jagras',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Glutton Gunlance',
+                'es' => 'Lanza Pistola Glotona',
+            ],
+            'defense' => 1,
+            'count_attack_1' => 2,
+            'count_attack_2' => 6,
+            'count_attack_3' => 4,
+            'items' => [
+                'Great Jagras Scale' => 2,
+                'Great Jagras Claw' => 2,
+                'Great Jagras Mane' => 2,
+                'Piercing Claw' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Rising Slash' => 2,
+                    'Full Burst' => 2,
+                ],
+                'add' => [
+                    'Gluttonous Rising Slash' => 2,
+                    'Knock Out Full Burst' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Iron Gunlance',
+            'branch' => 'Rathalos',
+            'rarity' => 3,
+            'name' => [
+                'en' => 'Rath Gunlance',
+                'es' => 'Lanza Pistola Rath',
+            ],
+            'has_elemental_attacks' => true,
+            'defense' => 1,
+            'count_attack_1' => 2,
+            'count_attack_2' => 6,
+            'count_attack_3' => 4,
+            'items' => [
+                'Rathalos Scale' => 2,
+                'Rathalos Webbing' => 1,
+                'Inferno Sac' => 1,
+                'Rathalos Marrow' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Charged Shell' => 2,
+                ],
+                'add' => [
+                    'Flaming Charged Shell' => 2,
+                ],
+            ],
+        ],
+        [
+            'parent' => 'Rath Gunlance',
+            'branch' => 'Rathalos',
+            'rarity' => 4,
+            'name' => [
+                'en' => 'Red Rook',
+                'es' => 'Grajo Rojo',
+            ],
+            'has_elemental_attacks' => true,
+            'defense' => 1,
+            'count_attack_1' => 3,
+            'count_attack_2' => 5,
+            'count_attack_3' => 5,
+            'count_attack_4' => 1,
+            'items' => [
+                'Rathalos Scale' => 2,
+                'Rathalos Carapace' => 1,
+                'Rathalos Wing' => 1,
+                'Rathalos Medulla' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Charged Shell' => 2,
+                    'Lateral Thrust' => 2,
+                ],
+                'add' => [
+                    'Flaming Charged Shell' => 2,
+                    'Blazing Lateral Thrust' => 2,
+                ],
+            ],
+        ],
         // WILDSPIRE WASTE
         [
             'parent' => 'Bone Gunlance',
@@ -260,7 +375,7 @@ return [
                 ],
             ],
         ],
-        // KULU YA KU EXPANSION
+        // KULU YA KU EXPANSION <NONE>
         // NERGIGANTE EXPANSION
         [
             'parent' => 'Iron Gunlance',

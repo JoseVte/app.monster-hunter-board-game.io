@@ -10,7 +10,5 @@ class CampaignMemberAdded
 {
     use Dispatchable;
 
-    public function __construct(public Campaign $campaign, public User $user)
-    {
-    }
+    public function __construct(public Campaign $campaign, public User $user) {}
 }
