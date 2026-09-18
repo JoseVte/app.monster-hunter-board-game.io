@@ -96,7 +96,7 @@ const closeModal = () => {
                         id="type-day"
                         ref="typeDayInput"
                         v-model="form.type_day"
-                        class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary-500 dark:focus:border-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 rounded-md shadow-sm mt-1 block w-full"
+                        class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary-500 dark:focus:border-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 rounded-md shadow-xs mt-1 block w-full"
                         :options="$page.props.dayType"
                         label="label"
                         track-by="key"
@@ -138,7 +138,7 @@ const closeModal = () => {
                             <VueMultiselect
                                 id="add-day-id"
                                 v-model="form.day_id"
-                                class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary-500 dark:focus:border-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 rounded-md shadow-sm mt-1 block w-full"
+                                class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary-500 dark:focus:border-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 rounded-md shadow-xs mt-1 block w-full"
                                 :options="days"
                                 label="name"
                                 track-by="id"
@@ -185,7 +185,7 @@ const closeModal = () => {
                             <VueMultiselect
                                 :id="`add-day-id-${user.id}`"
                                 v-model="form.hunter_day_id[user.id]"
-                                class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary-500 dark:focus:border-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 rounded-md shadow-sm mt-1 block w-full"
+                                class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary-500 dark:focus:border-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 rounded-md shadow-xs mt-1 block w-full"
                                 :options="days"
                                 label="name"
                                 track-by="id"
@@ -216,7 +216,7 @@ const closeModal = () => {
                         <VueMultiselect
                             id="add-monster-id"
                             v-model="form.monster_id"
-                            class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary-500 dark:focus:border-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 rounded-md shadow-sm mt-1 block w-full"
+                            class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary-500 dark:focus:border-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 rounded-md shadow-xs mt-1 block w-full"
                             :options="monsters"
                             label="name"
                             track-by="id"
@@ -237,7 +237,7 @@ const closeModal = () => {
                         <VueMultiselect
                             id="difficulty"
                             v-model="form.difficulty"
-                            class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary-500 dark:focus:border-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 rounded-md shadow-sm mt-1 block w-full"
+                            class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary-500 dark:focus:border-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 rounded-md shadow-xs mt-1 block w-full"
                             :options="$page.props.monsterDifficulty"
                             label="label"
                             track-by="key"

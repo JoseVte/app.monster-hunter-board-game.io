@@ -7,9 +7,7 @@ use App\Models\Hunter;
 use App\Models\Campaign;
 use App\Policies\TeamPolicy;
 use App\Policies\HunterPolicy;
-use App\Models\ConnectedAccount;
 use App\Policies\CampaignPolicy;
-use App\Policies\ConnectedAccountPolicy;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -23,7 +21,6 @@ class AuthServiceProvider extends ServiceProvider
         Team::class => TeamPolicy::class,
         Campaign::class => CampaignPolicy::class,
         Hunter::class => HunterPolicy::class,
-        ConnectedAccount::class => ConnectedAccountPolicy::class,
     ];
 
     /**

@@ -56,12 +56,12 @@ const clases = [
         <button
             v-for="weaponType in weaponTypes"
             :key="weaponType.id"
-            class="flex rounded-md shadow-sm group"
+            class="flex rounded-md shadow-xs group"
             type="button"
             @click="openWeaponType(weaponType)"
         >
             <div
-                class="flex w-16 h-full flex-shrink-0 items-center justify-center rounded-l-md text-sm text-white uppercase"
+                class="flex w-16 h-full shrink-0 items-center justify-center rounded-l-md text-sm text-white uppercase"
                 :class="_.sample(clases)"
             >
                 <div class="w-full h-full rounded-l-md flex items-center justify-center mh-icon">
@@ -95,12 +95,14 @@ const clases = [
 </template>
 
 <style scoped lang="scss">
+@reference "../../../../css/app.css";
+
 $themes: "slate", "gray", "zinc", "neutral", "stone", "red", "orange", "amber", "yellow", "lime", "green", "emerald", "teal", "cyan", "sky", "blue", "indigo", "violet", "purple", "fuchsia", "pink", "rose";
 @each $theme in $themes {
     .theme-#{$theme} {
         @apply bg-#{$theme}-500;
         .mh-icon {
-            @apply bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] to-#{$theme}-500 from-#{$theme}-100 group-hover:to-#{$theme}-300 dark:from-#{$theme}-900 dark:group-hover:to-#{$theme}-700 transition-all;
+            @apply bg-[radial-gradient(ellipse_at_center,var(--tw-gradient-stops))] to-#{$theme}-500 from-#{$theme}-100 group-hover:to-#{$theme}-300 dark:from-#{$theme}-900 dark:group-hover:to-#{$theme}-700 transition-all;
         }
     }
 }

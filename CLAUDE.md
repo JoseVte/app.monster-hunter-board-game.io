@@ -15,15 +15,15 @@ Production domain: `app.monster-hunter-board-game.io`. Repo: `JoseVte/app.monste
 
 | Layer | Choice |
 |---|---|
-| Backend | Laravel 10.50 (EOL branch), PHP `^8.3`, `config.platform.php` pinned to 8.3.0 |
-| Frontend | Vue 3 + Inertia 1.x + Vite 5, SSR build enabled |
-| Styling | Tailwind 3 + Flowbite, Montserrat as the app font |
-| Auth / scaffolding | Jetstream (teams) + Fortify + Socialstream (Google, Discord, GitHub) |
+| Backend | Laravel 13.30, PHP `^8.5`, `config.platform.php` pinned to 8.5.0 |
+| Frontend | Vue 3 + Inertia 3.x + Vite 8, SSR build enabled |
+| Styling | Tailwind 4 (CSS-first config) + Flowbite 4, Montserrat as the app font |
+| Auth / scaffolding | Jetstream (teams) + Fortify + Socialite (Google, GitHub, Discord) |
 | Authorization | spatie/laravel-permission (roles) + policies |
 | i18n | spatie/laravel-translatable (models), vue-i18n (front), JSON lang files |
 | Gamification | `cjmellor/level-up` |
 | Queue / infra | Horizon, Redis, MySQL 8, Meilisearch (Scout), Mailpit, MinIO via Sail |
-| Testing | Pest 2 (Feature + Unit), Dusk for browser tests |
+| Testing | Pest 5 (Feature + Unit), Dusk for browser tests |
 | Monitoring | Sentry, Laravel Telescope, Debugbar |
 | PWA | `vite-plugin-pwa`, generated `public/sw.js` and manifest |
 
@@ -44,8 +44,10 @@ npm run lint / npm run lint:fix   # ESLint over Vue and JS
 Useful composer scripts:
 
 - `composer generate-translations` runs `artisan localize es,en`, `translations:extract-vue`
-  and `vue-i18n:generate`. Run it after adding any new `__()` or `$t()` string.
-- `composer coverage` produces an HTML report in `./reports`.
+  and `vue:translations`. Run it after adding any new `__()` or `$t()` string. It writes
+  new keys into both `en.json` and `es.json`, leaving the Spanish value empty, so translate
+  them rather than shipping English placeholders.
+- `composer coverage` needs a coverage driver, which the Herd PHP 8.5 binary does not have.
 
 ### Package manager
 
@@ -85,16 +87,86 @@ The editor chunk is 861 kB of JS and 70 kB of CSS, up from toast-ui's 456 plus 1
 all of it is CodeMirror. It is a dynamic import, so it only loads on the campaign create and
 edit forms.
 
+### Social login
+
+Plain `laravel/socialite` with the three `socialiteproviders/*` extensions, registered in
+`EventServiceProvider`. `joelbutcher/socialstream` used to own this; it is abandoned,
+produced an account takeover advisory, and capped at Laravel 12.
+
+`App\Http\Controllers\Auth\SocialAuthController` owns the whole flow. The callback
+branches on `auth()->check()`, so one route both registers and links, and it refuses to
+link a provider account that already belongs to someone else. Linked accounts live in
+`providers` (renamed from socialstream's `connected_accounts`) behind `User::providers()`.
+
+Callback URLs are `/auth/{provider}/callback`, not socialstream's
+`/oauth/{provider}/callback`. **The URLs registered with Google, GitHub and Discord have to
+match.**
+
+The `socialLogin` Inertia prop lists a provider only when its `client_id` is configured, so
+a button can never point at a redirect that will fail. `tests/Feature/SocialLoginTest.php`
+covers registration, sign in, linking, the takeover refusal and unlinking.
+
+### Inertia
+
+**Run `php artisan view:clear` after upgrading `inertia-laravel`.** Version 3 moved the
+initial page payload from a `data-page` attribute on `<div id="app">` to a
+`<script data-page="app" type="application/json">` element. A stale compiled Blade view
+still emits the old shape, and the failure is silent: the page and assets load, `#app`
+stays empty, and nothing reaches the console because `createInertiaApp` rejects rather than
+throwing.
+
+### Styling
+
+Tailwind 4, configured **in CSS**. There is no `tailwind.config.js`: the theme lives in
+`resources/css/app.css` under `@theme`, with `@plugin`, `@source` and
+`@custom-variant dark (&:is(.dark *))`. Dark mode is still class driven, toggled by
+`ButtonDark.vue`, which writes `localStorage['color-theme']` and dispatches a
+`toggleDarkMode` event. Note the key does not exist until the first toggle, so read the
+`dark` class on `<html>` if you need the current theme, not localStorage.
+
+**`@apply` inside a component `<style>` block needs `@reference '<relative>/css/app.css'`
+as the first line.** Tailwind 4 resolves `@apply` against the stylesheet being compiled, and
+a Vue SFC style block is its own stylesheet, so without it the build fails with "Cannot
+apply unknown utility class". Five components rely on this: `GlobalSearch`, `Form/Switch`,
+`ListWeapons`, `ListWeaponTypes` and `Profile/Level`.
+
+`autoprefixer` is gone, Tailwind 4 handles prefixing. PostCSS loads `@tailwindcss/postcss`.
+
+### Linting
+
+ESLint 9 with flat config in `eslint.config.js`. `.eslintrc.cjs` and `.eslintignore` no
+longer exist and `--ext` is a no-op, the `files` patterns decide what is linted.
+
+ESLint 10 is blocked by `eslint-plugin-import@2.32`, which still peers `eslint: ... || ^9`.
+
+### Framework upgrade
+
+The project runs **Laravel 13 on PHP 8.5** with zero advisories from both `composer audit`
+and `npm audit`. `roave/security-advisories` is back in `require-dev` to keep it that way.
+
+Getting here needed three coupled steps, because PHP 8.5 was gated on the framework:
+Pest 2 depends on a paratest that caps at 8.4, Pest 3 needs collision 8, and collision 8
+conflicts with any framework below 11. Composer reports that as an unrelated symfony/console
+conflict, so do not trust its first explanation.
+
+The **Laravel 11 application skeleton was deliberately not adopted**. It is optional when
+upgrading, so `app/Http/Kernel.php`, `app/Console/Kernel.php`, `app/Exceptions/Handler.php`
+and the nine providers still exist and still work. Adopting it is a separate piece of work.
+
+Jetstream went 3 to 5 without republishing its Vue components. The v3 pages in
+`resources/js/Pages/{Profile,Teams,API}` render fine against v5, which matters because
+several of them carry local changes (the Campaign members UI is a fork of the Teams one).
+
 ### Continuous integration
 
 `.github/workflows/laravel.yml` runs the Pest suite, `sentry.yml` cuts a release on push to
 `main`. Both pin every action to a commit SHA with the version in a trailing comment; keep
 that style when bumping.
 
-The workflow **must** stay on PHP 8.3 or newer. `config.platform.php` is pinned to 8.3.0, so
+The workflow **must** stay on PHP 8.5 or newer. `config.platform.php` is pinned to 8.5.0, so
 `composer install` happily succeeds on an older PHP (it simulates 8.3 when resolving) and
 then every subsequent `php` call dies in `vendor/composer/platform_check.php` with
-"Your Composer dependencies require a PHP version >= 8.3.0". The failure surfaces at
+"Your Composer dependencies require a PHP version >= 8.5.0". The failure surfaces at
 `artisan key:generate`, nowhere near the real cause, so check the PHP version first.
 
 The workflow does not set `DB_CONNECTION` or `DB_DATABASE`. PHPUnit's `<env>` entries do not
@@ -195,129 +267,79 @@ called first in `DatabaseSeeder`.
   folder for page-specific components and `resources/js/Components` for shared ones.
 - `app/Console/Commands/MakeController.php` is a custom generator, prefer it for new controllers.
 
-## Current state (as of the last review)
+## Current state
 
-`main` is level with `origin/main`. The last commit is `203d5be wip: weapon seeders`.
+The whole upgrade arc is done and sits on a chain of unpushed branches on top of `main`,
+roughly 37 commits. `main` itself is still the old `203d5be wip: weapon seeders`.
 
-There is a **large uncommitted but fully staged changeset** (176 files, roughly +5.1k/-2.7k)
-sitting on top of `main`. It is not one feature, it is four things at once:
+The branches stack in order and each one was verified before the next started:
 
-1. **Gamification feature** (the real feature work): `cjmellor/level-up`, achievements,
-   experience, streak tables, the three events and listeners, `LevelSeeder`,
-   `Profile/Level.vue`, the `profile.level` route, and `tests/Feature/Level/GetAchievementsTest.php`.
-2. **Test suite migration to Pest** via `pestphp/pest-plugin-drift`. Every PHPUnit class in
-   `tests/Feature` was rewritten as Pest functions. This is what most of the diff is.
-3. **Dependency bumps**: PHP requirement `^8.2` to `^8.3`, `roave/security-advisories`,
-   Vite plugin 1.x, Vue 3.4, Tailwind 3.4, `"type": "module"` in `package.json` plus the
-   matching renames (`.eslintrc.cjs`, `postcss.config.cjs`, `vite.config.mjs`).
-4. **Style sweep**: the formatter rule changes reformatted essentially every PHP file
-   (`!$x` to `! $x`, Yoda conditions removed, and so on).
+```
+chore/php-85 -> chore/i18n-and-social -> chore/tidy-up
+```
 
-On top of that there is a **second, unstaged changeset**: the dependency security update
-(`composer.json`, `composer.lock`, `package.json`, `package-lock.json` and one line of
-`app/Actions/Socialstream/CreateUserFromProvider.php`). See "Dependency security update" below.
+Where the project landed:
 
-Verified locally:
+| | Was | Now |
+|---|---|---|
+| Framework | Laravel 10.41 | Laravel 13.30 |
+| PHP | `^8.2` | `^8.5` |
+| Inertia | 0.6 | 3.x |
+| Tailwind | 3.4 | 4 |
+| Vite | 5 | 8 |
+| Pest | 2 | 5 |
+| Social login | socialstream (abandoned) | Socialite |
+| `composer audit` | 58 advisories / 21 packages | none |
+| `npm audit` | 340 paths, 5 critical | none |
+| Tests | 82 pass, 8 skipped | 137 pass, 4 skipped |
 
-- `vendor/bin/pest`: **82 pass, 8 skipped, 0 failures**, 213 assertions, about 5 seconds.
-  The 8 skips are pre-existing and intentional (Jetstream API support disabled, Fortify
-  registration disabled for some providers). A few tests are flagged "deprecated" because
-  the local PHP is 8.5 while the dependency set targets 8.3. Run with
-  `php -d error_reporting="E_ALL & ~E_DEPRECATED" vendor/bin/pest` for readable output,
-  or use Sail (PHP 8.3).
-- `npm run build` and `npm run lint`: both clean. The `app` chunk is 538 kB, over the 500 kB
-  warning threshold.
+Verified on every step: the full CI job in a clean checkout, the seeders against a scratch
+sqlite database, and the app driven in a real browser. The seeders produce 250 weapons,
+14 monsters and 18 achievements.
 
-### Dependency security update
-
-Composer went from **58 advisories across 21 packages to 3 across 1**:
-
-- `config.platform.php` is pinned to `8.3.0`. Without it, the local PHP 8.5 makes the tree
-  unresolvable (inertia 0.6.x caps at 8.3) and the lock would not match what CI installs.
-- `roave/security-advisories` was **removed**. It makes every `composer update` fail,
-  because Laravel 10 carries advisories that are only fixed in 12.60/12.61 and Laravel 10
-  is EOL. It cannot be re-added until the framework is upgraded.
-- `laravel/framework` 10.41.0 to 10.50.3, all of Symfony to patched releases, plus roughly
-  350 other packages moved within their existing constraints.
-- `spatie/laravel-sitemap` `^6.3` to `^7.0`, which is what pulls `spatie/browsershot` from
-  3.61 to 5.4 and clears its 6 advisories. `GenerateSitemapCommand` needed no changes.
-- `joelbutcher/socialstream` `^4.1` to `^5.6`, which fixes CVE-2024-56329 (account takeover
-  through social account linking). The only app-side break was `switchConnectedAccount()`,
-  removed in v5; `CreateUserFromProvider` now calls `createsConnectedAccounts->create()`
-  directly, matching the v5 stub.
-
-The frontend went from **340 advisory paths (5 critical, 166 high) to 36 (0 critical,
-1 high)**. `npm audit` groups by package instead of by path and reports the same residual
-set as 5 entries:
-
-- `node-sass` and `sass-loader` were **removed**. Both were unused (no `.scss` anywhere,
-  `sass-loader` is webpack-only) and `node-sass@9` cannot compile on modern Node, so it
-  would break the install.
-- Upgraded within the existing ranges: axios 1.6.5 to 1.20.0, vue-i18n 9.9.0 to 9.14.5,
-  vite 5.0.10 to 5.4.21, vue 3.4.15 to 3.5.42, and their transitive deps.
-- The project was then **migrated from yarn to npm** (see "Package manager" above), so the
-  final lockfile is `package-lock.json`. `npm audit` reports the same residual set.
+**`composer coverage` does not run locally.** pcov is not built for the Herd PHP 8.5 binary
+and the project now requires 8.5, so there is no coverage driver to fall back on. The last
+measurement, taken on 8.4 before the requirement moved, was 66 percent overall with the
+controllers and listeners in the 90s.
 
 ### Known gaps and open issues
 
-- **Laravel 10 is EOL and carries 3 unfixable advisories** (CRLF injection in the default
-  email rule, temporary signed URL path confusion). They are only fixed in 12.60+/13.10+.
-  Upgrading the framework is the only real remedy, and it is also what would let
-  `roave/security-advisories` come back.
-- **Vite 5 has 3 remaining dev-server advisories** (`server.fs.deny` bypasses, esbuild dev
-  server CORS). They need Vite 6.4.3+, which means a major bump of `vite`,
-  `laravel-vite-plugin`, `@vitejs/plugin-vue` and `vite-plugin-pwa` together. None of them
-  affect production builds, only the local dev server.
-- **Two dependencies are abandoned**: `joelbutcher/socialstream` and
-  `protonemedia/inertiajs-events-laravel-dusk`.
-- **Achievement progress never accumulates.** `UserMonsterHuntedListener` and
-  `UserEquipmentCraftedListener` both compute `min((1 / $achievement->type_count) * 100, 100)`,
-  a constant. Crafting a second weapon writes the same progress as the first, so
-  `craft-weapon-10` is stuck at 10 percent forever. Only `UserLevelledUpListener` is correct
-  because it divides the actual level by `type_count`. A real counter (crafted items owned,
-  days completed) needs to replace the hardcoded `1`.
-- **Weapon seed data is incomplete**, which is what `wip: weapon seeders` refers to. Each
-  file in `config/seeders/weapons/` is organised by uppercase section comments
-  (`// ANCIENT FOREST`, `// KULU YA KU EXPANSION`, and so on) and the unfinished ones are
-  left as a bare comment with no weapons under it, so grep for an empty section rather than
-  judging by entry count. Current state across the 14 types:
-  - `KULU YA KU EXPANSION` and `KUSHALA EXPANSION` are empty in **all 14**. Never started.
-  - Base game complete (4): `bow`, `dual-blades`, `great-sword`, `hammer`.
-  - Missing `ANCIENT FOREST` only (3): `gunlance`, `hunting-horn`, `lance`.
-  - Missing both `ANCIENT FOREST` and `WILDSPIRE WASTE` (7): `charge-blade`,
-    `heavy-bowgun`, `insect-glaive`, `light-bowgun`, `longsword`, `switch-axe`,
-    `sword-shield`. These only have their default weapon plus the Teostra/Nergigante trees.
+Verified against the code, not carried over from an earlier pass.
 
-  `config/seeders/monsters.php` by contrast is complete: 14 monsters covering all six
-  `MonsterExpansion` cases, each with difficulty, parts and items.
-- **The level-up streak tables are dead schema.** Four `streak*` migrations ship with the
-  package but nothing in `app/` or `resources/js/` reads or writes them.
-- **The `profile.level` route is an inline closure in `routes/web.php`**, inconsistent with
-  every other route in the file. It should become a controller.
-- **Translation files are out of sync**: 3 keys present in `en.json` and missing from
-  `es.json` (including two new achievement descriptions), 13 keys in `es.json` with no
-  English counterpart. Run `composer generate-translations`.
-- **`.env.example` is stale and has a corrupted line.** Line 48 reads literally
-  `ABLY_KEY=\n\nPUSHER_APP_ID=` with backslash-n as text instead of real newlines, so
-  `ABLY_KEY` gets a junk value and `PUSHER_APP_ID` never exists as a key. On top of that it
-  is missing 20 keys that `.env` has: `ADMIN_*`, `APP_LOCALE`, `DEBUGBAR_*`, `DISCORD_*`,
-  `GITHUB_*`, `GOOGLE_ANALYTICS_KEY`, `GOOGLE_CLIENT_*`, `GOOGLE_RECAPTCHA_*`,
-  `IGNITION_LOCAL_SITES_PATH`, `MEILISEARCH_*`, `PUSHER_APP_ID`,
-  `VITE_GOOGLE_ANALYTICS_KEY`. Note the test suite does pass with this file, so it does not
-  break CI, it only hurts a fresh clone.
-- README badges still advertise PHP 8.2 and Laravel 10.
-- Stale branches remain on the local repo: `feature/craft-armors`, `feature/craft-weapons`,
-  `feature/equip-armors`, `feature/equip-weapons`. All merged, safe to delete.
-- Four models return `'url' => 'TODO'` in their search result payloads
-  (`WeaponType`, `WeaponAttack`, `DowntimeActivity`, `ArmorSkill`), so those search hits
-  are not clickable.
+- **Kushala Daora weapons are the only seed data missing.** `KUSHALA EXPANSION` is an empty
+  section comment in all 14 files under `config/seeders/weapons/`. Every other section, base
+  game through Ancient Forest, Wildspire Waste, Kulu-Ya-Ku, Teostra and Nergigante, is
+  filled. 250 weapons total. Grep for an empty section rather than counting entries.
+- **`Barroth Shredder` and `Jagras Hacker` each name two different weapon types.** Harmless
+  now that `WeaponsSeeder` scopes the parent lookup to `type_id`, but worth confirming it is
+  intentional rather than a copy and paste.
+- **Twelve level-up tables are dead schema**: the four `streak*` ones and the eight the
+  package's v2 migrations added (tiers, multipliers, challenges). Nothing in `app/` or
+  `resources/js/` reads or writes any of them. They ship with the package and have to be
+  migrated for it to boot.
+- **The Laravel application skeleton is still the pre-11 one.** `app/Http/Kernel.php`,
+  `app/Console/Kernel.php`, `app/Exceptions/Handler.php` and the nine providers work fine on
+  Laravel 13, but everything the framework documents now assumes `bootstrap/app.php`.
+  Adopting it is its own piece of work.
+- **ESLint stays on 9** and **`vue-gtag` on 2**, both on purpose. ESLint 10 needs
+  `eslint-plugin-import` dropped, which costs the `import/order` rule. vue-gtag 3 peers
+  `vue-router`, which was removed as unused.
+- **Achievement progress counts equipment owned, not craft events.** Upgrading a weapon
+  detaches its parent, so an upgrade replaces rather than adds. Making upgrades count needs
+  a craft log; there is no table for one.
+- Four merged branches remain locally: `feature/craft-armors`, `feature/craft-weapons`,
+  `feature/equip-armors`, `feature/equip-weapons`. Safe to delete.
+- Sqlite is used for tests while production is MySQL, so `scopeSearchTranslate`, which
+  relies on MySQL JSON functions, cannot be covered by the Feature suite.
 
 ### Suggested next step
 
-The staged changeset is doing too much to land as one commit. Splitting it into
-style sweep, then Pest migration, then dependency bumps, then the gamification feature
-would make it reviewable and make a bisect useful later. Fix the progress accumulation
-bug before shipping the gamification part.
+The Kushala Daora weapons are the last of the seed data, and adopting the Laravel 11+
+application skeleton is the last structural leftover. Neither blocks anything.
+
+Before deploying: **production has to be on PHP 8.5** (`require.php` is `^8.5`, so an older
+binary dies in `vendor/composer/platform_check.php`), and **the OAuth callback URLs
+registered with Google, GitHub and Discord have to move** to `/auth/{provider}/callback`.
 
 ## Things to be careful about
 

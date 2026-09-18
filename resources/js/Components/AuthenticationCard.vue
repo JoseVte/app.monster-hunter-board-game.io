@@ -28,7 +28,7 @@ defineProps({
                 <Link
                     v-if="!canRegister"
                     :href="route('login')"
-                    class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-primary-500"
+                    class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline-solid focus:outline-2 focus:rounded-xs focus:outline-primary-500"
                 >
                     <LoginIcon class="h-6 w-6 block lg:hidden" />
                     <span class="hidden lg:block">{{ $t('Log in') }}</span>
@@ -37,7 +37,7 @@ defineProps({
                 <Link
                     v-if="canRegister"
                     :href="route('register')"
-                    class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-primary-500"
+                    class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline-solid focus:outline-2 focus:rounded-xs focus:outline-primary-500"
                 >
                     <LoginIcon class="h-6 w-6 block lg:hidden" />
                     <span class="hidden lg:block">{{ $t('Register') }}</span>

@@ -7,7 +7,7 @@
                         {!! trans('cookie-consent::texts.message') !!}
                     </p>
                 </div>
-                <div class="flex-shrink-0 mt-0 w-auto sm:mx-4 md:mx-0">
+                <div class="shrink-0 mt-0 w-auto sm:mx-4 md:mx-0">
                     <button class="js-cookie-consent-agree cookie-consent__agree cursor-pointer flex items-center justify-center px-4 py-2 rounded-md text-sm font-medium text-gray-800 dark:text-gray-200 bg-gray-400 dark:bg-gray-600 hover:bg-gray-300 dark:hover:bg-gray-700">
                         {{ trans('cookie-consent::texts.agree') }}
                     </button>

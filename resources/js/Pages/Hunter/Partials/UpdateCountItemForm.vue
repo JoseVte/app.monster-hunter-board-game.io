@@ -55,7 +55,7 @@ const decrementItem = () => {
             />
             <div
                 v-else
-                class="flex items-center justify-center h-10 rounded relative bg-transparent w-20 outline-none px-4 border-0 focus:outline-none text-center bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 font-semibold text-md "
+                class="flex items-center justify-center h-10 rounded-sm relative bg-transparent w-20 outline-hidden px-4 border-0 focus:outline-hidden text-center bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 font-semibold text-md "
             >
                 {{ countItem }}
             </div>

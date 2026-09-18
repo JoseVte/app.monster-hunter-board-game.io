@@ -41,7 +41,7 @@ const hunterArmorCount = (armor) => {
             >
                 <div
                     v-if="showAllArmors || hunterArmorCount(armor)"
-                    class="border w-full flex items-center gap-2 rounded border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 p-2 text-gray-800 dark:text-gray-200"
+                    class="border w-full flex items-center gap-2 rounded-sm border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 p-2 text-gray-800 dark:text-gray-200"
                 >
                     <div class="flex flex-col gap-2 w-full">
                         <div class="flex items-center justify-between gap-2">

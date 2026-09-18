@@ -50,7 +50,7 @@ defineExpose({focus: () => editor.value?.focus()});
 </script>
 
 <template>
-    <div class="rounded-md shadow-sm overflow-hidden border border-gray-300 dark:border-gray-700">
+    <div class="rounded-md shadow-xs overflow-hidden border border-gray-300 dark:border-gray-700">
         <MdEditor
             ref="editor"
             v-model="value"

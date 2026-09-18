@@ -119,7 +119,7 @@ search(form.data());
 
         <div class="py-12">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-gray-50 dark:bg-gray-800 sm:rounded w-full p-4">
+                <div class="bg-gray-50 dark:bg-gray-800 sm:rounded-sm w-full p-4">
                     <form
                         class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4"
                         @submit.prevent="filter"

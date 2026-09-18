@@ -30,7 +30,7 @@ const toggleDarkMode = () => {
             bg-white border border-transparent rounded-md
             dark:bg-gray-800 dark:text-gray-200
             hover:bg-gray-50 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-gray-300
-            focus:outline-none focus:bg-gray-50 dark:focus:bg-gray-900 active:bg-gray-50 dark:active:900"
+            focus:outline-hidden focus:bg-gray-50 dark:focus:bg-gray-900 active:bg-gray-50 dark:active:900"
             :class="containerClass"
             :title="$t('Toggle dark mode')"
             @click="toggleDarkMode()"

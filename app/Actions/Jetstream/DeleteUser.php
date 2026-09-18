@@ -31,7 +31,7 @@ class DeleteUser implements DeletesUsers
         DB::transaction(function () use ($user): void {
             $this->deleteTeams($user);
             $user->deleteProfilePhoto();
-            $user->connectedAccounts->each->delete();
+            $user->providers->each->delete();
             $user->tokens->each->delete();
             $user->delete();
         });

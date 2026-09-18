@@ -70,7 +70,7 @@ let toggleChange = ref(false);
                     <div
                         v-for="skill in equippedArmor.skills"
                         :key="skill.id"
-                        class="w-full dark:text-white break-words text-sm italic mt-4"
+                        class="w-full dark:text-white wrap-break-word text-sm italic mt-4"
                         v-html="replaceIcons(skill.description)"
                     />
                 </template>

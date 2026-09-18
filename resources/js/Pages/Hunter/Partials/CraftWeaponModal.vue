@@ -74,7 +74,7 @@ const unequip = () => {
 
 <template>
     <div
-        :class="`relative border rounded border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 p-2 text-gray-800 dark:text-gray-200 ${classContainer}`"
+        :class="`relative border rounded-sm border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-700 p-2 text-gray-800 dark:text-gray-200 ${classContainer}`"
     >
         <slot />
         <div
@@ -136,7 +136,7 @@ const unequip = () => {
 
         <template #content>
             <div class="mt-4 grid grid-cols-1 gap-4">
-                <div class="w-full border rounded">
+                <div class="w-full border rounded-sm">
                     <table class="dark:text-white w-full">
                         <thead class="border-b">
                             <tr>

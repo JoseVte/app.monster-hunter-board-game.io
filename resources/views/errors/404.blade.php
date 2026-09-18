@@ -29,17 +29,17 @@
                         </svg>
                     </div>
                     <input aria-label="search" type="search" name="query" autocomplete="search"
-                           class="p-3 pl-10 w-full block text-sm border border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-800 dark:text-gray-300 focus:ring focus:outline-none focus:border-sky-500 dark:focus:border-sky-600 focus:ring-sky-500 dark:focus:ring-sky-600 rounded-md shadow-sm"/>
+                           class="p-3 pl-10 w-full block text-sm border border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-800 dark:text-gray-300 focus:ring-3 focus:outline-hidden focus:border-sky-500 dark:focus:border-sky-600 focus:ring-sky-500 dark:focus:ring-sky-600 rounded-md shadow-xs"/>
                 </div>
                 <button type="submit"
-                        class="font-semibold w-full sm:w-auto text-sm text-center px-5 py-3 bg-sky-800 dark:bg-sky-200 border border-transparent rounded-md h-full text-white dark:text-sky-800 uppercase tracking-widest hover:bg-sky-700 dark:hover:bg-white focus:bg-sky-700 dark:focus:bg-white active:bg-sky-900 dark:active:bg-sky-300 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 dark:focus:ring-offset-sky-800 transition ease-in-out duration-150"
+                        class="font-semibold w-full sm:w-auto text-sm text-center px-5 py-3 bg-sky-800 dark:bg-sky-200 border border-transparent rounded-md h-full text-white dark:text-sky-800 uppercase tracking-widest hover:bg-sky-700 dark:hover:bg-white focus:bg-sky-700 dark:focus:bg-white active:bg-sky-900 dark:active:bg-sky-300 focus:outline-hidden focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 dark:focus:ring-offset-sky-800 transition ease-in-out duration-150"
                 >{{ __('Submit') }}</button>
             </form>
             <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 mt-4 sm:mt-8 w-full">
                 <a href="{{ route('dashboard') }}"
-                   class="p-6 block w-full text-center border border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-800 hover:bg-gray-400 hover:dark:bg-gray-500 rounded-md shadow-sm">
+                   class="p-6 block w-full text-center border border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-500 rounded-md shadow-xs">
                     <div
-                        class="bg-sky-100 dark:bg-sky-900 rounded flex items-center justify-center h-10 w-10 mb-4 mx-auto">
+                        class="bg-sky-100 dark:bg-sky-900 rounded-sm flex items-center justify-center h-10 w-10 mb-4 mx-auto">
                         <svg
                             class="h-5 w-5 text-sky-600 dark:text-sky-400"
                             aria-hidden="true"
@@ -55,9 +55,9 @@
                     <h3 class="text-lg mb-2 text-gray-800 dark:text-gray-200">{{ __('Dashboard') }}</h3>
                 </a>
                 <a href="{{ route('wiki.weapon.index') }}"
-                   class="p-6 block w-full text-center border border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-800 hover:bg-gray-400 hover:dark:bg-gray-500 rounded-md shadow-sm">
+                   class="p-6 block w-full text-center border border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-500 rounded-md shadow-xs">
                     <div
-                        class="bg-teal-100 dark:bg-teal-900 rounded flex items-center justify-center h-10 w-10 mb-4 mx-auto">
+                        class="bg-teal-100 dark:bg-teal-900 rounded-sm flex items-center justify-center h-10 w-10 mb-4 mx-auto">
                         <svg
                             class="h-5 w-5 text-teal-600 dark:text-teal-400"
                             id="Capa_1"
@@ -153,9 +153,9 @@
                     <h3 class="text-lg mb-2 text-gray-800 dark:text-gray-200">{{ __('Weapons') }}</h3>
                 </a>
                 <a href="{{ route('wiki.monster.index') }}"
-                   class="p-6 block w-full text-center border border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-800 hover:bg-gray-400 hover:dark:bg-gray-500 rounded-md shadow-sm">
+                   class="p-6 block w-full text-center border border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-500 rounded-md shadow-xs">
                     <div
-                        class="bg-fuchsia-100 dark:bg-fuchsia-900 rounded flex items-center justify-center h-10 w-10 mb-4 mx-auto">
+                        class="bg-fuchsia-100 dark:bg-fuchsia-900 rounded-sm flex items-center justify-center h-10 w-10 mb-4 mx-auto">
                         <svg
                             class="h-5 w-5 text-fuchsia-600 dark:text-fuchsia-400"
                             fill="currentColor"
@@ -187,9 +187,9 @@
                     <h3 class="text-lg mb-2 text-gray-800 dark:text-gray-200">{{ __('Monsters') }}</h3>
                 </a>
                 <a href="{{ route('wiki.item.index') }}"
-                   class="p-6 block w-full text-center border border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-800 hover:bg-gray-400 hover:dark:bg-gray-500 rounded-md shadow-sm">
+                   class="p-6 block w-full text-center border border-gray-400 dark:border-gray-600 bg-gray-200 dark:bg-gray-800 hover:bg-gray-400 dark:hover:bg-gray-500 rounded-md shadow-xs">
                     <div
-                        class="bg-lime-100 dark:bg-lime-900 rounded flex items-center justify-center h-10 w-10 mb-4 mx-auto">
+                        class="bg-lime-100 dark:bg-lime-900 rounded-sm flex items-center justify-center h-10 w-10 mb-4 mx-auto">
                         <svg
                             class="h-5 w-5 text-lime-600 dark:text-lime-400"
                             xmlns="http://www.w3.org/2000/svg"

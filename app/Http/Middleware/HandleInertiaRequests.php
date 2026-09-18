@@ -38,6 +38,16 @@ class HandleInertiaRequests extends Middleware
         return array_merge(parent::share($request), [
             'recaptcha_site_key' => config('services.google-recaptcha.site-key'),
 
+            // A provider only shows up once its credentials are configured, so an
+            // unconfigured button can never send anyone to a broken OAuth redirect.
+            'socialLogin' => [
+                'providers' => collect(['google', 'github', 'discord'])
+                    ->filter(fn (string $provider): bool => filled(config("services.$provider.client_id")))
+                    ->values(),
+                'linked' => $user ? $user->providers->pluck('provider') : [],
+                'hasPassword' => $user ? filled($user->password) : false,
+            ],
+
             'current_campaign' => $campaign ?? null,
             'current_campaign_id' => $campaign->id ?? null,
             'has_campaign_hunter' => $user ? $user->hasCampaignHunter($campaign) : false,

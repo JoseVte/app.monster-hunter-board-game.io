@@ -33,7 +33,7 @@ defineProps({
                     <SectionBorder />
                 </div>
 
-                <div v-if="$page.props.jetstream.canUpdatePassword && $page.props.socialstream.hasPassword">
+                <div v-if="$page.props.jetstream.canUpdatePassword && $page.props.socialLogin.hasPassword">
                     <UpdatePasswordForm class="mt-10 sm:mt-0" />
 
                     <SectionBorder />
@@ -54,11 +54,11 @@ defineProps({
                     <SectionBorder />
                 </div>
 
-                <div v-if="$page.props.socialstream.show">
+                <div v-if="$page.props.socialLogin.providers.length">
                     <ConnectedAccountsForm class="mt-10 sm:mt-0" />
                 </div>
 
-                <div v-if="$page.props.socialstream.hasPassword">
+                <div v-if="$page.props.socialLogin.hasPassword">
                     <SectionBorder />
 
                     <LogoutOtherBrowserSessionsForm
@@ -67,7 +67,7 @@ defineProps({
                     />
                 </div>
 
-                <template v-if="$page.props.jetstream.hasAccountDeletionFeatures && $page.props.socialstream.hasPassword">
+                <template v-if="$page.props.jetstream.hasAccountDeletionFeatures && $page.props.socialLogin.hasPassword">
                     <SectionBorder />
 
                     <DeleteUserForm class="mt-10 sm:mt-0" />

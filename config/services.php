@@ -33,7 +33,7 @@ return [
     'discord' => [
         'client_id' => env('DISCORD_CLIENT_ID'),
         'client_secret' => env('DISCORD_CLIENT_SECRET'),
-        'redirect' => env('DISCORD_REDIRECT_URI', trim(env('APP_URL', 'http://localhost'), '/').'/oauth/discord/callback'),
+        'redirect' => env('DISCORD_REDIRECT_URI', trim(env('APP_URL', 'http://localhost'), '/').'/auth/discord/callback'),
 
         // optional
         'allow_gif_avatars' => (bool) env('DISCORD_AVATAR_GIF', true),
@@ -43,13 +43,13 @@ return [
     'github' => [
         'client_id' => env('GITHUB_CLIENT_ID'),
         'client_secret' => env('GITHUB_CLIENT_SECRET'),
-        'redirect' => env('GITHUB_REDIRECT_URI', trim(env('APP_URL', 'http://localhost'), '/').'/oauth/github/callback'),
+        'redirect' => env('GITHUB_REDIRECT_URI', trim(env('APP_URL', 'http://localhost'), '/').'/auth/github/callback'),
     ],
 
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => env('GOOGLE_REDIRECT_URI', trim(env('APP_URL', 'http://localhost'), '/').'/oauth/google/callback'),
+        'redirect' => env('GOOGLE_REDIRECT_URI', trim(env('APP_URL', 'http://localhost'), '/').'/auth/google/callback'),
     ],
 
     'google-recaptcha' => [

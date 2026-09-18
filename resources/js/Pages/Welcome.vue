@@ -68,7 +68,7 @@ onMounted(() => {
                 v-if="$page.props.auth.user"
                 :href="route('dashboard')"
                 :title="$t('Dashboard')"
-                class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-primary-500"
+                class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline-solid focus:outline-2 focus:rounded-xs focus:outline-primary-500"
             >
                 <Dashboard class="h-6 w-6 block lg:hidden" />
                 <span class="hidden lg:block">{{ $t('Dashboard') }}</span>
@@ -80,7 +80,7 @@ onMounted(() => {
                         v-if="canLogin"
                         :href="route('login')"
                         :title="$t('Log in')"
-                        class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-primary-500"
+                        class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline-solid focus:outline-2 focus:rounded-xs focus:outline-primary-500"
                     >
                         <LoginIcon class="h-6 w-6 block lg:hidden" />
                         <span class="hidden lg:block">{{ $t('Log in') }}</span>
@@ -90,7 +90,7 @@ onMounted(() => {
                         v-if="canRegister"
                         :href="route('register')"
                         :title="$t('Register')"
-                        class="ml-4 hidden lg:block font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-primary-500"
+                        class="ml-4 hidden lg:block font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline-solid focus:outline-2 focus:rounded-xs focus:outline-primary-500"
                     >
                         {{ $t('Register') }}
                     </Link>
@@ -126,7 +126,7 @@ onMounted(() => {
                                     </div>
                                 </div>
                                 <div class="px-4 md:px-0 w-full md:w-1/2 lg:pl-1/12 lg:w-5/12">
-                                    <div class="p-6 xl:p-8 bg-white w-fit mx-auto dark:bg-gray-800 rounded text-gray-700 sing-up">
+                                    <div class="p-6 xl:p-8 bg-white w-fit mx-auto dark:bg-gray-800 rounded-sm text-gray-700 sing-up">
                                         <div
                                             v-if="$page.props.auth.user"
                                             class="flex flex-col items-center justify-center"
@@ -176,7 +176,7 @@ onMounted(() => {
                 class="section h-[85vh] relative flex flex-col items-center py-6 md:py-0 lg:flex-row-reverse md:text-lg max-w-7xl mx-auto mt-16"
             >
                 <div
-                    class="bg-[length:65%] lg:bg-cover xl:bg-contain bg-center lg:bg-left bg-no-repeat w-full min-h-[220px] mb-8 sm:min-h-[260px] md:flex md:items-center md:w-full md:min-h-[50%] lg:basis-1/2 lg:mb-0 lg:h-full"
+                    class="bg-size-[65%] lg:bg-cover xl:bg-contain bg-center lg:bg-left bg-no-repeat w-full min-h-[220px] mb-8 sm:min-h-[260px] md:flex md:items-center md:w-full md:min-h-[50%] lg:basis-1/2 lg:mb-0 lg:h-full"
                     :style="{backgroundImage: 'url('+dashboardImg+')'}"
                 />
                 <div class="w-full md:w-[650px] lg:w-[485px] xl:w-[585px]">
@@ -192,7 +192,7 @@ onMounted(() => {
             </section>
 
             <section
-                class="section h-[100vh] relative flex flex-col items-center py-6 md:py-0 lg:flex-row md:text-lg max-w-full mx-auto mt-16"
+                class="section h-screen relative flex flex-col items-center py-6 md:py-0 lg:flex-row md:text-lg max-w-full mx-auto mt-16"
             >
                 <div
                     class="bg-cover bg-center w-full min-h-[220px] mb-8 sm:min-h-[260px] md:flex md:items-center md:w-full md:min-h-[50%] lg:basis-1/2 lg:mb-0 lg:h-full"

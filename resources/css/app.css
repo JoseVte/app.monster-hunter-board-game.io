@@ -1,6 +1,71 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
+
+@plugin '@tailwindcss/forms';
+@plugin '@tailwindcss/typography';
+@plugin 'flowbite/plugin';
+
+@source '../../node_modules/flowbite/**/*.js';
+@source '../../node_modules/vue-collapsed/**/*.js';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/laravel/jetstream/**/*.blade.php';
+@source '../../storage/framework/views/*.php';
+
+@custom-variant dark (&:is(.dark *));
+
+@theme {
+  --z-index-60: 60;
+
+  --breakpoint-xs: 420px;
+
+  --font-sans:
+    Nunito, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+  --font-montserrat:
+    Montserrat, ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji',
+    'Segoe UI Emoji', 'Segoe UI Symbol', 'Noto Color Emoji';
+
+  --text-xxs: 8px;
+
+  --color-primary-50: #f0f9ff;
+  --color-primary-100: #e0f2fe;
+  --color-primary-200: #bae6fd;
+  --color-primary-300: #7dd3fc;
+  --color-primary-400: #38bdf8;
+  --color-primary-500: #0ea5e9;
+  --color-primary-600: #0284c7;
+  --color-primary-700: #0369a1;
+  --color-primary-800: #075985;
+  --color-primary-900: #0c4a6e;
+  --color-primary-950: #082f49;
+
+  --color-bronze: #ad8a56;
+  --color-silver: #d7d7d7;
+  --color-gold: #af9500;
+
+  --min-width-8: 2rem;
+  --min-width-16: 4rem;
+
+  --min-height-8: 2rem;
+  --min-height-16: 4rem;
+}
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
 
 [x-cloak] {
     display: none;
@@ -11,12 +76,12 @@
 }
 
 .tabs-component-tabs {
-    @apply sm:rounded mb-3 sm:border-0 sm:flex sm:items-stretch sm:justify-start sm:mb-[-1px];
+    @apply sm:rounded-sm mb-3 sm:border-0 sm:flex sm:items-stretch sm:justify-start sm:-mb-px;
 }
 
 .tabs-component-tab {
     @apply text-gray-800 dark:text-gray-400 text-sm font-bold mr-0 list-none hover:text-gray-700 dark:hover:text-gray-200;
-    @apply sm:bg-white dark:sm:bg-gray-800 sm:border sm:border-gray-400 dark:sm:border-gray-600 rounded mr-2 translate-y-[3px] transition-all duration-[300ms] ease-linear;
+    @apply sm:bg-white dark:sm:bg-gray-800 sm:border sm:border-gray-400 dark:sm:border-gray-600 rounded-sm mr-2 translate-y-[3px] transition-all duration-300 ease-linear;
 }
 
 .tabs-component-tab.is-active {
@@ -35,7 +100,7 @@
 
 .tabs-component-panels {
     @apply py-4 px-0;
-    @apply sm:pt-0 sm:px-6 sm:bg-white dark:sm:bg-gray-800 sm:border sm:border-gray-400 dark:sm:border-gray-600 sm:rounded sm:rounded-tl-none;
+    @apply sm:pt-0 sm:px-6 sm:bg-white dark:sm:bg-gray-800 sm:border sm:border-gray-400 dark:sm:border-gray-600 sm:rounded-sm sm:rounded-tl-none;
 }
 
 .multiselect__spinner {
@@ -73,7 +138,7 @@
 }
 
 .day-description table {
-    @apply w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-4 rounded overflow-hidden;
+    @apply w-full text-sm text-left text-gray-500 dark:text-gray-400 mt-4 rounded-sm overflow-hidden;
 }
 
 .day-description table thead {

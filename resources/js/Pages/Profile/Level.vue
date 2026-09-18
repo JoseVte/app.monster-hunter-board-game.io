@@ -44,7 +44,7 @@ watch(showOnlyObtained, (showOnlyObtainedValue) => storage.setStorageSync('show-
 
         <div>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <div class="px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow sm:rounded-lg flex items-center gap-4">
+                <div class="px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg flex items-center gap-4">
                     <div
                         class="relative flex items-center justify-center bg-gray-200 dark:bg-gray-600 h-[80px] min-w-[80px] max-w-[80px] rounded-full font-bold"
                         :class="levelColor()"
@@ -90,7 +90,7 @@ watch(showOnlyObtained, (showOnlyObtainedValue) => storage.setStorageSync('show-
                     >
                         <div
                             v-if="!(showOnlyObtained && getUserAchievementProgress(achievement) !== 100)"
-                            class="w-full px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow sm:rounded-lg flex flex-col justify-center gap-4"
+                            class="w-full px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg flex flex-col justify-center gap-4"
                         >
                             <div class="flex justify-between items-center gap-4">
                                 <div class="flex items-center gap-4">
@@ -126,6 +126,8 @@ watch(showOnlyObtained, (showOnlyObtainedValue) => storage.setStorageSync('show-
 </template>
 
 <style>
+@reference "../../../css/app.css";
+
 .achievement-container {
     @apply text-gray-700 dark:text-gray-300 bg-gray-100 dark:bg-gray-900 rounded-full w-10 h-10 flex items-center justify-center;
 }

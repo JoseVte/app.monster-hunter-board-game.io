@@ -90,7 +90,7 @@ const hunterEquippedArmor = computed(() => {
 
         <div>
             <div class="max-w-7xl mx-auto py-10 sm:px-6 lg:px-8">
-                <div class="px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow sm:rounded-lg flex items-center gap-4">
+                <div class="px-4 py-5 sm:p-6 bg-white dark:bg-gray-800 shadow-sm sm:rounded-lg flex items-center gap-4">
                     <img
                         :src="user?.profile_photo_url"
                         :alt="user?.name"

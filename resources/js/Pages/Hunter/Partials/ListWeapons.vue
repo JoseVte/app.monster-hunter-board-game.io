@@ -62,7 +62,7 @@ const hunterWeaponCount = (weapon) => {
                     :key="branch"
                 >
                     <td class="align-middle pr-4 h-fit">
-                        <div class="border capitalize h-fit lg:min-w-[140px] rounded border-gray-400 dark:border-gray-500 bg-gray-300 dark:bg-gray-600 p-2 text-gray-800 dark:text-gray-200">
+                        <div class="border capitalize h-fit lg:min-w-[140px] rounded-sm border-gray-400 dark:border-gray-500 bg-gray-300 dark:bg-gray-600 p-2 text-gray-800 dark:text-gray-200">
                             {{ branch }}
                         </div>
                     </td>
@@ -111,7 +111,7 @@ const hunterWeaponCount = (weapon) => {
                                 </CraftWeaponModal>
                                 <div
                                     v-else
-                                    class="weapon-box-line relative border-b rounded border-gray-300 dark:border-gray-500 h-[1px]"
+                                    class="weapon-box-line relative border-b rounded-sm border-gray-300 dark:border-gray-500 h-px"
                                 />
                             </template>
                         </div>
@@ -125,7 +125,7 @@ const hunterWeaponCount = (weapon) => {
             :key="branch"
             class="mt-4 md:hidden"
         >
-            <div class="border text-center mb-4 capitalize h-fit rounded border-gray-400 dark:border-gray-500 bg-gray-300 dark:bg-gray-600 p-2 text-gray-800 dark:text-gray-200">
+            <div class="border text-center mb-4 capitalize h-fit rounded-sm border-gray-400 dark:border-gray-500 bg-gray-300 dark:bg-gray-600 p-2 text-gray-800 dark:text-gray-200">
                 {{ branch }}
             </div>
 
@@ -170,12 +170,14 @@ const hunterWeaponCount = (weapon) => {
 </template>
 
 <style lang="scss">
+@reference "../../../../css/app.css";
+
 .weapon-box:not(:first-child) {
     @apply before:content-[''] before:h-0 before:w-0 before:-left-2 before:top-1/2 before:absolute;
     @apply before:border-solid before:border-transparent before:border-l-gray-300 dark:before:border-l-gray-500 before:border-y-4 before:border-l-8 before:border-r-0 before:-translate-y-1/2;
 }
 .weapon-box:not(:last-child), .weapon-box-line {
-    @apply after:content-[''] after:h-[1px] after:w-8 after:-right-8 after:top-1/2 after:absolute after:bg-gray-300 dark:after:bg-gray-500;
+    @apply after:content-[''] after:h-px after:w-8 after:-right-8 after:top-1/2 after:absolute after:bg-gray-300 dark:after:bg-gray-500;
 }
 
 .weapon-box-vertical:not(:first-child) {
@@ -183,6 +185,6 @@ const hunterWeaponCount = (weapon) => {
     @apply before:border-solid before:border-transparent before:border-t-gray-300 dark:before:border-t-gray-500 before:border-x-4 before:border-t-8 before:border-b-0 before:-translate-x-1/2;
 }
 .weapon-box-vertical:not(:last-child) {
-    @apply after:content-[''] after:h-8 after:w-[1px] after:-bottom-8 after:left-1/2 after:absolute after:bg-gray-300 dark:after:bg-gray-500;
+    @apply after:content-[''] after:h-8 after:w-px after:-bottom-8 after:left-1/2 after:absolute after:bg-gray-300 dark:after:bg-gray-500;
 }
 </style>

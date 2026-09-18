@@ -268,7 +268,7 @@ const displayableRole = (role) => {
                                 v-for="(role, i) in availableRoles"
                                 :key="role.key"
                                 type="button"
-                                class="relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-none focus:border-primary-500 dark:focus:border-primary-600 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-600"
+                                class="relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-hidden focus:border-primary-500 dark:focus:border-primary-600 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-600"
                                 :class="{'border-t border-gray-200 dark:border-gray-700 focus:border-none rounded-t-none': i > 0, 'rounded-b-none': i != Object.keys(availableRoles).length - 1}"
                                 @click="addCampaignMemberForm.role = role.key"
                             >
@@ -356,7 +356,7 @@ const displayableRole = (role) => {
                                 <!-- Cancel Campaign Invitation -->
                                 <button
                                     v-if="userPermissions.canRemoveCampaignMembers"
-                                    class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-none"
+                                    class="cursor-pointer ml-6 text-sm text-red-500 focus:outline-hidden"
                                     @click="cancelCampaignInvitation(invitation)"
                                 >
                                     {{ $t('Cancel') }}
@@ -384,7 +384,7 @@ const displayableRole = (role) => {
                             v-for="(role, i) in availableRoles"
                             :key="role.key"
                             type="button"
-                            class="relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-none focus:border-primary-500 dark:focus:border-primary-600 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-600"
+                            class="relative px-4 py-3 inline-flex w-full rounded-lg focus:z-10 focus:outline-hidden focus:border-primary-500 dark:focus:border-primary-600 focus:ring-2 focus:ring-primary-500 dark:focus:ring-primary-600"
                             :class="{'border-t border-gray-200 dark:border-gray-700 focus:border-none rounded-t-none': i > 0, 'rounded-b-none': i !== Object.keys(availableRoles).length - 1}"
                             @click="updateRoleForm.role = role.key"
                         >

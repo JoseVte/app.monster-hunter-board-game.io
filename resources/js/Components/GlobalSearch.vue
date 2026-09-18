@@ -36,7 +36,7 @@ watch(searchText, (after) => {
         class="-my-px sm:px-2 flex items-center border-r border-gray-200 dark:border-gray-800 relative"
     >
         <button
-            class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:outline-none focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700 transition duration-150 ease-in-out h-full capitalize"
+            class="inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:border-gray-300 dark:hover:border-gray-700 focus:outline-hidden focus:text-gray-700 dark:focus:text-gray-300 focus:border-gray-300 dark:focus:border-gray-700 transition duration-150 ease-in-out h-full capitalize"
             type="button"
             @click="openSearch = !openSearch"
         >
@@ -70,18 +70,22 @@ watch(searchText, (after) => {
 
         <ul
             v-if="searchResults.length > 0 && openSearchResults"
-            class="absolute top-16 left-11 w-80 bg-white border-2 border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded z-50"
+            class="absolute top-16 left-11 w-80 bg-white border-2 border-gray-200 dark:bg-gray-800 dark:border-gray-700 rounded-sm z-50"
         >
             <li
                 v-for="result in searchResults"
                 :key="`${result.id}-${result.class}`"
                 class="result"
             >
-                <component
-                    :is="result.url ? 'a' : 'span'"
-                    class="block px-3 py-2 bg-white dark:text-white dark:bg-gray-800 transition duration-150 ease-in-out"
-                    :class="result.url ? 'hover:bg-gray-50 dark:hover:bg-gray-700' : 'cursor-default'"
+                <a
+                    v-if="result.url"
+                    class="block px-3 py-2 bg-white hover:bg-gray-50 dark:text-white dark:bg-gray-800 dark:hover:bg-gray-700 transition duration-150 ease-in-out"
                     :href="result.url"
+                    v-html="result.name"
+                />
+                <span
+                    v-else
+                    class="block px-3 py-2 bg-white dark:text-white dark:bg-gray-800 cursor-default"
                     v-html="result.name"
                 />
             </li>
@@ -90,6 +94,8 @@ watch(searchText, (after) => {
 </template>
 
 <style>
+@reference "../../css/app.css";
+
     .result em {
         @apply not-italic font-bold underline;
     }

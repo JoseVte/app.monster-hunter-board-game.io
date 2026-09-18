@@ -8,7 +8,7 @@ import WeaponsIcon from "@/Components/Icons/WeaponsIcon.vue";
         v-if="!$page.props.has_campaign_hunter && $page.props.current_campaign"
         class="bg-primary-500"
     >
-        <div class="max-w-screen-xl mx-auto py-2 px-3 sm:px-6 lg:px-8">
+        <div class="max-w-(--breakpoint-xl) mx-auto py-2 px-3 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between flex-wrap">
                 <Link
                     :href="route('campaigns.hunters.create', $page.props.current_campaign)"

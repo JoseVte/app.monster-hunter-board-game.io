@@ -130,7 +130,7 @@ const unequip = () => {
 
         <template #content>
             <div class="mt-4 grid grid-cols-1 gap-4">
-                <div class="w-full border rounded">
+                <div class="w-full border rounded-sm">
                     <table class="dark:text-white w-full">
                         <thead class="border-b">
                             <tr>

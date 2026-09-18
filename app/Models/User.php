@@ -17,8 +17,7 @@ use LevelUp\Experience\Concerns\GiveExperience;
 use LevelUp\Experience\Concerns\HasAchievements;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use LevelUp\Experience\Events\AchievementAwarded;
-use JoelButcher\Socialstream\HasConnectedAccounts;
-use JoelButcher\Socialstream\SetsProfilePhotoFromUrl;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
@@ -31,7 +30,6 @@ class User extends Authenticatable
     use HasAchievements;
     use HasApiTokens;
     use HasCampaigns;
-    use HasConnectedAccounts;
     use HasFactory;
     use HasProfilePhoto {
         profilePhotoUrl as getPhotoUrl;
@@ -39,7 +37,6 @@ class User extends Authenticatable
     use HasRoles;
     use HasTeams;
     use Notifiable;
-    use SetsProfilePhotoFromUrl;
     use TwoFactorAuthenticatable;
 
     /**
@@ -121,6 +118,11 @@ class User extends Authenticatable
             ->withPivot(['role_id', 'hunter_id'])
             ->withTimestamps()
             ->as('membership');
+    }
+
+    public function providers(): HasMany
+    {
+        return $this->hasMany(Provider::class);
     }
 
     public function hunters(): BelongsToMany

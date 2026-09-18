@@ -38,11 +38,13 @@ const proxyChecked = computed({
             class="sr-only"
         >
         <span class="switch" />
-        <span class="ml-5 dark:text-gray-300 break-words whitespace-wrap">{{ label }}</span>
+        <span class="ml-5 dark:text-gray-300 wrap-break-word whitespace-wrap">{{ label }}</span>
     </label>
 </template>
 
 <style scoped>
+@reference "../../../css/app.css";
+
 .switch {
     --switch-container-width: 50px;
     --switch-size: calc(var(--switch-container-width) / 2);
@@ -54,13 +56,13 @@ const proxyChecked = computed({
     transition: all 0.25s ease-in-out;
 
     @apply w-20 flex items-center relative bg-gray-300 dark:bg-gray-700;
-    @apply before:content-[''] before:absolute before:left-[1px] before:bg-white before:rounded-full;
+    @apply before:content-[''] before:absolute before:left-px before:bg-white before:rounded-full;
 }
 .switch::before {
     height: calc(var(--switch-size) - 4px);
     width: calc(var(--switch-size) - 4px);
     transition: all 0.25s ease-in-out;
-    @apply border-solid border-[2px] border-gray-300 dark:border-gray-700
+    @apply border-solid border-2 border-gray-300 dark:border-gray-700
 }
 .switch + span {
     width: calc(100% - 5rem);

@@ -15,7 +15,7 @@ defineProps({
     <div class="flex flex-row h-10 rounded-lg relative bg-transparent">
         <button
             type="button"
-            class="bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600 flex items-center justify-center h-full w-10 rounded-l cursor-pointer outline-none"
+            class="bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600 flex items-center justify-center h-full w-10 rounded-l cursor-pointer outline-hidden"
             :class="{ 'opacity-25': form.processing }"
             :disabled="form.processing"
             @click="decrement"
@@ -37,14 +37,14 @@ defineProps({
             </svg>
         </button>
         <div
-            class="outline-none px-2 w-auto border-0 focus:outline-none text-center bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 font-semibold text-md flex items-center"
+            class="outline-hidden px-2 w-auto border-0 focus:outline-hidden text-center bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 font-semibold text-md flex items-center"
             :class="{ 'opacity-25': form.processing }"
         >
             {{ value }}<span v-if="max">&nbsp;/&nbsp;{{ max }}</span>
         </div>
         <button
             type="button"
-            class="bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600 flex items-center justify-center h-full w-10 rounded-r cursor-pointer outline-none"
+            class="bg-gray-300 dark:bg-gray-700 text-gray-600 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 hover:bg-gray-400 dark:hover:bg-gray-600 flex items-center justify-center h-full w-10 rounded-r cursor-pointer outline-hidden"
             :class="{ 'opacity-25': form.processing }"
             :disabled="form.processing"
             @click="increment"

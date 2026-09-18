@@ -11,10 +11,11 @@ use App\Enum\MonsterExpansion;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SearchController;
-use LevelUp\Experience\Models\Achievement;
 use App\Http\Controllers\CampaignController;
+use App\Http\Controllers\ProfileLevelController;
 use App\Http\Controllers\CampaignHunterController;
 use App\Http\Controllers\CampaignMemberController;
+use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\CampaignHunterItemController;
 use App\Http\Controllers\CampaignInvitationController;
 
@@ -129,9 +130,22 @@ Route::middleware([
     Route::put('campaigns/{campaign}/hunters/{hunter}/items/{item}/update-count', [CampaignHunterItemController::class, 'updateCount'])
         ->name('campaigns.hunters.items.update-count');
 
-    Route::get('user/level', function () {
-        $achievements = Achievement::all();
+    Route::get('user/level', [ProfileLevelController::class, 'index'])
+        ->name('profile.level');
+});
 
-        return Inertia::render('Profile/Level', compact('achievements'));
-    })->name('profile.level');
+Route::get('auth/{provider}', [SocialAuthController::class, 'redirect'])
+    ->whereIn('provider', ['google', 'github', 'discord'])
+    ->name('auth.social.redirect');
+Route::get('auth/{provider}/callback', [SocialAuthController::class, 'callback'])
+    ->whereIn('provider', ['google', 'github', 'discord'])
+    ->name('auth.social.callback');
+
+Route::middleware(['auth:sanctum', 'verified'])->group(function (): void {
+    Route::get('profile/social/{provider}', [SocialAuthController::class, 'redirectFromProfile'])
+        ->whereIn('provider', ['google', 'github', 'discord'])
+        ->name('profile.social.redirect');
+    Route::delete('profile/social/{provider}', [SocialAuthController::class, 'unlink'])
+        ->whereIn('provider', ['google', 'github', 'discord'])
+        ->name('profile.social.unlink');
 });
