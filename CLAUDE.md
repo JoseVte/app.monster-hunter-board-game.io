@@ -165,6 +165,21 @@ still emits the old shape, and the failure is silent: the page and assets load, 
 stays empty, and nothing reaches the console because `createInertiaApp` rejects rather than
 throwing.
 
+**`config/inertia.php` exists for one line.** The package default points
+`pages.paths` at `resource_path('js/pages')`, lowercase, which is what the newer Laravel
+starter kits use; this project keeps `resources/js/Pages`, which is also what `app.js` and
+`ssr.js` glob. Nothing breaks at runtime, since `pages.ensure_pages_exist` is false and the
+frontend resolves a component against the Vite bundle rather than the filesystem. It is
+`assertInertia` that pays: `testing.ensure_pages_exist` is true, so it looks the file up on
+disk, a case-insensitive filesystem answers for the wrong case, and the result is a suite
+that passes on macOS and fails seventeen times on the Linux CI runner with "Inertia page
+component file [...] does not exist". The whole `pages` key has to be written out, because
+the provider merges with `mergeConfigFrom`, which only merges the top level.
+
+`tests/Feature/InertiaPagePathTest.php` pins it, comparing against `scandir` rather than
+`is_dir` so that it fails on macOS too. `is_dir` would answer yes to the wrong case on the
+machine where the mistake is most likely to be made, so it would pin nothing.
+
 ### Game icons
 
 Seed data marks a game symbol as `:name_icon:`. `resources/js/icons.js` holds the whole map
@@ -574,7 +589,7 @@ Where the project landed:
 | Social login | socialstream (abandoned) | Socialite |
 | `composer audit` | 58 advisories / 21 packages | none |
 | `npm audit` | 340 paths, 5 critical | none |
-| Tests | 82 pass, 8 skipped | 137 pass, 4 skipped |
+| Tests | 82 pass, 8 skipped | 327 pass, 7 skipped |
 
 Verified on every step: the full CI job in a clean checkout, the seeders against a scratch
 sqlite database, and the app driven in a real browser. The seeders produce 250 weapons,
