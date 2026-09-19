@@ -355,6 +355,38 @@ from `vendor/tightenco/ziggy/dist/vue.m`, so the build fails with an unresolved 
 `vendor/` is absent. It needs no `.env`. Node 22 is the floor: `readdirp` and `sass` require
 `>= 20.19`, and `glob`, `jackspeak` and `lru-cache` require `20 || >=22`.
 
+### Deployment
+
+`deploy.sh` holds the steps that run once the new code is on the server, so the deploy is
+reviewed like any other change. The script in Forge only pulls, takes the lock and calls it;
+the header comment carries the snippet it should contain.
+
+**It exists because the Forge script still built with yarn.** The project moved to npm and
+deleted `yarn.lock`, and Node 22 ships corepack, which already owns the `yarn` and `yarnpkg`
+shims in the nvm bin directory, so `npm install -g yarn` fails with `EEXIST` and takes the
+whole deploy with it. The failure is worse than it looks: everything before it (composer,
+migrations, caches, FPM) has already succeeded, so the site ends up serving the new PHP
+against the previous release's `public/build`, which after the Inertia 0.6 to 3 move means
+an empty `#app` and nothing in the console.
+
+Two steps are held behind environment flags rather than run every time:
+
+- `RUN_SEEDERS=1` runs the eight content seeders by name. `db:seed` with no `--class` is
+  never safe here, see "Seeding" above. They are idempotent, but renaming an entry in
+  `database/seeders/data/` adds a row rather than renaming one, so it stays deliberate.
+- Migrations run unconditionally. There is nothing like the gym-manager situation where the
+  recorded names stopped matching the files.
+
+**No `NODE_OPTIONS` heap cap**, unlike the gym-manager script. Vite 8 builds through
+rolldown, which works in native code rather than in the V8 heap, so `--max-old-space-size`
+governs the part that is not the problem. A measured run peaks around 850 MB resident for
+the client and SSR bundles together.
+
+The workbox cleanup is not cosmetic: vite only empties `public/build`, while `sw.js` and its
+hashed workbox chunk are written to `public/` itself, so every build that changes the hash
+leaves the previous chunk on disk forever. There were five of them when the script was
+written, the oldest from July 2023.
+
 ## Architecture notes
 
 ### Domain models
