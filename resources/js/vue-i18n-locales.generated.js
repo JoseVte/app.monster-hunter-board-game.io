@@ -269,6 +269,7 @@ export default {
         "None": "None",
         "No results found.": "No results found.",
         "Normal": "Normal",
+        "Not affiliated with Capcom or Steamforged Games.": "Not affiliated with Capcom or Steamforged Games.",
         "Not connected": "Not connected",
         "Not connected.": "Not connected.",
         "Not enough materials": "Not enough materials",
@@ -529,10 +530,6 @@ export default {
             "failed": "These credentials do not match our records.",
             "password": "The password is incorrect.",
             "throttle": "Too many login attempts. Please try again in {seconds} seconds."
-        },
-        "cookie-consent:{texts}": {
-            "agree": "Allow cookies",
-            "message": "Your experience on this site will be improved by allowing cookies."
         },
         "http-statuses": {
             "0": "Unknown Error",
@@ -1120,6 +1117,7 @@ export default {
         "None": "Ninguno",
         "No results found.": "No se han encontrado resultados.",
         "Normal": "Normal",
+        "Not affiliated with Capcom or Steamforged Games.": "Sin afiliación con Capcom ni con Steamforged Games.",
         "Not connected": "Sin conectar",
         "Not connected.": "No conectada.",
         "Not enough materials": "Materiales insuficientes",
@@ -1384,10 +1382,6 @@ export default {
             "failed": "Estas credenciales no coinciden con nuestros registros.",
             "password": "La contraseña es incorrecta.",
             "throttle": "Demasiados intentos de acceso. Por favor intente nuevamente en {seconds} segundos."
-        },
-        "cookie-consent:{texts}": {
-            "agree": "Aceptar",
-            "message": "Su experiencia en este sitio será mejorada con el uso de cookies."
         },
         "http-statuses": {
             "0": "Error desconocido",

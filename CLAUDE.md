@@ -87,26 +87,44 @@ The editor chunk is 861 kB of JS and 70 kB of CSS, up from toast-ui's 456 plus 1
 all of it is CodeMirror. It is a dynamic import, so it only loads on the campaign create and
 edit forms.
 
-### Analytics
+### Cookies and tracking
 
-`resources/js/analytics.js` talks to `gtag.js` directly. **`vue-gtag` was removed**, not
-upgraded past 3: its whole value is a Vue plugin wrapper and a `pageTracker` driven by
-`vue-router`, and this app has no router, so all it ever did here was inject the script and
-make two calls.
+**The app sets no cookie that needs consent, and there is no cookie banner.** That is a
+property worth keeping, because it is the only reason there is nothing to maintain here.
 
-That is also why GA had been recording nothing. Both vue-gtag 2 and 3 default
-`send_page_view` to `false` and leave the event to the router-driven tracker, so with no
-router the only things reaching GA were the tag load and the `config` call. The local module
-sends the view itself on Inertia's `navigate`, which covers the first visit as well.
+What a visitor ends up with: the Laravel session cookie, `XSRF-TOKEN`, `remember_web_*`
+(only if they tick the box themselves) and `_GRECAPTCHA` on the login and register pages.
+All four are exempt from consent as strictly necessary, functional-on-request, or security.
+The light/dark theme is `localStorage['color-theme']`, not a cookie at all.
 
-**The title cannot be read when `navigate` fires.** Inertia writes the new `<title>` from a
-`debounce(..., 1)` callback that is scheduled during render, so it lands after `navigate`
-and after the page chunk has been fetched, and any fixed delay reports the previous page.
-It also skips the write entirely when the new title equals the old one. The module therefore
-waits for a mutation of the title element and falls back to a 2 second timeout, which only
-elapses in the equal-title case, where the document already holds the right value.
+**Google Analytics was removed**, along with `resources/js/analytics.js` and the
+`GOOGLE_ANALYTICS_KEY` pair. It was loaded from `app.js` at module scope, before Inertia
+even mounted, so `_ga` and `_ga_<ID>` were set on every page with no consent asked and none
+possible. It had also recorded nothing for years, because both vue-gtag 2 and 3 default
+`send_page_view` to false and leave the event to a `vue-router` tracker this app has no
+router for, so there was no history to lose. If analytics comes back, the cheap option is
+something cookieless (Plausible, Umami); anything that sets `_ga` brings the banner, the
+Consent Mode wiring and the maintenance back with it.
 
-Nothing is sent outside `import.meta.env.PROD` or without `VITE_GOOGLE_ANALYTICS_KEY`.
+**`spatie/laravel-cookie-consent` was removed** rather than fixed. Its banner had an accept
+button and nothing else, no reject, no link to the policy, and its cookie lasted twenty
+years. More to the point it gated nothing: no script anywhere was conditional on it, so the
+consent was decorative. With no non-exempt cookies left there is nothing for it to ask
+about.
+
+**reCAPTCHA loads only where it is verified.** `resources/js/recaptcha.js` calls
+`recaptcha-v3`'s `load()` from the login and register components. It used to be the
+`vue-recaptcha-v3` plugin installed on the app in `app.js`, and that plugin's `install()`
+loads Google's script immediately, so the wiki and the public page carried it too. A cookie
+set for anti-fraud is only arguably exempt while it stays on the pages that need it. The
+badge is shown on those two pages and hidden on unmount, which is not decoration: Google
+requires either the badge or visible attribution wherever it runs.
+
+Sentry is backend only, with `send_default_pii` false, no tracing, no profiling and no
+session replay, so it sets nothing in the browser. Debugbar and Ignition are `require-dev`,
+so `composer install --no-dev` leaves them out of production entirely; the
+`PHPDEBUGBAR_STACK_DATA` and randomly-named cookies you see locally come from Debugbar and
+cannot exist on the server.
 
 ### Invitations
 
@@ -429,6 +447,48 @@ put the same line under more than one key.
 
 `Hunter::canCraftArmor()` holds the armour rule, which stays one recipe per armour. `Hunter::getUser()`
 resolves the owning user, which is how gamification events reach a `User`.
+
+### Deleting things
+
+**Almost every foreign key in the campaign tree is declared `constrained()` with no
+`onDelete`, which is RESTRICT.** That is not a style choice anyone made, it is the default,
+and it meant the whole delete chain was broken at three levels until it was fixed:
+
+- Deleting an account failed outright for anyone who had ever created a campaign.
+  `DeleteUser` purges the owned teams, `campaigns.team_id` is RESTRICT, the foreign key
+  took the transaction down and the account survived. Right to erasure, not honoured.
+- Deleting a campaign failed for any campaign whose hunters were equipped, because a
+  hunter's weapons, armours, items, downtime days and palico are all RESTRICT too.
+- Sessions (with IP and user agent) and pending `password_reset_tokens` have no foreign
+  key to `users` at all, so they outlived the account either way.
+
+So the order below is forced by the schema, not chosen, and changing it breaks things:
+
+1. `Hunter::booted()` has a `deleting` hook that detaches the four pivots and deletes the
+   palico. **Hunters must be deleted one at a time**, never through a mass delete on the
+   relation, because a mass delete fires no model events and the hook would not run.
+2. `Campaign::purge()` does hunters, then days, then memberships, then itself. Both
+   `CampaignController::destroy` and `DeleteUser` go through it; it used to be duplicated
+   in the controller and absent from the account delete.
+3. `DeleteUser` resolves the owned campaigns *before* purging the teams. A campaign with
+   other members is handed to the longest standing admin (or the longest standing member)
+   and moves to that person's team; a campaign the leaver held alone is purged.
+
+`teamFor()` creates a team when the heir owns none. That is defence for accounts made
+before `App\Actions\PrepareNewAccount` existed, not a live path any more.
+
+**Every registration path goes through `App\Actions\PrepareNewAccount`.** The three had
+drifted, each doing a different subset of the same job: `CreateNewUser` gave out the
+`standard` role and a personal team, `SocialAuthController` gave out a team and switched to
+it but no role, and `RegisterInvitedUser` gave out neither, so an invited account owned no
+team and `campaigns.store` requires a `team_id` that exists and belongs to the caller. Every
+step in the action is conditional, so calling it twice changes nothing. Add a fourth door
+and it calls this, or it will drift too.
+
+Jetstream's `deleteProfilePhoto()` returns early unless `Features::profilePhotos()` is on,
+and it is commented out in `config/jetstream.php`. Its upload counterpart has no such guard
+and is reachable through Fortify's `profile-information` route, so `DeleteUser` removes the
+file itself rather than calling a method that does nothing.
 
 ### Enums
 

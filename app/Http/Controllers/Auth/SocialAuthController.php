@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Auth;
 
 use Throwable;
-use App\Models\Team;
 use App\Models\User;
 use App\Models\Provider;
 use Illuminate\Support\Str;
 use Laravel\Fortify\Features;
+use App\Actions\PrepareNewAccount;
 use Illuminate\Support\Facades\DB;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -101,7 +101,7 @@ class SocialAuthController extends Controller
             ]);
 
             $user->markEmailAsVerified();
-            $this->createPersonalTeam($user);
+            app(PrepareNewAccount::class)($user);
 
             event(new Registered($user));
         }
@@ -125,16 +125,5 @@ class SocialAuthController extends Controller
             'refresh_token' => $providerUser->refreshToken ?? null,
             'expires_at' => isset($providerUser->expiresIn) ? now()->addSeconds($providerUser->expiresIn) : null,
         ]);
-    }
-
-    private function createPersonalTeam(User $user): void
-    {
-        $user->ownedTeams()->save(Team::forceCreate([
-            'user_id' => $user->id,
-            'name' => explode(' ', $user->name, 2)[0]."'s Team",
-            'personal_team' => true,
-        ]));
-
-        $user->switchTeam($user->ownedTeams()->first());
     }
 }

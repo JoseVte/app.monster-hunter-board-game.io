@@ -14,6 +14,7 @@ import DropdownTeam from "@/Layouts/Partials/DropdownTeam.vue";
 import HunterBanner from "@/Layouts/Partials/HunterBanner.vue";
 import ButtonDark from "@/Layouts/Partials/ButtonDark.vue";
 import LocaleDropdown from "@/Components/Layout/LocaleDropdown.vue";
+import LegalFooter from "@/Components/Layout/LegalFooter.vue";
 
 defineProps({
     title: String,
@@ -548,6 +549,8 @@ const logout = () => {
 
                 <slot />
             </main>
+
+            <LegalFooter />
         </div>
     </div>
 </template>

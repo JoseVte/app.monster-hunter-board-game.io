@@ -3,6 +3,7 @@
 namespace App\Actions\Invitations;
 
 use App\Models\User;
+use App\Actions\PrepareNewAccount;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Auth\Events\Registered;
 
@@ -13,12 +14,14 @@ use Illuminate\Auth\Events\Registered;
  */
 class RegisterInvitedUser
 {
+    public function __construct(private PrepareNewAccount $prepareNewAccount) {}
+
     /**
      * @param  array<string, mixed>  $attributes
      */
     public function __invoke(array $attributes, bool $emailIsTrusted): User
     {
-        $user = User::create($attributes);
+        $user = ($this->prepareNewAccount)(User::create($attributes));
 
         if ($emailIsTrusted) {
             $user->forceFill(['email_verified_at' => now()])->save();

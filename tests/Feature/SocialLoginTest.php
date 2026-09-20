@@ -61,6 +61,7 @@ test('a new user is registered from the provider', function (): void {
     expect($user->name)->toEqual('Jane Doe')
         ->and($user->hasVerifiedEmail())->toBeTrue()
         ->and($user->ownedTeams()->count())->toEqual(1)
+        ->and($user->hasRole('standard'))->toBeTrue()
         ->and($user->providers()->where('provider', 'google')->count())->toEqual(1);
 });
 

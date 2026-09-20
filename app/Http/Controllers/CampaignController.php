@@ -7,7 +7,6 @@ use Event;
 use App\Models\Day;
 use Inertia\Inertia;
 use Inertia\Response;
-use App\Models\Hunter;
 use App\Models\Monster;
 use App\Models\Campaign;
 use App\Models\DowntimeActivity;
@@ -227,12 +226,7 @@ class CampaignController extends Controller
 
     public function destroy(Campaign $campaign): RedirectResponse
     {
-        DB::transaction(static function () use ($campaign): void {
-            $campaign->days()->delete();
-            $campaign->users()->detach();
-            Hunter::where('campaign_id', $campaign->id)->delete();
-            $campaign->delete();
-        });
+        $campaign->purge();
 
         return redirect()->route('dashboard');
     }

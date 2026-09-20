@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Pivot\CampaignMembership;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -29,6 +30,28 @@ class Campaign extends Model
         'description_parsed',
         'description_parsed_html',
     ];
+
+    /**
+     * Delete the campaign and everything that hangs off it.
+     *
+     * The order is forced by the schema rather than chosen: the hunters go
+     * first so their own `deleting` hook clears the pivots that point at both a
+     * hunter and a day, then the days, then the memberships. Every one of those
+     * foreign keys is RESTRICT, so doing it in any other order fails.
+     *
+     * Hunters are deleted one at a time on purpose. A mass delete on the
+     * relation fires no model events, so the hook that makes this work would
+     * never run.
+     */
+    public function purge(): void
+    {
+        DB::transaction(function (): void {
+            $this->hunters->each->delete();
+            $this->days()->delete();
+            $this->users()->detach();
+            $this->delete();
+        });
+    }
 
     public function team(): BelongsTo
     {

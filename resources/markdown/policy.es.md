@@ -1,147 +1,121 @@
-# Política de privacidad de Josrom
+# Política de privacidad
 
-En Monster Hunter World: Juego de Mesa, accesible
-desde [https://mh-board-game.josrom.com/](https://mh-board-game.josrom.com/), una de nuestras principales prioridades es
-la privacidad de nuestros visitantes. Este documento de Política de Privacidad contiene los tipos de información que se
-recopilan y registran en Monster Hunter World: Juego de Mesa y cómo la utilizamos.
+Última actualización: 20 de septiembre de 2026
 
-Si tienes preguntas adicionales o necesitas más información sobre nuestra Política de Privacidad, no dudes en ponerte en
-contacto con nosotros.
+Esta aplicación es un proyecto personal para llevar el seguimiento de campañas de
+*Monster Hunter World: El Juego de Mesa*. No está afiliada a Capcom ni a Steamforged Games.
 
-Esta Política de Privacidad se aplica solo a nuestras actividades en línea y es válida para los visitantes de nuestro
-sitio web con respecto a la información que comparten y/o recopilan en Monster Hunter World: Juego de Mesa. Esta
-política no es aplicable a ninguna información recopilada sin conexión o a través de canales distintos a este sitio web.
+## Quién responde de tus datos
 
-## Consentimiento
+Jose Vicente Orts Romero, como particular, es el responsable del tratamiento.
 
-Al usar nuestro sitio web, aceptas nuestra Política de Privacidad y estás de acuerdo con sus términos.
+Puedes escribirme a **jvortsromero@gmail.com** por cualquier cosa de esta página, incluido
+el ejercicio de los derechos que se enumeran más abajo.
 
-## Información que recopilamos
+## Qué se recoge, y para qué
 
-La información personal que se te solicite proporcionar, y las razones por las que se te solicite proporcionarla, se te
-explicarán claramente en el momento en que te pidamos tu información personal.
+**Tu cuenta.** Tu nombre, tu dirección de correo y un hash de tu contraseña. La contraseña
+en sí no se guarda y no puede recuperarse a partir del hash. Esto existe para que puedas
+entrar y para que la aplicación sepa qué es tuyo. También puedes subir una foto de perfil,
+que se guarda en el servidor y se sirve desde una URL pública.
 
-Si te comunicas con nosotros directamente, podemos recibir información adicional sobre ti, como tu nombre, dirección de
-correo electrónico, número de teléfono, el contenido del mensaje y/o adjuntos que nos envíes y cualquier otra
-información que elijas proporcionar.
+**Si entras con Google, GitHub o Discord.** El proveedor envía tu nombre, tu apodo cuando
+lo tiene, tu dirección de correo y la URL de tu avatar, junto con el token de acceso que
+permite a la aplicación confirmar quién eres. Ese token se guarda para que el enlace siga
+funcionando y no se usa para leer nada más de tu cuenta allí. Puedes desvincular un
+proveedor cuando quieras desde tu perfil, y eso borra el registro entero.
 
-Cuando te registras para obtener una cuenta, podemos solicitar tu información de contacto, incluyendo elementos como
-nombre, nombre de la empresa, dirección, dirección de correo electrónico y número de teléfono.
+**Lo que creas en la aplicación.** Campañas, cazadores, días de caza, equipo y los miembros
+a los que invitas. Es el sentido de la aplicación. Una campaña que compartes es visible
+para las demás personas que están en ella.
 
-## Cómo utilizamos tu información
+**Registros técnicos.** Una sesión activa guarda su dirección IP y el identificador del
+navegador. Es lo que permite que puedas ver tus sesiones y cerrarlas una a una desde tu
+perfil.
 
-Utilizamos la información que recopilamos de diversas maneras, incluyendo:
+**Errores.** Cuando algo se rompe, se envía un informe a Sentry para poder arreglarlo. Está
+configurado para no mandar datos personales: ni dirección IP, ni cookies, ni el cuerpo de
+la petición.
 
-* Proporcionar, operar y mantener nuestro sitio web
-* Mejorar, personalizar y ampliar nuestro sitio web
-* Comprender y analizar cómo utilizas nuestro sitio web
-* Desarrollar nuevos productos, servicios, características y funcionalidades
-* Comunicarnos contigo, ya sea directamente o a través de uno de nuestros socios, incluyendo el servicio al cliente,
-  para proporcionarte actualizaciones y otra información relacionada con el sitio web, y para fines de marketing y
-  promoción
-* Enviarte correos electrónicos
-* Encontrar y prevenir fraudes
+Nada de esto se usa para publicidad, elaboración de perfiles ni decisiones automatizadas, y
+nada se vende ni se cede a nadie para sus propios fines.
 
-## Archivos de registro
+## La base legal
 
-Monster Hunter World: Juego de Mesa sigue un procedimiento estándar de uso de archivos de registro. Estos archivos
-registran a los visitantes cuando visitan sitios web. Todas las empresas de alojamiento hacen esto y es parte de las
-analíticas de los servicios de alojamiento. La información recopilada por los archivos de registro incluye direcciones
-de protocolo de internet (IP), tipo de navegador, proveedor de servicios de Internet (ISP), marca de fecha y hora,
-páginas de referencia/salida y posiblemente la cantidad de clics. Esta información no está vinculada a ninguna
-información que sea personalmente identificable. El propósito de la información es analizar tendencias, administrar el
-sitio, rastrear el movimiento de los usuarios en el sitio web y recopilar información demográfica.
+Tu cuenta y el contenido que creas se tratan para ejecutar el acuerdo que aceptas al usar
+la aplicación (artículo 6.1.b del RGPD). El informe de errores y la prevención de spam se
+apoyan en el interés legítimo de mantener la aplicación funcionando y sin abusos (artículo
+6.1.f). Donde hiciera falta consentimiento se pediría antes, lo que ahora mismo no aplica a
+nada, porque nada de lo que hay aquí lo requiere.
 
-## Cookies y balizas web
+## Cookies
 
-Como cualquier otro sitio web, Monster Hunter World: Juego de Mesa utiliza "cookies". Estas cookies se utilizan para
-almacenar información, incluidas las preferencias de los visitantes, y las páginas del sitio web a las que accedió o
-visitó el visitante. La información se utiliza para optimizar la experiencia de los usuarios mediante la personalización
-del contenido de nuestra página web en función del tipo de navegador y/u otra información de los visitantes.
+**No hay aviso de cookies, porque no hay nada que preguntarte.** Ni analítica, ni
+publicidad, ni seguimiento de ningún tipo. La aplicación pone cuatro cookies, todas exentas
+de consentimiento:
 
-## Políticas de privacidad de los socios de publicidad
+| Cookie | Para qué sirve |
+|---|---|
+| `monster_hunter_world_board_game_session` | Te mantiene identificado durante la visita. Caduca a las dos horas de inactividad. |
+| `XSRF-TOKEN` | Protege los formularios frente a falsificación de peticiones entre sitios. |
+| `remember_web_*` | Solo si marcas tú la casilla "Recuérdame". Te mantiene identificado entre visitas. |
+| `_GRECAPTCHA` | La pone Google reCAPTCHA en las páginas de entrada y registro, para distinguir una persona de un bot. |
 
-Puedes consultar esta lista para encontrar la Política de Privacidad de cada uno de los socios de publicidad de Monster
-Hunter World: Juego de Mesa.
+Tu preferencia de tema claro u oscuro se guarda en el almacenamiento local del navegador,
+que no es una cookie y nunca llega al servidor.
 
-Los servidores de anuncios de terceros o redes publicitarias utilizan tecnologías como cookies, JavaScript o balizas web
-que se utilizan en sus respectivos anuncios y enlaces que aparecen en Monster Hunter World: Juego de Mesa, que se envían
-directamente a los navegadores de los usuarios. Cuando esto ocurre, reciben automáticamente tu dirección IP. Estas
-tecnologías se utilizan para medir la efectividad de sus campañas publicitarias y/o para personalizar el contenido
-publicitario que ves en los sitios web que visitas.
+## Quién más maneja tus datos
 
-Ten en cuenta que Monster Hunter World: Juego de Mesa no tiene acceso ni control sobre las cookies que utilizan los
-anunciantes de terceros.
+| Quién | Para qué | Dónde |
+|---|---|---|
+| Linode | Alojar la aplicación y su base de datos | Fráncfort, Alemania |
+| Mailjet | Enviar los correos de cuenta e invitación | Unión Europea |
+| Google | reCAPTCHA en las páginas de entrada y registro | Estados Unidos |
+| Sentry | Informes de error, con los datos personales desactivados | Estados Unidos |
+| Google, GitHub, Discord | Solo si eliges entrar con ellos | Estados Unidos |
 
-## Políticas de privacidad de terceros
+Todo lo que la aplicación guarda vive en un servidor de Fráncfort. Los servicios de arriba
+que operan desde Estados Unidos reciben únicamente lo que su finalidad exige, al amparo de
+las garantías de transferencia del capítulo V del RGPD.
 
-La Política de Privacidad de Monster Hunter World: Juego de Mesa no se aplica a otros anunciantes o sitios web. Por lo
-tanto, te recomendamos que consultes las respectivas Políticas de Privacidad de estos servidores de anuncios de terceros
-para obtener información más detallada. Puede incluir sus prácticas e instrucciones sobre cómo optar por no participar
-en ciertas opciones.
+## Cuánto tiempo se conserva
 
-Puedes optar por deshabilitar las cookies a través de las opciones individuales del navegador. Para obtener más
-información detallada sobre la gestión de cookies con navegadores web específicos, puedes encontrarla en los sitios web
-respectivos de los navegadores.
+Tu cuenta y su contenido se conservan mientras la cuenta exista.
 
-## Derechos de privacidad de CCPA (No vender mi información personal)
+**Cuando borras tu cuenta, se borra.** Eso significa el registro de tu cuenta, el hash de
+tu contraseña, tu foto de perfil, las cuentas de proveedor vinculadas, tus tokens de
+acceso, tus sesiones, cualquier restablecimiento de contraseña pendiente, tu experiencia y
+tus logros, y cualquier invitación que lleve tu dirección de correo.
 
-Bajo la CCPA, entre otros derechos, los consumidores de California tienen derecho a:
+Hay una cosa que deliberadamente no se destruye, y conviene que la sepas. **Una campaña
+que compartías con otras personas pasa a una de ellas** en vez de borrarse, porque también
+es su registro de partidas que jugaron. Tu pertenencia a esa campaña sí se elimina, así que
+nada te identifica dentro. Una campaña en la que no había nadie más se borra con todo lo
+que contiene.
 
-Solicitar que una empresa que recopila los datos personales de un consumidor revele las categorías y piezas específicas
-de datos personales que una empresa ha recopilado sobre los consumidores.
+El borrado es inmediato y no hay nada desde donde restaurarlo, así que considéralo
+definitivo.
 
-Solicitar que una empresa elimine cualquier dato personal sobre el consumidor que una empresa haya recopilado.
+Puedes borrar tu cuenta tú mismo desde tu página de perfil, cuando quieras y sin pedir
+permiso.
 
-Solicitar que una empresa que vende los datos personales de un consumidor, no venda los datos personales del consumidor.
+## Tus derechos
 
-Si haces una solicitud, tenemos un mes para responderte. Si deseas ejercer alguno de estos derechos, por favor
-contáctanos.
+Puedes solicitar el acceso a tus datos, su rectificación, su supresión, una copia en
+formato portable, la limitación del tratamiento, u oponerte al tratamiento basado en
+interés legítimo. Escribe a **jvortsromero@gmail.com** y tendrás respuesta en el plazo de
+un mes.
 
-## Derechos de protección de datos de GDPR
+Si consideras que tus datos se han tratado mal, puedes reclamar ante la Agencia Española de
+Protección de Datos, en [www.aepd.es](https://www.aepd.es).
 
-Nos gustaría asegurarnos de que estás plenamente consciente de todos tus derechos de protección de datos. Cada usuario
-tiene derecho a lo siguiente:
+## Menores
 
-El derecho de acceso: Tienes derecho a solicitar copias de tus datos personales. Podemos cobrarte una pequeña tarifa por
-este servicio.
+Esta aplicación no está dirigida a menores de 14 años y no debería crear una cuenta
+ninguno. Si crees que un menor ha creado una cuenta, escribe a la dirección de arriba y se
+eliminará.
 
-El derecho de rectificación: Tienes derecho a solicitar que corrijamos cualquier información que creas que es inexacta.
-También tienes derecho a solicitar que completemos la información que creas que está incompleta.
+## Cambios
 
-El derecho de supresión: Tienes derecho a solicitar que borremos tus datos personales, bajo ciertas condiciones.
-
-El derecho de limitar el procesamiento: Tienes derecho a solicitar que limitemos el procesamiento de tus datos
-personales, bajo ciertas condiciones.
-
-El derecho de oponerse al procesamiento: Tienes derecho a oponerte a nuestro procesamiento de tus datos personales, bajo
-ciertas condiciones.
-
-El derecho a la portabilidad de datos: Tienes derecho a solicitar que transfiramos los datos que hemos recopilado a otra
-organización, o directamente a ti, bajo ciertas condiciones.
-
-Si haces una solicitud, tenemos un mes para responderte. Si deseas ejercer alguno de estos derechos, por favor
-contáctanos.
-
-## Información para niños
-
-Otra parte de nuestra prioridad es agregar protección para los niños mientras usan internet. Alentamos a los padres y
-tutores a observar, participar y/o supervisar y guiar su actividad en línea.
-
-Monster Hunter World: Juego de Mesa no recopila a sabiendas información de identificación personal de niños menores de
-13 años. Si crees que tu hijo ha proporcionado este tipo de información en nuestro sitio web, te recomendamos
-encarecidamente que te pongas en contacto con nosotros de inmediato y haremos todo lo posible para eliminar rápidamente
-dicha información de nuestros registros.
-
-## Cambios en esta Política de Privacidad
-
-Podemos actualizar nuestra Política de Privacidad periódicamente. Por lo tanto, te recomendamos que revises esta página
-periódicamente para cualquier cambio. Te notificaremos cualquier cambio publicando la nueva Política de Privacidad en
-esta página. Estos cambios son efectivos inmediatamente, después de que se publiquen en esta página.
-
-Nuestra Política de Privacidad fue creada con la ayuda
-del [Generador de Política de Privacidad](https://www.termsfeed.com/privacy-policy-generator/).
-
-## Contáctanos
-
-Si tienes alguna pregunta o sugerencia sobre nuestra Política de Privacidad, no dudes en contactarnos.
+Si esta política cambia de una forma que importe, cambiará la fecha de arriba y se avisará
+por correo a quien tenga cuenta antes de que el cambio surta efecto.

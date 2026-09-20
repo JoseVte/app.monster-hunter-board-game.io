@@ -37,6 +37,18 @@ class Hunter extends Model
         static::creating(function (self $hunter): void {
             $hunter->weapon_type_id ??= WeaponType::where('name->en', 'Great Sword')->value('id');
         });
+
+        // Every one of these is a foreign key declared with `constrained()` and
+        // no `onDelete`, which is RESTRICT. Without this, deleting a hunter that
+        // owns so much as one weapon fails, and takes the campaign delete and the
+        // account delete that call it down with it.
+        static::deleting(function (self $hunter): void {
+            $hunter->days()->detach();
+            $hunter->items()->detach();
+            $hunter->weapons()->detach();
+            $hunter->armors()->detach();
+            $hunter->palico()->delete();
+        });
     }
 
     public function campaign(): BelongsTo

@@ -1,7 +1,6 @@
 <script setup>
-import { Head, Link, useForm } from '@inertiajs/vue3';
-import {useReCaptcha} from "vue-recaptcha-v3";
-import {onUnmounted} from "vue";
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
+import { useRecaptcha } from '@/recaptcha';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import Checkbox from '@/Components/Form/Checkbox.vue';
@@ -22,21 +21,10 @@ const form = useForm({
     remember: false,
     captcha_token: null,
 });
-const { executeRecaptcha, recaptchaLoaded, instance } = useReCaptcha()
-recaptchaLoaded().then(() => {
-    if (instance?.value) {
-        instance.value.showBadge()
-    }
-})
-
-onUnmounted(() => {
-    if (instance?.value) {
-        instance.value.hideBadge()
-    }
-})
+const recaptcha = useRecaptcha(usePage().props.recaptcha_site_key);
 
 const submit = async () => {
-    form.captcha_token = await executeRecaptcha('login')
+    form.captcha_token = await recaptcha.execute('login')
 
     form.transform(data => ({
         ...data,

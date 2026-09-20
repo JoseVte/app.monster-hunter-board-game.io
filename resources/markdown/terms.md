@@ -1,141 +1,93 @@
 # Terms of Service
 
-Welcome to Monster Hunter World: Board Game!
+Last updated: 20 September 2026
 
-These terms and conditions outline the rules and regulations for the use of Josrom's Website, located
-at [https://mh-board-game.josrom.com/](https://mh-board-game.josrom.com/).
+These terms govern your use of this app. By creating an account you accept them. If you do
+not, please do not use the app.
 
-By accessing this website we assume you accept these terms and conditions. Do not continue to use Monster Hunter World:
-Board Game if you do not agree to take all of the terms and conditions stated on this page.
+## What this is
 
-The following terminology applies to these Terms and Conditions, Privacy Statement and Disclaimer Notice and all
-Agreements: "Client", "You" and "Your" refers to you, the person log on this website and compliant to the Company's
-terms and conditions. "The Company", "Ourselves", "We", "Our" and "Us", refers to our Company. "Party", "Parties", or "
-Us", refers to both the Client and ourselves. All terms refer to the offer, acceptance and consideration of payment
-necessary to undertake the process of our assistance to the Client in the most appropriate manner for the express
-purpose of meeting the Client's needs in respect of provision of the Company's stated services, in accordance with and
-subject to, prevailing law of es. Any use of the above terminology or other words in the singular, plural,
-capitalization and/or he/she or they, are taken as interchangeable and therefore as referring to same.
+A free hobby project for tracking campaigns of *Monster Hunter World: The Board Game*,
+run by Jose Vicente Orts Romero as an individual. You can reach me at
+**jvortsromero@gmail.com**.
 
-## Cookies
-We employ the use of cookies. By accessing Monster Hunter World: Board Game, you agreed to use cookies in agreement with
-the Josrom's Privacy Policy.
+**It is not affiliated with, endorsed by or connected to Capcom or Steamforged Games.**
+Monster Hunter and all names from the game and the board game belong to their owners. The
+game data here exists to let you track your own games with a product you already own, and
+this app neither reproduces the rules nor replaces buying it.
 
-Most interactive websites use cookies to let us retrieve the user's details for each visit. Cookies are used by our
-website to enable the functionality of certain areas to make it easier for people visiting our website. Some of our
-affiliate/advertising partners may also use cookies.
+## Your account
 
-## License
-Unless otherwise stated, Josrom and/or its licensors own the intellectual property rights for all material on Monster
-Hunter World: Board Game. All intellectual property rights are reserved. You may access this from Monster Hunter World:
-Board Game for your own personal use subjected to restrictions set in these terms and conditions.
+You need to be at least 14 years old.
 
-You must not:
+Give a real email address, because it is how you recover access and how invitations reach
+you. Keep your password to yourself. Anything done from your account is treated as done by
+you, so tell me at the address above if you think someone else has got in.
 
-* Republish material from Monster Hunter World: Board Game
-* Sell, rent or sub-license material from Monster Hunter World: Board Game
-* Reproduce, duplicate or copy material from Monster Hunter World: Board Game
-* Redistribute content from Monster Hunter World: Board Game
+One person, one account. Do not register on behalf of somebody else without their say-so.
 
-This Agreement shall begin on the date hereof. Our Terms and Conditions were created with the help of the Free Terms and Conditions Generator.
+## What you may not do
 
-Parts of this website offer an opportunity for users to post and exchange opinions and information in certain areas of
-the website. Josrom does not filter, edit, publish or review Comments prior to their presence on the website. Comments
-do not reflect the views and opinions of Josrom,its agents and/or affiliates. Comments reflect the views and opinions of
-the person who post their views and opinions. To the extent permitted by applicable laws, Josrom shall not be liable for
-the Comments or for any liability, damages or expenses caused and/or suffered as a result of any use of and/or posting
-of and/or appearance of the Comments on this website.
+Do not use the app to break the law, to harass anyone, to upload anything you have no
+right to upload, or to post content that is illegal, abusive or obscene. Do not try to
+break into other people's accounts or into the server, do not scrape it wholesale, and do
+not automate access in a way that degrades it for everybody else.
 
-Josrom reserves the right to monitor all Comments and to remove any Comments which can be considered inappropriate,
-offensive or causes breach of these Terms and Conditions.
+Campaign descriptions accept Markdown. HTML in them is stripped on the server before
+anything is displayed, so attempting to inject scripts is both prohibited and pointless.
 
-You warrant and represent that:
+## What you create
 
-* You are entitled to post the Comments on our website and have all necessary licenses and consents to do so;
-* The Comments do not invade any intellectual property right, including without limitation copyright, patent or trademark of any third party;
-* The Comments do not contain any defamatory, libelous, offensive, indecent or otherwise unlawful material which is an invasion of privacy
-* The Comments will not be used to solicit or promote business or custom or present commercial activities or unlawful activity. 
+Whatever you write stays yours. You give me only the permission needed to run the app:
+to store your content, and to show it to you and to the people you invite to your
+campaigns.
 
-You hereby grant Josrom a non-exclusive license to use, reproduce, edit and authorize others to use, reproduce and edit any of your Comments in any and all forms, formats or media.
+**A shared campaign is shared.** Other members can see it and, depending on their role,
+change it. If you delete your account and other people are still in a campaign you
+created, that campaign passes to one of them rather than disappearing, because it is their
+record of games they played as much as yours. This is explained in the
+[Privacy Policy](/privacy-policy).
 
-## Hyperlinking to our Content
-The following organizations may link to our Website without prior written approval:
+I do not read your campaigns, and nothing in them is used for anything beyond showing it
+to you and your group.
 
-* Government agencies;
-* Search engines;
-* News organizations;
-* Online directory distributors may link to our Website in the same manner as they hyperlink to the Websites of other listed businesses; and
-* System wide Accredited Businesses except soliciting non-profit organizations, charity shopping malls, and charity fundraising groups which may not hyperlink to our Web site.
+## What you can expect from the app
 
-These organizations may link to our home page, to publications or to other Website information so long as the link: (a)is not in any way deceptive; (b) does not falsely imply sponsorship, endorsement or approval of the linking party and its products and/or services; and (c) fits within the context of the linking party's site.
+Not much in the way of guarantees, and it is only fair to say so plainly.
 
-We may consider and approve other link requests from the following types of organizations:
+This is free, run by one person in their spare time. It can be down, it can lose data, it
+can change, and it can stop existing. There is no uptime commitment and no support
+obligation. **Keep your own record of anything you would be upset to lose.**
 
-* commonly-known consumer and/or business information sources;
-* dot.com community sites;
-* associations or other groups representing charities;
-* online directory distributors;
-* internet portals;
-* accounting, law and consulting firms; and
-* educational institutions and trade associations.
+The app is provided as it is, without warranty of any kind. Nothing here is a professional
+service and no fee is charged for it.
 
-We will approve link requests from these organizations if we decide that: (a) the link would not make us look
-unfavorably to ourselves or to our accredited businesses; (b) the organization does not have any negative records with
-us; (c) the benefit to us from the visibility of the hyperlink compensates the absence of Josrom; and (d) the link is in
-the context of general resource information.
+## Ending things
 
-These organizations may link to our home page so long as the link: (a) is not in any way deceptive; (b) does not falsely
-imply sponsorship, endorsement or approval of the linking party and its products or services; and (c) fits within the
-context of the linking party's site.
+You can delete your account from your profile page at any time. What that does is set out
+in the [Privacy Policy](/privacy-policy).
 
-If you are one of the organizations listed in paragraph 2 above and are interested in linking to our website, you must
-inform us by sending an e-mail to Josrom. Please include your name, your organization name, contact information as well
-as the URL of your site, a list of any URLs from which you intend to link to our Website, and a list of the URLs on our
-site to which you would like to link. Wait 2-3 weeks for a response.
+I may suspend or remove an account that breaks these terms, or that is being used to
+attack the app or the people on it. Where it is reasonable to warn you first, I will.
 
-Approved organizations may hyperlink to our Website as follows:
+## Liability
 
-* By use of our corporate name; or
-* By use of the uniform resource locator being linked to; or
-* By use of any other description of our Website being linked to that makes sense within the context and format of content on the linking party's site.
+To the extent the law allows, I am not liable for indirect or consequential loss, for lost
+data, or for anything arising from the app being unavailable. Nothing in these terms
+excludes liability that cannot legally be excluded, which includes liability for fraud and
+for death or personal injury caused by negligence.
 
-No use of Josrom's logo or other artwork will be allowed for linking absent a trademark license agreement.
+## Changes
 
-## iFrames
-Without prior approval and written permission, you may not create frames around our Webpages that alter in any way the
-visual presentation or appearance of our Website.
+These terms can change. When they do, the date at the top changes, and if the change
+matters anyone with an account is told by email before it takes effect. Continuing to use
+the app after that means you accept the new version.
 
-## Content Liability
-We shall not be hold responsible for any content that appears on your Website. You agree to protect and defend us
-against all claims that is rising on your Website. No link(s) should appear on any Website that may be interpreted as
-libelous, obscene or criminal, or which infringes, otherwise violates, or advocates the infringement or other violation
-of, any third party rights.
+## Law and jurisdiction
 
-## Reservation of Rights
-We reserve the right to request that you remove all links or any particular link to our Website. You approve to
-immediately remove all links to our Website upon request. We also reserve the right to amen these terms and conditions
-and it's linking policy at any time. By continuously linking to our Website, you agree to be bound to and follow these
-linking terms and conditions.
+Spanish law applies. If you are a consumer, you keep the protections of the law of the
+country you live in, and you can bring a claim before the courts there.
 
-## Removal of links from our website
-If you find any link on our Website that is offensive for any reason, you are free to contact and inform us any moment.
-We will consider requests to remove links but we are not obligated to or so or to respond to you directly.
-
-We do not ensure that the information on this website is correct, we do not warrant its completeness or accuracy; nor do
-we promise to ensure that the website remains available or that the material on the website is kept up to date.
-
-## Disclaimer
-To the maximum extent permitted by applicable law, we exclude all representations, warranties and conditions relating to
-our website and the use of this website. Nothing in this disclaimer will:
-
-* limit or exclude our or your liability for death or personal injury;
-* limit or exclude our or your liability for fraud or fraudulent misrepresentation;
-* limit any of our or your liabilities in any way that is not permitted under applicable law; or
-* exclude any of our or your liabilities that may not be excluded under applicable law.
-
-The limitations and prohibitions of liability set in this Section and elsewhere in this disclaimer: (a) are subject to
-the preceding paragraph; and (b) govern all liabilities arising under the disclaimer, including liabilities arising in
-contract, in tort and for breach of statutory duty.
-
-As long as the website and the information and services on the website are provided free of charge, we will not be
-liable for any loss or damage of any nature.
+Consumers in the EU can also use the European Commission's online dispute resolution
+platform at [ec.europa.eu/consumers/odr](https://ec.europa.eu/consumers/odr), though
+writing to me first is usually faster.

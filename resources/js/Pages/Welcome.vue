@@ -14,6 +14,7 @@ import PrimaryButton from "@/Components/PrimaryButton.vue";
 import Dashboard from "@/Components/Icons/Dashboard.vue";
 import LoginIcon from "@/Components/Icons/LoginIcon.vue";
 import LocaleDropdown from "@/Components/Layout/LocaleDropdown.vue";
+import LegalFooter from "@/Components/Layout/LegalFooter.vue";
 const { t } = useI18n({ useScope: 'global' })
 
 defineProps({
@@ -234,6 +235,8 @@ onMounted(() => {
                     </div>
                 </div>
             </section>
+
+            <LegalFooter />
         </div>
     </div>
 </template>

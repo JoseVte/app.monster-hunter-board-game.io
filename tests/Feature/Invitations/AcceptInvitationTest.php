@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\User;
+use App\Models\Campaign;
 use App\Models\Invitation;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Notification;
@@ -139,4 +140,44 @@ test('the password is stored hashed', function (): void {
 
     expect($user->password)->not->toEqual('a-long-enough-password')
         ->and(Hash::check('a-long-enough-password', $user->password))->toBeTrue();
+});
+
+// RegisterInvitedUser creates the row and nothing else, while CreateNewUser and
+// SocialAuthController both hand out a personal team and the `standard` role.
+// An account that arrived through an invitation was therefore missing both, and
+// a campaign is created against the owner's current team.
+test('an invited account gets a personal team and the standard role', function (): void {
+    ['token' => $token] = invite('jane@example.com');
+
+    $this->post(route('invitations.accept', $token), acceptPayload());
+
+    $user = User::where('email', 'jane@example.com')->firstOrFail();
+
+    expect($user->ownedTeams()->count())->toBe(1)
+        ->and($user->personalTeam())->not->toBeNull()
+        ->and($user->hasRole('standard'))->toBeTrue();
+});
+
+// The point of the team is that it can be spent. `campaigns.store` requires a
+// team_id that exists and belongs to the person asking, so without one an
+// invited account had nothing valid to send and could not create a campaign at
+// all. Verifying the address here keeps the test on that one question, since
+// the route group is behind `verified` for reasons of its own.
+test('an invited account can create a campaign against its own team', function (): void {
+    ['token' => $token] = invite('jane@example.com');
+
+    $this->post(route('invitations.accept', $token), acceptPayload());
+
+    $user = User::where('email', 'jane@example.com')->firstOrFail();
+    $user->markEmailAsVerified();
+
+    $this->actingAs($user)
+        ->post(route('campaigns.store'), [
+            'team_id' => $user->personalTeam()->id,
+            'name' => 'A first hunt',
+            'description' => 'Something to do',
+            'max_days' => 50,
+        ])->assertSessionHasNoErrors();
+
+    expect(Campaign::where('name', 'A first hunt')->exists())->toBeTrue();
 });

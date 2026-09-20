@@ -1,141 +1,117 @@
-# Privacy Policy for Josrom
+# Privacy Policy
 
-At Monster Hunter World: Board Game, accessible
-from [https://mh-board-game.josrom.com/](https://mh-board-game.josrom.com/), one of our main priorities is the privacy
-of our visitors. This Privacy Policy document contains types of information that is collected and recorded by Monster
-Hunter World: Board Game and how we use it.
+Last updated: 20 September 2026
 
-If you have additional questions or require more information about our Privacy Policy, do not hesitate to contact us.
+This app is a hobby project for tracking campaigns of *Monster Hunter World: The Board
+Game*. It is not affiliated with Capcom or Steamforged Games.
 
-This Privacy Policy applies only to our online activities and is valid for visitors to our website with regards to the
-information that they shared and/or collect in Monster Hunter World: Board Game. This policy is not applicable to any
-information collected offline or via channels other than this website.
+## Who is responsible for your data
 
-## Consent
+Jose Vicente Orts Romero, as an individual, is the data controller.
 
-By using our website, you hereby consent to our Privacy Policy and agree to its terms.
+You can reach me at **jvortsromero@gmail.com** about anything on this page, including to
+exercise any of the rights listed below.
 
-## Information we collect
+## What is collected, and why
 
-The personal information that you are asked to provide, and the reasons why you are asked to provide it, will be made
-clear to you at the point we ask you to provide your personal information.
+**Your account.** Your name, your email address and a hash of your password. The password
+itself is never stored and cannot be recovered from the hash. This exists so you can sign
+in and so the app knows what is yours. You may also upload a profile picture, which is
+stored on the server and served from a public URL.
 
-If you contact us directly, we may receive additional information about you such as your name, email address, phone
-number, the contents of the message and/or attachments you may send us, and any other information you may choose to
-provide.
+**If you sign in with Google, GitHub or Discord.** The provider sends your name, your
+nickname where it has one, your email address and the URL of your avatar, along with the
+access token that lets the app confirm who you are. That token is stored so the link keeps
+working and is not used to read anything else from your account there. You can unlink a
+provider at any time from your profile, which deletes the whole record.
 
-When you register for an Account, we may ask for your contact information, including items such as name, company name,
-address, email address, and telephone number.
+**What you create in the app.** Campaigns, hunters, hunt days, equipment and the members
+you invite. This is the point of the app. A campaign you share is visible to the other
+people in it.
 
-## How we use your information
+**Technical records.** An active session stores its IP address and browser user agent.
+This is how sessions can be listed and signed out individually from your profile.
 
-We use the information we collect in various ways, including to:
+**Errors.** When something breaks, a report goes to Sentry so it can be fixed. It is
+configured not to send personal data: no IP address, no cookies, no request body.
 
-* Provide, operate, and maintain our website
-* Improve, personalize, and expand our website
-* Understand and analyze how you use our website
-* Develop new products, services, features, and functionality
-* Communicate with you, either directly or through one of our partners, including for customer service, to provide you
-  with updates and other information relating to the website, and for marketing and promotional purposes
-* Send you emails
-* Find and prevent fraud
+Nothing here is used for advertising, profiling or automated decisions, and nothing is
+sold or shared with anyone for their own purposes.
 
-## Log Files
+## The legal basis
 
-Monster Hunter World: Board Game follows a standard procedure of using log files. These files log visitors when they
-visit websites. All hosting companies do this and a part of hosting services' analytics. The information collected by
-log files include internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), date and time stamp,
-referring/exit pages, and possibly the number of clicks. These are not linked to any information that is personally
-identifiable. The purpose of the information is for analyzing trends, administering the site, tracking users' movement
-on the website, and gathering demographic information.
+Your account and the content you create are processed to perform the agreement you enter
+into by using the app (GDPR article 6.1.b). Error reporting and spam prevention rest on a
+legitimate interest in keeping the app working and unabused (article 6.1.f). Where consent
+would be needed, it is asked for first, which at the moment applies to nothing, because
+nothing here requires it.
 
-## Cookies and Web Beacons
+## Cookies
 
-Like any other website, Monster Hunter World: Board Game uses "cookies". These cookies are used to store information
-including visitors' preferences, and the pages on the website that the visitor accessed or visited. The information is
-used to optimize the users' experience by customizing our web page content based on visitors' browser type and/or other
-information.
+**There is no cookie banner, because there is nothing to ask you about.** No analytics, no
+advertising, no tracking of any kind. The app sets four cookies, all of them exempt from
+consent:
 
-## Advertising Partners Privacy Policies
+| Cookie | What it does |
+|---|---|
+| `monster_hunter_world_board_game_session` | Keeps you signed in during a visit. Expires after two hours of inactivity. |
+| `XSRF-TOKEN` | Protects forms against cross-site request forgery. |
+| `remember_web_*` | Only if you tick "Remember me" yourself. Keeps you signed in between visits. |
+| `_GRECAPTCHA` | Set by Google reCAPTCHA on the sign-in and registration pages, to tell a person from a bot. |
 
-You may consult this list to find the Privacy Policy for each of the advertising partners of Monster Hunter World: Board
-Game.
+Your light or dark theme preference is kept in your browser's local storage, which is not
+a cookie and never reaches the server.
 
-Third-party ad servers or ad networks uses technologies like cookies, JavaScript, or Web Beacons that are used in their
-respective advertisements and links that appear on Monster Hunter World: Board Game, which are sent directly to users'
-browser. They automatically receive your IP address when this occurs. These technologies are used to measure the
-effectiveness of their advertising campaigns and/or to personalize the advertising content that you see on websites that
-you visit.
+## Who else handles your data
 
-Note that Monster Hunter World: Board Game has no access to or control over these cookies that are used by third-party
-advertisers.
+| Who | What for | Where |
+|---|---|---|
+| Linode | Hosting the app and its database | Frankfurt, Germany |
+| Mailjet | Sending account and invitation emails | European Union |
+| Google | reCAPTCHA on the sign-in and registration pages | United States |
+| Sentry | Error reports, with personal data disabled | United States |
+| Google, GitHub, Discord | Only if you choose to sign in with them | United States |
 
-## Third Party Privacy Policies
+Everything the app stores lives on a server in Frankfurt. The services above that operate
+from the United States receive only what their purpose requires, under the transfer
+safeguards in chapter V of the GDPR.
 
-Monster Hunter World: Board Game's Privacy Policy does not apply to other advertisers or websites. Thus, we are advising
-you to consult the respective Privacy Policies of these third-party ad servers for more detailed information. It may
-include their practices and instructions about how to opt-out of certain options.
+## How long it is kept
 
-You can choose to disable cookies through your individual browser options. To know more detailed information about
-cookie management with specific web browsers, it can be found at the browsers' respective websites.
+Your account and its contents are kept while the account exists.
 
-## CCPA Privacy Rights (Do Not Sell My Personal Information)
+**When you delete your account, it is deleted.** That means your account record, your
+password hash, your profile picture, your linked provider accounts, your access tokens,
+your sessions, any pending password reset, your experience and achievements, and any
+invitation that carries your email address.
 
-Under the CCPA, among other rights, California consumers have the right to:
+One thing is deliberately not destroyed, and you should know about it. **A campaign you
+shared with other people is handed to one of them** rather than deleted, because it is
+also their record of games they played. Your membership of it is removed, so nothing
+identifies you in it. A campaign nobody else was in is deleted with everything inside it.
 
-Request that a business that collects a consumer's personal data disclose the categories and specific pieces of personal
-data that a business has collected about consumers.
+Deletion is immediate and there is nothing to restore it from, so treat it as final.
 
-Request that a business delete any personal data about the consumer that a business has collected.
+You can delete your account yourself from your profile page, at any time, without asking.
 
-Request that a business that sells a consumer's personal data, not sell the consumer's personal data.
+## Your rights
 
-If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please
-contact us.
+You can ask for access to your data, for it to be corrected, for it to be deleted, for a
+copy of it in a portable format, for processing to be restricted, or you can object to
+processing based on legitimate interest. Write to **jvortsromero@gmail.com** and you will
+get an answer within a month.
 
-## GDPR Data Protection Rights
+If you think your data has been handled badly, you can complain to the Spanish data
+protection authority, the Agencia Española de Protección de Datos, at
+[www.aepd.es](https://www.aepd.es).
 
-We would like to make sure you are fully aware of all of your data protection rights. Every user is entitled to the
-following:
+## Children
 
-The right to access – You have the right to request copies of your personal data. We may charge you a small fee for this
-service.
+This app is not directed at children under 14 and no account should be created by one.
+If you believe a child has created an account, write to the address above and it will be
+removed.
 
-The right to rectification – You have the right to request that we correct any information you believe is inaccurate.
-You also have the right to request that we complete the information you believe is incomplete.
+## Changes
 
-The right to erasure – You have the right to request that we erase your personal data, under certain conditions.
-
-The right to restrict processing – You have the right to request that we restrict the processing of your personal data,
-under certain conditions.
-
-The right to object to processing – You have the right to object to our processing of your personal data, under certain
-conditions.
-
-The right to data portability – You have the right to request that we transfer the data that we have collected to
-another organization, or directly to you, under certain conditions.
-
-If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please
-contact us.
-
-## Children's Information
-
-Another part of our priority is adding protection for children while using the internet. We encourage parents and
-guardians to observe, participate in, and/or monitor and guide their online activity.
-
-Monster Hunter World: Board Game does not knowingly collect any Personal Identifiable Information from children under
-the age of 13. If you think that your child provided this kind of information on our website, we strongly encourage you
-to contact us immediately and we will do our best efforts to promptly remove such information from our records.
-
-## Changes to This Privacy Policy
-
-We may update our Privacy Policy from time to time. Thus, we advise you to review this page periodically for any
-changes. We will notify you of any changes by posting the new Privacy Policy on this page. These changes are effective
-immediately, after they are posted on this page.
-
-Our Privacy Policy was created with the help of
-the [Privacy Policy Generator](https://www.termsfeed.com/privacy-policy-generator/).
-
-## Contact Us
-
-If you have any questions or suggestions about our Privacy Policy, do not hesitate to contact us.
+If this policy changes in a way that matters, the date at the top changes and anyone with
+an account is told by email before it takes effect.
