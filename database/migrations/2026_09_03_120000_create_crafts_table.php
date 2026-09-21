@@ -55,4 +55,12 @@ return new class extends Migration
             }
         }
     }
+
+    public function down(): void
+    {
+        // The log is the only record of the act of crafting; what a hunter owns
+        // cannot reconstruct it, which is why this table exists. Rolling back
+        // loses it, and there is nowhere else to put it.
+        Schema::dropIfExists('crafts');
+    }
 };

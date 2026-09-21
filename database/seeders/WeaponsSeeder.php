@@ -12,9 +12,12 @@ use App\Models\WeaponAttack;
 use App\Models\WeaponRecipe;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
+use Database\Seeders\Concerns\PrunesRemovedEntries;
 
 class WeaponsSeeder extends Seeder
 {
+    use PrunesRemovedEntries;
+
     /**
      * Run the database seeds.
      */
@@ -39,6 +42,9 @@ class WeaponsSeeder extends Seeder
             'heavy-bowgun',
         ];
 
+        $seededTypes = [];
+        $seededWeapons = [];
+
         foreach ($weaponTypes as $weaponsByType) {
             $weaponsByType = SeedData::get('weapons/'.$weaponsByType);
 
@@ -54,7 +60,11 @@ class WeaponsSeeder extends Seeder
                     ),
                 ]);
 
+                $seededTypes[] = $weaponsByType['name']['en'];
+
                 foreach (Arr::get($weaponsByType, 'weapons', []) as $weaponName => $weaponDetails) {
+                    $seededWeapons[] = $weaponName;
+
                     $weapon = Weapon::updateOrCreate([
                         'name->en' => $weaponName,
                         'type_id' => $weaponType->id,
@@ -111,6 +121,12 @@ class WeaponsSeeder extends Seeder
                 }
             }
         }
+
+        // Weapons before their types: a type still holding weapons cannot go,
+        // and reporting it as held would be noise when the real reason is the
+        // weapons about to be removed on the line above.
+        $this->pruneMissing(Weapon::class, $seededWeapons, 'weapons');
+        $this->pruneMissing(WeaponType::class, $seededTypes, 'weapon types');
     }
 
     /**

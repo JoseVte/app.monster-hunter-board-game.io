@@ -30,7 +30,8 @@ class InvitationAcceptController extends Controller
         return Inertia::render('Auth/AcceptInvitation', [
             'token' => $token,
             'email' => $invitation->email,
-            'inviter' => $invitation->inviter->name,
+            // No inviter means the console issued it, so the app says so itself.
+            'inviter' => $invitation->inviter?->name ?? config('app.name'),
             'socialLogin' => collect(['google', 'github', 'discord'])
                 ->filter(fn (string $provider): bool => (bool) config("services.$provider.client_id"))
                 ->values(),

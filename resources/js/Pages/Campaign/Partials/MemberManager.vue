@@ -112,7 +112,7 @@ const displayableRole = (role) => {
             <SectionBorder />
 
             <!-- Manage Campaign Members -->
-            <ActionSection class="mt-10 sm:mt-0">
+            <ActionSection>
                 <template #title>
                     {{ $t('Campaign Members/Hunters') }}
                 </template>
@@ -365,7 +365,7 @@ const displayableRole = (role) => {
             <SectionBorder />
 
             <!-- Campaign Member Invitations -->
-            <ActionSection class="mt-10 sm:mt-0">
+            <ActionSection>
                 <template #title>
                     {{ $t('Pending Campaign Invitations') }}
                 </template>

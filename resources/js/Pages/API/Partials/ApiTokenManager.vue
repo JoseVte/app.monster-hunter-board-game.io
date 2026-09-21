@@ -152,7 +152,7 @@ const deleteApiToken = () => {
             <SectionBorder />
 
             <!-- Manage API Tokens -->
-            <div class="mt-10 sm:mt-0">
+            <div>
                 <ActionSection>
                     <template #title>
                         {{ $t('Manage API Tokens') }}

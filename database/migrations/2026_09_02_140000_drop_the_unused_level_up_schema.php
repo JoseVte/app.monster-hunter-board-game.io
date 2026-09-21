@@ -40,4 +40,11 @@ return new class extends Migration
         Schema::dropIfExists('experience_audits');
         Schema::dropIfExists('tiers');
     }
+
+    public function down(): void
+    {
+        // Deliberately empty. The schema belonged to cjmellor/level-up, which is
+        // no longer installed, so its migrations are gone and nothing here knows
+        // how to rebuild them.
+    }
 };

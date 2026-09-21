@@ -15,4 +15,11 @@ return new class extends Migration
         Schema::dropIfExists('armor_abilities');
         Schema::dropIfExists('mail_switcher_credentials');
     }
+
+    public function down(): void
+    {
+        // Deliberately empty. These tables had no migration declaring them, so
+        // there is no definition to rebuild them from and nothing that reads
+        // them if there were.
+    }
 };

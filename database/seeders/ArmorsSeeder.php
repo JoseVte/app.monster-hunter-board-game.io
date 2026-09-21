@@ -9,16 +9,23 @@ use App\Enum\ArmorType;
 use App\Models\Monster;
 use App\Models\ArmorSkill;
 use Illuminate\Database\Seeder;
+use Database\Seeders\Concerns\PrunesRemovedEntries;
 
 class ArmorsSeeder extends Seeder
 {
+    use PrunesRemovedEntries;
+
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
+        $seeded = [];
+
         foreach (ArmorType::cases() as $type) {
             foreach (SeedData::get('armors.'.$type->name) as $armorName => $armorDetails) {
+                $seeded[] = $armorName;
+
                 $armor = Armor::updateOrCreate([
                     'type' => $type->name,
                     'name->en' => $armorName,
@@ -57,6 +64,8 @@ class ArmorsSeeder extends Seeder
                 }
             }
         }
+
+        $this->pruneMissing(Armor::class, $seeded, 'armours');
 
         foreach (SeedData::get('armors.skills') as $skill) {
             if (Arr::get($skill, 'bonus-set')) {

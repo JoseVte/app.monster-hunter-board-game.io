@@ -186,7 +186,6 @@ watch(showFullCalendar, (showFullCalendarValue) => storage.setStorageSync('show-
                 </ActionSection>
 
                 <MemberManager
-                    class="mt-10 sm:mt-0"
                     :campaign="campaign"
                     :available-roles="availableRoles"
                     :user-permissions="permissions"

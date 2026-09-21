@@ -212,7 +212,7 @@ const displayableRole = (role) => {
             <SectionBorder />
 
             <!-- Team Member Invitations -->
-            <ActionSection class="mt-10 sm:mt-0">
+            <ActionSection>
                 <template #title>
                     {{ $t('Pending Team Invitations') }}
                 </template>
@@ -253,7 +253,7 @@ const displayableRole = (role) => {
             <SectionBorder />
 
             <!-- Manage Team Members -->
-            <ActionSection class="mt-10 sm:mt-0">
+            <ActionSection>
                 <template #title>
                     {{ $t('Team Members') }}
                 </template>

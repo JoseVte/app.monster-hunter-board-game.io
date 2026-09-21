@@ -11,9 +11,12 @@ use App\Models\MonsterReward;
 use Illuminate\Database\Seeder;
 use App\Models\MonsterDifficulty;
 use Illuminate\Support\Facades\Storage;
+use Database\Seeders\Concerns\PrunesRemovedEntries;
 
 class MonstersSeeder extends Seeder
 {
+    use PrunesRemovedEntries;
+
     /**
      * Run the database seeds.
      */
@@ -21,7 +24,11 @@ class MonstersSeeder extends Seeder
     {
         $storage = Storage::disk(config('jetstream.profile_photo_disk', 'public'));
 
+        $seeded = [];
+
         foreach (SeedData::get('monsters') as $monster => $details) {
+            $seeded[] = $monster;
+
             $resistance = Arr::get($details, 'resistance', []);
             $iconFile = resource_path('images/monsters/'.Str::slug($monster).'.png');
 
@@ -61,6 +68,8 @@ class MonstersSeeder extends Seeder
             $this->syncDifficulties($record, Arr::get($details, 'difficulty', []));
             $this->syncRewards($record, Arr::get($details, 'rewards', []));
         }
+
+        $this->pruneMissing(Monster::class, $seeded, 'monsters');
     }
 
     /**

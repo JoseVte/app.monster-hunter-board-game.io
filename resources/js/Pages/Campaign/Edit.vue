@@ -37,7 +37,6 @@ defineProps({
                 <SectionBorder />
 
                 <DeleteCampaignForm
-                    class="mt-10 sm:mt-0"
                     :campaign="campaign"
                 />
             </div>

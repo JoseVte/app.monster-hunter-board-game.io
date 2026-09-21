@@ -216,9 +216,16 @@ forgotten.
 Two alternatives were tried and rejected before that decision. A screenshot of this app does
 not work as a backdrop: blurred enough to sit behind text it is invisible under the 50%
 veil, and legible enough to see it reads as a dimmed screenshot. A plain dark ground works
-but leaves the hero empty. Note the three stills are 3840x2160 and 370-610 kB each; only the
-one chosen is fetched, but that is still the heaviest thing on the page by an order of
-magnitude.
+but leaves the hero empty.
+
+The stills are 2048x1152 and 188-276 kB. They arrived as 3840x2160 and up to 608 kB, which
+was the heaviest thing on the page by an order of magnitude. **Re-encoding them at their
+original size made them larger**, 1.7 MB against 1.5, because they were already
+well-compressed WebP and a second lossy pass only adds artefacts; the width was the whole
+problem. They are encoded from the original JPEGs kept in git history rather than from the
+WebP, so there is one lossy generation and not two. A local `cwebp` does this; there is
+nothing for a service like TinyPNG to add to a WebP that is not already optimal, and it
+would mean uploading the assets to somebody else to find that out.
 
 The two content sections do carry real screenshots, in `resources/images/screens/`, taken
 from the redesigned app rather than from 2023. The one they replaced showed flat white
@@ -289,6 +296,15 @@ type descriptions, which are stored but which no component displays.
 Nergigante Hunger, Kushala Daora Flight, Handicraft) and each is attached to an armour, so
 the gap is on screen. `SeedDataTest` holds the list so a sixth fails rather than joining
 them quietly.
+
+**The `alt` and `title` text in `icons.js` stays in English, deliberately.** About twenty
+strings (`'Fire'`, `'Damage attack'`, `'Fire resistance'`, ...) sit there untranslated and
+are the only such strings left in the app; 147 components were audited and every one of
+them uses `$t()` or `__()`. Translating these is not a matter of wrapping them: the file is
+a plain module shared by SSR, where a single i18n instance imported at module scope would
+mix the locale between concurrent requests, so it would mean threading the locale through
+`replaceIcons` or resolving the text in the components. Judged not worth that for alt text
+on a decorative symbol. Revisit only if a screen reader user complains.
 
 `tests/Feature/Seeders/IconTokenTest.php` pins all of it: every token the data uses is known,
 every mapped icon has a file on disk, nothing is both drawn and pending, nothing is pending
@@ -382,6 +398,27 @@ apply unknown utility class". Five components rely on this: `GlobalSearch`, `For
 
 `autoprefixer` is gone, Tailwind 4 handles prefixing. PostCSS loads `@tailwindcss/postcss`.
 
+### Dependency updates
+
+`.ncurc.json` sets `upgrade: true` and `install: always`, so plain **`ncu` applies and
+installs rather than reporting**, majors included. Worth knowing before running it: there
+is no step between "what is new" and "it is in your tree now".
+
+**`typescript` is in `reject`.** No release of typescript-eslint runs against TypeScript 7,
+so taking that bump breaks `npm run lint` outright and fails the frontend job in CI. The
+failure names typescript-eslint rather than the package that moved, which is why it is
+worth the line. Remove the rejection once typescript-eslint ships support; the tracking
+issue is typescript-eslint#10940.
+
+It is there because it already happened: an `ncu` run took typescript 6 to 7 along with
+@vueuse 14 to 15 and md-editor-v3 6 to 7, the result sat unstaged, and a `git add -A` in an
+unrelated commit swept all of it in. Lint had been green minutes earlier, so the breakage
+was reported as passing. Read the diff before committing; `git add -A` is how that gets
+missed.
+
+The other two majors are not rejected. They are not broken, only unreviewed, and hiding a
+legitimate upgrade forever is worse than seeing it offered.
+
 ### Linting
 
 ESLint 10 with flat config in `eslint.config.js`. `.eslintrc.cjs` and `.eslintignore` no
@@ -461,9 +498,9 @@ transport opens a socket. Its property is `$sentThrough` rather than `$mailer`, 
 `Mailable` already declares one and a typed redeclaration is a fatal error.
 
 Mailjet is an SMTP mailer in `config/mail.php`, using the API key and secret as username and
-password. Set `MAIL_MAILER=mailjet`. Note that `MAILJET_SANDBOX` was declared in
-`.env.example` and read nowhere: Mailjet's sandbox mode is an `X-MJ-Sandbox-Mode` SMTP
-header and nothing sends it.
+password. Set `MAIL_MAILER=mailjet`. There is no sandbox switch: Mailjet's sandbox mode is an
+`X-MJ-Sandbox-Mode` SMTP header and nothing here sends it. `MAILJET_SANDBOX` used to sit in
+`.env.example` implying otherwise, which is worse than its absence, so it is gone.
 
 ### Deployment
 
@@ -681,15 +718,82 @@ about 1100 lines of pure repetition and it let a name be duplicated inside a sin
 Keeping the English name as the array key makes that impossible and matches what armours and
 monsters already did.
 
-**`php artisan db:seed` with no `--class` also runs `UserSeeder`, `CampaignSeeder` and
-`HunterSeeder`**, which create demo data with factories, into whatever database is
-configured. `HunterSeeder` will attach a made up hunter to a real campaign and repoint the
-membership at it. Against a database you care about, call the content seeders by name:
-`RolesSeeder`, `LevelSeeder`, `ItemsSeeder`, `MonstersSeeder`, `ArmorSkillsSeeder`,
-`ArmorsSeeder`, `DowntimeActivitiesSeeder`, `WeaponsSeeder`.
+**`php artisan db:seed` is safe against any database now.** `DatabaseSeeder` runs the eight
+content seeders always and the three demo ones (`UserSeeder`, `CampaignSeeder`,
+`HunterSeeder`) only outside production.
 
-**Renaming an entry creates a row rather than renaming one.** The seeders match on
-`name->en`, so the old row survives as an orphan and has to be deleted by hand.
+It used to run all eleven, which broke twice over on a server. The demo three build their
+rows with factories, factories need `fakerphp/faker`, and faker is `require-dev`, so
+`composer install --no-dev` left it out and the command died on a missing class. Had it not
+died, it would have been worse: `HunterSeeder` attaches an invented hunter to a real
+campaign and repoints the membership at it.
+
+Note `db:seed` refuses to run unprompted in production at all, hence the `--force` in
+`deploy.sh` and in the test that covers this.
+
+### Rolling back
+
+**`migrate:refresh` was broken and is now covered.** Six migrations had no `down()` at all.
+A migration without one is skipped silently on the way back rather than failing, so its
+tables survive the rollback, and the next migration to drop something they reference dies:
+here it was `weapons`, refused because of a foreign key from `weapon_recipes` that nothing
+was ever going to remove.
+
+The three that create tables drop them now. `create_weapon_recipes_table` also puts
+`branch` and `branch_id` back on `weapons` and copies the first recipe's values into them,
+which is lossless except for the two dual blades buildable two ways, the case the table
+exists for.
+
+The three repair migrations have a **deliberately empty** `down()`, each saying why.
+`add_the_columns_missing_from_drifted_tables` gives older databases columns their create
+migrations already declare, so dropping them on the way back would take a column away from
+a database that never needed the repair. The other two dropped tables no migration declares
+and schema belonging to a package that is no longer installed; there is nothing to rebuild
+them from.
+
+`tests/Feature/MigrationsTest.php` fails on a migration with no `down()`, which is the
+mistake that was made. It cannot catch a `down()` that undoes things in an order the
+foreign keys refuse, and sqlite would not report that anyway. **Check that against MySQL**:
+create a scratch database, `migrate`, then `migrate:refresh --seed`. Running it on a
+database that is already half rolled back proves nothing, since the records of the
+migrations that failed are already gone.
+
+### The first account
+
+**`php artisan invitation:create [email] [--from=]`** issues a platform invitation and
+prints its link. That is how the first account on a fresh database gets in: registration is
+closed by default, and the seeders no longer invent an admin.
+
+The admin they used to invent came with its password in `ADMIN_PASSWORD`, which on the
+production server was the word `password`. An invitation is better on its own terms as well
+as safer: whoever accepts chooses their own.
+
+**`invitations.inviter_id` is nullable, and null means the console.** An invitation needs a
+user, and on an empty database there is no user to be one, so the alternative was inventing
+a system account that would show up in every listing forever. The acceptance page falls
+back to the application's name where it would otherwise print the inviter's.
+
+Nothing is emailed and the link is printed once, because the table stores only a hash of
+the token and it cannot be recovered afterwards.
+
+**Renaming an entry creates a row rather than renaming one**, because every seeder matches
+on `name->en`. `Concerns\PrunesRemovedEntries` cleans up after that: once a seeder has
+written everything its data file declares, it deletes the rows of that model whose English
+name is not among them. Renames, and entries dropped outright, no longer leave anything
+behind.
+
+**A row something still points at is kept, not forced.** Deleting an item a hunter is
+carrying is data loss, and the foreign key refuses it anyway. Rows are deleted one at a
+time so that one refusal does not abandon the rest of the seed, and whatever survived is
+named in the output rather than passed over:
+
+```
+Removed 1 items the data no longer names.
+Kept 1 items that something still points at: Held Ore.
+```
+
+Weapons are pruned before weapon types, since a type still holding weapons cannot go and
+reporting it as held would be noise when the weapons are about to be removed anyway.
 
 `tests/Feature/Seeders/SeedDataTest.php` walks roughly 1600 name references: weapon parents
 and materials, the monster a weapon or armour branches from, armour materials and skills,

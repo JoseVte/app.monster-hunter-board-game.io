@@ -28,4 +28,9 @@ return new class extends Migration
             $table->index('email');
         });
     }
+
+    public function down(): void
+    {
+        Schema::dropIfExists('invitations');
+    }
 };

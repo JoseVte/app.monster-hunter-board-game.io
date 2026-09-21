@@ -2,4 +2,7 @@
     "upgrade": true,
     "install": "always",
     "packageManager": "npm",
+    "reject": [
+        "typescript"
+    ]
 }

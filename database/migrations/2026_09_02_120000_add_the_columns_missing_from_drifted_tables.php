@@ -50,4 +50,13 @@ return new class extends Migration
             }
         });
     }
+
+    public function down(): void
+    {
+        // Deliberately empty. This migration exists to give older databases the
+        // columns their create migrations already declare, so every change it
+        // makes is one the schema is supposed to have. Dropping them on the way
+        // back would take the column away from a database built from scratch,
+        // where this ran as a no-op and had nothing to do with its presence.
+    }
 };

@@ -37,13 +37,13 @@ defineProps({
                 </div>
 
                 <div v-if="$page.props.jetstream.canUpdatePassword && $page.props.socialLogin.hasPassword">
-                    <UpdatePasswordForm class="mt-10 sm:mt-0" />
+                    <UpdatePasswordForm />
 
                     <SectionBorder />
                 </div>
 
                 <div v-else>
-                    <SetPasswordForm class="mt-10 sm:mt-0" />
+                    <SetPasswordForm />
 
                     <SectionBorder />
                 </div>
@@ -51,14 +51,13 @@ defineProps({
                 <div v-if="$page.props.jetstream.canManageTwoFactorAuthentication">
                     <TwoFactorAuthenticationForm
                         :requires-confirmation="confirmsTwoFactorAuthentication"
-                        class="mt-10 sm:mt-0"
                     />
 
                     <SectionBorder />
                 </div>
 
                 <div v-if="$page.props.socialLogin.providers.length">
-                    <ConnectedAccountsForm class="mt-10 sm:mt-0" />
+                    <ConnectedAccountsForm />
                 </div>
 
                 <SectionBorder />
@@ -66,7 +65,6 @@ defineProps({
                 <InvitationsForm
                     :invitations="invitations"
                     :invitation-limit="invitationLimit"
-                    class="mt-10 sm:mt-0"
                 />
 
                 <div v-if="$page.props.socialLogin.hasPassword">
@@ -74,14 +72,13 @@ defineProps({
 
                     <LogoutOtherBrowserSessionsForm
                         :sessions="sessions"
-                        class="mt-10 sm:mt-0"
                     />
                 </div>
 
                 <template v-if="$page.props.jetstream.hasAccountDeletionFeatures && $page.props.socialLogin.hasPassword">
                     <SectionBorder />
 
-                    <DeleteUserForm class="mt-10 sm:mt-0" />
+                    <DeleteUserForm />
                 </template>
             </div>
         </div>

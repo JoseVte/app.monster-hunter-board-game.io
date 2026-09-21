@@ -28,7 +28,6 @@ defineProps({
                 />
 
                 <TeamMemberManager
-                    class="mt-10 sm:mt-0"
                     :team="team"
                     :available-roles="availableRoles"
                     :user-permissions="permissions"
@@ -38,7 +37,6 @@ defineProps({
                     <SectionBorder />
 
                     <DeleteTeamForm
-                        class="mt-10 sm:mt-0"
                         :team="team"
                     />
                 </template>

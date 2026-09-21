@@ -57,4 +57,35 @@ return new class extends Migration
             }
         });
     }
+
+    /**
+     * Puts the branch back on the weapon and takes the recipes away.
+     *
+     * A weapon can hold several recipes and a column can hold one, so only the
+     * first is restored. That is lossless for every weapon but the two dual
+     * blades that can be built two ways, which is exactly the limitation this
+     * table was created to lift.
+     */
+    public function down(): void
+    {
+        Schema::table('weapons', function (Blueprint $table): void {
+            $table->foreignId('branch_id')->nullable()->constrained('monsters');
+            $table->string('branch')->nullable();
+        });
+
+        DB::table('weapon_recipes')->where('position', 0)->orderBy('id')->chunkById(200, function ($recipes): void {
+            foreach ($recipes as $recipe) {
+                DB::table('weapons')->where('id', $recipe->weapon_id)->update([
+                    'branch' => $recipe->branch,
+                    'branch_id' => $recipe->branch_id,
+                ]);
+            }
+        });
+
+        Schema::table('count_item_weapon', function (Blueprint $table): void {
+            $table->dropConstrainedForeignId('weapon_recipe_id');
+        });
+
+        Schema::dropIfExists('weapon_recipes');
+    }
 };
