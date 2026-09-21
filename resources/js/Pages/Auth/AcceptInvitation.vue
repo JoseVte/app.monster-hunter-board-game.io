@@ -1,10 +1,12 @@
 <script setup>
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
+import { useRecaptcha } from '@/recaptcha';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import RecaptchaNotice from '@/Components/RecaptchaNotice.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
 
 const props = defineProps({
@@ -18,9 +20,14 @@ const form = useForm({
     email: props.email ?? '',
     password: '',
     password_confirmation: '',
+    captcha_token: null,
 });
 
-const submit = () => {
+const recaptcha = useRecaptcha(usePage().props.recaptcha_site_key);
+
+const submit = async () => {
+    form.captcha_token = await recaptcha.execute('accept_invitation');
+
     form.post(route('invitations.accept', props.token), {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
@@ -122,6 +129,11 @@ const submit = () => {
                     {{ $t('Already registered?') }}
                 </Link>
 
+                <InputError
+                    class="mt-2"
+                    :message="form.errors.captcha_token"
+                />
+
                 <PrimaryButton
                     class="ml-4"
                     :class="{ 'opacity-25': form.processing }"
@@ -130,6 +142,8 @@ const submit = () => {
                     {{ $t('Accept Invitation') }}
                 </PrimaryButton>
             </div>
+
+            <RecaptchaNotice />
         </form>
     </AuthenticationCard>
 </template>

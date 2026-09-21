@@ -8,7 +8,7 @@
 
         <title inertia>{{ config('app.name', 'Laravel') }}</title>
         <link rel="canonical" href="" />
-        <meta name="description" content="{{ __('Website designed for manage your campaigns, hunters and search items, weapons, etc.') }}" />
+        <meta name="description" content="{{ __('Track your Monster Hunter World: The Board Game campaigns. Register hunters, log hunts, craft weapons and armour, and look anything up in the wiki.') }}" />
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.bunny.net">

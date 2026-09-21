@@ -56,5 +56,11 @@ return [
         'url' => 'https://www.google.com/recaptcha/api/siteverify',
         'site-key' => env('GOOGLE_RECAPTCHA_SITE_KEY'),
         'secret-key' => env('GOOGLE_RECAPTCHA_SECRET_SITE_KEY'),
+
+        // reCAPTCHA v3 scores from 0.0 (almost certainly a bot) to 1.0. Google
+        // suggests 0.5 as a starting point. It lives here rather than being
+        // written out at each call site, which is where it used to be, so that
+        // tightening it is one edit rather than one per form.
+        'score' => (float) env('GOOGLE_RECAPTCHA_SCORE', 0.5),
     ],
 ];

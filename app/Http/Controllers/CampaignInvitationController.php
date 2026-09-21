@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use Inertia\Inertia;
 use Inertia\Response;
+use App\Rules\Recaptcha;
 use Illuminate\Http\Request;
 use App\Models\CampaignInvitation;
 use Illuminate\Support\Facades\DB;
@@ -62,6 +63,7 @@ class CampaignInvitationController extends Controller
         $attributes = $request->validate([
             'name' => ['required', 'string', 'max:255'],
             'password' => ['required', 'string', Password::default(), 'confirmed'],
+            'captcha_token' => ['required', new Recaptcha],
         ]);
 
         $campaign = $invitation->campaign->name;

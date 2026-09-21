@@ -28,6 +28,11 @@
         <env name="MAIL_MAILER" value="array"/>
         <env name="QUEUE_CONNECTION" value="sync"/>
         <env name="SESSION_DRIVER" value="array"/>
+        <!-- Without this, every Inertia render in the suite opens a connection to
+             the SSR server on 127.0.0.1:13714, fails, and quietly falls back to
+             client rendering. It stayed invisible until tests/Pest.php started
+             calling preventStrayRequests, which turned it into 88 failures. -->
+        <env name="INERTIA_SSR_ENABLED" value="false"/>
         <env name="TELESCOPE_ENABLED" value="false"/>
         <env name="SCOUT_DRIVER" value="null"/>
     </php>

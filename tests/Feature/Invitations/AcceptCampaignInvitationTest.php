@@ -33,6 +33,7 @@ test('accepting creates the account and joins the campaign', function (): void {
         'name' => 'Jane Doe',
         'password' => 'a-long-enough-password',
         'password_confirmation' => 'a-long-enough-password',
+        'captcha_token' => 'a-token',
     ])->assertRedirect(config('fortify.home'));
 
     $this->assertAuthenticated();
@@ -51,6 +52,7 @@ test('the new account still has to verify its address', function (): void {
         'name' => 'Jane Doe',
         'password' => 'a-long-enough-password',
         'password_confirmation' => 'a-long-enough-password',
+        'captcha_token' => 'a-token',
     ]);
 
     $user = User::where('email', 'guest@example.com')->firstOrFail();
@@ -95,6 +97,7 @@ test('the registration form refuses once the address has an account', function (
         'name' => 'Impostor',
         'password' => 'a-long-enough-password',
         'password_confirmation' => 'a-long-enough-password',
+        'captcha_token' => 'a-token',
     ])->assertRedirect(route('login'));
 
     expect(User::where('name', 'Impostor')->exists())->toBeFalse();

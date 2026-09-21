@@ -9,6 +9,7 @@ use SocialiteProviders\Manager\SocialiteWasCalled;
 use SocialiteProviders\GitHub\Provider as GitHubProvider;
 use SocialiteProviders\Google\Provider as GoogleProvider;
 use SocialiteProviders\Discord\Provider as DiscordProvider;
+use Laravel\Fortify\Http\Requests\SendPasswordResetLinkRequest;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         $this->app->bind(LoginRequest::class, \App\Http\Requests\LoginRequest::class);
+        $this->app->bind(SendPasswordResetLinkRequest::class, \App\Http\Requests\SendPasswordResetLinkRequest::class);
 
         // Listeners in app/Listeners are discovered by the framework. These are
         // vendor classes, so they still have to be wired up by hand.

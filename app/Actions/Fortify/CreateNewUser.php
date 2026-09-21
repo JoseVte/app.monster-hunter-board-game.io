@@ -29,7 +29,7 @@ class CreateNewUser implements CreatesNewUsers
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => $this->passwordRules(),
             'terms' => Jetstream::hasTermsAndPrivacyPolicyFeature() ? ['accepted', 'required'] : '',
-            'captcha_token' => [new Recaptcha(0.5)],
+            'captcha_token' => ['required', new Recaptcha],
         ])->validate();
 
         return DB::transaction(fn () => tap(User::create([

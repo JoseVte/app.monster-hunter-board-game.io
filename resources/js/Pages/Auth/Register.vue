@@ -7,6 +7,7 @@ import Checkbox from '@/Components/Form/Checkbox.vue';
 import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import RecaptchaNotice from '@/Components/RecaptchaNotice.vue';
 import SocialLogin from '@/Components/SocialLogin.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
 
@@ -150,6 +151,8 @@ const submit = async () => {
                     {{ $t('Register') }}
                 </PrimaryButton>
             </div>
+
+            <RecaptchaNotice />
         </form>
 
         <SocialLogin />

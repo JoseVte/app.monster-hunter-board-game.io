@@ -1,10 +1,12 @@
 <script setup>
-import { Head, useForm } from '@inertiajs/vue3';
+import { Head, useForm, usePage } from '@inertiajs/vue3';
+import { useRecaptcha } from '@/recaptcha';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import RecaptchaNotice from '@/Components/RecaptchaNotice.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
 
 defineProps({
@@ -13,9 +15,14 @@ defineProps({
 
 const form = useForm({
     email: '',
+    captcha_token: null,
 });
 
-const submit = () => {
+const recaptcha = useRecaptcha(usePage().props.recaptcha_site_key);
+
+const submit = async () => {
+    form.captcha_token = await recaptcha.execute('forgot_password');
+
     form.post(route('password.email'));
 };
 </script>
@@ -61,6 +68,11 @@ const submit = () => {
             </div>
 
             <div class="flex items-center justify-end mt-4">
+                <InputError
+                    class="mt-2"
+                    :message="form.errors.captcha_token"
+                />
+
                 <PrimaryButton
                     :class="{ 'opacity-25': form.processing }"
                     :disabled="form.processing"
@@ -68,6 +80,8 @@ const submit = () => {
                     {{ $t('Email Password Reset Link') }}
                 </PrimaryButton>
             </div>
+
+            <RecaptchaNotice />
         </form>
     </AuthenticationCard>
 </template>

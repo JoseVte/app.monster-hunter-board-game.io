@@ -1,10 +1,12 @@
 <script setup>
-import { Head, Link, useForm } from '@inertiajs/vue3';
+import { Head, Link, useForm, usePage } from '@inertiajs/vue3';
+import { useRecaptcha } from '@/recaptcha';
 import AuthenticationCard from '@/Components/AuthenticationCard.vue';
 import AuthenticationCardLogo from '@/Components/AuthenticationCardLogo.vue';
 import InputError from '@/Components/Form/InputError.vue';
 import InputLabel from '@/Components/Form/InputLabel.vue';
 import PrimaryButton from '@/Components/PrimaryButton.vue';
+import RecaptchaNotice from '@/Components/RecaptchaNotice.vue';
 import TextInput from '@/Components/Form/TextInput.vue';
 
 const props = defineProps({
@@ -18,11 +20,16 @@ const form = useForm({
     name: '',
     password: '',
     password_confirmation: '',
+    captcha_token: null,
 });
 
 // Posted back to the very URL that was opened. A signature covers the address
 // and its query, not the method, so it guards the account creation too.
-const submit = () => {
+const recaptcha = useRecaptcha(usePage().props.recaptcha_site_key);
+
+const submit = async () => {
+    form.captcha_token = await recaptcha.execute('accept_campaign_invitation');
+
     form.post(props.signature, {
         onFinish: () => form.reset('password', 'password_confirmation'),
     });
@@ -121,6 +128,11 @@ const submit = () => {
                     {{ $t('Already registered?') }}
                 </Link>
 
+                <InputError
+                    class="mt-2"
+                    :message="form.errors.captcha_token"
+                />
+
                 <PrimaryButton
                     class="ml-4"
                     :class="{ 'opacity-25': form.processing }"
@@ -129,6 +141,8 @@ const submit = () => {
                     {{ $t('Accept Invitation') }}
                 </PrimaryButton>
             </div>
+
+            <RecaptchaNotice />
         </form>
     </AuthenticationCard>
 </template>

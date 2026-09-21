@@ -22,6 +22,7 @@ function acceptPayload(array $overrides = []): array
         'email' => 'jane@example.com',
         'password' => 'a-long-enough-password',
         'password_confirmation' => 'a-long-enough-password',
+        'captcha_token' => 'a-token',
     ], $overrides);
 }
 

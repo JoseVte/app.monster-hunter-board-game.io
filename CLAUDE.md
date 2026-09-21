@@ -9,7 +9,12 @@ Web helper app for managing campaigns of the **Monster Hunter World: The Board G
 and hunts, manage items, craft and equip weapons and armors, and (work in progress)
 earn experience, levels and achievements.
 
-Production domain: `app.monster-hunter-board-game.io`. Repo: `JoseVte/app.monster-hunter-board-game.io`.
+Production domain: **`mh-board-game.josrom.io`**, which is what `APP_URL` holds on the
+server. It is not `app.monster-hunter-board-game.io`, which this file claimed for a long
+time and which does not resolve; that name is the repository's, not the site's. The OAuth
+callbacks derive from `APP_URL`, so they are already right.
+
+Repo: `JoseVte/app.monster-hunter-board-game.io`.
 
 ## Stack
 
@@ -197,6 +202,56 @@ the provider merges with `mergeConfigFrom`, which only merges the top level.
 `tests/Feature/InertiaPagePathTest.php` pins it, comparing against `scandir` rather than
 `is_dir` so that it fails on macOS too. `is_dir` would answer yes to the wrong case on the
 machine where the mistake is most likely to be made, so it would pin nothing.
+
+### The public page
+
+`resources/js/Pages/Welcome.vue` is the whole of it, no partials.
+
+**The hero draws one of three 4K stills from Capcom's video game at random.** That is other
+people's artwork on a public page, and it is the same objection that keeps a portrait off
+the monster card view, so the repository holds two standards here. It was raised, and the
+owner decided to keep the stills. Recorded so the inconsistency is deliberate rather than
+forgotten.
+
+Two alternatives were tried and rejected before that decision. A screenshot of this app does
+not work as a backdrop: blurred enough to sit behind text it is invisible under the 50%
+veil, and legible enough to see it reads as a dimmed screenshot. A plain dark ground works
+but leaves the hero empty. Note the three stills are 3840x2160 and 370-610 kB each; only the
+one chosen is fetched, but that is still the heaviest thing on the page by an order of
+magnitude.
+
+The two content sections do carry real screenshots, in `resources/images/screens/`, taken
+from the redesigned app rather than from 2023. The one they replaced showed flat white
+Jetstream cards, a product that has not existed since `d0bb8bf`. Six orphaned source files
+went with them, 2.4 MB that nothing had referenced since 2023.
+
+There are three of them, one per content section: the campaign page, a hunter's armour tab
+and the monster wiki. The hunter one needs a hunter that actually owns something, so the
+local demo data equips one piece per slot and a handful of materials; captured empty it is
+a column of zeros and sells nothing.
+
+**Each exists in both languages and `Welcome.vue` picks by `locale`**, falling back to
+English for anything else, as vue-i18n's `fallbackLocale` does. They are pictures of this
+app's own interface, so an English one on a Spanish page reads as a different product. The
+Spanish pair is captured with the demo campaign renamed too, otherwise the chrome is
+translated and the content beside it is not.
+
+**Capture them at a device scale factor of 2** (`agent-browser set viewport 1440 900 2`) and
+export around 2200 px wide. The first pass shipped 1280 px and looked soft: both panels are
+half-width and full-height, the wiki one is `bg-cover`, so the image is scaled up about 1.4x
+just to cover before the display's own pixel ratio doubles it again. Roughly 130 kB reaches
+a visitor, since only one language loads.
+
+**Everything on the page reacts to `canRegister`, not just the buttons.** With
+`AUTH_CAN_REGISTER` off, which is the default, hiding the register button used to leave an
+"Or" separator with nothing to separate and a whole "3 easy steps" section telling visitors
+to fill in a registration form that does not exist and has no link. Step one now says the
+app is invitation only.
+
+The page's `<Head>` carries a title and nothing else. `app.js` appends `" - <app name>"` to
+it, so it holds only the distinguishing part, and the description belongs in
+`resources/views/app.blade.php`: `@inertiaHead` is inserted after the static tags, so a meta
+given in a page component is the second one on the page and a crawler reads the first.
 
 ### Game icons
 
@@ -388,6 +443,28 @@ from `vendor/tightenco/ziggy/dist/vue.m`, so the build fails with an unresolved 
 `vendor/` is absent. It needs no `.env`. Node 22 is the floor: `readdirp` and `sass` require
 `>= 20.19`, and `glob`, `jackspeak` and `lru-cache` require `20 || >=22`.
 
+### Checking mail works
+
+`php artisan mail:test [recipient]` sends one real message through whatever mailer is
+configured and reports which one that was, before sending, so a run that hangs on a blocked
+port still says what it was reaching for. A transport failure is printed with the reason
+Google or Mailjet gave and exits non-zero, which is the whole point: the question it answers
+is "why does mail not work", and swallowing the SMTP error leaves that unanswered.
+
+**A Pest test cannot answer that question.** The suite runs against the array mailer, so it
+proves the command works and says nothing about whether Mailjet accepts the credentials or
+whether the server can reach `in-v3.mailjet.com`. Only running this on that machine does.
+
+The message is a markdown mailable (`App\Mail\TestMessage`), not `Mail::raw`, so it goes
+through the same view rendering and layout as real mail rather than only proving that the
+transport opens a socket. Its property is `$sentThrough` rather than `$mailer`, because
+`Mailable` already declares one and a typed redeclaration is a fatal error.
+
+Mailjet is an SMTP mailer in `config/mail.php`, using the API key and secret as username and
+password. Set `MAIL_MAILER=mailjet`. Note that `MAILJET_SANDBOX` was declared in
+`.env.example` and read nowhere: Mailjet's sandbox mode is an `X-MJ-Sandbox-Mode` SMTP
+header and nothing sends it.
+
 ### Deployment
 
 `deploy.sh` holds the steps that run once the new code is on the server, so the deploy is
@@ -447,6 +524,73 @@ put the same line under more than one key.
 
 `Hunter::canCraftArmor()` holds the armour rule, which stays one recipe per armour. `Hunter::getUser()`
 resolves the owning user, which is how gamification events reach a `User`.
+
+### reCAPTCHA
+
+**It is v3, and v3 is already the version that never shows a challenge.** Proved by a real
+`siteverify` call returning `score` and `action`, which only v3 keys do. "Invisible
+reCAPTCHA" is the name of a *v2* variant and is less invisible than this: no checkbox, but
+it can still interrupt with images. Keys are not interchangeable between v2 and v3, so
+switching would mean a new pair.
+
+**The badge is hidden and `Components/RecaptchaNotice.vue` stands in for it.** Google asks
+for the badge *or* a visible attribution, one of the two, so `recaptcha.js` leaves
+`autoHideBadge` to do its job and never calls `showBadge()`. Every form that calls
+`useRecaptcha` has to render that component or the app stops holding up its end of Google's
+terms. Note this is not obviously an improvement and was a deliberate choice: the badge was
+a 70 px sliver in one corner of two pages, the notice is a line of small print inside five
+forms.
+
+`recaptcha-v3` always loads `api.js?render=explicit` and renders the widget itself, deleting
+any `render` parameter passed to it. That URL is not a sign of v2.
+
+**Always pair the rule with `required`.** `App\Rules\Recaptcha` is not implicit, so Laravel
+skips it when the attribute is absent, and a POST that simply left `captcha_token` out used
+to sail past without Google being asked at all. That hole is also what kept the suite green,
+since no test sent the field.
+
+**Every public form that sends mail or creates an account carries it**: login, register,
+`forgot-password`, and both invitation acceptances. `forgot-password` was the softest target
+of the lot, since Fortify applies no rate limiter to it and it emails whoever is named. Its
+rule arrives through `App\Http\Requests\SendPasswordResetLinkRequest`, bound over Fortify's
+own in `AppServiceProvider`, the same way `LoginRequest` already was. The two invitation
+controllers validate inline, so the rule goes in their `$request->validate()` array.
+
+`reset-password` and `two-factor-challenge` deliberately do not have it. Both already
+require a token or a pending login session, so there is nothing to spam, and Fortify
+validates the first of them inline inside a vendor controller with no FormRequest to extend.
+
+The threshold lives in `config/services.php` under `google-recaptcha.score`, not written out
+at each call site. **An unreachable Google lets the request through** and logs a warning:
+locking every existing user out of their own account during an outage at Google is worse
+than the spam that gets in during it, and the rate limiter still applies.
+
+### Testing and the network
+
+`tests/Pest.php` calls `preventStrayRequests()` before every Feature test, so a request it
+does not fake fails the test rather than going out. This is not theoretical: the first
+version of that hook was chained wrong, did not apply, and a test came back with a genuine
+`invalid-input-response` from Google, with the local secret, which is what CI would have
+done too.
+
+Use **`fakeRecaptcha($payload)`** rather than `Http::fake()` to change the answer.
+`Http::fake()` accumulates and the *first* registered stub wins, so layering a second call
+on top of the one every test starts with silently does nothing. The helper replaces the
+client instead.
+
+**`phpunit.xml` sets `INERTIA_SSR_ENABLED=false`.** Without it every Inertia render in the
+suite opens a connection to the SSR server on `127.0.0.1:13714`, fails, and quietly falls
+back to client rendering. It stayed invisible until `preventStrayRequests` turned it into 88
+failures at once.
+
+### Local environment traps
+
+**Do not set `SESSION_DRIVER=cookie` locally.** Production uses `database` and so does
+`.env.example`. With the cookie driver the whole session travels in the cookie and every
+response rewrites it, so two concurrent requests clobber each other and a flashed
+validation error is lost. The symptom is precise and misleading: a failed login redirects
+correctly, the server sends the error, and the page shows nothing at all. Hours went into
+that one before the driver turned out to be the difference.
 
 ### Deleting things
 
