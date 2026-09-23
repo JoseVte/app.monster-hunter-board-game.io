@@ -16,6 +16,7 @@ Solo puedes jugar cartas de ataque con un símbolo de espíritu si todos los col
 Cuando el símbolo del espíritu solo blanco está en la parte superior, la carta del espíritu no se puede girar en el sentido contrario a las agujas del reloj. Cuando el símbolo del espíritu rojo está en la parte superior, la carta del espíritu no se puede girar en el sentido de las agujas del reloj.',
     ],
     'image' => 'weapon-types/longsword.svg',
+    'default_armor' => [0, 0, 1],
     'weapons' => [
         'Iron Katana' => [
             'default' => true,
@@ -132,7 +133,9 @@ Cuando el símbolo del espíritu solo blanco está en la parte superior, la cart
             'branch' => 'Tobi-Kadachi',
             'rarity' => 3,
             'name' => 'Shotel Púlsar',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'thunder',
+            ],
             'count_attack_1' => 1,
             'count_attack_2' => 7,
             'count_attack_3' => 2,
@@ -156,7 +159,9 @@ Cuando el símbolo del espíritu solo blanco está en la parte superior, la cart
             'branch' => 'Tobi-Kadachi',
             'rarity' => 4,
             'name' => 'Colmillo Kadachi',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'thunder',
+            ],
             'count_attack_1' => 1,
             'count_attack_2' => 8,
             'count_attack_3' => 3,
@@ -207,7 +212,9 @@ Cuando el símbolo del espíritu solo blanco está en la parte superior, la cart
             'rarity' => 4,
             'name' => 'Cimitarra Anja',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'fire',
+            ],
             'count_attack_1' => 1,
             'count_attack_2' => 9,
             'count_attack_3' => 4,
@@ -233,7 +240,9 @@ Cuando el símbolo del espíritu solo blanco está en la parte superior, la cart
             'branch' => 'Rathalos',
             'rarity' => 3,
             'name' => 'Filo Wyvern "Otoño"',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'fire',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 8,
             'count_attack_3' => 2,
@@ -259,7 +268,9 @@ Cuando el símbolo del espíritu solo blanco está en la parte superior, la cart
             'rarity' => 4,
             'name' => 'Filo Wyvern "Sangre"',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'fire',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 8,
             'count_attack_3' => 4,
@@ -287,7 +298,9 @@ Cuando el símbolo del espíritu solo blanco está en la parte superior, la cart
             'branch' => 'Jyuratodus',
             'rarity' => 3,
             'name' => 'Shotel Jyura',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'water',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 6,
             'count_attack_3' => 2,
@@ -312,7 +325,9 @@ Cuando el símbolo del espíritu solo blanco está en la parte superior, la cart
             'branch' => 'Jyuratodus',
             'rarity' => 4,
             'name' => 'Díptero',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'water',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 7,
             'count_attack_4' => 3,
@@ -392,7 +407,9 @@ Cuando el símbolo del espíritu solo blanco está en la parte superior, la cart
             'branch' => 'Nergigante',
             'rarity' => 4,
             'name' => 'Segadora Nergal',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'dragon',
+            ],
             'count_attack_2' => 7,
             'count_attack_3' => 3,
             'count_attack_4' => 2,
@@ -417,7 +434,9 @@ Cuando el símbolo del espíritu solo blanco está en la parte superior, la cart
             'branch' => 'Nergigante',
             'rarity' => 5,
             'name' => 'Filo Exterminador',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'dragon',
+            ],
             'count_attack_2' => 7,
             'count_attack_3' => 4,
             'count_attack_4' => 3,
@@ -444,6 +463,9 @@ Cuando el símbolo del espíritu solo blanco está en la parte superior, la cart
             'branch' => 'Teostra',
             'rarity' => 4,
             'name' => 'Sable Imperial',
+            'status_attacks' => [
+                'blast',
+            ],
             'count_attack_2' => 9,
             'count_attack_3' => 5,
             'items' => [
@@ -467,6 +489,9 @@ Cuando el símbolo del espíritu solo blanco está en la parte superior, la cart
             'branch' => 'Teostra',
             'rarity' => 5,
             'name' => 'Destello Imperial',
+            'status_attacks' => [
+                'blast',
+            ],
             'count_attack_2' => 9,
             'count_attack_3' => 6,
             'count_attack_4' => 1,

@@ -2,7 +2,7 @@
 import { computed } from 'vue';
 import Resistance from '@/Components/Icons/Resistance.vue';
 import defenseIcon from '~/icons/defense-icon.png';
-import { DEFENSE_ELEMENTS, totalDefense } from '@/armorDefense';
+import { DEFENSE_ELEMENTS, totalDefense, weaponDefense } from '@/armorDefense';
 
 // Defence and the five resistances, added up from what is worn. The tab's panel
 // and the line in the sheet's header both show it, so it is drawn once.
@@ -11,9 +11,14 @@ const props = defineProps({
         type: [Array, Object],
         default: () => [],
     },
+    // The weapon in hand covers whatever the hunter has left bare.
+    defaultArmor: {
+        type: Object,
+        default: null,
+    },
 });
 
-const defense = computed(() => totalDefense(props.armors));
+const defense = computed(() => totalDefense(props.armors) + weaponDefense(props.armors, props.defaultArmor));
 
 // Every element keeps its place whether or not anything in hand grants it, so
 // the row does not reshuffle as pieces are swapped and each one is always in

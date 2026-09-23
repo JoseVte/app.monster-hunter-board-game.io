@@ -5,9 +5,11 @@ import _ from "lodash";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import DialogModal from "@/Components/DialogModal.vue";
-import WeaponsIcon from "@/Components/Icons/WeaponsIcon.vue";
 import CogIcon from "@/Components/Icons/CogIcon.vue";
 import Wrench from "@/Components/Icons/Wrench.vue";
+import WeaponTypeIcon from "@/Components/WeaponTypeIcon.vue";
+import WeaponStats from "@/Components/WeaponStats.vue";
+import AverageDamage from "@/Components/AverageDamage.vue";
 
 const props = defineProps({
     campaign: Object,
@@ -38,6 +40,40 @@ watch(() => [confirmingCraftWeapon.value, recipes.value], () => {
     const affordable = recipes.value.find((recipe) => canAfford(recipe));
     selectedRecipeId.value = (affordable ?? recipes.value[0])?.id ?? null;
 }, { immediate: true });
+
+// The weapons between what the hunter holds and this one, which have to be
+// built before it and are what the accumulated column adds up. Empty whenever
+// the weapon it upgrades from is already in hand, and on the wiki's own tree.
+const missingChain = computed(() => props.weapon.missing_chain ?? []);
+const showsTotal = computed(() => missingChain.value.length > 0);
+
+// One row per item either the chain or this recipe asks for. An item only the
+// chain needs has no number of its own for this step, which is not a zero.
+const rows = computed(() => {
+    const byId = new Map();
+
+    (selectedRecipe.value?.items ?? []).forEach((item) => {
+        byId.set(item.id, {id: item.id, name: item.name, step: item.pivot.number, total: item.pivot.number});
+    });
+
+    (props.weapon.chain_items ?? []).forEach((item) => {
+        const row = byId.get(item.id);
+
+        if (row) {
+            row.total += item.number;
+
+            return;
+        }
+
+        byId.set(item.id, {id: item.id, name: item.name, step: null, total: item.number});
+    });
+
+    return [...byId.values()];
+});
+
+// With the whole line to pay for, what is short is short against that total,
+// which is the question the column is there to answer.
+const isShort = (row) => countItemHunter(row.id) < (showsTotal.value ? row.total : row.step);
 
 const craftWeapon = () => {
     form.recipe = selectedRecipeId.value;
@@ -158,14 +194,16 @@ const unequip = () => {
         <template #title>
             <div class="flex items-center gap-4">
                 <div class="bg-gray-300 dark:bg-gray-900 rounded-full h-8 w-8 min-h-8 min-w-8 flex items-center justify-center">
-                    <WeaponsIcon
+                    <WeaponTypeIcon
+                        :weapon-type="weapon.type"
                         class="h-4 w-4"
                         :class="getRarityColor(weapon.rarity)"
                     />
                 </div>
-                <span>
+                <span class="flex-1">
                     {{ $t('Craft') }} "{{ weapon.name }}"
                 </span>
+                <AverageDamage :weapon="weapon" />
                 <CogIcon
                     v-if="weapon.is_default"
                     class="w-6 h-6"
@@ -175,6 +213,7 @@ const unequip = () => {
 
         <template #content>
             <div class="mt-4 grid grid-cols-1 gap-4">
+                <WeaponStats :weapon="weapon" />
                 <div class="w-full rounded-sm border border-gray-300 dark:border-gray-700">
                     <div
                         v-if="recipes.length > 1"
@@ -207,6 +246,12 @@ const unequip = () => {
                                 <th class="p-2">
                                     {{ $t('Count') }}
                                 </th>
+                                <th
+                                    v-if="showsTotal"
+                                    class="p-2"
+                                >
+                                    {{ $t('Accumulated total') }}
+                                </th>
                                 <th class="p-2">
                                     {{ $t('Hunter Items') }}
                                 </th>
@@ -220,6 +265,13 @@ const unequip = () => {
                                 <td class="p-2 text-right">
                                     1
                                 </td>
+                                <!-- What the parent costs is already counted in
+                                     the column, so repeating it here would say
+                                     the line has to be built twice. -->
+                                <td
+                                    v-if="showsTotal"
+                                    class="p-2"
+                                />
                                 <td
                                     class="p-2 text-right"
                                     :class="hunterWeaponCount(props.weapon.parent) < 1 ? 'text-red-500' : ''"
@@ -228,25 +280,39 @@ const unequip = () => {
                                 </td>
                             </tr>
                             <tr
-                                v-for="item in (selectedRecipe?.items ?? [])"
-                                :key="item.id"
+                                v-for="row in rows"
+                                :key="row.id"
                             >
                                 <td class="p-2">
-                                    {{ item.name }}
+                                    {{ row.name }}
                                 </td>
                                 <td class="p-2 text-right">
-                                    {{ item.pivot.number }}
+                                    {{ row.step ?? '—' }}
+                                </td>
+                                <td
+                                    v-if="showsTotal"
+                                    class="p-2 text-right font-semibold"
+                                >
+                                    {{ row.total }}
                                 </td>
                                 <td
                                     class="p-2 text-right"
-                                    :class="countItemHunter(item.id) < item.pivot.number ? 'text-red-500' : ''"
+                                    :class="isShort(row) ? 'text-red-500' : ''"
                                 >
-                                    {{ countItemHunter(item.id) }}
+                                    {{ countItemHunter(row.id) }}
                                 </td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
+
+                <p
+                    v-if="showsTotal"
+                    class="text-sm text-gray-600 dark:text-gray-400"
+                >
+                    {{ $t('The accumulated total also covers what these still cost:') }}
+                    <span class="font-semibold">{{ missingChain.map((step) => step.name).join(', ') }}</span>
+                </p>
             </div>
         </template>
 

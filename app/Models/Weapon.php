@@ -34,7 +34,10 @@ class Weapon extends Model
         'count_attack_4',
         'count_attack_5',
         'has_elemental_attacks',
+        'element',
+        'status_attacks',
         'deviation',
+        'song_list_id',
 
         'type_id',
         'parent_id',
@@ -44,11 +47,28 @@ class Weapon extends Model
         'has_elemental_attacks' => 'boolean',
         'is_default' => 'boolean',
         'deviation' => DeviationWeapon::class,
+        // Plain lowercase keys, not a translatable enum: they reach a page to
+        // pick an icon by name, and `HasTranslations::toArray()` would flatten
+        // an enum cast to its label, which is not what `fire_icon` is keyed on.
+        'status_attacks' => 'array',
     ];
 
     protected $with = [
         'type',
     ];
+
+    /**
+     * `HasTranslations::toArray()` flattens a translatable enum cast to its
+     * label, so `deviation` reaches a page as "Baja" rather than as LOW. The
+     * label is what a reader wants; the case is what picks the icon, which is
+     * the same drawing in a colour per rating.
+     */
+    protected $appends = ['deviation_key'];
+
+    public function getDeviationKeyAttribute(): ?string
+    {
+        return $this->deviation?->name;
+    }
 
     public array $translatable = [
         'name',
@@ -57,6 +77,11 @@ class Weapon extends Model
     public function type(): BelongsTo
     {
         return $this->belongsTo(WeaponType::class, 'type_id');
+    }
+
+    public function songList(): BelongsTo
+    {
+        return $this->belongsTo(SongList::class);
     }
 
     public function parent(): HasOne

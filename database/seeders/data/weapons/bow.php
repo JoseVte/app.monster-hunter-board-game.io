@@ -5,8 +5,8 @@ return [
         'en' => 'Bow',
         'es' => 'Arco',
     ],
-    'description' => '',
     'image' => 'weapon-types/bow.svg',
+    'default_armor' => [0, 0, 1],
     'weapons' => [
         'Iron Bow' => [
             'default' => true,
@@ -64,6 +64,10 @@ return [
         'Hunter\'s Bow' => [
             'branch' => 'bone',
             'name' => 'Arco de Cazador',
+            'status_attacks' => [
+                'paralysis',
+                'poison',
+            ],
             'count_attack_1' => 6,
             'count_attack_2' => 4,
             'items' => [
@@ -84,6 +88,10 @@ return [
             'branch' => 'bone',
             'rarity' => 2,
             'name' => 'Arco Recio de Cazador',
+            'status_attacks' => [
+                'paralysis',
+                'poison',
+            ],
             'count_attack_1' => 4,
             'count_attack_2' => 6,
             'items' => [
@@ -108,6 +116,10 @@ return [
             'branch' => 'bone',
             'rarity' => 3,
             'name' => 'Arco Honra de Cazador',
+            'status_attacks' => [
+                'paralysis',
+                'poison',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 5,
             'count_attack_3' => 2,
@@ -137,7 +149,12 @@ return [
             'branch' => 'Tobi-Kadachi',
             'rarity' => 3,
             'name' => 'Arco Púlsar',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'thunder',
+            ],
+            'status_attacks' => [
+                'paralysis',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 5,
             'count_attack_3' => 3,
@@ -163,7 +180,12 @@ return [
             'branch' => 'Tobi-Kadachi',
             'rarity' => 4,
             'name' => 'Arco de ataque Kadachi',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'thunder',
+            ],
+            'status_attacks' => [
+                'paralysis',
+            ],
             'count_attack_2' => 9,
             'count_attack_3' => 3,
             'items' => [
@@ -191,7 +213,9 @@ return [
             'branch' => 'Anjanath',
             'rarity' => 3,
             'name' => 'Arco Flameante',
-            'has_elemental_attacks' => true,
+            'status_attacks' => [
+                'paralysis',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 6,
             'count_attack_3' => 4,
@@ -216,7 +240,12 @@ return [
             'branch' => 'Anjanath',
             'rarity' => 4,
             'name' => 'Arco Anja',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'fire',
+            ],
+            'status_attacks' => [
+                'paralysis',
+            ],
             'count_attack_2' => 6,
             'count_attack_3' => 8,
             'items' => [
@@ -243,6 +272,10 @@ return [
             'branch' => 'Pukei-Pukei',
             'rarity' => 3,
             'name' => 'Arco Floral',
+            'status_attacks' => [
+                'paralysis',
+                'poison',
+            ],
             'count_attack_1' => 1,
             'count_attack_2' => 7,
             'count_attack_3' => 2,
@@ -269,6 +302,10 @@ return [
             'branch' => 'Pukei-Pukei',
             'rarity' => 4,
             'name' => 'Cordel Datura',
+            'status_attacks' => [
+                'paralysis',
+                'poison',
+            ],
             'count_attack_1' => 1,
             'count_attack_2' => 7,
             'count_attack_3' => 4,
@@ -297,6 +334,9 @@ return [
             'branch' => 'Diablos',
             'rarity' => 3,
             'name' => 'Arco Diablos',
+            'status_attacks' => [
+                'paralysis',
+            ],
             'count_attack_1' => 4,
             'count_attack_2' => 4,
             'count_attack_3' => 4,
@@ -323,6 +363,10 @@ return [
             'branch' => 'Diablos',
             'rarity' => 4,
             'name' => 'Doblamallas Diablos',
+            'status_attacks' => [
+                'paralysis',
+                'stun',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 7,
             'count_attack_3' => 5,
@@ -352,6 +396,9 @@ return [
             'branch' => 'Kulu-Ya-Ku',
             'rarity' => 3,
             'name' => 'Flecha Kulu',
+            'status_attacks' => [
+                'sleep',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 7,
             'count_attack_3' => 4,
@@ -376,6 +423,10 @@ return [
             'branch' => 'Kulu-Ya-Ku',
             'rarity' => 4,
             'name' => 'Danza del Arquero',
+            'status_attacks' => [
+                'sleep',
+                'blast',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 5,
             'count_attack_3' => 9,
@@ -403,7 +454,9 @@ return [
             'branch' => 'Nergigante',
             'rarity' => 4,
             'name' => 'Susurro Nergal',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'dragon',
+            ],
             'count_attack_2' => 3,
             'count_attack_3' => 7,
             'count_attack_4' => 2,
@@ -428,7 +481,9 @@ return [
             'branch' => 'Nergigante',
             'rarity' => 5,
             'name' => 'Mástil de Condenación',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'dragon',
+            ],
             'count_attack_2' => 5,
             'count_attack_3' => 6,
             'count_attack_4' => 3,
@@ -456,7 +511,9 @@ return [
             'branch' => 'Kushala Daora',
             'rarity' => 4,
             'name' => 'Arco Acero Helado',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'ice',
+            ],
             'count_attack_2' => 4,
             'count_attack_3' => 8,
             'count_attack_4' => 2,
@@ -481,7 +538,9 @@ return [
             'branch' => 'Kushala Daora',
             'rarity' => 5,
             'name' => 'Sagitario Daora',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'ice',
+            ],
             'count_attack_2' => 5,
             'count_attack_3' => 7,
             'count_attack_4' => 4,

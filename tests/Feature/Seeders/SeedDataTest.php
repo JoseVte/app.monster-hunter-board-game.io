@@ -501,3 +501,84 @@ test('every monster mechanics section is shaped bilingually', function (): void 
 
     expect($malformed)->toBeEmpty();
 });
+
+test('every song a list names is a real song effect', function (): void {
+    // A list references its effects by their English name, the way weapons
+    // reference their parent, so a typo would bind to nothing at all.
+    $unknown = [];
+
+    foreach (glob(database_path('seeders/data/weapons/*.php')) as $file) {
+        $data = include $file;
+        $effects = collect($data['song-effects'] ?? [])->pluck('name.en')->all();
+
+        foreach ($data['song-lists'] ?? [] as $list) {
+            foreach (array_keys($list['songs'] ?? []) as $song) {
+                if (! in_array($song, $effects, true)) {
+                    $unknown[] = $list['name']['en'].' -> '.$song;
+                }
+            }
+        }
+    }
+
+    expect($unknown)->toBeEmpty();
+});
+
+test('every song list a weapon plays from exists', function (): void {
+    $unknown = [];
+
+    foreach (glob(database_path('seeders/data/weapons/*.php')) as $file) {
+        $data = include $file;
+        $lists = collect($data['song-lists'] ?? [])->pluck('name.en')->all();
+
+        foreach ($data['weapons'] ?? [] as $name => $weapon) {
+            if (! isset($weapon['song_list'])) {
+                continue;
+            }
+
+            if (! in_array($weapon['song_list'], $lists, true)) {
+                $unknown[] = $name.' -> '.$weapon['song_list'];
+            }
+        }
+    }
+
+    expect($unknown)->toBeEmpty();
+});
+
+test('every song is played with notes that have artwork', function (): void {
+    $colours = [];
+
+    foreach (glob(database_path('seeders/data/weapons/*.php')) as $file) {
+        foreach ((include $file)['song-lists'] ?? [] as $list) {
+            foreach ($list['songs'] ?? [] as $song) {
+                $colours = array_merge($colours, $song['notes'] ?? []);
+            }
+        }
+    }
+
+    $drawn = collect(array_unique($colours))
+        ->reject(fn (string $colour): bool => is_file(resource_path("images/icons/song-note-{$colour}-icon.png")))
+        ->all();
+
+    expect($colours)->not->toBeEmpty()
+        ->and($drawn)->toBeEmpty();
+});
+
+test('every song effect is named and described in both languages', function (): void {
+    // Four of them shipped with an empty Spanish name and an empty description,
+    // which reaches the page as a blank line under the notes.
+    $missing = [];
+
+    foreach (glob(database_path('seeders/data/weapons/*.php')) as $file) {
+        foreach ((include $file)['song-effects'] ?? [] as $effect) {
+            foreach (['name', 'description'] as $field) {
+                foreach (['en', 'es'] as $locale) {
+                    if (blank($effect[$field][$locale] ?? null)) {
+                        $missing[] = ($effect['name']['en'] ?? '?').": $field ($locale)";
+                    }
+                }
+            }
+        }
+    }
+
+    expect($missing)->toBeEmpty();
+});

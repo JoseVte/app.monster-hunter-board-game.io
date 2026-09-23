@@ -5,8 +5,11 @@ namespace Database\Seeders;
 use Arr;
 use Str;
 use App\Models\Item;
+use App\Models\Song;
 use App\Models\Weapon;
 use App\Models\Monster;
+use App\Models\SongList;
+use App\Models\SongEffect;
 use App\Models\WeaponType;
 use App\Models\WeaponAttack;
 use App\Models\WeaponRecipe;
@@ -52,6 +55,13 @@ class WeaponsSeeder extends Seeder
                 $weaponType = WeaponType::updateOrCreate(['name->en' => $weaponsByType['name']['en']], [
                     'name' => $weaponsByType['name'],
                     'description' => Arr::get($weaponsByType, 'description'),
+                    // The data writes it positionally, head first, the way the
+                    // card prints it; the column is keyed so nothing downstream
+                    // has to remember the order.
+                    'default_armor' => array_combine(
+                        ['head', 'body', 'leg'],
+                        Arr::get($weaponsByType, 'default_armor', [0, 0, 0]),
+                    ),
                     'image_path' => $storage->putFileAs(
                         'weapon-types',
                         resource_path('images/'.$weaponsByType['image']),
@@ -61,6 +71,10 @@ class WeaponsSeeder extends Seeder
                 ]);
 
                 $seededTypes[] = $weaponsByType['name']['en'];
+
+                // Before the weapons, since a horn's card names the list it
+                // plays from and the weapon has to be able to point at it.
+                $this->syncSongLists($weaponType, $weaponsByType);
 
                 foreach (Arr::get($weaponsByType, 'weapons', []) as $weaponName => $weaponDetails) {
                     $seededWeapons[] = $weaponName;
@@ -72,7 +86,15 @@ class WeaponsSeeder extends Seeder
                         'name' => ['en' => $weaponName, 'es' => $weaponDetails['name']],
                         'type_id' => $weaponType->id,
                         'is_default' => Arr::get($weaponDetails, 'default', false),
-                        'has_elemental_attacks' => Arr::get($weaponDetails, 'has_elemental_attacks', false),
+                        // Inferred rather than declared: the data used to carry a
+                        // flag beside the list, and the two could disagree.
+                        'has_elemental_attacks' => filled(Arr::get($weaponDetails, 'elemental_attacks', [])),
+                        // The data writes the element as a one item list, since
+                        // that is how the card prints it, but no weapon carries
+                        // two and a page should not have to unwrap a list of one.
+                        'song_list_id' => $this->songListId($weaponType, Arr::get($weaponDetails, 'song_list')),
+                        'element' => Arr::first(Arr::get($weaponDetails, 'elemental_attacks', [])),
+                        'status_attacks' => array_values(Arr::get($weaponDetails, 'status_attacks', [])),
                         'deviation' => Arr::get($weaponDetails, 'deviation'),
                         'rarity' => Arr::get($weaponDetails, 'rarity', 1),
                         'defense' => Arr::get($weaponDetails, 'defense', 0),
@@ -136,6 +158,50 @@ class WeaponsSeeder extends Seeder
      *
      * @param  array<string, mixed>  $details
      */
+    /**
+     * The effects are a catalogue shared by every list, so they are written once
+     * and the songs point at them. A song is keyed by its list and its effect,
+     * which is what a second run updates rather than duplicates.
+     */
+    private function syncSongLists(WeaponType $weaponType, array $data): void
+    {
+        foreach (Arr::get($data, 'song-effects', []) as $effect) {
+            SongEffect::updateOrCreate(['name->en' => $effect['name']['en']], [
+                'name' => $effect['name'],
+                'description' => $effect['description'],
+            ]);
+        }
+
+        foreach (Arr::get($data, 'song-lists', []) as $position => $list) {
+            $songList = SongList::updateOrCreate(
+                ['name->en' => $list['name']['en'], 'weapon_type_id' => $weaponType->id],
+                ['name' => $list['name'], 'position' => $position],
+            );
+
+            foreach (array_values(Arr::get($list, 'songs', [])) as $order => $song) {
+                $effectName = array_keys($list['songs'])[$order];
+                $effect = SongEffect::where('name->en', $effectName)->firstOrFail();
+
+                Song::updateOrCreate(
+                    ['song_list_id' => $songList->id, 'song_effect_id' => $effect->id],
+                    ['range' => $song['range'], 'notes' => $song['notes'], 'position' => $order],
+                );
+            }
+        }
+    }
+
+    private function songListId(WeaponType $weaponType, ?string $name): ?int
+    {
+        if (! $name) {
+            return null;
+        }
+
+        return SongList::where('name->en', $name)
+            ->where('weapon_type_id', $weaponType->id)
+            ->firstOrFail()
+            ->id;
+    }
+
     private function syncRecipes(Weapon $weapon, array $details): void
     {
         $branches = (array) Arr::get($details, 'branch', [null]);

@@ -7,10 +7,11 @@ import WeaponsIcon from "@/Components/Icons/WeaponsIcon.vue";
 import Card from "@/Components/Card.vue";
 import WeaponTypeIcon from "@/Components/WeaponTypeIcon.vue";
 import CraftWithHunter from "@/Pages/Wiki/Partials/CraftWithHunter.vue";
+import WeaponStats from "@/Components/WeaponStats.vue";
+import AverageDamage from "@/Components/AverageDamage.vue";
+import SongNotes from "@/Components/SongNotes.vue";
+import rangeIcon from '~/icons/range-icon.png';
 import {getRarityColor} from "@/rarity";
-import damageAttack from '~/icons/damage-icon.png';
-import comboAttack from '~/icons/combo-icon.png';
-import defenseIcon from '~/icons/defense-icon.png';
 
 const props = defineProps({
     weapon: Object,
@@ -19,11 +20,6 @@ const props = defineProps({
         default: () => [],
     },
 });
-
-// The stamina board a weapon fills: how many of each attack card it brings.
-const attacks = [1, 2, 3, 4, 5]
-    .map((slot) => ({slot, count: props.weapon[`count_attack_${slot}`]}))
-    .filter(({count}) => count);
 
 // Breadcrumb's icon slots want a component, not a URL or a rarity to tint by,
 // so the type's plain icon and this weapon's own rarity-tinted one are each
@@ -53,12 +49,14 @@ const currentIcon = () => h(WeaponTypeIcon, {weaponType: props.weapon.type, clas
                 <Card class="gap-3 p-5">
                     <div class="flex items-center gap-3">
                         <span class="flex h-10 w-10 min-h-10 min-w-10 items-center justify-center rounded-full bg-gray-300 dark:bg-gray-900">
-                            <WeaponsIcon
+                            <WeaponTypeIcon
+                                :weapon-type="weapon.type"
                                 class="h-5 w-5"
                                 :class="getRarityColor(weapon.rarity)"
                             />
                         </span>
                         <span class="mh-card-name flex-1 text-xl">{{ weapon.name }}</span>
+                        <AverageDamage :weapon="weapon" />
                         <Link
                             class="mh-value"
                             :class="getRarityColor(weapon.rarity)"
@@ -70,31 +68,59 @@ const currentIcon = () => h(WeaponTypeIcon, {weaponType: props.weapon.type, clas
 
                     <div class="mh-rule" />
 
-                    <div class="flex flex-wrap items-center gap-x-4 gap-y-2">
-                        <span
-                            v-for="attack in attacks"
-                            :key="attack.slot"
-                            class="flex items-center gap-1.5"
-                        >
-                            <img
-                                :src="attack.slot > 3 ? comboAttack : damageAttack"
-                                :alt="$t('Attacks')"
-                                class="h-5 w-5"
+                    <WeaponStats :weapon="weapon" />
+
+                    <!-- Only a hunting horn plays any, and the list printed on
+                         its card is what its three songs come from, so the list
+                         names this section the way a branch names the materials
+                         one. The type's page carries all ten. -->
+                    <template v-if="weapon.song_list?.songs?.length">
+                        <h3 class="mh-heading mt-2 text-xs tracking-widest uppercase">
+                            <Link
+                                class="hover:underline"
+                                :href="route('wiki.weapon.type', [weapon.type_id])"
                             >
-                            <span class="mh-value">{{ attack.count }}</span>
-                        </span>
-                        <span
-                            v-if="weapon.defense"
-                            class="flex items-center gap-1.5"
-                        >
-                            <img
-                                :src="defenseIcon"
-                                :alt="$t('Defense')"
-                                class="h-5 w-5"
+                                {{ weapon.song_list.name }}
+                            </Link>
+                        </h3>
+
+                        <ul class="flex flex-col gap-3">
+                            <li
+                                v-for="song in weapon.song_list.songs"
+                                :key="song.id"
+                                class="flex flex-col gap-1 sm:flex-row sm:items-start sm:gap-4"
                             >
-                            <span class="mh-value">{{ weapon.defense }}</span>
-                        </span>
-                    </div>
+                                <SongNotes
+                                    :notes="song.notes"
+                                    class="sm:mt-0.5"
+                                />
+
+                                <div class="min-w-0 flex-1">
+                                    <p class="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-parchment">
+                                        {{ song.effect.name }}
+                                        <!-- Range 0 is the hunter alone, so there
+                                             is no reach worth printing. -->
+                                        <span
+                                            v-if="song.range"
+                                            class="mh-value text-xs"
+                                            :title="$t('Range')"
+                                        >
+                                            <img
+                                                :src="rangeIcon"
+                                                :alt="$t('Range')"
+                                                class="h-4 w-4"
+                                            >
+                                            {{ song.range }}
+                                        </span>
+                                    </p>
+                                    <p
+                                        class="mh-rules"
+                                        v-html="replaceIcons(song.effect.description)"
+                                    />
+                                </div>
+                            </li>
+                        </ul>
+                    </template>
 
                     <!-- Most weapons are made one way. Two dual blades can be
                          built from either of two monsters, at different prices. -->

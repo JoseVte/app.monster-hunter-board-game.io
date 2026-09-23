@@ -10,7 +10,6 @@ import breakIcon from '~/icons/break-icon.png';
 import poison from '~/icons/poison.webp';
 import stun from '~/icons/stun.webp';
 import sleep from '~/icons/sleep.svg';
-import lance from '~/weapon-types/lance.svg';
 import paralysis from '~/icons/paralysis.png';
 import nitro from '~/icons/nitro.png';
 import movement from '~/icons/movement-icon.png';
@@ -34,6 +33,19 @@ import farHunter from '~/icons/far-hunter-icon.png';
 import bushMap from '~/icons/bush-map-icon.png';
 import rockMap from '~/icons/rock-map-icon.png';
 import mudMap from '~/icons/mud-map-icon.png';
+import deviationNone from '~/icons/deviation-none-icon.png';
+import deviationLow from '~/icons/deviation-low-icon.png';
+import deviationAverage from '~/icons/deviation-average-icon.png';
+import deviationHigh from '~/icons/deviation-high-icon.png';
+import switchAxeAxe from '~/icons/switch-axe-axe-icon.png';
+import switchAxeSword from '~/icons/switch-axe-sword-icon.png';
+import deviation from '~/icons/deviation-icon.png';
+import lanceSymbol from '~/icons/lance-icon.png';
+import vial from '~/icons/charged-blade-vial-icon.png';
+import vialPlus from '~/icons/charged-blade-vial-plus-icon.png';
+import kinsectOne from '~/icons/kinsect-1-icon.png';
+import kinsectTwo from '~/icons/kinsect-2-icon.png';
+import kinsectThree from '~/icons/kinsect-3-icon.png';
 
 // The seed data marks a game symbol as :name_icon:. Everything with artwork
 // lives here; anything else falls back to a placeholder rather than printing the
@@ -51,9 +63,9 @@ const icons = {
     poison_icon: { src: poison, alt: 'Poison' },
     stun_icon: { src: stun, alt: 'Stun' },
     sleep_icon: { src: sleep, alt: 'Sleep' },
-    // The symbol printed on the lance's attack cards is the weapon's own,
-    // and the seeder already ships it as the weapon type image.
-    lance_icon: { src: lance, alt: 'Lance' },
+    // The symbol printed on the lance's attack cards, which is its own drawing
+    // rather than the silhouette the seeder ships as the weapon type image.
+    lance_icon: { src: lanceSymbol, alt: 'Lance' },
     paralysis_icon: { src: paralysis, alt: 'Paralysis' },
     nitro_icon: { src: nitro, alt: 'Nitro' },
     // Monster mechanics text calls this effect "blast" where weapon text calls
@@ -85,6 +97,27 @@ const icons = {
     bush_map_icon: { src: bushMap, alt: 'Bush' },
     rock_map_icon: { src: rockMap, alt: 'Rock' },
     mud_map_icon: { src: mudMap, alt: 'Mud' },
+    // The bare token is the deviation symbol itself, with no rating attached.
+    // The four below are a different drawing, the one the rulebook colours to
+    // tell the ratings apart.
+    deviation_icon: { src: deviation, alt: 'Deviation' },
+    deviation_icon_none: { src: deviationNone, alt: 'No deviation' },
+    deviation_icon_low: { src: deviationLow, alt: 'Low deviation' },
+    deviation_icon_average: { src: deviationAverage, alt: 'Average deviation' },
+    deviation_icon_high: { src: deviationHigh, alt: 'High deviation' },
+    // The two modes a switch axe fights in, which is what its attack deck is
+    // split by. The drawing is a white silhouette, so both carry the dark
+    // backing the artwork came with; without it they are invisible in light
+    // mode, which is where they would be read most.
+    switch_axe_axe_icon: { src: switchAxeAxe, alt: 'Axe mode' },
+    switch_axe_sword_icon: { src: switchAxeSword, alt: 'Sword mode' },
+    charged_blade_vial: { src: vial, alt: 'Vial' },
+    charged_blade_vial_plus: { src: vialPlus, alt: 'Vial plus' },
+    // One bug in three colours. As drawn they were three different bugs in a
+    // salmon and an orange near enough to read as the same at 16px.
+    kinsect_icon_1: { src: kinsectOne, alt: 'Kinsect 1' },
+    kinsect_icon_2: { src: kinsectTwo, alt: 'Kinsect 2' },
+    kinsect_icon_3: { src: kinsectThree, alt: 'Kinsect 3' },
 };
 
 // A resistance is the element's symbol on a pentagon, the way the board prints
@@ -111,25 +144,13 @@ function resistance({ src, alt, element }) {
 }
 
 // Names the placeholder announces. The surrounding sentence usually already says
-// the word ("the Axe :switch_axe_axe_icon:"), so the badge shows a symbol rather
-// than repeating it, and the full name goes in the tooltip.
+// the word ("+1 :damage_attack_icon: for every :charged_blade_vial:"), so the
+// badge shows a symbol rather than repeating it, and the full name goes in the
+// tooltip.
 const pending = {
-    deviation_icon: 'Deviation',
-    deviation_icon_none: 'No deviation',
-    deviation_icon_low: 'Low deviation',
-    deviation_icon_average: 'Average deviation',
-    deviation_icon_high: 'High deviation',
-    switch_axe_axe_icon: 'Axe mode',
-    switch_axe_sword_icon: 'Sword mode',
     charge_hammer_icon_1: 'Charge 1',
     charge_hammer_icon_2: 'Charge 2',
-    charged_blade_vial: 'Vial',
-    damage_card_icon: 'Damage card',
     shelling_up_icon: 'Shelling',
-    charged_blade_vial_plus: 'Vial plus',
-    kinsect_icon_1: 'Kinsect 1',
-    kinsect_icon_2: 'Kinsect 2',
-    kinsect_icon_3: 'Kinsect 3',
     // Monster ability, mechanics and reward text, now seeded, carries these.
     investigation_behaviour_icon: 'Investigation behaviour',
 };
@@ -167,6 +188,14 @@ export function replaceIcons(text) {
             ? `<img src="${icon.src}" alt="${icon.alt}" title="${icon.alt}" class="h-4 w-4 inline">`
             : placeholder(name);
     });
+}
+
+// Some things a weapon carries are not written as `:tokens:` at all: its
+// element and the statuses it inflicts are plain names in the seed data, and the
+// panel that shows them wants the artwork at its own size rather than the 16px
+// `replaceIcons` hands back.
+export function iconFor(name) {
+    return icons[name] ?? null;
 }
 
 export const iconNames = Object.keys(icons).concat(Object.keys(resistances));

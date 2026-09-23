@@ -6,16 +6,20 @@ return [
         'es' => 'Lanza Pistola',
     ],
     'description' => [
-        'en' => 'During setup, place the 5 shelling cards face up in a row above your stamina board.<br>When you play an attack card with one or more :shelling_up_icon:, flip a number of shelling cards face down equal to the number of :shelling_up_icon: on the attack card. If there aren\'t enough face up shelling cards for the attack, flip as many as you can.<br>Draw +1 :damage_card_icon: for each shelling card flipped face down while resolving the attack card.<br>When you sharpen your weapon, fill all your shelling cards face up.',
-        'es' => 'Durante la configuración, coloca las 5 cartas de bombardeo boca arriba en una fila sobre tu tablero de resistencia.<br>Cuando juegues una carta de ataque con uno o más :shelling_up_icon:, voltea una cantidad de cartas de bombardeo boca abajo igual a la cantidad de :shelling_up_icon: en la carta de ataque. Si no hay suficientes cartas de bombardeo boca arriba para el ataque, voltee todas las que pueda.<br>Obtenga +1 :damage_card_icon: por cada carta de bombardeo volteada boca abajo mientras resuelve la carta de ataque.<br>Cuando afile su arma, rellene todas tus cartas de bombardeo boca arriba.',
+        'en' => 'During setup, place the 5 shelling cards face up in a row above your stamina board.<br>When you play an attack card with one or more :shelling_up_icon:, flip a number of shelling cards face down equal to the number of :shelling_up_icon: on the attack card. If there aren\'t enough face up shelling cards for the attack, flip as many as you can.<br>Draw +1 :damage_attack_icon: for each shelling card flipped face down while resolving the attack card.<br>When you sharpen your weapon, fill all your shelling cards face up.',
+        'es' => 'Durante la configuración, coloca las 5 cartas de bombardeo boca arriba en una fila sobre tu tablero de resistencia.<br>Cuando juegues una carta de ataque con uno o más :shelling_up_icon:, voltea una cantidad de cartas de bombardeo boca abajo igual a la cantidad de :shelling_up_icon: en la carta de ataque. Si no hay suficientes cartas de bombardeo boca arriba para el ataque, voltee todas las que pueda.<br>Obtenga +1 :damage_attack_icon: por cada carta de bombardeo volteada boca abajo mientras resuelve la carta de ataque.<br>Cuando afile su arma, rellene todas tus cartas de bombardeo boca arriba.',
     ],
     'image' => 'weapon-types/gunlance.svg',
+    'default_armor' => [0, 0, 1],
     'weapons' => [
         'Iron Gunlance' => [
             'default' => true,
             'branch' => 'mineral',
             'name' => 'Lanza Pistola Férrea',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 8,
             'count_attack_2' => 2,
         ],
@@ -25,6 +29,9 @@ return [
             'rarity' => 2,
             'name' => 'Lanza Pistola Acerada',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 7,
             'count_attack_2' => 4,
             'count_attack_3' => 1,
@@ -48,6 +55,9 @@ return [
             'rarity' => 3,
             'name' => 'Cromolanza Pistola',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 5,
             'count_attack_2' => 4,
             'count_attack_3' => 3,
@@ -72,6 +82,9 @@ return [
             'branch' => 'bone',
             'name' => 'Lanza Pistola Ósea',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 5,
             'count_attack_2' => 5,
             'items' => [
@@ -84,6 +97,9 @@ return [
             'rarity' => 2,
             'name' => 'Cañón Óseo',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 6,
             'count_attack_3' => 1,
@@ -107,6 +123,9 @@ return [
             'rarity' => 3,
             'name' => 'Lanza Pistola Megaósea',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 4,
             'count_attack_3' => 3,
@@ -134,6 +153,9 @@ return [
             'rarity' => 3,
             'name' => 'Lanza Pistola Jagras',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 5,
             'count_attack_3' => 3,
@@ -159,6 +181,10 @@ return [
             'rarity' => 4,
             'name' => 'Lanza Pistola Glotona',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+                'sleep',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 6,
             'count_attack_3' => 4,
@@ -185,8 +211,13 @@ return [
             'branch' => 'Rathalos',
             'rarity' => 3,
             'name' => 'Lanza Pistola Rath',
-            'has_elemental_attacks' => true,
             'defense' => 1,
+            'elemental_attacks' => [
+                'fire',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 6,
             'count_attack_3' => 4,
@@ -211,8 +242,13 @@ return [
             'branch' => 'Rathalos',
             'rarity' => 4,
             'name' => 'Grajo Rojo',
-            'has_elemental_attacks' => true,
             'defense' => 1,
+            'elemental_attacks' => [
+                'fire',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 5,
             'count_attack_3' => 5,
@@ -242,6 +278,9 @@ return [
             'rarity' => 3,
             'name' => 'Cañón Acorazado',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 3,
             'count_attack_3' => 4,
@@ -266,6 +305,10 @@ return [
             'rarity' => 4,
             'name' => 'Bláster Barroth',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+                'paralysis',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 5,
             'count_attack_3' => 3,
@@ -293,7 +336,12 @@ return [
             'rarity' => 3,
             'name' => 'Lanza Pistola Maníaca',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'water',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 7,
             'count_attack_3' => 3,
@@ -319,7 +367,12 @@ return [
             'rarity' => 4,
             'name' => 'Cañón Jyura',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'water',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 7,
             'count_attack_3' => 5,
@@ -350,7 +403,12 @@ return [
             'rarity' => 4,
             'name' => 'Ariete Nergal',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'dragon',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 6,
             'count_attack_3' => 5,
             'count_attack_4' => 1,
@@ -376,7 +434,12 @@ return [
             'rarity' => 5,
             'name' => 'Llama de Aniquilación',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'dragon',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 6,
             'count_attack_3' => 3,
             'count_attack_4' => 3,
@@ -391,7 +454,7 @@ return [
                     'Wyrmstake Cannon' => 2,
                 ],
                 'add' => [
-                    'Dragon Burst' => 3,
+                    'Dragon Burst' => 2,
                     'Dragon Wyrmstake Cannon' => 2,
                 ],
             ],
@@ -405,7 +468,12 @@ return [
             'rarity' => 4,
             'name' => 'Lanza Pistola Acero Helado',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'ice',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 7,
             'count_attack_3' => 6,
             'count_attack_4' => 1,
@@ -431,7 +499,12 @@ return [
             'rarity' => 5,
             'name' => 'Brillo Daora',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'ice',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 8,
             'count_attack_3' => 5,
             'count_attack_4' => 3,

@@ -12,11 +12,15 @@ When you draw attack cards you may choose any number of cards from either attack
 Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cualquier mazo de ataque, hasta que el tamaño de tu mano sea 5. Las cartas de ataque de Hacha y Espada tienen cada una sus propias pilas de descarte.',
     ],
     'image' => 'weapon-types/switch-axe.svg',
+    'default_armor' => [0, 0, 1],
     'weapons' => [
         'Proto Iron Axe' => [
             'default' => true,
             'branch' => 'mineral',
             'name' => 'Protohacha Férrea',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 11,
             'count_attack_2' => 4,
         ],
@@ -25,6 +29,9 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'mineral',
             'rarity' => 2,
             'name' => 'Hacha Acerada Ultra',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 10,
             'count_attack_3' => 1,
             'count_attack_4' => 1,
@@ -47,6 +54,9 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'mineral',
             'rarity' => 3,
             'name' => 'Hacha de Aleación',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 8,
             'count_attack_3' => 1,
             'count_attack_4' => 3,
@@ -70,6 +80,9 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
         'Bone Axe' => [
             'branch' => 'bone',
             'name' => 'Hacha Ósea',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 8,
             'count_attack_3' => 2,
             'items' => [
@@ -81,6 +94,9 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'bone',
             'rarity' => 2,
             'name' => 'Machacador Óseo',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 7,
             'count_attack_3' => 3,
             'items' => [
@@ -102,6 +118,9 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'bone',
             'rarity' => 3,
             'name' => 'Supermachacador',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 5,
             'count_attack_3' => 4,
             'count_attack_4' => 1,
@@ -128,7 +147,12 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'Anjanath',
             'rarity' => 3,
             'name' => 'Flammenebeil',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'fire',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 5,
             'count_attack_3' => 3,
             'count_attack_4' => 2,
@@ -153,7 +177,12 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'Anjanath',
             'rarity' => 4,
             'name' => 'Flammenebeil Mordiente',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'fire',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 6,
             'count_attack_3' => 3,
             'count_attack_4' => 3,
@@ -179,7 +208,12 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'Rathalos',
             'rarity' => 3,
             'name' => 'Hacha Rathalos',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'fire',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 6,
             'count_attack_3' => 4,
             'count_attack_4' => 2,
@@ -204,7 +238,12 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'Rathalos',
             'rarity' => 4,
             'name' => 'Rathbringer',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'fire',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 7,
             'count_attack_3' => 3,
             'count_attack_4' => 4,
@@ -232,6 +271,10 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'Barroth',
             'rarity' => 3,
             'name' => 'Hacha Acorazada',
+            'status_attacks' => [
+                'stun',
+                'paralysis',
+            ],
             'count_attack_1' => 6,
             'count_attack_3' => 3,
             'count_attack_4' => 2,
@@ -255,7 +298,13 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'Barroth',
             'rarity' => 4,
             'name' => 'Trituradora Barroth',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'water',
+            ],
+            'status_attacks' => [
+                'stun',
+                'paralysis',
+            ],
             'count_attack_1' => 6,
             'count_attack_3' => 4,
             'count_attack_4' => 2,
@@ -282,6 +331,9 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'Diablos',
             'rarity' => 3,
             'name' => 'Hacha Diablos',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 7,
             'count_attack_3' => 2,
             'count_attack_4' => 3,
@@ -306,6 +358,9 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'Diablos',
             'rarity' => 4,
             'name' => 'Hacha Semper Tyrannis',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 8,
             'count_attack_4' => 6,
             'items' => [
@@ -334,7 +389,12 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'Nergigante',
             'rarity' => 4,
             'name' => 'Gash Nergal',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'dragon',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 5,
             'count_attack_3' => 4,
             'count_attack_4' => 2,
@@ -360,7 +420,12 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'Nergigante',
             'rarity' => 5,
             'name' => 'Luz Perecedera',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'dragon',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 7,
             'count_attack_3' => 1,
             'count_attack_4' => 3,
@@ -388,6 +453,10 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'Teostra',
             'rarity' => 4,
             'name' => 'Arx Teostra',
+            'status_attacks' => [
+                'stun',
+                'blast',
+            ],
             'count_attack_1' => 6,
             'count_attack_3' => 2,
             'count_attack_4' => 5,
@@ -413,6 +482,10 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'Teostra',
             'rarity' => 5,
             'name' => 'Castillo Teostra',
+            'status_attacks' => [
+                'stun',
+                'blast',
+            ],
             'count_attack_1' => 8,
             'count_attack_4' => 6,
             'count_attack_5' => 2,
@@ -440,7 +513,12 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'Kirin',
             'rarity' => 4,
             'name' => 'Zas',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'thunder',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 5,
             'count_attack_3' => 5,
             'count_attack_4' => 2,
@@ -465,7 +543,12 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'branch' => 'Kirin',
             'rarity' => 5,
             'name' => 'Zas Atronador Kirin',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'thunder',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 5,
             'count_attack_3' => 6,
             'count_attack_4' => 3,

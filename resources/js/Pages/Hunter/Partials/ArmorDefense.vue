@@ -6,6 +6,10 @@ defineProps({
         type: [Array, Object],
         default: () => [],
     },
+    defaultArmor: {
+        type: Object,
+        default: null,
+    },
 });
 </script>
 
@@ -18,6 +22,7 @@ defineProps({
         <ArmorTotalsRow
             class="mt-3"
             :armors="armors"
+            :default-armor="defaultArmor"
         />
     </div>
 </template>

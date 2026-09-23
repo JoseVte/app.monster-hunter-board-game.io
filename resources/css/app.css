@@ -173,6 +173,27 @@
   /* A value sits in a near square box with a thin edge. Pale gold on the dark
      panels the game uses; on the light scheme that gold is unreadable over
      cream, so it becomes ink over paper. */
+  /* Seed HTML with no classes of its own: line breaks, bold, and for the two
+     bowguns a table of deviation ratings. Two unrelated pages print it now, the
+     weapon type's rules in the tree and a song's effect on a weapon's card, so
+     it styles the tags from here rather than from whichever component happened
+     to be loaded. */
+  .mh-rules {
+    @apply text-sm leading-relaxed text-gray-700 dark:text-parchment-dim;
+  }
+
+  .mh-rules table {
+    @apply mt-3 w-full border-collapse text-left;
+  }
+
+  .mh-rules td {
+    @apply border-t border-gray-300 px-2 py-1.5 align-top dark:border-gray-700;
+  }
+
+  .mh-rules strong {
+    @apply font-semibold text-gray-900 dark:text-parchment;
+  }
+
   .mh-value {
     @apply inline-flex items-center justify-center gap-1 px-2 py-0.5;
     @apply border font-semibold tabular-nums;

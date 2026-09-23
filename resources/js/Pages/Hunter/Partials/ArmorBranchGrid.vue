@@ -56,6 +56,7 @@ const branches = () => Object.entries(props.armors)
             v-for="slot in armorSlots"
             :key="`current-${slot.key}`"
             :show-advance-skill-description="showAdvanceSkillDescription"
+            :granted="hunter.weapon_type?.default_armor?.[slot.key] ?? 0"
             :armor="equipped[slot.key]"
             :slot-by-id="slotById"
             :equipped-ids="equippedIds"

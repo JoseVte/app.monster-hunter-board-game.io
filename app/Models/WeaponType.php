@@ -20,6 +20,11 @@ class WeaponType extends Model
         'name',
         'description',
         'image_path',
+        'default_armor',
+    ];
+
+    protected $casts = [
+        'default_armor' => 'array',
     ];
 
     public array $translatable = [
@@ -34,6 +39,11 @@ class WeaponType extends Model
     public function weapons(): HasMany
     {
         return $this->hasMany(Weapon::class, 'type_id');
+    }
+
+    public function songLists(): HasMany
+    {
+        return $this->hasMany(SongList::class)->orderBy('position');
     }
 
     public function imageUrl(): Attribute

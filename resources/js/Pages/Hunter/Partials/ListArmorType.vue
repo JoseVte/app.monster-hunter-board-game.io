@@ -41,6 +41,7 @@ const branches = () => Object.entries(props.armors)
 
         <ArmorSlot
             :show-advance-skill-description="showAdvanceSkillDescription"
+            :granted="hunter.weapon_type?.default_armor?.[armorSlot.key] ?? 0"
             :armor="equipped"
             :slot-by-id="slotById"
             :equipped-ids="equippedIds"

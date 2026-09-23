@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Item;
 use App\Models\Hunter;
 use App\Models\Weapon;
 use App\Models\WeaponType;
@@ -47,7 +48,7 @@ if (! function_exists('create_weapon_tree')) {
     function create_weapon_tree(WeaponType $weaponType, ?Hunter $hunter = null): Collection
     {
         $weapons = $weaponType->weapons()
-            ->with(['recipes.items', 'parent'])
+            ->with(['recipes.items', 'parent', 'songList.songs.effect'])
             ->get();
 
         $weapons->each(function (Weapon $weapon) use ($hunter, $weapons): void {
@@ -57,6 +58,8 @@ if (! function_exists('create_weapon_tree')) {
             $weapon->craftable_recipes = $hunter ? $hunter->craftableRecipes($weapon)->pluck('id') : collect();
             $weapon->can_craft = $weapon->craftable_recipes->isNotEmpty();
             $weapon->path_ids = weapon_path_ids($weapon, $weapons);
+            $weapon->missing_chain = $hunter ? weapon_missing_chain($weapon, $weapons, $hunter) : collect();
+            $weapon->chain_items = $hunter ? weapon_chain_items($weapon->missing_chain, $hunter) : collect();
         });
 
         $children = $weapons->groupBy('parent_id');
@@ -89,6 +92,64 @@ if (! function_exists('weapon_path_ids')) {
         }
 
         return $ids;
+    }
+}
+
+if (! function_exists('weapon_missing_chain')) {
+    /**
+     * The ancestors a hunter still has to build before this weapon is even a
+     * question, ordered from the root outwards. It stops at the first one
+     * already in hand, since a line is only ever picked up from where the
+     * hunter left it, and the starting weapon is always in hand.
+     *
+     * @param  Collection<int, Weapon>  $weapons
+     * @return Collection<int, Weapon>
+     */
+    function weapon_missing_chain(Weapon $weapon, Collection $weapons, Hunter $hunter): Collection
+    {
+        $chain = collect();
+        $current = $weapons->firstWhere('id', $weapon->parent_id);
+
+        while ($current) {
+            if ($current->is_default) {
+                break;
+            }
+
+            if ($hunter->weapons->contains('id', $current->id)) {
+                break;
+            }
+
+            $chain->prepend($current);
+            $current = $weapons->firstWhere('id', $current->parent_id);
+        }
+
+        return $chain->values();
+    }
+}
+
+if (! function_exists('weapon_chain_items')) {
+    /**
+     * What that chain costs altogether, one entry per item however many of the
+     * missing weapons ask for it.
+     *
+     * @param  Collection<int, Weapon>  $chain
+     * @return Collection<int, array{id: int, name: string, number: int}>
+     */
+    function weapon_chain_items(Collection $chain, Hunter $hunter): Collection
+    {
+        return $chain
+            ->flatMap(function (Weapon $weapon) use ($hunter): Collection {
+                $recipe = $hunter->affordableRecipes($weapon)->first() ?? $weapon->recipes->first();
+
+                return $recipe?->items ?? collect();
+            })
+            ->groupBy('id')
+            ->map(fn (Collection $entries): array => [
+                'id' => $entries->first()->id,
+                'name' => $entries->first()->name,
+                'number' => $entries->sum(fn (Item $item): int => $item->pivot->number),
+            ])
+            ->values();
     }
 }
 

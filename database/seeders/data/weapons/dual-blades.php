@@ -5,8 +5,8 @@ return [
         'en' => 'Dual Blades',
         'es' => 'Espadas Dobles',
     ],
-    'description' => '',
     'image' => 'weapon-types/dual-blades.svg',
+    'default_armor' => [0, 1, 0],
     'weapons' => [
         'Matched Slicers' => [
             'default' => true,
@@ -20,6 +20,9 @@ return [
             'branch' => 'mineral',
             'rarity' => 2,
             'name' => 'Duorrebanadoras',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 8,
             'count_attack_2' => 3,
             'count_attack_3' => 1,
@@ -42,6 +45,9 @@ return [
             'branch' => 'mineral',
             'rarity' => 3,
             'name' => 'Cromorrebanadoras',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 5,
             'count_attack_2' => 5,
             'count_attack_3' => 2,
@@ -76,6 +82,9 @@ return [
             'branch' => 'bone',
             'rarity' => 2,
             'name' => 'Hachas Salvajes',
+            'status_attacks' => [
+                'blast',
+            ],
             'count_attack_1' => 5,
             'count_attack_2' => 5,
             'items' => [
@@ -97,6 +106,9 @@ return [
             'branch' => 'bone',
             'rarity' => 3,
             'name' => 'Hachas Reforzadas',
+            'status_attacks' => [
+                'blast',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 5,
             'count_attack_3' => 2,
@@ -123,7 +135,9 @@ return [
             'branch' => 'Tobi-Kadachi',
             'rarity' => 3,
             'name' => 'Hachas Púlsar',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'thunder',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 4,
             'count_attack_3' => 3,
@@ -149,7 +163,9 @@ return [
             'branch' => 'Tobi-Kadachi',
             'rarity' => 4,
             'name' => 'Garras Kadachi',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'thunder',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 4,
             'count_attack_3' => 5,
@@ -176,7 +192,9 @@ return [
             'branch' => 'Anjanath',
             'rarity' => 3,
             'name' => 'Hachas Flameantes',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'fire',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 4,
             'count_attack_3' => 3,
@@ -201,7 +219,9 @@ return [
             'branch' => 'Anjanath',
             'rarity' => 4,
             'name' => 'Ciclón Anja',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'fire',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 4,
             'count_attack_3' => 5,
@@ -229,7 +249,9 @@ return [
             'branch' => 'Jyuratodus',
             'rarity' => 3,
             'name' => 'Machetes Maníacos',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'water',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 5,
             'count_attack_3' => 3,
@@ -254,7 +276,12 @@ return [
             'branch' => 'Jyuratodus',
             'rarity' => 4,
             'name' => 'Machetes Jyura',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'water',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 6,
             'count_attack_3' => 4,
@@ -282,6 +309,9 @@ return [
             'branch' => 'Diablos',
             'rarity' => 3,
             'name' => 'Hachas Diablos',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 6,
             'count_attack_3' => 4,
@@ -307,6 +337,9 @@ return [
             'rarity' => 4,
             'name' => 'Garrotes Diablos',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 7,
             'count_attack_3' => 5,
@@ -358,6 +391,9 @@ return [
             'branch' => 'Kulu-Ya-Ku',
             'rarity' => 4,
             'name' => 'Arcanaria',
+            'status_attacks' => [
+                'sleep',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 10,
             'count_attack_3' => 4,
@@ -385,7 +421,9 @@ return [
             'branch' => 'Nergigante',
             'rarity' => 4,
             'name' => 'Gubias Nergal',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'dragon',
+            ],
             'count_attack_2' => 5,
             'count_attack_3' => 6,
             'count_attack_4' => 1,
@@ -410,7 +448,9 @@ return [
             'branch' => 'Nergigante',
             'rarity' => 5,
             'name' => 'Garras Diezmadoras',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'dragon',
+            ],
             'count_attack_2' => 5,
             'count_attack_3' => 7,
             'count_attack_4' => 2,
@@ -437,6 +477,9 @@ return [
             'branch' => ['Teostra', 'Kushala Daora'],
             'rarity' => 4,
             'name' => 'Clavos Gemelos',
+            'status_attacks' => [
+                'blast',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 5,
             'count_attack_3' => 5,
@@ -470,7 +513,12 @@ return [
             'branch' => ['Teostra', 'Kushala Daora'],
             'rarity' => 5,
             'name' => 'Fuego y Hielo',
-            'has_elemental_attacks' => true,
+            'status_attacks' => [
+                'blast',
+            ],
+            'elemental_attacks' => [
+                'ice',
+            ],
             'count_attack_2' => 9,
             'count_attack_3' => 4,
             'count_attack_4' => 3,
@@ -506,7 +554,9 @@ return [
             'branch' => 'Kirin',
             'rarity' => 4,
             'name' => 'Cuernos de Kirin',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'thunder',
+            ],
             'count_attack_2' => 7,
             'count_attack_3' => 4,
             'count_attack_4' => 1,
@@ -532,7 +582,9 @@ return [
             'branch' => 'Kirin',
             'rarity' => 5,
             'name' => 'Monarcas',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'thunder',
+            ],
             'count_attack_2' => 6,
             'count_attack_3' => 6,
             'count_attack_4' => 2,

@@ -10,11 +10,15 @@ return [
         'es' => 'Cuando juegas una carta de ataque con :charged_blade_vial_plus:, roba +1 :damage_attack_icon: por cada :charged_blade_vial: en cartas de ataque boca arriba en tu tablero de resistencia. Luego descarta la carta de ataque boca arriba situada más a la derecha con :charged_blade_vial: en tu tablero de resistencia.',
     ],
     'image' => 'weapon-types/charge-blade.svg',
+    'default_armor' => [0, 1, 0],
     'weapons' => [
         'Proto Commission Axe' => [
             'default' => true,
             'branch' => 'mineral',
             'name' => 'Protohacha Comitiva',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 8,
             'count_attack_2' => 4,
         ],
@@ -23,6 +27,9 @@ return [
             'branch' => 'mineral',
             'rarity' => 2,
             'name' => 'Hacha Élite Comitiva',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 8,
             'count_attack_2' => 3,
             'count_attack_3' => 1,
@@ -46,6 +53,9 @@ return [
             'rarity' => 3,
             'name' => 'Cromoguardián',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 5,
             'count_attack_2' => 4,
             'count_attack_3' => 3,
@@ -69,6 +79,9 @@ return [
         'Bone Strongarm' => [
             'branch' => 'bone',
             'name' => 'Aspa Ósea',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 5,
             'count_attack_3' => 5,
             'items' => [
@@ -80,6 +93,9 @@ return [
             'branch' => 'bone',
             'rarity' => 2,
             'name' => 'Aspa Hueso Pétreo',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 4,
             'count_attack_2' => 5,
             'count_attack_3' => 1,
@@ -103,6 +119,9 @@ return [
             'rarity' => 3,
             'name' => 'Aspa Recia',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 4,
             'count_attack_3' => 3,
@@ -130,6 +149,12 @@ return [
             'rarity' => 3,
             'name' => 'Aspa Jagras',
             'defense' => 1,
+            'elemental_attacks' => [
+                'water',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 3,
             'count_attack_3' => 4,
@@ -155,6 +180,12 @@ return [
             'rarity' => 4,
             'name' => 'Escudo Jagras',
             'defense' => 1,
+            'elemental_attacks' => [
+                'water',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 4,
             'count_attack_3' => 5,
@@ -182,8 +213,10 @@ return [
             'branch' => 'Tobi-Kadachi',
             'rarity' => 3,
             'name' => 'Aspa Púlsar',
-            'has_elemental_attacks' => true,
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 5,
             'count_attack_3' => 2,
@@ -208,8 +241,13 @@ return [
             'branch' => 'Tobi-Kadachi',
             'rarity' => 4,
             'name' => 'Kaina Kadachi',
-            'has_elemental_attacks' => true,
             'defense' => 1,
+            'elemental_attacks' => [
+                'thunder',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 1,
             'count_attack_2' => 6,
             'count_attack_3' => 3,
@@ -239,7 +277,12 @@ return [
             'rarity' => 3,
             'name' => 'Hoja Enfangada',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'water',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 4,
             'count_attack_3' => 5,
@@ -265,7 +308,12 @@ return [
             'rarity' => 4,
             'name' => 'Profundidad Jyura',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'water',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 1,
             'count_attack_2' => 6,
             'count_attack_3' => 5,
@@ -295,6 +343,9 @@ return [
             'rarity' => 3,
             'name' => 'Muro Diablos',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 1,
             'count_attack_2' => 7,
             'count_attack_3' => 1,
@@ -321,6 +372,9 @@ return [
             'rarity' => 4,
             'name' => 'Tyrannis Diablos',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 5,
             'count_attack_3' => 2,
@@ -351,6 +405,12 @@ return [
             'rarity' => 4,
             'name' => 'Azote Nergal',
             'defense' => 1,
+            'elemental_attacks' => [
+                'dragon',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 5,
             'count_attack_3' => 2,
@@ -377,6 +437,13 @@ return [
             'branch' => 'Nergigante',
             'rarity' => 5,
             'name' => 'Espinas de Devastación',
+            'defense' => 1,
+            'elemental_attacks' => [
+                'dragon',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 6,
             'count_attack_3' => 5,
             'count_attack_4' => 3,
@@ -405,7 +472,12 @@ return [
             'rarity' => 4,
             'name' => 'Casca Daora',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'ice',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 8,
             'count_attack_3' => 2,
             'count_attack_4' => 3,
@@ -432,7 +504,12 @@ return [
             'rarity' => 5,
             'name' => 'Tortuga Daora',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'ice',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 8,
             'count_attack_3' => 2,
             'count_attack_4' => 4,

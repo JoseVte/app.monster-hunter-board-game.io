@@ -5,7 +5,7 @@ import _ from "lodash";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 import PrimaryButton from "@/Components/PrimaryButton.vue";
 import DialogModal from "@/Components/DialogModal.vue";
-import WeaponsIcon from "@/Components/Icons/WeaponsIcon.vue";
+import ArmorsIcon from "@/Components/Icons/ArmorsIcon.vue";
 import CogIcon from "@/Components/Icons/CogIcon.vue";
 import Wrench from "@/Components/Icons/Wrench.vue";
 
@@ -116,7 +116,7 @@ const unequip = () => {
         <template #title>
             <div class="flex items-center gap-4">
                 <div class="bg-gray-300 dark:bg-gray-900 rounded-full h-8 w-8 min-h-8 min-w-8 flex items-center justify-center">
-                    <WeaponsIcon
+                    <ArmorsIcon
                         class="h-4 w-4"
                         :class="getRarityColor(armor.rarity)"
                     />

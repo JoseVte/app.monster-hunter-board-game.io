@@ -24,9 +24,14 @@ class ArmorSkillsSeeder extends Seeder
             $armorSkill = ArmorSkill::updateOrCreate([
                 'name->en' => $skill['name']['en'],
             ], Arr::only($skill, ['name', 'description']));
+            // Only the flag: the pieces are named here but every page that
+            // reads them compares against the ids a hunter is wearing, and the
+            // armours do not exist yet. `ArmorsSeeder` fills them in once they
+            // do. Writing the names meanwhile left a window where a set bonus
+            // read as inactive however many pieces were on, and running this
+            // seeder on its own reopened it.
             if (Arr::get($skill, 'bonus-set')) {
                 $armorSkill->bonus_set = true;
-                $armorSkill->bonus_set_armor = $skill['bonus-set'];
                 $armorSkill->save();
             }
         }

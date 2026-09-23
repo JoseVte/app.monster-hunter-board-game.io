@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, ref } from "vue";
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { Link, useForm } from "@inertiajs/vue3";
 import _ from "lodash";
 import CogIcon from "@/Components/Icons/CogIcon.vue";
@@ -7,6 +7,11 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 import WeaponTypeIcon from "@/Components/WeaponTypeIcon.vue";
 import Check from "@/Components/Icons/Check.vue";
 import CraftWeaponModal from "@/Pages/Hunter/Partials/CraftWeaponModal.vue";
+import WeaponStats from "@/Components/WeaponStats.vue";
+import AverageDamage from "@/Components/AverageDamage.vue";
+import SongNotes from "@/Components/SongNotes.vue";
+import Tooltip from "@/Components/Tooltip.vue";
+import rangeIcon from '~/icons/range-icon.png';
 
 const props = defineProps({
     canEdit: Boolean,
@@ -35,36 +40,84 @@ const hunterWeaponCount = (weapon) => _.filter(
 // Hovering a weapon lights the line that made it. The server hands each weapon
 // the ids back to its root, so this is a lookup rather than a walk up parents.
 const scroller = ref(null);
+const trees = ref([]);
+
+// Every row in a tree is the same height, which is what lets an elbow land on
+// the box it points at rather than near it, so a tree has to be as tall as its
+// tallest card and no taller. What that is depends on the buttons a card
+// carries, on whether the weapon adds defense and on how many damage values
+// wrap at the card's width, and a number written out for all three was wrong
+// twice over: the craft button hung out through the bottom. The grid is let go
+// to its content once instead, measured, and pinned back to one height.
+const fitRows = () => {
+    trees.value.filter(Boolean).forEach((tree) => {
+        const cards = [...tree.querySelectorAll('.mh-card')];
+
+        if (! cards.length) return;
+
+        tree.style.setProperty('grid-auto-rows', 'max-content');
+        const tallest = Math.max(...cards.map((card) => card.offsetHeight));
+        tree.style.removeProperty('grid-auto-rows');
+
+        if (tallest) tree.style.setProperty('--mh-row', `${tallest}px`);
+    });
+};
 
 // A tree runs several screens wide, so opening it at the first rarity hides the
 // weapon actually in hand. Only the horizontal offset is moved: scrollIntoView
 // would drag the page itself past the header as well.
+const centreOnEquipped = () => {
+    const box = scroller.value?.getBoundingClientRect();
+
+    // The tree sits inside a tab that Hunter/Show selects after this mounts, so
+    // at this point the panel is still display:none and every rectangle is
+    // zero. Waiting for a width is what makes both the scroll and the measuring
+    // above land on something real.
+    if (! box?.width) return false;
+
+    const equipped = scroller.value.querySelector('.mh-card-equipped');
+    if (! equipped) return true;
+
+    const card = equipped.getBoundingClientRect();
+    scroller.value.scrollLeft += card.left - box.left - (box.width - card.width) / 2;
+
+    return true;
+};
+
+// Rows are measured again whenever the card width changes, since that is what
+// decides whether the damage values wrap, and whenever the tree itself changes,
+// since crafting a weapon puts a second button on its card. Only the width is
+// watched here: reacting to the height as well would answer its own change.
 onMounted(() => {
-    const centreOnEquipped = () => {
-        const box = scroller.value?.getBoundingClientRect();
+    let centred = false;
+    let lastWidth = 0;
 
-        // The tree sits inside a tab that Hunter/Show selects after this mounts,
-        // so at this point the panel is still display:none and every rectangle
-        // is zero. Waiting for a width is what makes the scroll land.
-        if (! box?.width) return false;
+    const fit = () => {
+        const width = scroller.value?.getBoundingClientRect().width;
 
-        const equipped = scroller.value.querySelector('.mh-card-equipped');
-        if (! equipped) return true;
+        if (! width || Math.abs(width - lastWidth) < 1) return;
 
-        const card = equipped.getBoundingClientRect();
-        scroller.value.scrollLeft += card.left - box.left - (box.width - card.width) / 2;
+        lastWidth = width;
+        fitRows();
 
-        return true;
+        if (! centred) centred = centreOnEquipped();
     };
 
-    if (centreOnEquipped()) return;
+    fit();
 
-    const observer = new ResizeObserver(() => {
-        if (centreOnEquipped()) observer.disconnect();
-    });
-
+    const observer = new ResizeObserver(fit);
     observer.observe(scroller.value);
+
+    // Measuring before Montserrat has swapped in reads a name that is still in
+    // the fallback face, and a card that ends up one line taller than the row it
+    // was pinned to. The scroller's own width does not change when that happens,
+    // so the observer above never hears about it.
+    document.fonts?.ready.then(fitRows);
+
+    onBeforeUnmount(() => observer.disconnect());
 });
+
+watch(() => props.weapons, () => nextTick(fitRows), { deep: true });
 
 const litPath = ref([]);
 const light = (weapon) => { litPath.value = weapon.path_ids ?? []; };
@@ -187,6 +240,85 @@ const maxRarity = computed(() => Math.max(
             </span>
         </div>
 
+        <!-- How the weapon type is played: the rules text printed on its card,
+             which is the only place the game explains a switch axe's two decks
+             or a bowgun's deviation. Closed to start with, the way the armour
+             wiki stacks its branches, because the two bowguns carry a table of
+             ratings that would push the tree off the screen. -->
+        <details
+            v-if="weaponType?.description"
+            class="mt-6"
+        >
+            <summary class="mh-heading cursor-pointer text-xs tracking-widest uppercase">
+                {{ $t('How this weapon works') }}
+            </summary>
+
+            <div
+                class="mh-rules mt-3"
+                v-html="replaceIcons(weaponType.description)"
+            />
+        </details>
+
+        <!-- Only the hunting horn plays from song lists, and which of the ten a
+             horn uses is printed on its own card. One collapsible per list, the
+             way the armour wiki stacks its branches: ten open at once is a
+             scroll longer than the tree it sits above. -->
+        <details
+            v-if="weaponType?.song_lists?.length"
+            class="mt-6"
+        >
+            <summary class="mh-heading cursor-pointer text-xs tracking-widest uppercase">
+                {{ $t('Song lists') }}
+            </summary>
+
+            <details
+                v-for="list in weaponType.song_lists"
+                :key="list.id"
+                class="mt-3"
+            >
+                <summary class="cursor-pointer text-sm font-semibold text-gray-800 dark:text-parchment">
+                    {{ list.name }}
+                </summary>
+
+                <ul class="mt-2 flex flex-col gap-3">
+                    <li
+                        v-for="song in list.songs"
+                        :key="song.id"
+                        class="flex flex-col gap-1 sm:flex-row sm:items-start sm:gap-4"
+                    >
+                        <SongNotes
+                            :notes="song.notes"
+                            class="sm:mt-0.5"
+                        />
+
+                        <div class="min-w-0 flex-1">
+                            <p class="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-parchment">
+                                {{ song.effect.name }}
+                                <!-- Range 0 is the hunter alone, so there is no
+                                     reach worth printing beside the name. -->
+                                <span
+                                    v-if="song.range"
+                                    class="mh-value text-xs"
+                                    :title="$t('Range')"
+                                >
+                                    <img
+                                        :src="rangeIcon"
+                                        :alt="$t('Range')"
+                                        class="h-4 w-4"
+                                    >
+                                    {{ song.range }}
+                                </span>
+                            </p>
+                            <p
+                                class="mh-rules"
+                                v-html="replaceIcons(song.effect.description)"
+                            />
+                        </div>
+                    </li>
+                </ul>
+            </details>
+        </details>
+
         <div
             ref="scroller"
             class="mt-6 overflow-x-auto pb-2"
@@ -194,8 +326,8 @@ const maxRarity = computed(() => Math.max(
             <div
                 v-for="entry in weapons"
                 :key="entry.root.id"
+                ref="trees"
                 class="mh-tree mt-8 grid min-w-max items-stretch gap-x-6 gap-y-4"
-                :class="{ 'mh-tree-flat': !hunter }"
                 :style="{ gridTemplateColumns: `2.25rem repeat(${maxRarity}, var(--mh-col))` }"
             >
                 <!-- The root and the path that continues its own material share a
@@ -228,8 +360,40 @@ const maxRarity = computed(() => Math.max(
                                         class="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-gray-300 text-primary-500 dark:bg-gray-900"
                                     />
                                 </span>
-                                <span class="mh-card-name">{{ entry.root.name }}</span>
+                                <span class="mh-card-name flex-1 line-clamp-3">{{ entry.root.name }}</span>
+                                <AverageDamage
+                                    :weapon="entry.root"
+                                    size="sm"
+                                />
                             </div>
+                            <WeaponStats
+                                :weapon="entry.root"
+                                size="sm"
+                                class="mt-2"
+                            />
+                            <!-- A horn's card names the list it plays from, and which one it is decides
+                                 the three songs it can play, so it belongs on the card rather than
+                                 only on the type's page. Small, because the name is long and the card
+                                 is not wide. -->
+                            <Tooltip v-if="entry.root.song_list">
+                                <span class="mt-1 block truncate text-center text-[0.65rem] leading-tight text-gray-600 dark:text-parchment-dim">
+                                    {{ entry.root.song_list.name }}
+                                </span>
+
+                                <template #content>
+                                    <span class="mh-heading mb-1 block text-[0.65rem] tracking-widest uppercase">
+                                        {{ entry.root.song_list.name }}
+                                    </span>
+                                    <span
+                                        v-for="song in entry.root.song_list.songs"
+                                        :key="song.id"
+                                        class="flex items-center gap-2 py-0.5"
+                                    >
+                                        <SongNotes :notes="song.notes" />
+                                        <span>{{ song.effect.name }}</span>
+                                    </span>
+                                </template>
+                            </Tooltip>
                         </CraftWeaponModal>
                     </div>
                 </div>
@@ -289,8 +453,40 @@ const maxRarity = computed(() => Math.max(
                                             class="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-gray-300 text-primary-500 dark:bg-gray-900"
                                         />
                                     </span>
-                                    <span class="mh-card-name">{{ weapon.name }}</span>
+                                    <span class="mh-card-name flex-1 line-clamp-3">{{ weapon.name }}</span>
+                                    <AverageDamage
+                                        :weapon="weapon"
+                                        size="sm"
+                                    />
                                 </div>
+                                <WeaponStats
+                                    :weapon="weapon"
+                                    size="sm"
+                                    class="mt-2"
+                                />
+                                <!-- A horn's card names the list it plays from, and which one it is decides
+                                     the three songs it can play, so it belongs on the card rather than
+                                     only on the type's page. Small, because the name is long and the card
+                                     is not wide. -->
+                                <Tooltip v-if="weapon.song_list">
+                                    <div class="mt-1 block min-w-full truncate text-center text-[0.65rem] leading-tight text-gray-600 dark:text-parchment-dim">
+                                        {{ weapon.song_list.name }}
+                                    </div>
+
+                                    <template #content>
+                                        <span class="mh-heading mb-1 block text-[0.65rem] tracking-widest uppercase">
+                                            {{ weapon.song_list.name }}
+                                        </span>
+                                        <span
+                                            v-for="song in weapon.song_list.songs"
+                                            :key="song.id"
+                                            class="flex items-center gap-2 py-0.5"
+                                        >
+                                            <SongNotes :notes="song.notes" />
+                                            <span>{{ song.effect.name }}</span>
+                                        </span>
+                                    </template>
+                                </Tooltip>
                             </CraftWeaponModal>
                         </div>
                     </template>
@@ -307,14 +503,16 @@ const maxRarity = computed(() => Math.max(
    lets an elbow land on the box rather than near it. */
 .mh-tree {
     /* A phone shows one column at a time whatever the width, so the tree is
-       tightened there: narrower cards and shorter rows put a card and its
-       neighbours on screen together instead of one card and a lot of wire. */
-    --mh-col: 165px;
-    /* Every owned weapon that is not the starting one carries two buttons, equip
-       and craft, and measured they need 144px of card against the 111px one
-       button needs. Anything shorter and the craft button hangs out through the
-       bottom, which is what both 7rem here and 8rem below were doing. */
-    --mh-row: 9.5rem;
+       tightened there: a narrower card puts a card and its neighbours on screen
+       together instead of one card and a lot of wire. It was 165px until the
+       average moved up beside the name, which at that width left the name about
+       fifty pixels and cut every one of them. */
+    --mh-col: 190px;
+    /* Only what a row measures before `fitRows` has had a look, which is one
+       frame on the client and the whole of a server render. It is the tallest
+       case measured, so the correction is downwards and nothing is ever clipped
+       while waiting for it. */
+    --mh-row: 16rem;
     --mh-line: var(--color-gray-400);
     --mh-line-weight: 1px;
     grid-auto-rows: var(--mh-row);
@@ -323,15 +521,7 @@ const maxRarity = computed(() => Math.max(
 @media (min-width: 640px) {
     .mh-tree {
         --mh-col: 220px;
-        --mh-row: 9.5rem;
     }
-}
-
-/* Nobody holding it means no equip and no craft button, so the row only has to
-   hold an icon and a name. */
-.mh-tree-flat,
-.mh-tree-flat.mh-tree {
-    --mh-row: 5rem;
 }
 
 .dark .mh-tree {

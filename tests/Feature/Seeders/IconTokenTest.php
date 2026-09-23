@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Arr;
+
 /**
  * The seed data marks a game symbol as `:name:`, usually but not always ending
  * in `_icon`. Nothing tied the data to the frontend map, so the map had drifted
@@ -96,6 +98,31 @@ test('an icon is either drawn or pending, never both', function (): void {
 
 test('nothing is left pending that the data never mentions', function (): void {
     expect(array_diff(pendingIcons(), seedDataTokens()))->toBeEmpty();
+});
+
+test('every element and status a weapon carries has an icon', function (): void {
+    // These are not written as `:tokens:`, so the sweep above never sees them,
+    // but the weapon panel looks an icon up by exactly the same name.
+    $effects = [];
+
+    foreach (glob(database_path('seeders/data/weapons/*.php')) as $file) {
+        foreach (Arr::get(include $file, 'weapons', []) as $weapon) {
+            $effects = array_merge(
+                $effects,
+                Arr::get($weapon, 'elemental_attacks', []),
+                Arr::get($weapon, 'status_attacks', []),
+            );
+        }
+    }
+
+    $unknown = collect($effects)
+        ->unique()
+        ->reject(fn (string $effect): bool => in_array($effect.'_icon', mappedIcons(), true))
+        ->values()
+        ->all();
+
+    expect($effects)->not->toBeEmpty()
+        ->and($unknown)->toBeEmpty();
 });
 
 test('no icon token is written with brackets instead of colons', function (): void {

@@ -86,6 +86,10 @@ class CampaignHunterController extends Controller
         $weaponTypes = WeaponType::with('weapons')->get();
         $weapons = [];
         if ($weaponType) {
+            // Only the hunting horn has any, and the panel that shows them would
+            // otherwise ask for every effect one query at a time.
+            $weaponType->load('songLists.songs.effect');
+
             $weapons = create_weapon_tree($weaponType, $hunter);
         }
 

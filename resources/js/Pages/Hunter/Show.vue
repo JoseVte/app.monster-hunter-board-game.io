@@ -242,7 +242,10 @@ const hunterEquippedArmor = computed(() => {
                             <span class="text-xs font-semibold tracking-widest text-parchment-dim uppercase">
                                 {{ $t('Total Defense') }}
                             </span>
-                            <ArmorTotalsRow :armors="hunter.equipped_armors" />
+                            <ArmorTotalsRow
+                                :armors="hunter.equipped_armors"
+                                :default-armor="hunter.weapon_type?.default_armor"
+                            />
                             <span
                                 v-if="activeSkillNames.length"
                                 class="text-sm text-gray-600 dark:text-gray-400"
@@ -377,6 +380,7 @@ const hunterEquippedArmor = computed(() => {
                         <ArmorDefense
                             class="mt-4"
                             :armors="hunter.equipped_armors"
+                            :default-armor="hunter.weapon_type?.default_armor"
                         />
 
                         <ActiveSkills

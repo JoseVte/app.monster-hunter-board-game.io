@@ -69,6 +69,10 @@ export default [
             'no-undef': ['off'],
             'vue/html-indent': ['error', 4],
             'vue/multi-word-component-names': ['off'],
+            // A component used in a template but never imported builds and
+            // lints clean, and shows up as a hole on the page with nothing but
+            // a console warning to say so. That happened once already.
+            'vue/no-undef-components': ['error'],
             'vue/no-v-html': ['off'],
             'vue/require-default-prop': ['off'],
         },

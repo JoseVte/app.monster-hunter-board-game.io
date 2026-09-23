@@ -1,5 +1,6 @@
 <script setup>
 import ArmorDefenseRow from "@/Pages/Hunter/Partials/ArmorDefenseRow.vue";
+import defenseIcon from '~/icons/defense-icon.png';
 import ArmorSetPieces from "@/Pages/Hunter/Partials/ArmorSetPieces.vue";
 
 // What is in one slot right now, or that it is empty. An empty slot keeps its
@@ -7,6 +8,13 @@ import ArmorSetPieces from "@/Pages/Hunter/Partials/ArmorSetPieces.vue";
 const props = defineProps({
     showAdvanceSkillDescription: Boolean,
     armor: Object,
+    // What the weapon in hand covers this slot with while it is left bare. A
+    // piece put on replaces it rather than stacking with it, so it only shows
+    // on the empty frame.
+    granted: {
+        type: Number,
+        default: 0,
+    },
     slotById: Object,
     equippedIds: Array,
 })
@@ -62,5 +70,19 @@ const active = (skill) => ! skill.bonus_set || setComplete(skill);
         class="mh-frame border-dashed p-3 text-sm text-gray-600 dark:text-parchment-dim"
     >
         {{ $t('Nothing equipped') }}
+
+        <span
+            v-if="granted"
+            class="mt-2 flex items-center gap-1.5"
+            :title="$t('Granted by the weapon in hand')"
+        >
+            <img
+                :src="defenseIcon"
+                :alt="$t('Defense')"
+                class="h-5 w-5"
+            >
+            <span class="mh-value">{{ granted }}</span>
+            <span class="text-xs">{{ $t('from the weapon') }}</span>
+        </span>
     </div>
 </template>

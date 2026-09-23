@@ -160,6 +160,19 @@ class Hunter extends Model
             return collect();
         }
 
+        return $this->affordableRecipes($weapon);
+    }
+
+    /**
+     * Which of a weapon's recipes the hunter has the parts for, with no regard
+     * for what it is built on. `craftableRecipes()` is this plus that check, and
+     * it answers none for anything further up a line than the hunter has
+     * reached, which says nothing about whether the parts are there.
+     *
+     * @return Collection<int, WeaponRecipe>
+     */
+    public function affordableRecipes(Weapon $weapon): Collection
+    {
         return $weapon->recipes->filter(fn (WeaponRecipe $recipe): bool => $this->canAfford($recipe->items))->values();
     }
 

@@ -46,6 +46,10 @@ class WeaponController extends Controller
 
         $matching = $this->apply(Weapon::where('type_id', $weaponType->id), $filters)->pluck('id');
 
+        // Only the hunting horn has any, and the panel that shows them would
+        // otherwise ask for every effect one query at a time.
+        $weaponType->load('songLists.songs.effect');
+
         return Inertia::render('Wiki/Weapon/Show', [
             'weaponType' => $weaponType,
             'weapons' => create_weapon_tree($weaponType),
@@ -61,7 +65,7 @@ class WeaponController extends Controller
      */
     public function detail(Weapon $weapon): Response
     {
-        $weapon->load(['type', 'parent', 'children', 'recipes.items', 'recipes.monster', 'attacksToAdd', 'attacksToRemove']);
+        $weapon->load(['type', 'parent', 'children', 'recipes.items', 'recipes.monster', 'attacksToAdd', 'attacksToRemove', 'songList.songs.effect']);
 
         return Inertia::render('Wiki/Weapon/Detail', [
             'weapon' => $weapon,

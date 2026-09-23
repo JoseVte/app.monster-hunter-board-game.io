@@ -14,6 +14,7 @@ Al comienzo de tu turno, voltea la carta Kinsect: Harvest Extract boca abajo boc
 Si tienes tres cartas boca arriba de Kinsect: Harvest Extract al final de tu turno, recógelas todas, barájalas y colócalas boca abajo en una fila sobre tu tablero de resistencia.',
     ],
     'image' => 'weapon-types/insect-glaive.svg',
+    'default_armor' => [0, 0, 1],
     'weapons' => [
         'Iron Blade' => [
             'default' => true,
@@ -156,7 +157,9 @@ Si tienes tres cartas boca arriba de Kinsect: Harvest Extract al final de tu tur
             'branch' => 'Anjanath',
             'rarity' => 4,
             'name' => 'Flammenkaefer Mordiente',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'fire',
+            ],
             'count_attack_1' => 5,
             'count_attack_2' => 2,
             'count_attack_3' => 7,
@@ -182,7 +185,9 @@ Si tienes tres cartas boca arriba de Kinsect: Harvest Extract al final de tu tur
             'branch' => 'Rathalos',
             'rarity' => 3,
             'name' => 'Glaive Abrasador',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'fire',
+            ],
             'count_attack_1' => 5,
             'count_attack_2' => 2,
             'count_attack_3' => 5,
@@ -207,7 +212,9 @@ Si tienes tres cartas boca arriba de Kinsect: Harvest Extract al final de tu tur
             'branch' => 'Rathalos',
             'rarity' => 4,
             'name' => 'Rathmaul',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'fire',
+            ],
             'count_attack_1' => 4,
             'count_attack_2' => 3,
             'count_attack_3' => 7,
@@ -235,6 +242,9 @@ Si tienes tres cartas boca arriba de Kinsect: Harvest Extract al final de tu tur
             'branch' => 'Pukei-Pukei',
             'rarity' => 3,
             'name' => 'Glaive Floral',
+            'status_attacks' => [
+                'poison',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 5,
             'count_attack_3' => 4,
@@ -259,6 +269,9 @@ Si tienes tres cartas boca arriba de Kinsect: Harvest Extract al final de tu tur
             'branch' => 'Pukei-Pukei',
             'rarity' => 4,
             'name' => 'Filo Datura',
+            'status_attacks' => [
+                'poison',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 4,
             'count_attack_3' => 7,
@@ -285,6 +298,9 @@ Si tienes tres cartas boca arriba de Kinsect: Harvest Extract al final de tu tur
             'branch' => 'Diablos',
             'rarity' => 3,
             'name' => 'Vara Diablos',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 6,
             'count_attack_3' => 4,
@@ -309,6 +325,9 @@ Si tienes tres cartas boca arriba de Kinsect: Harvest Extract al final de tu tur
             'branch' => 'Diablos',
             'rarity' => 4,
             'name' => 'Glaive Tirana',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 5,
             'count_attack_3' => 6,
@@ -387,6 +406,9 @@ Si tienes tres cartas boca arriba de Kinsect: Harvest Extract al final de tu tur
             'branch' => 'Nergigante',
             'rarity' => 4,
             'name' => 'Choque Nergal',
+            'elemental_attacks' => [
+                'dragon',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 4,
             'count_attack_3' => 5,
@@ -412,6 +434,9 @@ Si tienes tres cartas boca arriba de Kinsect: Harvest Extract al final de tu tur
             'branch' => 'Nergigante',
             'rarity' => 5,
             'name' => 'Catástrofe Regia',
+            'elemental_attacks' => [
+                'dragon',
+            ],
             'count_attack_2' => 6,
             'count_attack_3' => 5,
             'count_attack_4' => 3,
@@ -439,7 +464,9 @@ Si tienes tres cartas boca arriba de Kinsect: Harvest Extract al final de tu tur
             'branch' => 'Kushala Daora',
             'rarity' => 4,
             'name' => 'Éntomo Daora',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'ice',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 7,
             'count_attack_3' => 3,
@@ -465,7 +492,9 @@ Si tienes tres cartas boca arriba de Kinsect: Harvest Extract al final de tu tur
             'branch' => 'Kushala Daora',
             'rarity' => 5,
             'name' => 'Tetidina Daora',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'ice',
+            ],
             'count_attack_2' => 8,
             'count_attack_3' => 4,
             'count_attack_4' => 4,
@@ -492,7 +521,9 @@ Si tienes tres cartas boca arriba de Kinsect: Harvest Extract al final de tu tur
             'branch' => 'Kirin',
             'rarity' => 4,
             'name' => 'Relámpago Cerúleo',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'thunder',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 5,
             'count_attack_3' => 3,
@@ -518,7 +549,9 @@ Si tienes tres cartas boca arriba de Kinsect: Harvest Extract al final de tu tur
             'branch' => 'Kirin',
             'rarity' => 5,
             'name' => 'Levin Verdeante',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'thunder',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 6,
             'count_attack_3' => 3,

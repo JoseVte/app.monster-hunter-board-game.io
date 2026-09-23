@@ -12,11 +12,15 @@ You have attack cards with :charge_hammer_icon_1: or :charge_hammer_icon_2: in y
 Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en tu mazo. Algunas de tus cartas de ataque tienen reglas especiales que atraen cartas de daño adicionales para estos símbolos.',
     ],
     'image' => 'weapon-types/hammer.svg',
+    'default_armor' => [0, 1, 0],
     'weapons' => [
         'Iron Hammer' => [
             'default' => true,
             'branch' => 'mineral',
             'name' => 'Martillo de Hierro',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 10,
             'count_attack_2' => 1,
             'count_attack_4' => 1,
@@ -26,6 +30,9 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'branch' => 'mineral',
             'rarity' => 2,
             'name' => 'Demonio Férreo',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 8,
             'count_attack_2' => 2,
             'count_attack_4' => 2,
@@ -48,6 +55,9 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'branch' => 'mineral',
             'rarity' => 3,
             'name' => 'Archidemonio Férreo',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 5,
             'count_attack_2' => 3,
             'count_attack_4' => 3,
@@ -71,6 +81,9 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
         'Bone Bludgeon' => [
             'branch' => 'bone',
             'name' => 'Porra Ósea',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 7,
             'count_attack_2' => 2,
             'count_attack_4' => 1,
@@ -83,6 +96,9 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'branch' => 'bone',
             'rarity' => 2,
             'name' => 'Maza Fósil',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 5,
             'count_attack_2' => 3,
             'count_attack_4' => 2,
@@ -105,6 +121,9 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'branch' => 'bone',
             'rarity' => 3,
             'name' => 'Gran Roca',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 4,
             'count_attack_2' => 3,
             'count_attack_4' => 3,
@@ -131,7 +150,12 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'branch' => 'Anjanath',
             'rarity' => 3,
             'name' => 'Martillo Flameante',
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'fire',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 8,
             'count_attack_4' => 2,
             'items' => [
@@ -155,7 +179,12 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'rarity' => 4,
             'name' => 'Maza Anja',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'fire',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 9,
             'count_attack_4' => 3,
             'items' => [
@@ -181,6 +210,9 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'branch' => 'Barroth',
             'rarity' => 3,
             'name' => 'Lucerna Acorazada',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 4,
             'count_attack_2' => 2,
             'count_attack_4' => 4,
@@ -204,6 +236,10 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'branch' => 'Barroth',
             'rarity' => 4,
             'name' => 'Rompedor Barroth',
+            'status_attacks' => [
+                'stun',
+                'paralysis',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 5,
             'count_attack_4' => 5,
@@ -229,6 +265,10 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'branch' => 'Pukei-Pukei',
             'rarity' => 3,
             'name' => 'Martillo Floral',
+            'status_attacks' => [
+                'stun',
+                'poison',
+            ],
             'count_attack_1' => 1,
             'count_attack_2' => 8,
             'count_attack_4' => 3,
@@ -252,6 +292,10 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'branch' => 'Pukei-Pukei',
             'rarity' => 4,
             'name' => 'Buon Fiore',
+            'status_attacks' => [
+                'stun',
+                'poison',
+            ],
             'count_attack_1' => 1,
             'count_attack_2' => 9,
             'count_attack_4' => 4,
@@ -278,6 +322,9 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'branch' => 'Diablos',
             'rarity' => 3,
             'name' => 'Trineo Diablos',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 4,
             'count_attack_2' => 3,
             'count_attack_4' => 5,
@@ -303,6 +350,9 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'rarity' => 4,
             'name' => 'Despedazador Diablos',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 5,
             'count_attack_4' => 6,
@@ -330,6 +380,9 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'branch' => 'Kulu-Ya-Ku',
             'rarity' => 3,
             'name' => 'Pico Kulu',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 5,
             'count_attack_2' => 2,
             'count_attack_3' => 5,
@@ -354,6 +407,10 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'branch' => 'Kulu-Ya-Ku',
             'rarity' => 4,
             'name' => 'Pico Aplastador',
+            'status_attacks' => [
+                'stun',
+                'sleep',
+            ],
             'count_attack_1' => 5,
             'count_attack_2' => 3,
             'count_attack_3' => 6,
@@ -382,7 +439,12 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'rarity' => 4,
             'name' => 'Crujidora Nergal',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'dragon',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 7,
             'count_attack_4' => 3,
             'count_attack_5' => 2,
@@ -408,7 +470,12 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'rarity' => 5,
             'name' => 'Pisadas de Obliteración',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'dragon',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 8,
             'count_attack_4' => 3,
             'count_attack_5' => 3,
@@ -437,7 +504,12 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'rarity' => 4,
             'name' => 'Martillo Acero Helado',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'ice',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 10,
             'count_attack_4' => 2,
             'count_attack_5' => 2,
@@ -463,7 +535,12 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
             'rarity' => 5,
             'name' => 'Coloso Daora',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'ice',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 11,
             'count_attack_4' => 2,
             'count_attack_5' => 3,

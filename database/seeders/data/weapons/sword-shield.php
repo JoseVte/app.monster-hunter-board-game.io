@@ -6,11 +6,15 @@ return [
         'es' => 'Espada y Escudo',
     ],
     'image' => 'weapon-types/sword-shield.svg',
+    'default_armor' => [0, 1, 0],
     'weapons' => [
         'Hunter\'s Knife' => [
             'default' => true,
             'branch' => 'mineral',
             'name' => 'Cuchillo de cazador',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 8,
             'count_attack_2' => 2,
         ],
@@ -19,6 +23,9 @@ return [
             'branch' => 'mineral',
             'rarity' => 2,
             'name' => 'Cuchillo Acerado',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 6,
             'count_attack_2' => 5,
             'count_attack_3' => 1,
@@ -42,6 +49,9 @@ return [
             'rarity' => 3,
             'name' => 'Cromorebanadora',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 5,
             'count_attack_2' => 5,
             'count_attack_3' => 2,
@@ -65,6 +75,9 @@ return [
         'Bone Kukri' => [
             'branch' => 'bone',
             'name' => 'Kukri Óseo',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 5,
             'count_attack_2' => 4,
             'count_attack_3' => 1,
@@ -77,6 +90,9 @@ return [
             'branch' => 'bone',
             'rarity' => 2,
             'name' => 'Kukri Jefe',
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 5,
             'count_attack_3' => 2,
@@ -100,6 +116,9 @@ return [
             'rarity' => 3,
             'name' => 'Grand Barong',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 4,
             'count_attack_3' => 3,
@@ -127,6 +146,10 @@ return [
             'rarity' => 3,
             'name' => 'Filo Jagras',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+                'sleep',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 6,
             'count_attack_3' => 2,
@@ -152,6 +175,10 @@ return [
             'rarity' => 4,
             'name' => 'Garrote Jagras',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+                'sleep',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 5,
             'count_attack_3' => 3,
@@ -180,8 +207,13 @@ return [
             'branch' => 'Rathalos',
             'rarity' => 3,
             'name' => 'Cuchillo Abrasador',
-            'has_elemental_attacks' => true,
             'defense' => 1,
+            'elemental_attacks' => [
+                'fire',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 2,
             'count_attack_2' => 6,
             'count_attack_3' => 4,
@@ -206,8 +238,13 @@ return [
             'branch' => 'Rathalos',
             'rarity' => 4,
             'name' => 'Filo Cálido',
-            'has_elemental_attacks' => true,
             'defense' => 1,
+            'elemental_attacks' => [
+                'fire',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 1,
             'count_attack_2' => 7,
             'count_attack_3' => 5,
@@ -236,6 +273,9 @@ return [
             'rarity' => 3,
             'name' => 'Filo Acorazado',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 8,
             'count_attack_3' => 2,
             'items' => [
@@ -259,6 +299,10 @@ return [
             'rarity' => 4,
             'name' => 'Garrote Barroth',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+                'paralysis',
+            ],
             'count_attack_2' => 8,
             'count_attack_3' => 4,
             'items' => [
@@ -284,6 +328,10 @@ return [
             'rarity' => 3,
             'name' => 'Cuchillo Floral',
             'defense' => 1,
+            'status_attacks' => [
+                'poison',
+                'stun',
+            ],
             'count_attack_1' => 1,
             'count_attack_2' => 8,
             'count_attack_3' => 3,
@@ -310,6 +358,10 @@ return [
             'rarity' => 4,
             'name' => 'Flor Datura',
             'defense' => 1,
+            'status_attacks' => [
+                'poison',
+                'stun',
+            ],
             'count_attack_1' => 1,
             'count_attack_2' => 9,
             'count_attack_3' => 4,
@@ -340,6 +392,9 @@ return [
             'rarity' => 4,
             'name' => 'Jack Nergal',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 5,
             'count_attack_3' => 4,
             'count_attack_4' => 3,
@@ -365,7 +420,12 @@ return [
             'rarity' => 5,
             'name' => 'Vanguardia Erradicadora',
             'defense' => 1,
-            'has_elemental_attacks' => true,
+            'elemental_attacks' => [
+                'dragon',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 5,
             'count_attack_3' => 5,
             'count_attack_4' => 3,
@@ -394,6 +454,9 @@ return [
             'rarity' => 4,
             'name' => 'Spada Teostra',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 4,
             'count_attack_3' => 7,
             'count_attack_4' => 3,
@@ -420,6 +483,10 @@ return [
             'rarity' => 5,
             'name' => 'Emblema Teostra',
             'defense' => 1,
+            'status_attacks' => [
+                'stun',
+                'blast',
+            ],
             'count_attack_2' => 7,
             'count_attack_3' => 5,
             'count_attack_4' => 3,
@@ -448,8 +515,13 @@ return [
             'branch' => 'Kirin',
             'rarity' => 4,
             'name' => 'Espada Relámpago I',
-            'has_elemental_attacks' => true,
             'defense' => 1,
+            'elemental_attacks' => [
+                'thunder',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_1' => 3,
             'count_attack_2' => 3,
             'count_attack_3' => 4,
@@ -475,8 +547,13 @@ return [
             'branch' => 'Kirin',
             'rarity' => 5,
             'name' => 'Espada Relámpago II',
-            'has_elemental_attacks' => true,
             'defense' => 1,
+            'elemental_attacks' => [
+                'thunder',
+            ],
+            'status_attacks' => [
+                'stun',
+            ],
             'count_attack_2' => 6,
             'count_attack_3' => 5,
             'count_attack_4' => 2,
