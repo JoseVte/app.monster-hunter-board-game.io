@@ -5,6 +5,7 @@ namespace Tests;
 use Illuminate\Support\Collection;
 use Laravel\Dusk\TestCase as BaseTestCase;
 use Facebook\WebDriver\Chrome\ChromeOptions;
+use PHPUnit\Framework\Attributes\BeforeClass;
 use Facebook\WebDriver\Remote\RemoteWebDriver;
 use Facebook\WebDriver\Remote\DesiredCapabilities;
 
@@ -15,12 +16,19 @@ abstract class DuskTestCase extends BaseTestCase
     /**
      * Prepare for Dusk test execution.
      *
-     * @beforeClass
+     * This file had drifted from the stub Dusk 8 actually ships (compare
+     * vendor/laravel/dusk/stubs/DuskTestCase.stub): the doc-comment
+     * `@beforeClass` annotation this used to carry is never read by PHPUnit
+     * 10+, which only parses the `#[BeforeClass]` attribute for this hook.
+     * With the annotation, `prepare()` silently never ran, chromedriver never
+     * started, and every browser test failed to connect to localhost:9515
+     * before a single assertion.
      */
+    #[BeforeClass]
     public static function prepare(): void
     {
         if (! static::runningInSail()) {
-            static::startChromeDriver();
+            static::startChromeDriver(['--port=9515']);
         }
     }
 

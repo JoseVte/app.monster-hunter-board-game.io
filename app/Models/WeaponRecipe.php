@@ -11,6 +11,8 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 /**
  * One way of making a weapon: the monster line it belongs to and what it costs.
  * Most weapons have exactly one.
+ *
+ * @typescript string | null $expansion_label
  */
 class WeaponRecipe extends Model
 {

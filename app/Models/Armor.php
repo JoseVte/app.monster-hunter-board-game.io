@@ -13,6 +13,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @typescript string $type_value
+ * @typescript string | null $expansion_value
+ */
 class Armor extends Model
 {
     use EagerLoadPivotTrait;

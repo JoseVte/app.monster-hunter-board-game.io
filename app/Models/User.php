@@ -23,6 +23,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/** @typescript string $profile_photo_url */
 class User extends Authenticatable implements MustVerifyEmail
 {
     use EagerLoadPivotTrait;

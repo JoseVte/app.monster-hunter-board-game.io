@@ -10,7 +10,7 @@ export default defineConfig({
     },
     resolve: {
         alias: {
-            '~': resolve(__dirname, './resources/images')
+            '~': resolve(import.meta.dirname, './resources/images')
         }
     },
     plugins: [
@@ -19,7 +19,7 @@ export default defineConfig({
             ssr: 'resources/js/ssr.js',
             refresh: true,
             alias: {
-                '@': resolve(__dirname, './resources/js'),
+                '@': resolve(import.meta.dirname, './resources/js'),
             },
             appType: 'spa',
         }),

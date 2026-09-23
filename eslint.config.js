@@ -84,4 +84,19 @@ export default [
             globals: globals.node,
         },
     },
+
+    {
+        files: ['resources/js/**/*.test.ts', 'resources/js/__tests__/**'],
+        languageOptions: {
+            globals: {
+                ...globals.node,
+                describe: 'readonly',
+                expect: 'readonly',
+                it: 'readonly',
+                vi: 'readonly',
+                beforeEach: 'readonly',
+                afterEach: 'readonly',
+            },
+        },
+    },
 ];

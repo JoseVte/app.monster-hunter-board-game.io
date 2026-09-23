@@ -13,6 +13,10 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @typescript string $icon_url
+ * @typescript Array<{ title: string; description: Array<{ title: string; description: string }> }> $mechanics
+ */
 class Monster extends Model
 {
     /**

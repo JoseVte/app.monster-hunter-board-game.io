@@ -12,6 +12,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use AjCastro\EagerLoadPivotRelations\EagerLoadPivotTrait;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
+/**
+ * @typescript string $description_parsed
+ * @typescript string $description_parsed_html
+ */
 class Campaign extends Model
 {
     use EagerLoadPivotTrait;

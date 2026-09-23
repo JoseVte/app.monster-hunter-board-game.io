@@ -50,6 +50,17 @@ readonly class Recaptcha implements ValidationRule
             return;
         }
 
+        // success: true with no `score` is not a verdict either, whether from a
+        // v2-era key pair (Google's own published test keys included) or a
+        // future change to what Google sends back. Same call again.
+        if ($response['success'] && ! isset($response['score'])) {
+            Log::warning('reCAPTCHA answered without a score, letting the request through.', [
+                'response' => $response->json(),
+            ]);
+
+            return;
+        }
+
         if (! $response['success'] || $response['score'] <= $threshold) {
             $fail(__('We could not confirm you are not a robot. Please reload the page and try again.'));
         }

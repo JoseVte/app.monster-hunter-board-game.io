@@ -203,6 +203,81 @@ the provider merges with `mergeConfigFrom`, which only merges the top level.
 `is_dir` so that it fails on macOS too. `is_dir` would answer yes to the wrong case on the
 machine where the mistake is most likely to be made, so it would pin nothing.
 
+### Generated frontend types
+
+`composer generate-types` runs `artisan typescript:transform`, which walks every model
+under `app/` through `App\Support\TypeScript\ModelShape` and `ModelTransformer` and writes
+`resources/js/types/generated.d.ts`, then `artisan ziggy:generate --types-only` writes
+`resources/js/types/ziggy.d.ts` beside it. Both files are committed rather than built on
+demand, because the eventual conversion of 163 `.vue` files to TypeScript needs them on
+disk to typecheck against, not produced by a step a contributor might forget. The transform
+needs a migrated database, since `Schema::getColumns()` reads the real table rather than a
+model's own casts alone, so it cannot run from a bare checkout.
+`tests/Feature/TypeScript/GeneratedTypesAreCurrentTest.php` fails the suite when the
+committed file and a fresh `ModelShape::for()` call disagree on a model's property names,
+which turns a forgotten `composer generate-types` into a red test rather than a type that
+quietly stopped matching the database.
+
+`ModelShape` exists at all because of two things `HasTranslations::toArray()` does that a
+plain reading of the schema would miss. A translatable column such as `Monster.name` is a
+JSON blob in the database and a plain string by the time Inertia sees it, since `toArray()`
+flattens it to the current locale on the way out; and a column cast to a `TranslatableEnum`
+arrives as that enum's translated label, a string, never the enum's own backing value. A
+generator that read the schema and the casts alone would tell every `.vue` file that these
+columns are the raw JSON or the enum type, wrong in a way that would not fail until runtime.
+
+A relation only reaches the frontend when the controller eager loaded it, so every relation
+`ModelShape` describes, and the `_count` key beside it, is optional. The alternative would
+claim a relation is always present, which is the exact shape of bug these types exist to
+catch. A `MorphTo` relation is skipped entirely rather than guessed at, because describing
+one calls the relation method on an unsaved model, and with the morph type column unset that
+falls through to `morphEagerTo()` and builds the relation off the parent's own query:
+`Craft::craftable()` would describe itself as `Craft`. Leaving the key undeclared makes
+reading it a compile error instead of a silent lie.
+
+An appended accessor with no matching `@typescript` tag fails generation by name, on
+purpose. `unknown` is not a type error, so an accessor left at `unknown` would typecheck
+against whatever a component does with it, the one outcome this generator is built to
+refuse: a type that is wrong is worse than no type at all. The tag itself is deliberately
+not `@property`. `@property` is PHPDoc read by PhpStorm, by `php artisan
+ide-helper:models`, and by any static analyser, and the value on its right here is
+TypeScript, not PHP: writing `@property App.Enum.InvitationStatus $status` tells all three
+that the model has a real property of a PHP class that does not exist. `@typescript` is a
+tag nothing else in the toolchain reads, so it can carry a TypeScript type without lying to
+the rest of it. Nine models carry one today: `Invitation`, `Monster`, `Campaign`,
+`WeaponRecipe`, `Weapon`, `User`, `Item`, `Armor` and `WeaponType`.
+
+Two classes never appear under `app/`, so the transformer's own
+`transformDirectories(app_path())` would never emit a type for them on its own:
+`Spatie\Permission\Models\Role` and `...\Permission`, the two that `CampaignMembership::role()`,
+`CampaignInvitation::role()`, and `User::roles()` and `permissions()` relate to.
+`resources/js/types/vendor-models.d.ts` declares `App.Models.Role` and `App.Models.Permission`
+by hand, and `ModelShape::VENDOR_MODELS` is the allow-list that keeps the file honest: a
+relation to any other class outside `App\Models` fails generation, naming the model, the
+relation and the class, rather than quietly naming a type nobody wrote and letting
+`skipLibCheck` hide the result as `any`.
+
+Not every relation gets that treatment. `ModelShape::relations()` only considers a method
+with a declared `ReflectionNamedType` return, and Jetstream's `Team::users()`,
+`Team::owner()` and `HasTeams::teams()` have none, so `App.Models.Team` has no `users` or
+`owner`, and `App.Models.User` has no `teams`, `current_team` or `owned_teams`. That gap is
+real rather than theoretical: Jetstream's own `ShareInertiaData` puts `current_team` and
+`all_teams` on `auth.user` on every request. Whoever writes the hand rolled `inertia.d.ts`
+for the shared Inertia props next will need to declare those two by hand, the same way
+`vendor-models.d.ts` declares `Role` and `Permission`, because `ModelShape` cannot reach
+into a vendor parent it does not control to add the annotation itself.
+
+Two places in the implementation are narrower than the description above makes them sound,
+and a future reader should not be misled by either. The `@typescript` tag overrides a
+column's type and supplies an appended accessor's, but the relations loop that runs after
+both never consults it: a tag named after an actual relation method would be silently
+overwritten by whatever `ModelShape` derives for that relation, not an error and not a
+warning. And `GeneratedTypesAreCurrentTest` compares the committed file against
+`ModelShape`'s own output, which catches a model that drifted from what the generator would
+produce for it now, but it can never catch the generator's own view of a model diverging
+from what Inertia actually serialises, since both sides of that comparison come from the
+same code.
+
 ### The public page
 
 `resources/js/Pages/Welcome.vue` is the whole of it, no partials.
@@ -266,6 +341,19 @@ Seed data marks a game symbol as `:name_icon:`. `resources/js/icons.js` holds th
 and `replaceIcons` swaps them, exposed as a global mixin method and used through `v-html`.
 The token pattern only captures `[a-z0-9_]`, so nothing from the data can reach the markup
 as anything but a name.
+
+**That guarantee covers the substitution, not the sentence around it.** `replaceIcons` runs
+`text.replaceAll(TOKEN, ...)`; anything outside a matched `:token:`, quotes and angle
+brackets included, passes through completely unrewritten, because nothing here strips or
+escapes it. Its output reaches `v-html` at 14 call sites, each traced: weapon type and song
+effect descriptions, armour skill descriptions, monster ability, setup, broken-part and
+mechanics text, and the reward table. Every one of those is seed data, none is anything a
+visitor can type, so there is no live vulnerability today. But that is incidental to how the
+callers happen to use it, not something `replaceIcons` itself enforces, and the day a
+campaign description or a hunter's name is ever passed through it instead, that becomes
+stored XSS. `resources/js/__tests__/icons.test.ts` pins the token boundary, not the absence
+of a sanitizer: a literal `<script>` next to a token is left exactly as written, which is
+the documented behaviour, not a bug that test is catching.
 
 It used to be a hand written chain of `replaceAll` inside `app.js`, which is why
 `:dragon_icon:` appeared twice and why **water, ice, thunder and dragon all carried
@@ -457,8 +545,8 @@ several of them carry local changes (the Campaign members UI is a fork of the Te
 ### Continuous integration
 
 `.github/workflows/laravel.yml` runs the Pest suite, `sentry.yml` cuts a release on push to
-`main`. Both pin every action to a commit SHA with the version in a trailing comment; keep
-that style when bumping.
+`main`, and `dusk.yml` runs the browser suite in `tests/Browser`. All three pin every action
+to a commit SHA with the version in a trailing comment; keep that style when bumping.
 
 The workflow **must** stay on PHP 8.5 or newer. `config.platform.php` is pinned to 8.5.0, so
 `composer install` happily succeeds on an older PHP (it simulates 8.3 when resolving) and
@@ -471,14 +559,56 @@ override variables that already exist in the environment, so setting them in the
 silently overrode the `sqlite :memory:` from `phpunit.xml` with a file database. Leave them
 unset and let `phpunit.xml` decide.
 
-`pest --parallel` is deliberately not used. The suite runs in about six seconds and
-`TestCase::setUp()` seeds on every test, so parallelism buys nothing and adds risk.
+`pest --parallel` is deliberately not used, though the case against it has not aged well
+and is worth restating rather than patched over. It used to lean on the suite taking six
+seconds, cheap enough that the added moving parts of running it in parallel would not pay
+for themselves. The suite takes about 42 seconds now, measured rather than guessed, and
+almost none of that growth is new work: the twenty tests in `tests/Feature/TypeScript/`,
+which cover the types generated for the frontend, cost about 0.72s together, and the ten
+slowest tests in the whole run, all pre-existing, are seeder tests exercising the full
+weapon, armour and monster data. `TestCase::setUp()` seeds once per test whether the suite
+runs serially or across parallel workers, so parallelism does not remove that cost, it only
+has a chance to overlap it across processes that each also pay their own bootstrap, and
+whether that trade is worth it has not actually been measured. What is measured is that ten
+specific tests account for more than a quarter of the suite's time, which is the cheaper,
+already-identified thing to fix before reaching for the harness. Revisit `--parallel` if
+those tests are fixed and the suite is still slow enough to matter.
 
 The `frontend` job runs `npm ci`, `npm run lint` and `npm run build` on Node 22. It also
 installs the composer packages (`--no-dev`), because `resources/js/app.js` imports Ziggy
 from `vendor/tightenco/ziggy/dist/vue.m`, so the build fails with an unresolved import if
 `vendor/` is absent. It needs no `.env`. Node 22 is the floor: `readdirp` and `sass` require
 `>= 20.19`, and `glob`, `jackspeak` and `lru-cache` require `20 || >=22`.
+
+**`dusk.yml` is its own workflow, not a job in `laravel.yml`**, so a flaky browser cannot fail
+the fast suite it runs alongside. Unlike `laravel.yml` and `sentry.yml`, it triggers on every
+push and pull request rather than only against `main`.
+
+It runs against MySQL rather than the Pest suite's sqlite `:memory:`, because Dusk drives the
+application through a real HTTP server (`php artisan serve`) in a second process, and an in
+memory database exists only inside the process that opened it: the server and the assertions
+would each be talking to their own empty database. `phpunit.dusk.xml` already declares its own
+`Browser` testsuite for this, so nothing was added to `phpunit.xml`; that file stays scoped to
+what `vendor/bin/pest` runs, or an ordinary test run would try to start a browser too.
+
+`npm run build` runs before Dusk for the same reason it runs before the `frontend` job's own
+checks: without `public/build`, Inertia 3 loads the page and `#app` stays empty, and nothing
+reaches the console, so a Dusk assertion against a page that never mounted fails with no hint
+that the real cause was a missing build.
+
+**`.env.dusk.ci` is committed and holds no secret.** `APP_KEY` is generated by the job rather
+than stored, and the reCAPTCHA pair in it is Google's own published test keys, documented to
+always verify and never return a score, which `App\Rules\Recaptcha` already treats the same as
+an unreachable Google. Its `DB_DATABASE` has to read `monster_hunter_dusk`, matching
+`phpunit.dusk.xml`'s own `<env name="DB_DATABASE">`: the workflow's `cp .env.dusk.ci .env` step
+feeds the served application, while PHPUnit's `<env>` entries feed the Dusk process that drives
+the browser, and the two only end up looking at the same data if they agree on its name. A
+mismatch there would have the browser writing to one database and the assertions reading
+another, and the failure would look like nothing at all.
+
+Screenshots and console logs from a failing run upload as an artifact
+(`tests/Browser/screenshots`, `tests/Browser/console`); a Dusk failure without them is close to
+unreadable.
 
 ### Checking mail works
 
@@ -619,6 +749,55 @@ client instead.
 suite opens a connection to the SSR server on `127.0.0.1:13714`, fails, and quietly falls
 back to client rendering. It stayed invisible until `preventStrayRequests` turned it into 88
 failures at once.
+
+### Frontend tests
+
+`resources/js/__tests__/` holds one unit-test file for each of five pure, stateless modules,
+`damage.js`, `armorDefense.js`, `armorSkills.js`, `rarity.js` and `icons.js`, all still plain
+JavaScript as this is written, plus `smoke.test.ts`, which mounts every page and partial
+under `Pages/Wiki` and asserts each one renders something and warns about nothing. `npm run
+test:run` is Vitest: 6 files, 49 tests, and the run is meant to stay pristine, no skips and
+nothing printed.
+
+They were written against plain JavaScript, before any file moved to TypeScript, and that
+ordering was deliberate rather than incidental. Written afterwards, a test can only describe
+what a conversion actually produced, bug included; a component that started rendering nothing
+after its move would simply become the new expected result. Written first, against behaviour
+nobody disputed yet, they are characterisation tests: whatever changes a component afterwards,
+including a later move to TypeScript, cannot change what it does without turning one of them
+red.
+
+**`resources/js/__tests__/setup.ts` is what makes any of that possible**, and none of its
+pieces are there for decoration. `@vue/test-utils`'s bare `mount()` knows nothing about this
+app's plugins, so it installs a `vue-i18n` instance with an empty message catalog and both
+of its warnings disabled, since no component's rendering is supposed to depend on the actual
+translated text, only on `$t()` existing and returning something printable. It sets up
+Ziggy's `route()` twice: once as a real global, for `<script setup>` code that calls it
+directly, and once as a mixin method, because a component whose *template* calls
+`route(...)` reaches it through `_ctx.route`, not `globalThis.route`, and a setup that only
+did the first looks correct right up until that component throws "route is not a function".
+`replaceIcons` and `getRarityColor`, the app's two other global mixin methods, go in beside
+it for the same reason: nothing in `@vue/test-utils` knows about a mixin `app.js` installs at
+runtime. And rather than stub Inertia's `Link` and `Head` and reimplement what `usePage()`
+needs, it mounts Inertia's real `App` root once, with a fake `initialPage`, because
+`usePage()`'s state lives in a module-level ref that only a genuine mount populates; several
+components read `$page.props` or call `usePage()` directly (`AppLayout.vue`, `Banner.vue`,
+`LocaleDropdown.vue`, and others reached through every Wiki page's layout), and stubbing
+would leave every one of them with nothing to read. Miss any single piece here and the
+failure is not a crash, it is a console warning, which is exactly what `smoke.test.ts`
+catches and fails on.
+
+**Two assertions in `smoke.test.ts` look removable and are not.** The glob
+(`import.meta.glob('/resources/js/Pages/Wiki/**/*.vue')`) is asserted to match at least 16
+files before anything else runs, because a glob matching nothing turns every `it.each` below
+it into a vacuous pass, and this repository has already shipped exactly that failure once: a
+green `npm run typecheck` that walked 175 files and checked none of them. The `warnings`
+assertion, that a mount produced none, is the other one: `CraftWithHunter.vue` gates its
+whole template on `! (weapon?.is_default || armor?.is_default)`, the shared fixture bag
+handed it a `weapon` with `is_default: true`, and the component rendered `<!--v-if-->` and
+nothing else, non-empty and silent, so it passed on "rendered something" while exercising
+none of its own markup until that fixture value was corrected. A mount assertion alone would
+still be green on that bug.
 
 ### Local environment traps
 

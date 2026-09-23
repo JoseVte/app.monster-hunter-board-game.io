@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
+/** @typescript App.Enum.InvitationStatus $status */
 class Invitation extends Model
 {
     protected $fillable = [

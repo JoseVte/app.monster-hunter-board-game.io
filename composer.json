@@ -95,7 +95,8 @@
             "@php artisan vue:translations --output=resources/js/vue-i18n-locales.generated.js"
         ],
         "generate-types": [
-            "@php artisan typescript:transform"
+            "@php artisan typescript:transform",
+            "@php artisan ziggy:generate --types-only resources/js/types/ziggy.d.ts"
         ]
     },
     "extra": {

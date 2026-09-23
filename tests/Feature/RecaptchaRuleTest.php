@@ -53,6 +53,21 @@ test('an unreachable Google lets the request through', function (): void {
     expect(validateToken('a-token')->fails())->toBeFalse();
 });
 
+// success: true with no `score` is the same situation as an unreachable Google
+// or a 5xx: an answer came back, but it is not a verdict this rule can read.
+// Google's own published test keys answer exactly this way, which is what
+// lets the Dusk suite use them instead of a real key pair. A rejection is
+// still a rejection either side of that branch.
+test('a token Google verifies without a score is let through, but a rejection still fails', function (): void {
+    fakeRecaptcha(['success' => true, 'action' => 'test']);
+
+    expect(validateToken('a-token')->fails())->toBeFalse();
+
+    fakeRecaptcha(['success' => false, 'error-codes' => ['invalid-input-response']]);
+
+    expect(validateToken('a-token')->fails())->toBeTrue();
+});
+
 test('the message says what happened and mentions no telephone', function (): void {
     fakeRecaptcha(['success' => true, 'score' => 0.1]);
 
