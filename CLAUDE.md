@@ -117,7 +117,7 @@ years. More to the point it gated nothing: no script anywhere was conditional on
 consent was decorative. With no non-exempt cookies left there is nothing for it to ask
 about.
 
-**reCAPTCHA loads only where it is verified.** `resources/js/recaptcha.js` calls
+**reCAPTCHA loads only where it is verified.** `resources/js/recaptcha.ts` calls
 `recaptcha-v3`'s `load()` from the login and register components. It used to be the
 `vue-recaptcha-v3` plugin installed on the app in `app.js`, and that plugin's `install()`
 loads Google's script immediately, so the wiki and the public page carried it too. A cookie
@@ -190,8 +190,8 @@ throwing.
 
 **`config/inertia.php` exists for one line.** The package default points
 `pages.paths` at `resource_path('js/pages')`, lowercase, which is what the newer Laravel
-starter kits use; this project keeps `resources/js/Pages`, which is also what `app.js` and
-`ssr.js` glob. Nothing breaks at runtime, since `pages.ensure_pages_exist` is false and the
+starter kits use; this project keeps `resources/js/Pages`, which is also what `app.ts` and
+`ssr.ts` glob. Nothing breaks at runtime, since `pages.ensure_pages_exist` is false and the
 frontend resolves a component against the Vite bundle rather than the filesystem. It is
 `assertInertia` that pays: `testing.ensure_pages_exist` is true, so it looks the file up on
 disk, a case-insensitive filesystem answers for the wrong case, and the result is a suite
@@ -278,6 +278,156 @@ produce for it now, but it can never catch the generator's own view of a model d
 from what Inertia actually serialises, since both sides of that comparison come from the
 same code.
 
+### The TypeScript conversion
+
+A snapshot, taken 24 September 2026, not a permanent claim: 36 of the 163 `.vue` files under
+`resources/js` carry `lang="ts"`. The entry points, the five pure modules, the three
+infrastructure modules, the shared props and route names, and the Wiki are typed: 16 files
+under `Pages/Wiki` plus 20 shared components with a `<script>` block, the ones the Wiki
+reaches into. (29 was the count of shared components the Wiki *imports*, not the count that
+carry `lang="ts"`; the two numbers measure different things and should not be read as the
+same claim.) Hunter, Campaign, Profile,
+Teams, API and the rest of the shared library are not, and copying the nearest neighbour for
+a new component in one of those trees still produces JavaScript today. `tests/Feature/
+FrontendRatchetTest.php` is what stops that count from drifting upward by accident; see below.
+
+**The `defineProps` optionality trap is the one a converter cannot do without.** The runtime
+form, `defineProps({x: Object})`, declares an optional prop; the type form, `defineProps<{x:
+Foo}>()`, declares a required one. A mechanical conversion that copies the key names across
+without adding `?` tightens every prop silently, and the typechecker will not say a word,
+because the resulting type is simply stricter than the one it replaced, not wrong on its
+face. This caught `Table/Cell.vue`: `Wiki/Item/Index.vue` always passes a `url`, but
+`Wiki/Monster/Show.vue` uses the component bare, with no `url` at all, and only reading every
+caller (not just the nearest one) surfaces that. The prop is `url?: string` now.
+
+**The subtlest thing on the branch, and the one most likely to be undone by someone who has
+not hit the symptom it fixes:** an ambient augmentation of a Vue component's instance
+properties has to target `@vue/runtime-core`, never `vue`. `vue`'s own package re-exports
+`@vue/runtime-dom`, which itself re-exports and augments `@vue/runtime-core`, and that is the
+module an SFC's component instance type is actually built from with this Vue and vue-tsc
+version. `declare module 'vue' { interface ComponentCustomProperties {...} }` compiles
+without complaint and is inert: `$t`, `route`, `replaceIcons` and `getRarityColor` all come
+back "property does not exist" inside a `<template>`, though script code calling
+`this.route(...)` sees them fine. It cost a task's worth of template rewrites, chasing what
+looked like a missing property on each one individually, before the module being augmented
+turned out to be the actual fault. `resources/js/types/inertia.d.ts` augments
+`@vue/runtime-core` for `replaceIcons`, `getRarityColor` and `route`, and separately for
+`$t`, because `vue-i18n`'s own declaration file augments `'vue'`, the wrong module by this
+project's own finding, so `$t` has to be redeclared locally against `ComposerTranslation`
+rather than trusted to the package that owns it.
+
+The three hand written declaration files under `resources/js/types/` exist because nothing
+generates their contents. `inertia.d.ts` describes `HandleInertiaRequests::share()`, a PHP
+array literal with no class and no columns behind it, so there is nothing for a reflection
+based generator to walk. `ziggy-global.d.ts` exists because the generated `ziggy.d.ts`
+declares an augmentation of a module, `ziggy-js`, that nothing in this program ever imports;
+without a bare `declare module 'ziggy-js';` to create that module first, the augmentation has
+nowhere to attach and every route name typo resolves to an unresolvable type that accepts
+anything. The same file also declares the bare `Ziggy` global Blade's `@routes` directive
+injects, which `ZiggyVue`'s `install()` reads directly and which has no import path of its
+own to declare against. `vendor-models.d.ts` exists because `Role` and `Permission`
+(`spatie/laravel-permission`) are the two models this app relates to that live outside
+`app/`, so `composer generate-types`, which only walks `app_path()`, never sees them;
+`ModelShape::VENDOR_MODELS` is the allow list that keeps a third one from going quietly
+undeclared instead of failing generation by name.
+
+**A misspelt route name is a compile error. A misspelt prop key is not, and the two should
+not be assumed to behave alike.** `ziggy-global.d.ts` narrows `route()`'s name argument to
+`keyof RouteList`, so a typo there fails `npm run typecheck`. `@inertiajs/core`'s own
+`PageProps` is `{ [key: string]: unknown }`, an index signature, and merging `SharedProps`
+into it in `inertia.d.ts` adds the declared keys on top without removing that signature, so
+`page.props.canRegisterXYZ` still compiles, typed `unknown`, and only fails later if it lands
+somewhere that rejects `unknown`.
+
+**A runtime membership guard uses `Object.hasOwn`, never `in`.** `in` walks the prototype
+chain, so `'toString' in someRecord` is `true`, and a type predicate built on `in` would say
+yes to a key that was never in the data. `SongNotes.vue`, `WeaponStats.vue`,
+`Wiki/Item/Show.vue`, `Wiki/Armor/Detail.vue`, `Wiki/Monster/Show.vue` and
+`Wiki/Monster/Partials/MonsterPartBox.vue` all narrow an icon or attack lookup key this way. A
+predicate reads as proof to everything downstream of it, which is exactly why a predicate
+that can lie is worse than the plain cast it replaced.
+
+**Never narrow a JSON column at a module or prop boundary.** A translatable column or a
+translated enum reaches Inertia as a plain string, already resolved by `HasTranslations::
+toArray()`, and the generated type says so; there is nothing left to narrow. Where a
+controller trims the columns it sends, the page declares a `Pick` of the real model rather
+than inventing a smaller one: `Wiki/Monster/Index.vue`'s `monsters` prop is `Array<Pick<
+App.Models.Monster, 'id' | 'name' | 'category' | 'expansion' | 'icon_path' | 'icon_url'>>`,
+matching `MonsterController::index()`'s own `select(['id', 'name', 'category', 'expansion',
+'icon_path'])` field for field. A `Pick` that leaves every field's own declared type alone is
+safe, because it is still describing a genuine subset of the same model; a `Pick` that goes
+on to override one of those fields' types stops describing a subset and starts describing an
+incompatible sibling, rejecting every caller that still holds the real model.
+
+The ratchet holds two numbers, both re-measured rather than carried over from an earlier
+task: of 163 `.vue` files, 142 contain a `<script>` block (the other 21 are template only SVG
+icons, which can never carry `lang="ts"` and are excluded rather than left in the ceiling to
+weaken it), and of those 142, 106 lack `lang="ts"`. `FrontendRatchetTest` asserts all three
+counts, not just the last, because a file walk that silently matched nothing would make the
+ceiling trivially true, which is the exact shape of green this repository has already shipped
+twice. Converting a component is not finished until the ceiling in that test is lowered to
+match; a conversion that leaves 106 in place fails the test on purpose.
+
+The controller composed props Task 8 catalogued are the known gap in what the generator
+covers: the weapon tree (`WeaponTreeEntry[]`), `craftable_recipes`, `missing_by_recipe`,
+`matching`, `options` and `filters`. None of them describes a model or a relation, so nothing
+walks a schema to produce them; each is declared locally, by hand, on every page that receives
+one, and the same shape is duplicated across several pages rather than shared. Giving them a
+real source of truth is its own piece of work, not attempted here.
+
+The four snapshots in `resources/js/__tests__/__snapshots__/smoke.test.ts.snap` are the before
+picture, written against plain JavaScript before any conversion touched the pages they cover.
+A conversion that changes one is a bug in that conversion, to be investigated and fixed in the
+component, not a snapshot to regenerate to match the new output.
+
+Three gaps in `ModelShape`, the type generator, are worth knowing before converting any of
+the remaining 106. A `MorphTo` relation is skipped outright, because describing one calls the
+relation method on an unsaved model, and with the morph type column unset that falls through
+to `morphEagerTo()` and describes the relation as the parent's own class. Jetstream's relation
+methods (`Team::users()`, `Team::owner()`, `HasTeams::teams()`) declare no return type, so
+`ModelShape` skips them too: `App.Models.User` has no `teams`, `current_team` or
+`owned_teams`, even though `ShareInertiaData` puts `current_team` and `all_teams` on
+`auth.user` on every request, a gap whoever converts the Layouts, Teams or Profile pages will
+meet first. And a `withPivot()` relation's pivot payload is never attached to the related
+model's type, even though the `App.Models.Pivot.*` shapes it could draw on already exist;
+three relations deliver a `pivot.number` today (`WeaponRecipe::items()`,
+`Weapon::attacksToAdd()`, `Weapon::attacksToRemove()`), each typed by hand at the point of use
+as `App.Models.Item & {pivot: {number: number}}` or its `WeaponAttack` equivalent.
+
+**Five more gaps, found by checking generated types against real serialised payloads rather
+than by reasoning about the generator, all in the safe direction (a type wider or more
+optional than the runtime, never a lie) and none of them this branch's to fix.** Every
+`$appends` accessor is emitted optional (`ModelShape.php:140`), but `Model::attributesToArray()`
+serialises every `$appends` entry on every `toArray()`, including behind a `select()`, so
+`Monster.icon_url`, `Item.icon_url`, `WeaponType.image_url`, `Armor.type_value`,
+`Armor.expansion_value`, `WeaponRecipe.expansion_label` and `Weapon.deviation_key` are all
+optional in the types and always present at runtime; the relation branch's own docblock
+(directly above `relations()`) carries a written justification for its optionality, and that
+reasoning does not transfer to an append, which has no equivalent comment. `Monster.mechanics`
+is typed `| null` and can never be null: the custom `Attribute` returns `[]` for a null
+column, and 11 of the 15 seeded monsters prove it; the cause is a generator collision,
+`ModelShape.php:115` takes the `@typescript` docblock type and `:124-126` then appends
+`| null` from the column's own schema nullability, which the `Attribute` has already
+absorbed, so any future `@typescript` docblock on a nullable column inherits the same false
+optional. The nine `App.Models.Pivot.*` types all require an `id` that `withPivot()` never
+hydrates; no page uses one of them today, and the two comments explaining why are the only
+thing stopping the next one from trusting a field that is never there. `hunters` is declared
+optional on both craft pages, and both controllers always send it, as `[]` for a guest.
+`WeaponController.php:68` eager-loads `recipes.monster`, and `Weapon/Detail.vue` never reads
+it: a wasted join and payload, backend work rather than a type to fix.
+
+**A production bug this work surfaced, and not the task's to fix, but not to lose either.**
+`resources/js/ssr.ts` installs Inertia's plugin and `ZiggyVue` and nothing else; `app.ts`
+installs five things, including `vue-i18n` and the global mixin that adds `replaceIcons`/
+`getRarityColor`. A server side render of any component that calls `$t()`, or either of
+those two mixin methods, which by now is nearly every one of them, dies with "Need to install
+with 'app.use' function". `config('inertia.ssr')` is `enabled: true` by default with `throw_on_error:
+false`, so a production deploy builds and ships an SSR bundle, fails to render with it on
+every request, and falls back to client rendering silently, with nothing in the logs pointing
+at the cause. `main` has the same gap in the same two files, so this predates the TypeScript
+work; it was only found because getting `$t()` typed at all meant reading both entry points
+side by side.
+
 ### The public page
 
 `resources/js/Pages/Welcome.vue` is the whole of it, no partials.
@@ -330,14 +480,14 @@ a visitor, since only one language loads.
 to fill in a registration form that does not exist and has no link. Step one now says the
 app is invitation only.
 
-The page's `<Head>` carries a title and nothing else. `app.js` appends `" - <app name>"` to
+The page's `<Head>` carries a title and nothing else. `app.ts` appends `" - <app name>"` to
 it, so it holds only the distinguishing part, and the description belongs in
 `resources/views/app.blade.php`: `@inertiaHead` is inserted after the static tags, so a meta
 given in a page component is the second one on the page and a crawler reads the first.
 
 ### Game icons
 
-Seed data marks a game symbol as `:name_icon:`. `resources/js/icons.js` holds the whole map
+Seed data marks a game symbol as `:name_icon:`. `resources/js/icons.ts` holds the whole map
 and `replaceIcons` swaps them, exposed as a global mixin method and used through `v-html`.
 The token pattern only captures `[a-z0-9_]`, so nothing from the data can reach the markup
 as anything but a name.
@@ -385,7 +535,7 @@ Nergigante Hunger, Kushala Daora Flight, Handicraft) and each is attached to an 
 the gap is on screen. `SeedDataTest` holds the list so a sixth fails rather than joining
 them quietly.
 
-**The `alt` and `title` text in `icons.js` stays in English, deliberately.** About twenty
+**The `alt` and `title` text in `icons.ts` stays in English, deliberately.** About twenty
 strings (`'Fire'`, `'Damage attack'`, `'Fire resistance'`, ...) sit there untranslated and
 are the only such strings left in the app; 147 components were audited and every one of
 them uses `$t()` or `__()`. Translating these is not a matter of wrapping them: the file is
@@ -575,7 +725,7 @@ already-identified thing to fix before reaching for the harness. Revisit `--para
 those tests are fixed and the suite is still slow enough to matter.
 
 The `frontend` job runs `npm ci`, `npm run lint` and `npm run build` on Node 22. It also
-installs the composer packages (`--no-dev`), because `resources/js/app.js` imports Ziggy
+installs the composer packages (`--no-dev`), because `resources/js/app.ts` imports Ziggy
 from `vendor/tightenco/ziggy/dist/vue.m`, so the build fails with an unresolved import if
 `vendor/` is absent. It needs no `.env`. Node 22 is the floor: `readdirp` and `sass` require
 `>= 20.19`, and `glob`, `jackspeak` and `lru-cache` require `20 || >=22`.
@@ -701,7 +851,7 @@ it can still interrupt with images. Keys are not interchangeable between v2 and 
 switching would mean a new pair.
 
 **The badge is hidden and `Components/RecaptchaNotice.vue` stands in for it.** Google asks
-for the badge *or* a visible attribution, one of the two, so `recaptcha.js` leaves
+for the badge *or* a visible attribution, one of the two, so `recaptcha.ts` leaves
 `autoHideBadge` to do its job and never calls `showBadge()`. Every form that calls
 `useRecaptcha` has to render that component or the app stops holding up its end of Google's
 terms. Note this is not obviously an improvement and was a deliberate choice: the badge was
@@ -753,11 +903,15 @@ failures at once.
 ### Frontend tests
 
 `resources/js/__tests__/` holds one unit-test file for each of five pure, stateless modules,
-`damage.js`, `armorDefense.js`, `armorSkills.js`, `rarity.js` and `icons.js`, all still plain
-JavaScript as this is written, plus `smoke.test.ts`, which mounts every page and partial
-under `Pages/Wiki` and asserts each one renders something and warns about nothing. `npm run
-test:run` is Vitest: 6 files, 49 tests, and the run is meant to stay pristine, no skips and
-nothing printed.
+`damage.ts`, `armorDefense.ts`, `armorSkills.ts`, `rarity.ts` and `icons.ts`. All five were
+converted to TypeScript earlier on this branch (see "The TypeScript conversion" above); the
+test files themselves were `.test.ts` from the day they were written, before that conversion,
+for the reason the next paragraph pins. `smoke.test.ts` mounts every page and partial under
+`Pages/Wiki` and every page under `Pages/Auth`, and asserts each one renders something and
+warns about nothing; Auth was added as the cheapest useful widening beyond the Wiki, since
+nineteen of the Wiki's 29 shared components are also used outside it and the Wiki glob alone
+cannot see that. `npm run test:run` is Vitest: 6 files, 64 tests, and the run is meant to stay
+pristine, no skips and nothing printed.
 
 They were written against plain JavaScript, before any file moved to TypeScript, and that
 ordering was deliberate rather than incidental. Written afterwards, a test can only describe
@@ -777,7 +931,7 @@ directly, and once as a mixin method, because a component whose *template* calls
 `route(...)` reaches it through `_ctx.route`, not `globalThis.route`, and a setup that only
 did the first looks correct right up until that component throws "route is not a function".
 `replaceIcons` and `getRarityColor`, the app's two other global mixin methods, go in beside
-it for the same reason: nothing in `@vue/test-utils` knows about a mixin `app.js` installs at
+it for the same reason: nothing in `@vue/test-utils` knows about a mixin `app.ts` installs at
 runtime. And rather than stub Inertia's `Link` and `Head` and reimplement what `usePage()`
 needs, it mounts Inertia's real `App` root once, with a fake `initialPage`, because
 `usePage()`'s state lives in a module-level ref that only a genuine mount populates; several
@@ -787,11 +941,14 @@ would leave every one of them with nothing to read. Miss any single piece here a
 failure is not a crash, it is a console warning, which is exactly what `smoke.test.ts`
 catches and fails on.
 
-**Two assertions in `smoke.test.ts` look removable and are not.** The glob
-(`import.meta.glob('/resources/js/Pages/Wiki/**/*.vue')`) is asserted to match at least 16
-files before anything else runs, because a glob matching nothing turns every `it.each` below
+**Two assertions in `smoke.test.ts` look removable and are not.** Each glob
+(`import.meta.glob('/resources/js/Pages/Wiki/**/*.vue')`, and the `Pages/Auth/**/*.vue`
+one added beside it) is asserted to match at least as many files as it did when written, 16
+and 9, before anything else runs, because a glob matching nothing turns every `it.each` below
 it into a vacuous pass, and this repository has already shipped exactly that failure once: a
-green `npm run typecheck` that walked 175 files and checked none of them. The `warnings`
+green `npm run typecheck` that walked 175 files and checked none of them. Two glob calls carry
+two separate guards rather than one merged brace pattern, so that one side silently matching
+nothing cannot hide behind the other side matching plenty. The `warnings`
 assertion, that a mount produced none, is the other one: `CraftWithHunter.vue` gates its
 whole template on `! (weapon?.is_default || armor?.is_default)`, the shared fixture bag
 handed it a `weapon` with `is_default: true`, and the component rendered `<!--v-if-->` and
@@ -1022,7 +1179,7 @@ about a hundred and fifty lines under `app/`, and four tables remain: `levels`,
 - `User::setAchievementProgress()` writes absolute progress on the pivot and fires
   `AchievementAwarded` at 100.
 - Level, points and achievements are shared to every page through `HandleInertiaRequests`
-  (`$page.props.level`, `$page.props['user.achievements']`, which reads
+  (`$page.props.level`, `$page.props.user.achievements`, which reads
   `achievementsWithProgress`) and rendered by `resources/js/Pages/Profile/Level.vue`.
 - Experience per monster now comes from `config/gamification.php`, not the package config.
 - `tests/Feature/Level/ExperienceTest.php` was written against the package and kept passing

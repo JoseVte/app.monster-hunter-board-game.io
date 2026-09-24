@@ -1,5 +1,5 @@
-<script setup>
-import {h} from "vue";
+<script setup lang="ts">
+import {h, type Component} from "vue";
 import {Link} from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Breadcrumb from "@/Components/Breadcrumb.vue";
@@ -12,16 +12,63 @@ import CraftWithHunter from "@/Pages/Wiki/Partials/CraftWithHunter.vue";
 import ArmorDefenseRow from "@/Pages/Hunter/Partials/ArmorDefenseRow.vue";
 import {getRarityColor} from "@/rarity";
 
-const props = defineProps({
-    armor: Object,
-    hunters: {
-        type: Array,
-        default: () => [],
-    },
+// `Armor::items()` `withPivot('number')`, so every entry sent through it
+// carries a `pivot.number` the generated `Item` type does not declare (a
+// `belongsToMany` pivot is not part of the model's own columns). This is
+// *not* `Pick<App.Models.Pivot.CountItemArmor, 'number'>`: that generated
+// type describes the pivot *table* row (`id`, both foreign keys, both
+// timestamps), and `withPivot('number')` only ever adds `number` on top of
+// the relation's own two foreign keys (`armor_id`, `item_id`), never `id`.
+// So `armor.items[].pivot` at runtime is
+// `{armor_id, item_id, number, created_at, updated_at}`, no `id`. Declared
+// as the one field this page actually reads, matching
+// `resources/js/__tests__/fixtures.ts`'s own `{...item, pivot: {number: 2}}`,
+// rather than a `Pick` off a type that does not match this shape either.
+// Report: this is a `ModelShape` gap, not a controller-composed prop.
+type ItemWithPivot = App.Models.Item & {pivot: {number: number}};
+
+type ArmorDetail = Omit<App.Models.Armor, 'items'> & {
+    items?: ItemWithPivot[];
+};
+
+type MissingItem = {name: string; missing: number};
+
+// `ArmorController::hunters()`'s own shape; no model backs it, and it is
+// declared again here (rather than imported from `CraftWithHunter.vue`,
+// which has no exports) because the brief's rule is to declare these locally
+// per page.
+type ArmorCraftableHunter = {
+    id: number;
+    name: string;
+    campaign: string;
+    campaign_id: number;
+    can_craft: boolean;
+    owned: boolean;
+    missing: MissingItem[];
+};
+
+const props = withDefaults(defineProps<{
+    armor: ArmorDetail;
+    hunters?: ArmorCraftableHunter[];
+}>(), {
+    hunters: () => [],
 });
 
-const ICONS = {head: HelmetIcon, body: ArmorsIcon, leg: LegArmor};
-const icon = ICONS[props.armor.type_value];
+type ArmorTypeKey = 'head' | 'body' | 'leg';
+
+const ICONS: Record<ArmorTypeKey, Component> = {head: HelmetIcon, body: ArmorsIcon, leg: LegArmor};
+
+// `Armor.type_value` is a plain string off the model (an appended accessor,
+// not the literal union above), so it is checked against the map's own keys
+// rather than cast into it. `in` walks the prototype chain, so
+// `'toString' in ICONS` is `true` and this would wrongly accept it;
+// `Object.hasOwn` checks the object's own keys only. Matches
+// `WeaponStats.vue`'s `isDeviationKey` guard. `type_value` is derived from
+// `ArmorType`, which only ever has these three cases, so the guard always
+// passes for a real armor; `ArmorsIcon` below only exists so `icon` has a
+// value to hand to `h()`.
+const isArmorTypeKey = (key: string | undefined): key is ArmorTypeKey => !! key && Object.hasOwn(ICONS, key);
+const icon = isArmorTypeKey(props.armor.type_value) ? ICONS[props.armor.type_value] : ArmorsIcon;
 
 // Breadcrumb's icon slot wants a component, not a rarity to tint the slot
 // icon by, so it is wrapped in one rather than shown plain.
@@ -68,12 +115,12 @@ const currentIcon = () => h(icon, {class: getRarityColor(props.armor.rarity)});
 
                     <ArmorDefenseRow :armor="armor" />
 
-                    <template v-if="armor.skills.length">
+                    <template v-if="armor.skills?.length">
                         <h3 class="mh-heading mt-2 text-xs tracking-widest uppercase">
                             {{ $t('Skill') }}
                         </h3>
                         <div
-                            v-for="skill in armor.skills"
+                            v-for="skill in armor.skills ?? []"
                             :key="skill.id"
                             class="text-sm"
                         >
@@ -92,13 +139,13 @@ const currentIcon = () => h(icon, {class: getRarityColor(props.armor.rarity)});
                         </div>
                     </template>
 
-                    <template v-if="armor.items.length">
+                    <template v-if="armor.items?.length">
                         <h3 class="mh-heading mt-2 text-xs tracking-widest uppercase">
                             {{ $t('Materials') }}
                         </h3>
                         <ul class="flex flex-col gap-1 text-sm">
                             <li
-                                v-for="item in armor.items"
+                                v-for="item in armor.items ?? []"
                                 :key="item.id"
                                 class="flex items-center justify-between gap-3"
                             >

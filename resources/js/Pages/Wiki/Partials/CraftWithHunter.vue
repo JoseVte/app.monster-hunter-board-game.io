@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {computed, ref} from "vue";
 import {useForm} from "@inertiajs/vue3";
 import Card from "@/Components/Card.vue";
@@ -8,16 +8,38 @@ import SecondaryButton from "@/Components/SecondaryButton.vue";
 import InputLabel from "@/Components/Form/InputLabel.vue";
 import SelectInput from "@/Components/Form/SelectInput.vue";
 
+type MissingItem = {name: string; missing: number};
+
+// `WeaponController::hunters()` and `ArmorController::hunters()` each bolt a
+// different subset of these fields onto a plain hunter (`id`/`name`/`campaign`/
+// `campaign_id` are the only ones every caller sends); no model describes
+// either shape, so this is declared once here as the union of both rather
+// than pretended away. The weapon-only fields (`craftable_recipes`,
+// `missing_by_recipe`, `parent_owned`) and the armor-only one (`missing`) are
+// optional for that reason, and every read below already went through `?.`
+// even before this file had types.
+type CraftableHunter = {
+    id: number;
+    name: string;
+    campaign: string;
+    campaign_id: number;
+    can_craft: boolean;
+    owned: boolean;
+    craftable_recipes?: number[];
+    missing_by_recipe?: Record<number, MissingItem[]>;
+    parent_owned?: boolean | null;
+    missing?: MissingItem[];
+};
+
 // Craft what the card describes with one of the reader's own hunters. Which of
 // them can pay for it comes from the server, so the answer here is the same one
 // the endpoint will give.
-const props = defineProps({
-    hunters: {
-        type: Array,
-        default: () => [],
-    },
-    weapon: Object,
-    armor: Object,
+const props = withDefaults(defineProps<{
+    hunters?: CraftableHunter[];
+    weapon?: App.Models.Weapon;
+    armor?: App.Models.Armor;
+}>(), {
+    hunters: () => [],
 });
 
 const options = computed(() => Object.fromEntries(
@@ -30,9 +52,9 @@ const chosenId = ref(String(props.hunters[0]?.id ?? ''));
 const chosen = computed(() => props.hunters.find((hunter) => String(hunter.id) === String(chosenId.value)));
 
 // A weapon can have two recipes, and the hunter picks which parts to spend.
-const recipeId = ref(null);
+const recipeId = ref<number | null>(null);
 const recipes = computed(() => props.weapon?.recipes ?? []);
-const affordable = (recipe) => chosen.value?.craftable_recipes?.includes(recipe.id) ?? false;
+const affordable = (recipe: App.Models.WeaponRecipe) => chosen.value?.craftable_recipes?.includes(recipe.id) ?? false;
 
 // What is missing is asked for the recipe the player is looking at: the one
 // picked, or the first when a weapon has only the one.
@@ -40,7 +62,7 @@ const missingItems = computed(() => {
     if (props.weapon) {
         const id = recipeId.value ?? recipes.value[0]?.id ?? null;
 
-        return chosen.value?.missing_by_recipe?.[id] ?? [];
+        return (id !== null ? chosen.value?.missing_by_recipe?.[id] : undefined) ?? [];
     }
 
     return chosen.value?.missing ?? [];
@@ -52,14 +74,14 @@ const requiresParent = computed(() => !! (props.weapon?.parent && chosen.value &
 
 const hasTooltipContent = computed(() => requiresParent.value || missingItems.value.length > 0);
 
-const form = useForm({recipe: null});
+const form = useForm<{recipe: number | null}>({recipe: null});
 
 const craft = () => {
     if (! chosen.value) return;
 
     const target = props.weapon
         ? route('campaigns.hunters.weapons.craft', [chosen.value.campaign_id, chosen.value.id, props.weapon.type_id, props.weapon.id])
-        : route('campaigns.hunters.armors.craft', [chosen.value.campaign_id, chosen.value.id, props.armor.id]);
+        : route('campaigns.hunters.armors.craft', [chosen.value.campaign_id, chosen.value.id, props.armor?.id]);
 
     form.recipe = props.weapon ? (recipeId.value ?? chosen.value.craftable_recipes?.[0] ?? null) : null;
     form.post(target, {preserveScroll: true});
@@ -148,7 +170,7 @@ const craft = () => {
                             v-if="requiresParent"
                             class="mb-1"
                         >
-                            {{ $t('Requires') }}: <span class="font-semibold">{{ weapon.parent.name }}</span>
+                            {{ $t('Requires') }}: <span class="font-semibold">{{ weapon?.parent?.name }}</span>
                         </p>
 
                         <template v-if="missingItems.length">

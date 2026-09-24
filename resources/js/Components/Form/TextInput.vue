@@ -1,21 +1,28 @@
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted, ref, useAttrs } from 'vue';
 
-defineProps({
-    modelValue: [String, Number],
-});
+defineProps<{
+    modelValue: string | number;
+}>();
 
 defineEmits(['update:modelValue']);
 
-const input = ref(null);
+// Several callers hold a template ref to this component and call `.focus()`
+// on it directly (e.g. `passwordInput.value.focus()` in
+// `Profile/Partials/SetPasswordForm.vue`), so the exposed shape below stays
+// one method taking no arguments, unchanged from the runtime version;
+// widening it would break them. The `?.` here is only about `input.value`
+// possibly being null before the element mounts; it does not change what is
+// exposed.
+const input = ref<HTMLInputElement | null>(null);
 
 onMounted(() => {
-    if (input.value.hasAttribute('autofocus')) {
+    if (input.value?.hasAttribute('autofocus')) {
         input.value.focus();
     }
 });
 
-defineExpose({ focus: () => input.value.focus() });
+defineExpose({ focus: () => input.value?.focus() });
 
 // The wrapper is the root now, so every attribute the caller passes would land
 // on it instead of the control: id, type, placeholder, required. Chrome even
@@ -43,7 +50,7 @@ const controlAttrs = computed(() => Object.fromEntries(
             ref="input"
             class="mh-field block w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary-500 dark:focus:border-primary-600 focus:outline-hidden"
             :value="modelValue"
-            @input="$emit('update:modelValue', $event.target.value)"
+            @input="$emit('update:modelValue', ($event.target as HTMLInputElement).value)"
         >
     </span>
 </template>

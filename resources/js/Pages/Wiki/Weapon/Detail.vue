@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {h} from "vue";
 import {Link} from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
@@ -13,12 +13,67 @@ import SongNotes from "@/Components/SongNotes.vue";
 import rangeIcon from '~/icons/range-icon.png';
 import {getRarityColor} from "@/rarity";
 
-const props = defineProps({
-    weapon: Object,
-    hunters: {
-        type: Array,
-        default: () => [],
-    },
+// `WeaponRecipe::items()`, `Weapon::attacksToAdd()` and `Weapon::attacksToRemove()`
+// each `withPivot(['number'])`, so every entry Laravel sends through them
+// carries a `pivot.number` the generated `Item`/`WeaponAttack` types do not
+// declare (a `belongsToMany` pivot is not part of either model's own columns).
+// `Pick<App.Models.Pivot.CountItemWeapon, 'number'>` would in fact be
+// structurally identical to the `{number: number}` declared below: a
+// single-key `Pick` carries none of the source type's other fields along
+// with it, so that is not the reason to leave it unused. The reason is that
+// three different pivot tables are in play here (`CountItemWeapon`,
+// `CountWeaponAttackAdd`, `CountWeaponAttackRemove`), and naming any one of
+// them to stand for all three would credit it with a relationship to the
+// other two that does not exist: they only ever share the `number` column,
+// never a table. The literal spares a reader the question of why this
+// particular one of three was picked.
+// `WeaponRecipe::items()` is the sharper case: its own foreign pivot key is
+// `weapon_recipe_id` (Eloquent's default from the "WeaponRecipe" model name),
+// not `weapon_id`, even though both columns exist on `count_item_weapon` (see
+// `CountItemWeapon`'s own docblock: `weapon_id` is there for `Weapon::items()`
+// to use instead). So `recipe.items[].pivot` at runtime is
+// `{weapon_recipe_id, item_id, number, created_at, updated_at}`, no `id` and
+// no `weapon_id`; `weapon.attacks_to_add/remove[].pivot` is
+// `{weapon_id, weapon_attack_id, number, created_at, updated_at}`, no `id`.
+// Declared as the one field this page actually reads, matching
+// `resources/js/__tests__/fixtures.ts`'s own `{...item, pivot: {number: 3}}`.
+// Report: this is a `ModelShape` gap, not a controller-composed prop.
+type ItemWithPivot = App.Models.Item & {pivot: {number: number}};
+type WeaponAttackWithPivot = App.Models.WeaponAttack & {pivot: {number: number}};
+
+type WeaponRecipeWithPivotItems = Omit<App.Models.WeaponRecipe, 'items'> & {
+    items?: ItemWithPivot[];
+};
+
+type WeaponDetail = Omit<App.Models.Weapon, 'recipes' | 'attacks_to_add' | 'attacks_to_remove'> & {
+    recipes?: WeaponRecipeWithPivotItems[];
+    attacks_to_add?: WeaponAttackWithPivot[];
+    attacks_to_remove?: WeaponAttackWithPivot[];
+};
+
+type MissingItem = {name: string; missing: number};
+
+// `WeaponController::hunters()`'s own shape; no model backs it, and it is
+// declared again here (rather than imported from `CraftWithHunter.vue`,
+// which has no exports) because the brief's rule is to declare these locally
+// per page.
+type WeaponCraftableHunter = {
+    id: number;
+    name: string;
+    campaign: string;
+    campaign_id: number;
+    can_craft: boolean;
+    owned: boolean;
+    craftable_recipes: number[];
+    missing_by_recipe: Record<number, MissingItem[]>;
+    parent_owned: boolean | null;
+};
+
+const props = withDefaults(defineProps<{
+    weapon: WeaponDetail;
+    hunters?: WeaponCraftableHunter[];
+}>(), {
+    hunters: () => [],
 });
 
 // Breadcrumb's icon slots want a component, not a URL or a rarity to tint by,
@@ -36,7 +91,7 @@ const currentIcon = () => h(WeaponTypeIcon, {weaponType: props.weapon.type, clas
                 :breadcrumbs="[
                     { url: route('wiki.index'), title: $t('Wiki') },
                     { url: route('wiki.weapon.index'), title: $t('Weapons'), icon: WeaponsIcon },
-                    { url: route('wiki.weapon.type', [weapon.type_id]), title: weapon.type?.name, icon: typeIcon },
+                    { url: route('wiki.weapon.type', [weapon.type_id]), title: weapon.type?.name ?? '', icon: typeIcon },
                 ]"
                 :icon="currentIcon"
             />
@@ -97,7 +152,7 @@ const currentIcon = () => h(WeaponTypeIcon, {weaponType: props.weapon.type, clas
 
                                 <div class="min-w-0 flex-1">
                                     <p class="flex items-center gap-2 text-sm font-semibold text-gray-900 dark:text-parchment">
-                                        {{ song.effect.name }}
+                                        {{ song.effect?.name }}
                                         <!-- Range 0 is the hunter alone, so there
                                              is no reach worth printing. -->
                                         <span
@@ -115,7 +170,7 @@ const currentIcon = () => h(WeaponTypeIcon, {weaponType: props.weapon.type, clas
                                     </p>
                                     <p
                                         class="mh-rules"
-                                        v-html="replaceIcons(song.effect.description)"
+                                        v-html="replaceIcons(song.effect?.description)"
                                     />
                                 </div>
                             </li>
@@ -125,7 +180,7 @@ const currentIcon = () => h(WeaponTypeIcon, {weaponType: props.weapon.type, clas
                     <!-- Most weapons are made one way. Two dual blades can be
                          built from either of two monsters, at different prices. -->
                     <template
-                        v-for="recipe in weapon.recipes"
+                        v-for="recipe in weapon.recipes ?? []"
                         :key="recipe.id"
                     >
                         <h3 class="mh-heading mt-2 text-xs tracking-widest uppercase">
@@ -149,7 +204,7 @@ const currentIcon = () => h(WeaponTypeIcon, {weaponType: props.weapon.type, clas
                         </h3>
                         <ul class="flex flex-col gap-1 text-sm">
                             <li
-                                v-for="item in recipe.items"
+                                v-for="item in recipe.items ?? []"
                                 :key="item.id"
                                 class="flex items-center justify-between gap-3"
                             >

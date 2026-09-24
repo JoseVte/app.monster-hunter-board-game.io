@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {ref} from "vue";
 import {Link} from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
@@ -8,11 +8,30 @@ import LoadingOverlay from "@/Components/LoadingOverlay.vue";
 import Breadcrumb from "@/Components/Breadcrumb.vue";
 import MonsterFilters from "@/Pages/Wiki/Partials/MonsterFilters.vue";
 
-defineProps({
-    monsters: [Array, Object],
-    filters: Object,
-    options: Object,
-});
+// `MonsterController::filters()`'s own shape; no model backs it.
+type MonsterFilterValues = {
+    q: string | null;
+    category: string | null;
+    expansion: string | null;
+};
+
+type MonsterFilterOptions = {
+    categories: Array<{key: string; label: string}>;
+    expansions: Array<{key: string; label: string}>;
+};
+
+defineProps<{
+    // `MonsterController::index()` selects only `id, name, category,
+    // expansion, icon_path` (plus the always-appended `icon_url`, which
+    // survives the `select()` because it is computed from `icon_path`, not
+    // read from a column of its own). `description`, `setup`, `mechanics`
+    // and the ten `resistance_*` fields are not in this payload at all, so
+    // this is a `Pick`, not the full model: reading one of the absent fields
+    // here should fail to compile rather than silently render nothing.
+    monsters: Array<Pick<App.Models.Monster, 'id' | 'name' | 'category' | 'expansion' | 'icon_path' | 'icon_url'>>;
+    filters: MonsterFilterValues;
+    options: MonsterFilterOptions;
+}>();
 
 const loading = ref(false);
 </script>

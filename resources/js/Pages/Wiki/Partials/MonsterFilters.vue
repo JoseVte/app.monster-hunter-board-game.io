@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {computed, ref, watch} from "vue";
 import {useI18n} from "vue-i18n";
 import {router} from "@inertiajs/vue3";
@@ -8,12 +8,24 @@ import SelectInput from "@/Components/Form/SelectInput.vue";
 import InputLabel from "@/Components/Form/InputLabel.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 
+// `MonsterController::filters()`'s own shape; no model backs it.
+type MonsterFilterValues = {
+    q: string | null;
+    category: string | null;
+    expansion: string | null;
+};
+
+type MonsterFilterOptions = {
+    categories: Array<{key: string; label: string}>;
+    expansions: Array<{key: string; label: string}>;
+};
+
 // Name, category and expansion. Its own filter bar rather than WikiFilters,
 // which asks for a rarity a monster does not have.
-const props = defineProps({
-    filters: Object,
-    options: Object,
-});
+const props = defineProps<{
+    filters: MonsterFilterValues;
+    options: MonsterFilterOptions;
+}>();
 
 const emit = defineEmits(['loading']);
 

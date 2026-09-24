@@ -1,14 +1,24 @@
-<script setup>
-import {computed} from 'vue';
+<script setup lang="ts">
+import {computed, type Component} from 'vue';
 import {Link} from '@inertiajs/vue3';
 import {useI18n} from 'vue-i18n';
 import Dashboard from "@/Components/Icons/Dashboard.vue";
 
-const props = defineProps({
-    currentTitle: String,
-    icon: [Object, String, Function],
-    breadcrumbs: Array,
-});
+// Every caller passes either an imported component (`WeaponsIcon`) or a
+// render function declared with `h()` (`() => h(...)`); nothing here ever
+// passes a plain string tag name, so `Component` covers both without keeping
+// the runtime declaration's `String` alternative.
+type BreadcrumbItem = {
+    url: string;
+    title: string;
+    icon?: Component;
+};
+
+const props = defineProps<{
+    currentTitle: string;
+    icon?: Component;
+    breadcrumbs: BreadcrumbItem[];
+}>();
 
 const {t} = useI18n();
 

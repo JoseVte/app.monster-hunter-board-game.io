@@ -46,6 +46,28 @@ export default [
         },
     },
 
+    // Must stay after both blocks above: `no-redeclare` and
+    // `no-dupe-class-members` are the two core rules
+    // `typescript-eslint/eslint-recommended` (inside the `tseslint.configs.
+    // recommended` spread) turns off again for TypeScript's own overload
+    // syntax, real duplicates in plain JS/Vue but false positives against a
+    // second `function foo(...)` or class member signature that only
+    // narrows an earlier one. That sub-config self-scopes to `**/*.ts` (see
+    // the comment on the spread above), which a `lang="ts"` `<script>` block
+    // inside a `.vue` file never matches, so the false positive survives
+    // there. `resources/js/__tests__/setup.ts:mockRoute` uses overloads and
+    // only escapes this because it is a bare `.ts` file; the first converted
+    // component to do the same inside a `.vue` file would not. ESLint
+    // resolves a rule from the last matching config, so this has to come
+    // after the tseslint spread to win rather than be overridden by it.
+    {
+        files: ['**/*.vue'],
+        rules: {
+            'no-redeclare': ['off'],
+            'no-dupe-class-members': ['off'],
+        },
+    },
+
     {
         files: ['**/*.js', '**/*.mjs', '**/*.cjs', '**/*.ts', '**/*.vue'],
 
@@ -97,6 +119,22 @@ export default [
                 beforeEach: 'readonly',
                 afterEach: 'readonly',
             },
+        },
+    },
+
+    {
+        // `interface PageProps extends Inertia.SharedProps {}` in
+        // `inertia.d.ts` is how a third-party interface (`@inertiajs/core`'s
+        // own `PageProps`) is extended by declaration merging: only an
+        // `interface`, not a `type`, merges that way, and the merge is the
+        // entire point, so it carries no members of its own. The base rule
+        // flags that shape as "equivalent to its supertype", which is true of
+        // an empty interface in isolation but not of one whose only job is
+        // this merge; `with-single-extends` keeps the rule for every other
+        // empty interface while allowing exactly this one pattern.
+        files: ['resources/js/types/**/*.d.ts'],
+        rules: {
+            '@typescript-eslint/no-empty-object-type': ['error', {allowInterfaces: 'with-single-extends'}],
         },
     },
 ];

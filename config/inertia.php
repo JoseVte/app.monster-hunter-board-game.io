@@ -10,7 +10,7 @@ return [
     | Only this key is overridden. The package default points `paths` at
     | `resource_path('js/pages')`, lowercase, which is the convention the newer
     | Laravel starter kits use; this project keeps `resources/js/Pages`, which is
-    | also what `resources/js/app.js` and `ssr.js` glob.
+    | also what `resources/js/app.ts` and `ssr.ts` glob.
     |
     | Nothing breaks at runtime, because `pages.ensure_pages_exist` is false and
     | the frontend resolves a component against the Vite bundle rather than the

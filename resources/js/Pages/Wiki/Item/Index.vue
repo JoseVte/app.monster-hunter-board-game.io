@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {ref} from "vue";
 import {router} from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
@@ -11,17 +11,32 @@ import CellHeader from "@/Components/Table/CellHeader.vue";
 import Cell from "@/Components/Table/Cell.vue";
 import ItemFilters from "@/Pages/Wiki/Partials/ItemFilters.vue";
 
-const props = defineProps({
-    items: [Array, Object],
-    filters: Object,
-    options: Object,
-});
+// `ItemController::filters()`/`options()`'s own shape; no model backs it.
+// `sort`/`direction` are whitelisted server-side to exactly these values, so
+// this copy stays that narrow (unlike `ItemFilters.vue`'s own copy of
+// `filters`, which only ever forwards the two fields unread).
+type ItemFilterValues = {
+    q: string | null;
+    type: string | null;
+    sort: 'name' | 'type';
+    direction: 'asc' | 'desc';
+};
+
+type ItemFilterOptions = {
+    types: Array<{key: string; label: string}>;
+};
+
+const props = defineProps<{
+    items: App.Models.Item[];
+    filters: ItemFilterValues;
+    options: ItemFilterOptions;
+}>();
 
 const loading = ref(false);
 
 // Clicking the active column flips its direction; clicking the other one
 // starts it fresh, ascending.
-const sortBy = (field) => {
+const sortBy = (field: string) => {
     const direction = props.filters.sort === field && props.filters.direction === 'asc' ? 'desc' : 'asc';
 
     router.get(route('wiki.item.index'), {

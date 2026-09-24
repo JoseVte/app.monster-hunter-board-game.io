@@ -1,11 +1,11 @@
-<script setup>
+<script setup lang="ts">
 import { Link } from '@inertiajs/vue3';
 
-defineProps({
-    href: String,
-    title: String,
-    description: String
-});
+defineProps<{
+    href: string;
+    title: string;
+    description?: string;
+}>();
 </script>
 
 <template>

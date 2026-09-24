@@ -1,10 +1,10 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import WeaponsIcon from '@/Components/Icons/WeaponsIcon.vue';
 
-const props = defineProps({
-    weaponType: Object,
-});
+const props = defineProps<{
+    weaponType?: App.Models.WeaponType;
+}>();
 
 // The recolorable variant: currentColor fills instead of the fixed grays the
 // seeder ships, so a rarity's text-* class tints the icon like WeaponsIcon

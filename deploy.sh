@@ -54,7 +54,7 @@ PHP="${FORGE_PHP:-php}"
 COMPOSER="${FORGE_COMPOSER:-composer}"
 
 echo "--> PHP dependencies"
-# Composer first: resources/js/app.js imports Ziggy from
+# Composer first: resources/js/app.ts imports Ziggy from
 # vendor/tightenco/ziggy/dist/vue.m, so the frontend build fails with an
 # unresolved import if vendor/ is not already in place.
 #

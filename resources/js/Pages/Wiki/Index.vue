@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import AppLayout from "@/Layouts/AppLayout.vue";
 import WikiSection from "@/Components/WikiSection.vue";
 import ItemsIcon from "@/Components/Icons/ItemsIcon.vue";

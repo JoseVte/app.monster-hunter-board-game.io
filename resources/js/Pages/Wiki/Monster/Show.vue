@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { ref, computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import { Link } from '@inertiajs/vue3';
@@ -23,18 +23,23 @@ import PositionMarker from '@/Components/Icons/PositionMarker.vue';
 import ShieldIcon from '@/Components/Icons/ShieldIcon.vue';
 import BrokenPartIcon from '@/Components/Icons/BrokenPartIcon.vue';
 
-const props = defineProps({
-    monster: Object,
-});
+const props = defineProps<{
+    monster: App.Models.Monster;
+}>();
 
 const { t } = useI18n();
 
-const activeTierId = ref(props.monster.difficulties[0]?.id ?? null);
-const tier = computed(() => props.monster.difficulties.find((candidate) => candidate.id === activeTierId.value));
+// `difficulties` is a relation, so the generated type marks it optional even
+// though the controller always loads it (`$monster->load('difficulties.parts')`)
+// before rendering this page.
+const activeTierId = ref<number | null>(props.monster.difficulties?.[0]?.id ?? null);
+const tier = computed(() => props.monster.difficulties?.find((candidate) => candidate.id === activeTierId.value));
+
+type PartIconKey = 'head' | 'back' | 'claw' | 'tail' | 'leg' | 'wing' | 'paw';
 
 // A body part's name is stored in the seed data by its English key, so it is
 // translated here rather than on the way in.
-const PART_NAMES = {
+const PART_NAMES: Record<PartIconKey, () => string> = {
     head: () => t('Head'),
     back: () => t('Back'),
     claw: () => t('Claw'),
@@ -47,7 +52,7 @@ const PART_NAMES = {
 // A generic pictogram per part, original to this app rather than the
 // physical card's own art (which draws one whole-body silhouette per
 // monster, not a named icon per part).
-const PART_ICONS = {
+const PART_ICONS: Record<PartIconKey, string> = {
     head: headImg,
     back: backImg,
     claw: clawImg,
@@ -56,6 +61,16 @@ const PART_ICONS = {
     wing: wingImg,
     paw: pawImg,
 };
+
+// `MonsterPart.icon` is a plain string off the model, not the literal union
+// above, so it is checked against the maps' own keys rather than cast into
+// them. `in` walks the prototype chain, so `'toString' in PART_ICONS` is
+// `true` and this would wrongly accept it; `Object.hasOwn` checks the
+// object's own keys only. Matches `WeaponStats.vue`'s `isDeviationKey` guard.
+const isPartIconKey = (key: string): key is PartIconKey => Object.hasOwn(PART_ICONS, key);
+
+const partName = (icon: string): string => (isPartIconKey(icon) ? PART_NAMES[icon]() : icon);
+const partIcon = (icon: string): string | undefined => (isPartIconKey(icon) ? PART_ICONS[icon] : undefined);
 </script>
 
 <template>
@@ -96,11 +111,11 @@ const PART_ICONS = {
                     <div class="mh-rule" />
 
                     <div
-                        v-if="monster.difficulties.length > 1"
+                        v-if="(monster.difficulties?.length ?? 0) > 1"
                         class="flex gap-2"
                     >
                         <button
-                            v-for="difficultyTier in monster.difficulties"
+                            v-for="difficultyTier in monster.difficulties ?? []"
                             :key="difficultyTier.id"
                             type="button"
                             class="rounded px-2 py-1 text-xs font-semibold uppercase tracking-wide"
@@ -127,18 +142,18 @@ const PART_ICONS = {
                         </div>
 
                         <div
-                            v-for="part in tier.parts"
+                            v-for="part in tier.parts ?? []"
                             :key="part.id"
                             class="border-t border-gray-200 pt-2 text-sm dark:border-gray-700"
                         >
                             <div class="flex items-center gap-3">
                                 <img
-                                    v-if="PART_ICONS[part.icon]"
-                                    :src="PART_ICONS[part.icon]"
+                                    v-if="partIcon(part.icon)"
+                                    :src="partIcon(part.icon)"
                                     :alt="part.icon"
                                     class="h-8 w-8 shrink-0"
                                 >
-                                <span class="font-semibold">{{ PART_NAMES[part.icon]?.() ?? part.icon }}</span>
+                                <span class="font-semibold">{{ partName(part.icon) }}</span>
                                 <PositionMarker
                                     :direction="part.direction"
                                     class="h-10 w-10 text-gray-400 dark:text-gray-600"
@@ -168,7 +183,7 @@ const PART_ICONS = {
                 </Card>
 
                 <Card
-                    v-if="monster.setup || monster.mechanics.length"
+                    v-if="monster.setup || monster.mechanics?.length"
                     class="mt-4 gap-3 p-5"
                 >
                     <template v-if="monster.setup">
@@ -179,7 +194,7 @@ const PART_ICONS = {
                     </template>
 
                     <template
-                        v-for="(section, sectionIndex) in monster.mechanics"
+                        v-for="(section, sectionIndex) in monster.mechanics ?? []"
                         :key="section.title"
                     >
                         <div
@@ -218,16 +233,16 @@ const PART_ICONS = {
                         </template>
 
                         <Row
-                            v-for="reward in monster.rewards"
+                            v-for="reward in monster.rewards ?? []"
                             :key="reward.id"
                         >
                             <Cell>{{ reward.roll }}</Cell>
                             <Cell>
                                 <Link
-                                    :href="route('wiki.item.show', reward.item.id)"
+                                    :href="route('wiki.item.show', reward.item?.id)"
                                     class="text-gray-900 underline dark:text-parchment"
                                 >
-                                    {{ reward.item.name }}
+                                    {{ reward.item?.name }}
                                 </Link>
                             </Cell>
                             <Cell>

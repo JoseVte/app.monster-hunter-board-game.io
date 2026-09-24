@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {ref} from "vue";
 import {Link} from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
@@ -8,11 +8,25 @@ import Card from "@/Components/Card.vue";
 import LoadingOverlay from "@/Components/LoadingOverlay.vue";
 import WikiFilters from "@/Pages/Wiki/Partials/WikiFilters.vue";
 
-defineProps({
-    weaponTypes: [Array, Object],
-    filters: Object,
-    options: Object,
-});
+// `WeaponController::filters()`/`options()`'s own shape; no model backs it.
+type WikiFilterValues = {
+    q: string | null;
+    rarity: number | null;
+    expansion: string | null;
+    branch: string | null;
+};
+
+type WikiFilterOptions = {
+    rarities: number[];
+    expansions: Array<{key: string; label: string}>;
+    branches: Array<{key: string; label: string}>;
+};
+
+defineProps<{
+    weaponTypes: App.Models.WeaponType[];
+    filters: WikiFilterValues;
+    options: WikiFilterOptions;
+}>();
 
 const loading = ref(false);
 </script>

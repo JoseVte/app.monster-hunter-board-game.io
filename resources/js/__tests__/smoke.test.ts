@@ -7,7 +7,21 @@ import {mountComponent} from './setup';
 // Every page and partial under Pages/Wiki. The 29 shared Components/ they use
 // are mounted transitively as children, which is better coverage than mounting
 // them standalone: it exercises the props the pages really pass them.
-const components = import.meta.glob('/resources/js/Pages/Wiki/**/*.vue');
+const wikiComponents = import.meta.glob('/resources/js/Pages/Wiki/**/*.vue');
+
+// Every page under Pages/Auth. Nineteen of the Wiki's 29 shared components are
+// also used outside it: `Form/TextInput.vue` and `Form/InputLabel.vue` by 26
+// files each, `SecondaryButton.vue` by 16, `Breadcrumb.vue` by 10. The Wiki
+// glob above cannot see any of that; Auth is the cheapest useful widening,
+// nine pages, the heaviest consumers of the form components, self contained
+// enough to mount without a real session or a running SSR server. Kept as its
+// own `import.meta.glob` call rather than merged into one brace pattern with
+// the Wiki glob above, so each keeps its own count guard below: a brace
+// pattern that silently matched only one side would be the same
+// green-covering-nothing failure those guards exist to prevent.
+const authComponents = import.meta.glob('/resources/js/Pages/Auth/**/*.vue');
+
+const components = {...wikiComponents, ...authComponents};
 
 // `Wiki/Weapon/Show.vue` (and, transitively, `Hunter/Partials/ListWeapons.vue`)
 // does not take a flat list of weapons: the controller builds one entry per
@@ -68,6 +82,19 @@ const hunterForCrafting = {
 // the 16 files' `defineProps` rather than guessing: a page or partial ignores
 // whatever it did not declare, so one bag covering the union is fine, but a
 // prop missing from it is a mount failure away from being noticed.
+//
+// The Auth pages' own props are merged into this same bag rather than kept
+// separate: none of the keys below collide with a Wiki key, a page ignores
+// whatever it did not declare, and a single bag is one less thing to keep in
+// sync as pages move between the two globs. Read from every one of the 9
+// files' `defineProps`, the same way the Wiki keys were:
+// - `AcceptCampaignInvitation.vue`: invitation, signature, email, campaign
+// - `AcceptInvitation.vue`: token, email, inviter
+// - `ForgotPassword.vue`/`VerifyEmail.vue`: status
+// - `Login.vue`: canResetPassword, status
+// - `ResetPassword.vue`: email, token
+// `ConfirmPassword.vue`, `Register.vue` and `TwoFactorChallenge.vue` declare
+// no props at all.
 const props = {
     monster: fixtures.monster,
     monsters: [fixtures.monster],
@@ -85,7 +112,50 @@ const props = {
     filters: {},
     options,
     routeName: 'wiki.weapon.index',
+    invitation: 1,
+    signature: '/invitations/accept-campaign/1?signature=test',
+    email: 'test@example.com',
+    campaign: 'Iceborne Crew',
+    token: 'test-token',
+    inviter: 'Test Hunter',
+    status: 'verification-link-sent',
+    canResetPassword: true,
 };
+
+// Every Auth page's template is `<Head /><AuthenticationCard>...`, two root
+// nodes rather than one. Passing the whole `props` bag above to a component
+// like that makes Vue warn ("Extraneous non-props attributes ... could not be
+// automatically inherited because component renders fragment or text or
+// teleport root nodes"): a single-root Wiki page silently binds an
+// undeclared key to its root element, but a fragment root has no single
+// place to put it, so Vue says so instead of guessing. That guess would be
+// wrong to suppress: in the real app a controller only ever sends the props a
+// page's own `defineProps` names, so an Auth page never actually receives the
+// other 20-odd Wiki keys sitting in this shared bag. Filtering each mount
+// down to what the component declares (a compiled `<script setup>` component
+// exposes that as its own `.props`, an object keyed by prop name, or is left
+// `undefined` for a page that declares none) matches production rather than
+// merely working around a test artifact.
+//
+// `Component` (the public, structural type `@vue/test-utils` and this file's
+// own glob results traffic in) does not expose that field, so naming it here
+// as its own type is a deliberate reach for a compiler-generated field, not a
+// cast someone got away with.
+type CompiledSfc = {props?: Record<string, unknown>};
+
+function propsFor(component: Component): Record<string, unknown> {
+    const declared = (component as unknown as CompiledSfc).props;
+
+    if (! declared) {
+        return {};
+    }
+
+    return Object.fromEntries(
+        Object.keys(declared)
+            .filter((name) => name in props)
+            .map((name) => [name, props[name as keyof typeof props]]),
+    );
+}
 
 let warnings: string[] = [];
 
@@ -109,7 +179,7 @@ describe('every Wiki component', () => {
     // over 175 files that checked none of them. The count is asserted so the
     // suite cannot go green by covering nothing.
     it('is found by the glob', () => {
-        expect(Object.keys(components).length).toBeGreaterThanOrEqual(16);
+        expect(Object.keys(wikiComponents).length).toBeGreaterThanOrEqual(16);
     });
 
     // The count above only catches total collapse: a page renamed out of the
@@ -121,7 +191,7 @@ describe('every Wiki component', () => {
     // few of the richest pages catches a rename of something that matters
     // without punishing growth.
     it('includes the richest pages by name, not just by count', () => {
-        const paths = Object.keys(components);
+        const paths = Object.keys(wikiComponents);
 
         for (const path of [
             '/resources/js/Pages/Wiki/Monster/Show.vue',
@@ -132,11 +202,42 @@ describe('every Wiki component', () => {
             expect(paths).toContain(path);
         }
     });
+});
 
+describe('every Auth component', () => {
+    // Same reasoning as the Wiki glob's own guard above: a glob matching
+    // nothing would turn every it.each below into a silent pass, and the two
+    // globs are kept separate specifically so neither can hide a collapse of
+    // the other behind a healthy combined count.
+    it('is found by the glob', () => {
+        expect(Object.keys(authComponents).length).toBeGreaterThanOrEqual(9);
+    });
+
+    // Same reasoning as the Wiki sample above: `toBe(9)` would fail on every
+    // legitimate new Auth page, so this names a sample instead, chosen as the
+    // heaviest consumers of the shared form components this plan converts
+    // (`Form/TextInput.vue` and `Form/InputLabel.vue`, both used by 26 files
+    // across the app) plus the platform invitation flow documented in
+    // CLAUDE.md's "Invitations" section.
+    it('includes the heaviest form consumers by name, not just by count', () => {
+        const paths = Object.keys(authComponents);
+
+        for (const path of [
+            '/resources/js/Pages/Auth/Login.vue',
+            '/resources/js/Pages/Auth/Register.vue',
+            '/resources/js/Pages/Auth/ForgotPassword.vue',
+            '/resources/js/Pages/Auth/AcceptInvitation.vue',
+        ]) {
+            expect(paths).toContain(path);
+        }
+    });
+});
+
+describe('every Wiki and Auth component', () => {
     it.each(Object.keys(components))('%s mounts and renders', async (path) => {
         const module = (await components[path]()) as {default: Component};
 
-        const wrapper = mountComponent(module.default, props);
+        const wrapper = mountComponent(module.default, propsFor(module.default));
 
         // `flushPromises` (a macrotask, via `setTimeout(0)`) rather than a
         // bare `await nextTick()` (a microtask): a warning from an async
@@ -150,5 +251,26 @@ describe('every Wiki component', () => {
 
         expect(wrapper.html()).not.toBe('');
         expect(warnings).toEqual([]);
+    });
+});
+
+// "Mounts and does not warn" cannot see a conversion that renders something
+// different. These four are the densest pages in the batch: if a computed's
+// result or a v-if's condition changes meaning under TypeScript, the diff
+// shows up here and nowhere else.
+describe.each([
+    '/resources/js/Pages/Wiki/Monster/Show.vue',
+    '/resources/js/Pages/Wiki/Weapon/Detail.vue',
+    '/resources/js/Pages/Wiki/Armor/Detail.vue',
+    '/resources/js/Pages/Auth/Login.vue',
+])('%s', (path) => {
+    it('renders the same markup it rendered before the conversion', async () => {
+        const module = (await components[path]()) as {default: Component};
+
+        const wrapper = mountComponent(module.default, propsFor(module.default));
+
+        await flushPromises();
+
+        expect(wrapper.html()).toMatchSnapshot();
     });
 });

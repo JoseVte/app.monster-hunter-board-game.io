@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {computed, ref, watch} from "vue";
 import {useI18n} from "vue-i18n";
 import {router} from "@inertiajs/vue3";
@@ -8,23 +8,38 @@ import SelectInput from "@/Components/Form/SelectInput.vue";
 import InputLabel from "@/Components/Form/InputLabel.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 
+// Shared by `WeaponController` and `ArmorController`'s own private `filters()`
+// and `options()` methods; no model backs either shape.
+type WikiFilterValues = {
+    q: string | null;
+    rarity: number | null;
+    expansion: string | null;
+    branch: string | null;
+};
+
+type WikiFilterOptions = {
+    rarities: number[];
+    expansions: Array<{key: string; label: string}>;
+    branches: Array<{key: string; label: string}>;
+};
+
 // Name, rarity and box. The name is searched in both languages, since a piece
 // is as often known by its English name as by its Spanish one.
-const props = defineProps({
-    filters: Object,
-    options: Object,
-    routeName: String,
-    routeParams: {
-        type: Array,
-        default: () => [],
-    },
+const props = withDefaults(defineProps<{
+    filters: WikiFilterValues;
+    options: WikiFilterOptions;
+    // Ziggy's `route()` only accepts a known route name (see `ziggy-global.d.ts`),
+    // so this stays that same type rather than a plain `string`: every caller
+    // passes a real route name, and a typo here should fail to compile too.
+    routeName: keyof import('ziggy-js').RouteList;
+    routeParams?: Array<string | number>;
     // Everything the page shows below the filters is a prop somewhere; naming
     // the ones the result actually needs is what turns the request from a full
     // page visit into a partial one.
-    only: {
-        type: Array,
-        default: () => [],
-    },
+    only?: string[];
+}>(), {
+    routeParams: () => [],
+    only: () => [],
 });
 
 const emit = defineEmits(['loading']);
@@ -32,7 +47,9 @@ const emit = defineEmits(['loading']);
 const {t} = useI18n();
 
 const query = ref(props.filters.q ?? '');
-const rarity = ref(props.filters.rarity ?? '');
+// `SelectInput.vue` declares `modelValue: string`, so a numeric filter value
+// is coerced up front rather than handed through as `number | string`.
+const rarity = ref(String(props.filters.rarity ?? ''));
 const expansion = ref(props.filters.expansion ?? '');
 const branch = ref(props.filters.branch ?? '');
 
@@ -73,7 +90,7 @@ const anyFilter = () => query.value || rarity.value || expansion.value || branch
 // select itself.
 const rarityOptions = computed(() => ({
     '': t('Any'),
-    ...Object.fromEntries(props.options.rarities.map((value) => [value, value])),
+    ...Object.fromEntries(props.options.rarities.map((value) => [value, String(value)])),
 }));
 
 const expansionOptions = computed(() => ({

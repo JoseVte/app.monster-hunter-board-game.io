@@ -1,9 +1,14 @@
-<script setup>
-defineProps({
-    type: {
-        type: String,
-        default: 'button',
-    },
+<script setup lang="ts">
+// The button's own default matters here: the element is a native `<button>`,
+// and omitting the `type` attribute makes a browser default it to `submit`,
+// not `button`. Dropping this default (as the optional-with-no-default
+// pattern used elsewhere in this task does for props that only ever feed a
+// template comparison) would be a real behaviour change here, since a
+// SecondaryButton left inside a `<form>` would start submitting it.
+withDefaults(defineProps<{
+    type?: 'button' | 'submit' | 'reset';
+}>(), {
+    type: 'button',
 });
 </script>
 

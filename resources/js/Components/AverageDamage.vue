@@ -1,21 +1,14 @@
-<script setup>
+<script setup lang="ts">
 import {computed} from "vue";
 import {averageDamage} from "@/damage";
 
 // What one card off the top is worth. It rides beside the weapon's name rather
 // than at the end of the damage spread, because it is the number a reader
 // compares two weapons by and the spread is the detail behind it.
-const props = defineProps({
-    weapon: {
-        type: Object,
-        required: true,
-    },
-    size: {
-        type: String,
-        default: 'md',
-        validator: (size) => ['sm', 'md'].includes(size),
-    },
-});
+const props = defineProps<{
+    weapon: App.Models.Weapon;
+    size?: 'sm' | 'md';
+}>();
 
 const average = computed(() => averageDamage(props.weapon));
 </script>

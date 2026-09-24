@@ -1,5 +1,5 @@
-<script setup>
-import {ref} from "vue";
+<script setup lang="ts">
+import {ref, type Component} from "vue";
 import {Link} from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Breadcrumb from "@/Components/Breadcrumb.vue";
@@ -12,14 +12,40 @@ import LoadingOverlay from "@/Components/LoadingOverlay.vue";
 import ArmorDefenseRow from "@/Pages/Hunter/Partials/ArmorDefenseRow.vue";
 import WikiFilters from "@/Pages/Wiki/Partials/WikiFilters.vue";
 
-defineProps({
-    branches: [Array, Object],
-    filters: Object,
-    options: Object,
-});
+// `WeaponController`'s counterpart shape, reused here since `ArmorController`
+// declares the identical two private methods under the same names.
+type WikiFilterValues = {
+    q: string | null;
+    rarity: number | null;
+    expansion: string | null;
+    branch: string | null;
+};
+
+type WikiFilterOptions = {
+    rarities: number[];
+    expansions: Array<{key: string; label: string}>;
+    branches: Array<{key: string; label: string}>;
+};
+
+type ArmorSlotKey = 'head' | 'body' | 'leg';
+
+// `ArmorController::index()`'s own shape: `Armor::with('skills')->get()
+// ->groupBy('branch')->map(...)`, keyed by `type_value` (`head`/`body`/`leg`)
+// rather than a plain list, and not every branch fills every slot (a `Partial`,
+// not a `Record`). No model backs this grouping.
+type ArmorBranchGroup = {
+    branch: string;
+    pieces: Partial<Record<ArmorSlotKey, App.Models.Armor>>;
+};
+
+defineProps<{
+    branches: ArmorBranchGroup[];
+    filters: WikiFilterValues;
+    options: WikiFilterOptions;
+}>();
 
 // The same three slots the hunter sheet lines up, so a row reads as one set.
-const slots = [
+const slots: Array<{key: ArmorSlotKey; icon: Component}> = [
     { key: 'head', icon: HelmetIcon },
     { key: 'body', icon: ArmorsIcon },
     { key: 'leg', icon: LegArmor },
@@ -78,9 +104,17 @@ const loading = ref(false);
                                 v-for="slot in slots"
                                 :key="`${group.branch}-${slot.key}`"
                             >
+                                <!-- `group.pieces` is a `Partial<Record<...>>`, so
+                                     TypeScript sees each lookup below as
+                                     possibly `undefined` on its own; the `v-if`
+                                     on this `Link` is the actual guard, but Vue's
+                                     template compiler re-evaluates the
+                                     expression rather than narrowing it, so the
+                                     assertions below are asserting what that
+                                     guard already checked, not skipping it. -->
                                 <Link
                                     v-if="group.pieces[slot.key]"
-                                    :href="route('wiki.armor.show', group.pieces[slot.key].id)"
+                                    :href="route('wiki.armor.show', group.pieces[slot.key]!.id)"
                                 >
                                     <Card
                                         clickable
@@ -91,18 +125,18 @@ const loading = ref(false);
                                                 <component
                                                     :is="slot.icon"
                                                     class="h-4 w-4"
-                                                    :class="getRarityColor(group.pieces[slot.key].rarity)"
+                                                    :class="getRarityColor(group.pieces[slot.key]!.rarity)"
                                                 />
                                             </span>
-                                            <span class="mh-card-name">{{ group.pieces[slot.key].name }}</span>
+                                            <span class="mh-card-name">{{ group.pieces[slot.key]!.name }}</span>
                                         </div>
 
                                         <div class="mh-rule" />
 
-                                        <ArmorDefenseRow :armor="group.pieces[slot.key]" />
+                                        <ArmorDefenseRow :armor="group.pieces[slot.key]!" />
 
                                         <div
-                                            v-for="skill in group.pieces[slot.key].skills"
+                                            v-for="skill in group.pieces[slot.key]!.skills"
                                             :key="skill.id"
                                             class="text-sm italic"
                                         >
@@ -111,7 +145,7 @@ const loading = ref(false);
                                                 <KnightIcon
                                                     v-if="skill.bonus_set"
                                                     class="h-5 w-5 shrink-0"
-                                                    :class="getRarityColor(group.pieces[slot.key].rarity)"
+                                                    :class="getRarityColor(group.pieces[slot.key]!.rarity)"
                                                 />
                                             </div>
                                         </div>

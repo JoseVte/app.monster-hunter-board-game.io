@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {computed, ref, watch} from "vue";
 import {useI18n} from "vue-i18n";
 import {router} from "@inertiajs/vue3";
@@ -8,13 +8,29 @@ import SelectInput from "@/Components/Form/SelectInput.vue";
 import InputLabel from "@/Components/Form/InputLabel.vue";
 import SecondaryButton from "@/Components/SecondaryButton.vue";
 
+// `ItemController::filters()`/`options()`'s own shape; no model backs it.
+// `sort`/`direction` are whitelisted server-side, but this component only
+// ever forwards them unread, so they stay the plain strings the controller
+// sends rather than the narrower `'name' | 'type'` / `'asc' | 'desc'` unions
+// `Item/Index.vue` declares for its own copy of `filters`.
+type ItemFilterValues = {
+    q: string | null;
+    type: string | null;
+    sort: string;
+    direction: string;
+};
+
+type ItemFilterOptions = {
+    types: Array<{key: string; label: string}>;
+};
+
 // Name and type. Unlike weapons and armours an item has no rarity or
 // expansion, so this is its own filter bar rather than WikiFilters with
 // unused fields.
-const props = defineProps({
-    filters: Object,
-    options: Object,
-});
+const props = defineProps<{
+    filters: ItemFilterValues;
+    options: ItemFilterOptions;
+}>();
 
 const emit = defineEmits(['loading']);
 

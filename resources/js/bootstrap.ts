@@ -22,6 +22,27 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 import Echo from 'laravel-echo';
 import Pusher from 'pusher-js';
 
+// Neither axios, Echo nor Pusher is on the ambient DOM `Window` type, so
+// assigning to `window.axios`/`.Echo`/`.Pusher` needs somewhere to declare
+// them first. Declaring them here, rather than casting `window as any` at each
+// assignment below, means the next file to read `window.Echo` gets a real type
+// instead of `any`.
+//
+// `Echo` takes a broadcaster key as its generic (`declare class Echo<T extends
+// keyof Broadcaster>` in laravel-echo 2.5.0's own dist/echo.d.ts); `'pusher'`
+// is the only one this app ever constructs, see the guard below. `Pusher` is
+// assigned the class itself, not an instance, hence `typeof Pusher` rather
+// than `Pusher`. Both `Echo` and `Pusher` are optional: the guard below only
+// sets them when a key is configured, so an unconfigured environment leaves
+// them unset.
+declare global {
+    interface Window {
+        axios: typeof axios;
+        Echo?: Echo<'pusher'>;
+        Pusher?: typeof Pusher;
+    }
+}
+
 // Pusher is the only broadcaster. Reverb was configured alongside it and never
 // used, so it was carrying two code paths and two sets of env vars for one.
 //

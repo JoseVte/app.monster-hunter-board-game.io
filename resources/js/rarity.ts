@@ -1,6 +1,11 @@
 // Shared with the global `getRarityColor` mixin (see app.js), which is all a
 // template can reach; script code outside a template needs the plain import.
-export function getRarityColor(rarity) {
+//
+// `rarity` is `App.Models.Weapon['rarity']` / `App.Models.Armor['rarity']`
+// (both plain `number`), made optional here because a caller reaches for this
+// before checking whether it has a weapon or armour to ask at all (see the
+// slot lookups in ArmorBranchGrid.vue and ListArmorType.vue).
+export function getRarityColor(rarity?: number): string {
     switch (rarity) {
     case 1:
         return 'text-gray-400 dark:text-gray-300';

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import { computed } from 'vue';
 import { useI18n } from 'vue-i18n';
 import fire from '~/types/fire.png';
@@ -12,13 +12,23 @@ import sleep from '~/icons/sleep.svg';
 import nitro from '~/icons/nitro.png';
 import stun from '~/icons/stun.webp';
 
-const props = defineProps({
-    monster: Object,
-});
+const props = defineProps<{
+    monster: App.Models.Monster;
+}>();
 
 const { t } = useI18n();
 
-const ELEMENTS = [
+// Matches the `resistance_*` columns on App.Models.Monster, minus the
+// `resistance_` prefix, so `withValues` below can key into the model.
+type ResistanceKey = 'fire' | 'water' | 'thunder' | 'ice' | 'dragon' | 'paralysis' | 'poison' | 'sleep' | 'nitro' | 'stun';
+
+type ResistanceDefinition = {
+    key: ResistanceKey;
+    src: string;
+    alt: string;
+};
+
+const ELEMENTS: ResistanceDefinition[] = [
     { key: 'fire', src: fire, alt: t('Fire') },
     { key: 'water', src: water, alt: t('Water') },
     { key: 'thunder', src: thunder, alt: t('Thunder') },
@@ -26,7 +36,7 @@ const ELEMENTS = [
     { key: 'dragon', src: dragon, alt: t('Dragon') },
 ];
 
-const STATUSES = [
+const STATUSES: ResistanceDefinition[] = [
     { key: 'paralysis', src: paralysis, alt: t('Paralysis') },
     { key: 'poison', src: poison, alt: t('Poison') },
     { key: 'sleep', src: sleep, alt: t('Sleep') },
@@ -34,7 +44,7 @@ const STATUSES = [
     { key: 'stun', src: stun, alt: t('Stun') },
 ];
 
-const withValues = (resistances) => resistances.map((resistance) => ({
+const withValues = (resistances: ResistanceDefinition[]) => resistances.map((resistance) => ({
     ...resistance,
     value: props.monster[`resistance_${resistance.key}`],
 }));

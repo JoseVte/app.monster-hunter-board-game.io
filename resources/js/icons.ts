@@ -47,10 +47,13 @@ import kinsectOne from '~/icons/kinsect-1-icon.png';
 import kinsectTwo from '~/icons/kinsect-2-icon.png';
 import kinsectThree from '~/icons/kinsect-3-icon.png';
 
+type Icon = {src: string, alt: string};
+type Resistance = Icon & {element: string};
+
 // The seed data marks a game symbol as :name_icon:. Everything with artwork
 // lives here; anything else falls back to a placeholder rather than printing the
 // raw token, which is what used to happen to four of them.
-const icons = {
+const icons: Record<string, Icon> = {
     fire_icon: { src: fire, alt: 'Fire' },
     water_icon: { src: water, alt: 'Water' },
     ice_icon: { src: ice, alt: 'Ice' },
@@ -123,7 +126,7 @@ const icons = {
 // A resistance is the element's symbol on a pentagon, the way the board prints
 // it. Only thunder appears in the data today, but the card carries all five and
 // they are drawn the same way, so the set is complete rather than one-off.
-export const resistances = {
+export const resistances: Record<string, Resistance> = {
     fire_resistance_icon: { src: fire, alt: 'Fire resistance', element: 'fire' },
     water_resistance_icon: { src: water, alt: 'Water resistance', element: 'water' },
     ice_resistance_icon: { src: ice, alt: 'Ice resistance', element: 'ice' },
@@ -134,7 +137,7 @@ export const resistances = {
 // A regular pentagon, point up, inscribed in the 20x20 box at radius 9.
 export const PENTAGON = '10,1 18.56,7.22 15.29,17.28 4.71,17.28 1.44,7.22';
 
-function resistance({ src, alt, element }) {
+function resistance({ src, alt, element }: Resistance): string {
     return `<span class="mh-resistance mh-resistance-${element} relative inline-flex h-5 w-5 shrink-0 items-center justify-center align-text-bottom" title="${alt}">`
         + `<svg viewBox="0 0 20 20" class="absolute inset-0 h-full w-full" aria-hidden="true">`
         + `<polygon points="${PENTAGON}"></polygon>`
@@ -147,7 +150,7 @@ function resistance({ src, alt, element }) {
 // the word ("+1 :damage_attack_icon: for every :charged_blade_vial:"), so the
 // badge shows a symbol rather than repeating it, and the full name goes in the
 // tooltip.
-const pending = {
+const pending: Record<string, string> = {
     charge_hammer_icon_1: 'Charge 1',
     charge_hammer_icon_2: 'Charge 2',
     shelling_up_icon: 'Shelling',
@@ -160,19 +163,25 @@ const pending = {
 // suffix silently walked past.
 const TOKEN = /:([a-z0-9_]+):/g;
 
-function humanise(name) {
+function humanise(name: string): string {
     return name.replace(/_/g, ' ').replace(/^./, (first) => first.toUpperCase());
 }
 
 // The name comes from the capture group, which the pattern limits to lowercase,
 // digits and underscores, so nothing user supplied can reach the markup.
-function placeholder(name) {
+function placeholder(name: string): string {
     const label = pending[name] ?? humanise(name);
 
     return `<span class="inline-block px-1 text-[0.65rem] font-semibold leading-4 align-middle rounded border border-current opacity-70" title="${label}">${label}</span>`;
 }
 
-export function replaceIcons(text) {
+// Real callers pass a plain `string`, a nullable model field typed
+// `string | null` (most description columns), or a value already guarded with
+// `| undefined`; a single union covers all three rather than enumerating them
+// as overloads, which is what missed `string | null` the first time round.
+// `null`/`undefined` pass straight through unchanged, which is what the short
+// circuit below does at runtime for anything that is not a string.
+export function replaceIcons(text: string | null | undefined): string | null | undefined {
     if (typeof text !== 'string') {
         return text;
     }
@@ -194,9 +203,9 @@ export function replaceIcons(text) {
 // element and the statuses it inflicts are plain names in the seed data, and the
 // panel that shows them wants the artwork at its own size rather than the 16px
 // `replaceIcons` hands back.
-export function iconFor(name) {
+export function iconFor(name: string): Icon | null {
     return icons[name] ?? null;
 }
 
-export const iconNames = Object.keys(icons).concat(Object.keys(resistances));
-export const pendingIconNames = Object.keys(pending);
+export const iconNames: Array<string> = Object.keys(icons).concat(Object.keys(resistances));
+export const pendingIconNames: Array<string> = Object.keys(pending);

@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {ref, computed} from "vue";
 import {Link} from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
@@ -9,12 +9,15 @@ import MonsterResistances from "@/Components/MonsterResistances.vue";
 import {replaceIcons} from "@/icons";
 import MonsterPartBox from "@/Pages/Wiki/Monster/Partials/MonsterPartBox.vue";
 
-const props = defineProps({
-    monster: Object,
-});
+const props = defineProps<{
+    monster: App.Models.Monster;
+}>();
 
-const activeTierId = ref(props.monster.difficulties[0]?.id ?? null);
-const tier = computed(() => props.monster.difficulties.find((candidate) => candidate.id === activeTierId.value));
+// `difficulties` is a relation, so the generated type marks it optional even
+// though the controller always loads it (`$monster->load('difficulties.parts')`)
+// before rendering this page.
+const activeTierId = ref<number | null>(props.monster.difficulties?.[0]?.id ?? null);
+const tier = computed(() => props.monster.difficulties?.find((candidate) => candidate.id === activeTierId.value));
 
 // The card's own layout puts the illustration in the middle with a break
 // box at each corner. Own icon in the centre (absolutely positioned, so it
@@ -58,11 +61,11 @@ const overflowParts = computed(() => tier.value?.parts?.slice(CORNER_COUNT) ?? [
                         </div>
 
                         <div
-                            v-if="monster.difficulties.length > 1"
+                            v-if="(monster.difficulties?.length ?? 0) > 1"
                             class="flex flex-wrap gap-2"
                         >
                             <button
-                                v-for="difficultyTier in monster.difficulties"
+                                v-for="difficultyTier in monster.difficulties ?? []"
                                 :key="difficultyTier.id"
                                 type="button"
                                 class="rounded px-2 py-1 text-xs font-semibold tracking-wide uppercase"

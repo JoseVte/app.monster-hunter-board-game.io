@@ -1,23 +1,23 @@
-<script setup>
+<script setup lang="ts">
 import { computed, onMounted, ref, useAttrs } from 'vue';
 
-defineProps({
-    modelValue: String,
-    options: [Array, Object],
-    placeholder: String
-});
+defineProps<{
+    modelValue: string;
+    options: Record<string, string>;
+    placeholder?: string;
+}>();
 
 defineEmits(['update:modelValue']);
 
-const input = ref(null);
+const input = ref<HTMLSelectElement | null>(null);
 
 onMounted(() => {
-    if (input.value.hasAttribute('autofocus')) {
+    if (input.value?.hasAttribute('autofocus')) {
         input.value.focus();
     }
 });
 
-defineExpose({ focus: () => input.value.focus() });
+defineExpose({ focus: () => input.value?.focus() });
 
 // The wrapper is the root now, so every attribute the caller passes would land
 // on it instead of the control: id, type, placeholder, required. Chrome even
@@ -45,7 +45,7 @@ const controlAttrs = computed(() => Object.fromEntries(
             ref="input"
             class="mh-field block w-full border border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary-500 dark:focus:border-primary-600 focus:outline-hidden"
             :value="modelValue"
-            @input="$emit('update:modelValue', $event.target.value)"
+            @input="$emit('update:modelValue', ($event.target as HTMLSelectElement).value)"
         >
             <option
                 v-if="placeholder"

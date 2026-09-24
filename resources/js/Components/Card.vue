@@ -1,12 +1,12 @@
-<script setup>
+<script setup lang="ts">
 // The card the components are printed on: a marked frame, an edge that lights
 // when the thing is owned and a filled one when it is in hand. Weapons, armours,
 // campaigns, days and achievements are all this.
-defineProps({
-    owned: Boolean,
-    equipped: Boolean,
-    clickable: Boolean,
-});
+defineProps<{
+    owned?: boolean;
+    equipped?: boolean;
+    clickable?: boolean;
+}>();
 </script>
 
 <template>

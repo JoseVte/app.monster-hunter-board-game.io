@@ -1,5 +1,5 @@
-<script setup>
-import {h} from "vue";
+<script setup lang="ts">
+import {h, type Component} from "vue";
 import {Link} from "@inertiajs/vue3";
 import AppLayout from "@/Layouts/AppLayout.vue";
 import Breadcrumb from "@/Components/Breadcrumb.vue";
@@ -11,16 +11,26 @@ import Card from "@/Components/Card.vue";
 import WeaponTypeIcon from "@/Components/WeaponTypeIcon.vue";
 import {getRarityColor} from "@/rarity";
 
-const props = defineProps({
-    item: Object,
-});
+const props = defineProps<{
+    item: App.Models.Item;
+}>();
 
 // Breadcrumb's icon slot wants a component, not a URL, so the item's own icon
 // is wrapped in one rather than falling back to the generic items glyph.
 const currentIcon = () => h('img', {src: props.item.icon_url, alt: props.item.name});
 
+type ArmorTypeKey = 'head' | 'body' | 'leg';
+
 // The same three slots the armour card itself keys its icon by.
-const ARMOR_ICONS = {head: HelmetIcon, body: ArmorsIcon, leg: LegArmor};
+const ARMOR_ICONS: Record<ArmorTypeKey, Component> = {head: HelmetIcon, body: ArmorsIcon, leg: LegArmor};
+
+// `Armor.type_value` is a plain string off the model, not the literal union
+// above, so it is checked against the map's own keys rather than cast into
+// it. `in` walks the prototype chain, so `'toString' in ARMOR_ICONS` is
+// `true` and this would wrongly accept it; `Object.hasOwn` checks the
+// object's own keys only. Matches `WeaponStats.vue`'s `isDeviationKey` guard.
+const isArmorTypeKey = (key: string | undefined): key is ArmorTypeKey => !! key && Object.hasOwn(ARMOR_ICONS, key);
+const armorIcon = (typeValue: string | undefined): Component | undefined => (isArmorTypeKey(typeValue) ? ARMOR_ICONS[typeValue] : undefined);
 </script>
 
 <template>
@@ -125,7 +135,7 @@ const ARMOR_ICONS = {head: HelmetIcon, body: ArmorsIcon, leg: LegArmor};
                                 class="flex items-center gap-2"
                             >
                                 <component
-                                    :is="ARMOR_ICONS[armor.type_value]"
+                                    :is="armorIcon(armor.type_value)"
                                     class="h-4 w-4"
                                     :class="getRarityColor(armor.rarity)"
                                 />

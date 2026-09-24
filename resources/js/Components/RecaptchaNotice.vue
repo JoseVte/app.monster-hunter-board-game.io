@@ -1,7 +1,7 @@
 <script setup>
 //
 // Google's terms ask for the reCAPTCHA badge or a visible attribution, one or
-// the other. resources/js/recaptcha.js keeps the badge hidden, so this is what
+// the other. resources/js/recaptcha.ts keeps the badge hidden, so this is what
 // holds up that end of the bargain. Any form that calls useRecaptcha needs it.
 //
 // The links are composed here rather than inside the translated string.

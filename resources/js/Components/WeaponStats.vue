@@ -1,4 +1,4 @@
-<script setup>
+<script setup lang="ts">
 import {computed} from "vue";
 import StatBadge from "@/Components/StatBadge.vue";
 import {attackBreakdown} from "@/damage";
@@ -10,27 +10,29 @@ import deviationHigh from '~/icons/deviation-high-icon.png';
 
 // Only the two bowguns deviate, and the rating is told apart by colour rather
 // than by a number, so this badge carries no value the way the others do.
-const deviations = {
+type DeviationKey = 'NONE' | 'LOW' | 'AVERAGE' | 'HIGH';
+
+const deviations: Record<DeviationKey, string> = {
     NONE: deviationNone,
     LOW: deviationLow,
     AVERAGE: deviationAverage,
     HIGH: deviationHigh,
 };
 
-const props = defineProps({
-    weapon: {
-        type: Object,
-        required: true,
-    },
-    size: {
-        type: String,
-        default: 'md',
-        validator: (size) => ['sm', 'md'].includes(size),
-    },
-});
+// `Weapon.deviation_key` is a plain nullable string off the model, not the
+// literal union above, so it is checked against the map's own keys rather than
+// cast into it. `in` walks the prototype chain, so `'toString' in deviations`
+// is `true` and this would wrongly accept it; `Object.hasOwn` checks the
+// object's own keys only.
+const isDeviationKey = (key: string | null | undefined): key is DeviationKey => !! key && Object.hasOwn(deviations, key);
+
+const props = defineProps<{
+    weapon: App.Models.Weapon;
+    size?: 'sm' | 'md';
+}>();
 
 const breakdown = computed(() => attackBreakdown(props.weapon));
-const deviation = computed(() => deviations[props.weapon.deviation_key] ?? null);
+const deviation = computed(() => (isDeviationKey(props.weapon.deviation_key) ? deviations[props.weapon.deviation_key] : null));
 
 // What the hit does besides damage: the one element the weapon carries and the
 // statuses it can inflict. Both are plain names in the data, and every one of
@@ -38,7 +40,7 @@ const deviation = computed(() => deviations[props.weapon.deviation_key] ?? null)
 const element = computed(() => iconFor(`${props.weapon.element}_icon`));
 const statuses = computed(() => (props.weapon.status_attacks ?? [])
     .map((status) => iconFor(`${status}_icon`))
-    .filter(Boolean));
+    .filter((icon) => icon !== null));
 </script>
 
 <template>
