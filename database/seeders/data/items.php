@@ -130,6 +130,29 @@ return [
         'Kulu-Ya-Ku Plume' => 'Pluma de Kulu-Ya-Ku',
         'Kulu-Ya-Ku Beak' => 'Pico de Kulu-Ya-Ku',
 
+        // Tzitzi-Ya-Ku
+        'Tzitzi-Ya-Ku Scale' => 'Escama de Tzitzi-Ya-Ku',
+        'Tzitzi-Ya-Ku Hide' => 'Piel de Tzitzi-Ya-Ku',
+        'Tzitzi-Ya-Ku Photophore' => 'Fotoforo de Tzitzi-Ya-Ku',
+        'Tzitzi-Ya-Ku Claw' => 'Garra de Tzitzi-Ya-Ku',
+
+        // Great Girros
+        'Great Girros Tail' => 'Cola de Gran Girros',
+        'Great Girros Fang' => 'Colmillo de Gran Girros',
+        'Great Girros Hide' => 'Piel de Gran Girros',
+        'Great Girros Scale' => 'Escama de Gran Girros',
+        'Paralysis Sac' => 'Vesícula Paralizante',
+        'Girros Scale' => 'Escama de Girros',
+        'Girros Fang' => 'Colmillo de Girros',
+
+        // Radobaan
+        'Radobaan Oilshell' => 'Aceite de Radobaan',
+        'Radobaan Carapace' => 'Coraza de Radobaan',
+        'Radobaan Scale' => 'Escama de Radobaan',
+        'Coma Sac' => 'Vesícula de Coma',
+        'Sleep Sac' => 'Vesícula Somnífera',
+        'Wyvern Bonemass' => 'Hueso de Wyvern',
+
         // Nergigante
         'Nergigante Horn' => 'Cuerno de Nergigante',
         'Nergigante Carapace' => 'Coraza de Nergigante',

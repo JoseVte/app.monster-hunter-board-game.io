@@ -126,6 +126,16 @@ Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
                 'es' => 'Cada cazador afectado gana 1 :thunder_resistance_icon:.',
             ],
         ],
+        [
+            'name' => [
+                'en' => 'Fire Resistance Boost',
+                'es' => 'Resistencia a Fuego Mejorada',
+            ],
+            'description' => [
+                'en' => 'Each affected hunter gains 1 :fire_resistance_icon:.',
+                'es' => 'Cada cazador afectado gana 1 :fire_resistance_icon:.',
+            ],
+        ],
     ],
     'song-lists' => [
         [
@@ -265,6 +275,26 @@ Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
                 'Defence Up' => [
                     'range' => 1,
                     'notes' => ['white', 'blue', 'blue'],
+                ],
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Radobaan Song List',
+                'es' => 'Lista de Canciones de Radobaan',
+            ],
+            'songs' => [
+                'Self Improvement' => [
+                    'range' => 0,
+                    'notes' => ['white', 'white'],
+                ],
+                'Attack Up' => [
+                    'range' => 1,
+                    'notes' => ['white', 'red', 'red'],
+                ],
+                'Fire Resistance Boost' => [
+                    'range' => 2,
+                    'notes' => ['red', 'blue', 'blue'],
                 ],
             ],
         ],
@@ -772,6 +802,65 @@ Los efectos de la canción duran hasta el comienzo de tu próximo turno.',
                 'add' => [
                     'Dive Swing' => 2,
                     'Lullaby Smash' => 1,
+                ],
+            ],
+        ],
+        // PICKING BONES EXPANSION
+        'Spiked Horn' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Bone Horn',
+            'branch' => 'Radobaan',
+            'rarity' => 3,
+            'name' => 'Cuerno Afilado',
+            'song_list' => 'Radobaan Song List',
+            'status_attacks' => [
+                'stun',
+            ],
+            'count_attack_1' => 2,
+            'count_attack_2' => 4,
+            'count_attack_3' => 4,
+            'items' => [
+                'Wyvern Bonemass' => 2,
+                'Radobaan Scale' => 3,
+                'Sleep Sac' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Forward Smash' => 2,
+                ],
+                'add' => [
+                    'Spiked Smash' => 2,
+                ],
+            ],
+        ],
+        'Baan Horn' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Spiked Horn',
+            'branch' => 'Radobaan',
+            'rarity' => 4,
+            'name' => 'Cuerno Baan',
+            'song_list' => 'Radobaan Song List',
+            'status_attacks' => [
+                'stun',
+                'sleep',
+            ],
+            'count_attack_1' => 1,
+            'count_attack_2' => 5,
+            'count_attack_3' => 6,
+            'items' => [
+                'Radobaan Carapace' => 4,
+                'Radobaan Oilshell' => 2,
+                'Coma Sac' => 1,
+                'Monster Keenbone' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Forward Smash' => 2,
+                    'Right Swing' => 2,
+                ],
+                'add' => [
+                    'Spiked Smash' => 2,
+                    'Sleep Gas Swing' => 2,
                 ],
             ],
         ],

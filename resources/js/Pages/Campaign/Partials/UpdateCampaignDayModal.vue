@@ -15,7 +15,11 @@ const props = defineProps({
     campaign: Object,
     days: [Array, Object],
     monsters: [Array, Object],
-    day: Object
+    day: Object,
+    // `Campaign::MAX_DOWNTIME_ACTIVITIES`, sent by `CampaignController::show`
+    // rather than written out here, so the cap the form enforces and the one
+    // `AddOrUpdateCampaignDayRequest` asserts are the same number.
+    maxActivities: Number
 });
 
 const typeDayInput = ref(props.day.monster_id ? 'MONSTER' : 'DOWNTIME');
@@ -24,21 +28,29 @@ const confirmUpdateDay = () => {
     confirmingUpdateDay.value = true;
 };
 
-const huntersDays = _.mapValues(
-    _.keyBy(props.campaign.users, 'id'), (user) => {
-        const hunter = _.find(props.day.hunters,
-            (hunter) => user.membership.hunter_id === hunter.id
-        )
-        if (hunter) return hunter.pivot.downtime_activity_id ? hunter.pivot.downtime_activity : ''
 
-        return '';
-    }
+// `day.hunters` carries one entry per pivot row, so a hunter who performed
+// three activities is in it three times, each with its own pivot. Grouping
+// them back by hunter is what turns that into the list this form edits; the
+// single `day.downtime_activity_id` column cannot stand in for it, since it
+// only holds anything when the whole party spent the day on one activity.
+const huntersDays = _.mapValues(
+    _.keyBy(props.campaign.users, 'id'),
+    (user) => _.filter(props.day.hunters, (hunter) => user.membership.hunter_id === hunter.id)
+        .map((hunter) => hunter.pivot.downtime_activity)
+        .filter(Boolean)
 )
+
+// Everybody holds the same set when the day was saved that way, so reading one
+// hunter's is reading the party's.
+const sharedActivities = props.day.all_hunters_same_activity
+    ? (_.find(_.values(huntersDays), (activities) => activities.length > 0) ?? [])
+    : [];
 
 const form = useForm({
     type_day: _.find(usePage().props.dayType, (option) => option.key === (props.day.monster_id ? 'MONSTER' : 'DOWNTIME')),
     all_hunters_same_activity: props.day.all_hunters_same_activity,
-    day_id: props.day.downtime_activity_id ? props.day.downtime_activity : null,
+    day_id: sharedActivities,
     hunter_day_id: huntersDays,
     monster_id: props.day.monster_id ? props.day.monster : null,
     difficulty: props.day.difficulty ? _.find(usePage().props.monsterDifficulty, (option) => option.key === props.day.difficulty) : null,
@@ -51,8 +63,8 @@ const updateDay = () => {
     form.transform((data) => ({
         ...data,
         type_day: data.type_day ? data.type_day.key : null,
-        day_id: data.day_id ? data.day_id.id : null,
-        hunter_day_id: data.hunter_day_id ? _.mapValues(data.hunter_day_id, (day) => day.id) : huntersDays,
+        day_id: _.map(data.day_id, 'id'),
+        hunter_day_id: _.mapValues(data.hunter_day_id, (activities) => _.map(activities, 'id')),
         monster_id: data.monster_id ? data.monster_id.id : null,
         difficulty: data.difficulty ? data.difficulty.key : null,
     })).put(route('campaigns.update-day', [props.campaign, props.day]), {
@@ -142,6 +154,8 @@ const closeModal = () => {
                                 :options="days"
                                 label="name"
                                 track-by="id"
+                                multiple
+                                :max="maxActivities"
                                 :allow-empty="false"
                                 :placeholder="$t('Day')"
                             />
@@ -152,9 +166,10 @@ const closeModal = () => {
                             />
                         </div>
                         <div
-                            v-if="form.day_id"
+                            v-for="activity in form.day_id"
+                            :key="activity.id"
                             class="sm:col-span-2 day-description"
-                            v-html="_.find(days, (day) => day.id === form.day_id.id).description"
+                            v-html="activity.description"
                         />
                     </template>
                     <template
@@ -189,19 +204,20 @@ const closeModal = () => {
                                 :options="days"
                                 label="name"
                                 track-by="id"
+                                multiple
+                                :max="maxActivities"
                                 :allow-empty="false"
                                 :placeholder="$t('Day')"
                             />
 
+                            <!-- Laravel names a per-hunter failure
+                                 `hunter_day_id.<hunter>` and Inertia hands the
+                                 bag over with those dotted keys intact, so the
+                                 hunter's own error is looked up by that key
+                                 and the bare one is the fallback for a failure
+                                 about the whole array. -->
                             <InputError
-                                v-if="_.isArray(form.errors.hunter_day_id)"
-                                :message="_.find(form.errors.hunter_day_id, (day, userId) => userId === user.id)"
-                                class="mt-2"
-                            />
-
-                            <InputError
-                                v-else
-                                :message="form.errors.hunter_day_id"
+                                :message="form.errors[`hunter_day_id.${user.id}`] ?? form.errors.hunter_day_id"
                                 class="mt-2"
                             />
                         </div>

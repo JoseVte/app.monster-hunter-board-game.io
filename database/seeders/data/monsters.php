@@ -2587,6 +2587,731 @@ return [
         ],
     ],
 
+    'Tzitzi-Ya-Ku' => [
+        'category' => App\Enum\MonsterCategory::BIRD_WYVERN,
+        'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+        'setup' => [
+            'en' => 'Locate the flash token. :tzitzi_icon:.',
+            'es' => 'Localiza la ficha de destello. :tzitzi_icon:.',
+        ],
+        'items' => [
+            'Tzitzi-Ya-Ku Scale',
+            'Tzitzi-Ya-Ku Hide',
+            'Tzitzi-Ya-Ku Photophore',
+            'Tzitzi-Ya-Ku Claw',
+        ],
+        'resistance' => [
+            'fire' => 2,
+            'water' => 2,
+            'thunder' => 1,
+            'ice' => 1,
+            'dragon' => 2,
+
+            'paralysis' => 2,
+            'poison' => 2,
+            'sleep' => 2,
+            'nitro' => 2,
+            'stun' => 2,
+        ],
+        'difficulty' => [
+            [
+                'difficulty' => App\Enum\MonsterDifficulty::EASY,
+                'stars' => 1,
+                'health' => 60,
+                'ability' => [
+                    'name' => [
+                        'en' => 'Flash',
+                        'es' => 'Destello',
+                    ],
+                    'description' => [
+                        'en' => 'When Tzitzi-Ya-Ku reveals a behaviour with :tzitzi_icon:, place the flash token on its behaviour deck. At the start of its next turn, hunter in its front arc and within 2 nodes suffer :stun_icon:, then flip their hunter token face down. Remove the flash token.',
+                        'es' => 'Cuando Tzitzi-Ya-Ku revela un comportamiento con :tzitzi_icon:, coloca la ficha de destello en su mazo de comportamiento. Al comienzo de su próximo turno, los cazadores en su arco frontal y a 2 nodos o menos sufren :stun_icon:, después voltean su ficha de cazador boca abajo. Retira la ficha de destello.',
+                    ],
+                ],
+                'parts' => [
+                    [
+                        'icon' => 'head',
+                        'direction' => 'up',
+                        'defense' => 1,
+                        'broken' => 4,
+                        'ability-broken' => [
+                            'en' => 'Flash effects hunters within 1 node rather than 2.',
+                            'es' => 'El Destello afecta a los cazadores a 1 nodo en lugar de 2.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'claw',
+                        'direction' => 'left-right',
+                        'defense' => 2,
+                        'broken' => 3,
+                    ],
+                    [
+                        'icon' => 'paw',
+                        'direction' => 'down',
+                        'defense' => 1,
+                        'broken' => 3,
+                    ],
+                ],
+            ],
+            [
+                'difficulty' => App\Enum\MonsterDifficulty::NORMAL,
+                'stars' => 2,
+                'health' => 65,
+                'ability' => [
+                    'name' => [
+                        'en' => 'Dazzling Flash',
+                        'es' => 'Destello Deslumbrante',
+                    ],
+                    'description' => [
+                        'en' => 'When Tzitzi-Ya-Ku reveals a behaviour with :tzitzi_icon:, place the flash token on its behaviour deck. At the start of its next turn, hunter in its front arc and within 3 nodes suffer :stun_icon:, then flip their hunter token face down. Remove the flash token. Behaviours with :head_icon: gain +1 :damage_icon:.',
+                        'es' => 'Cuando Tzitzi-Ya-Ku revela un comportamiento con :tzitzi_icon:, coloca la ficha de destello en su mazo de comportamiento. Al comienzo de su próximo turno, los cazadores en su arco frontal y a 3 nodos o menos sufren :stun_icon:, después voltean su ficha de cazador boca abajo. Retira la ficha de destello. Los comportamientos con :head_icon: ganan +1 :damage_icon:.',
+                    ],
+                ],
+                'parts' => [
+                    [
+                        'icon' => 'head',
+                        'direction' => 'up',
+                        'defense' => 1,
+                        'broken' => 5,
+                        'ability-broken' => [
+                            'en' => 'Flash effects hunters within 2 node rather than 3.',
+                            'es' => 'El Destello afecta a los cazadores a 2 nodos en lugar de 3.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'claw',
+                        'direction' => 'left-right',
+                        'defense' => 2,
+                        'broken' => 4,
+                    ],
+                    [
+                        'icon' => 'paw',
+                        'direction' => 'down',
+                        'defense' => 2,
+                        'broken' => 3,
+                        'ability-broken' => [
+                            'en' => 'Remove Leaping Talon Rake from the behaviour deck. Shuffle discarded behaviour cards into the deck.',
+                            'es' => 'Retira Zarpazo Saltador del mazo de comportamiento. Baraja las cartas de comportamiento descartadas en el mazo.',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'difficulty' => App\Enum\MonsterDifficulty::HARD,
+                'stars' => 3,
+                'health' => 70,
+                'ability' => [
+                    'name' => [
+                        'en' => 'Blinding Flash',
+                        'es' => 'Destello Cegador',
+                    ],
+                    'description' => [
+                        'en' => 'When Tzitzi-Ya-Ku reveals a behaviour with :tzitzi_icon:, place the flash token on its behaviour deck. At the start of its next turn, hunter in its front arc and within 4 nodes suffer :stun_icon:, then flip their hunter token face down. Remove the flash token. Behaviours with :head_icon: gain +1 :damage_icon: and +1 :dodge_icon:.',
+                        'es' => 'Cuando Tzitzi-Ya-Ku revela un comportamiento con :tzitzi_icon:, coloca la ficha de destello en su mazo de comportamiento. Al comienzo de su próximo turno, los cazadores en su arco frontal y a 4 nodos o menos sufren :stun_icon:, después voltean su ficha de cazador boca abajo. Retira la ficha de destello. Los comportamientos con :head_icon: ganan +1 :damage_icon: y +1 :dodge_icon:.',
+                    ],
+                ],
+                'parts' => [
+                    [
+                        'icon' => 'head',
+                        'direction' => 'up',
+                        'defense' => 1,
+                        'broken' => 6,
+                        'ability-broken' => [
+                            'en' => 'Flash effects hunters within 3 node rather than 4.',
+                            'es' => 'El Destello afecta a los cazadores a 3 nodos en lugar de 4.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'claw',
+                        'direction' => 'left-right',
+                        'defense' => 3,
+                        'broken' => 5,
+                        'ability-broken' => [
+                            'en' => 'Behaviour with :claw_icon: have -1 :dodge_icon:.',
+                            'es' => 'Los comportamientos con :claw_icon: tienen -1 :dodge_icon:.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'paw',
+                        'direction' => 'down',
+                        'defense' => 2,
+                        'broken' => 5,
+                        'ability-broken' => [
+                            'en' => 'Remove Leaping Talon Rake from the behaviour deck. Shuffle discarded behaviour cards into the deck.',
+                            'es' => 'Retira Zarpazo Saltador del mazo de comportamiento. Baraja las cartas de comportamiento descartadas en el mazo.',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'rewards' => [
+            1 => [
+                'name' => 'Tzitzi-Ya-Ku Photophore',
+            ],
+            2 => [
+                'name' => 'Tzitzi-Ya-Ku Claw',
+            ],
+            3 => [
+                'name' => 'Tzitzi-Ya-Ku Scale',
+            ],
+            4 => [
+                'name' => 'Tzitzi-Ya-Ku Hide',
+            ],
+            5 => [
+                'name' => 'Tzitzi-Ya-Ku Scale',
+            ],
+            6 => [
+                'name' => 'Tzitzi-Ya-Ku Claw',
+            ],
+            7 => [
+                'name' => 'Tzitzi-Ya-Ku Scale',
+            ],
+            8 => [
+                'name' => 'Tzitzi-Ya-Ku Hide',
+                'extra' => [
+                    'en' => 'Gain 1 if the :paw_icon: were broken.',
+                    'es' => 'Gana 1 si el :paw_icon: estuviera roto.',
+                ],
+            ],
+            9 => [
+                'name' => 'Tzitzi-Ya-Ku Photophore',
+            ],
+            10 => [
+                'name' => 'Tzitzi-Ya-Ku Scale',
+            ],
+            11 => [
+                'name' => 'Tzitzi-Ya-Ku Claw',
+                'extra' => [
+                    'en' => 'Gain 1 if the :claw_icon: were broken.',
+                    'es' => 'Gana 1 si el :claw_icon: estuviera roto.',
+                ],
+            ],
+            12 => [
+                'name' => 'Tzitzi-Ya-Ku Photophore',
+                'extra' => [
+                    'en' => 'Gain 1 if the :head_icon: were broken.',
+                    'es' => 'Gana 1 si el :head_icon: estuviera roto.',
+                ],
+            ],
+        ],
+    ],
+    'Great Girros' => [
+        'name' => 'Gran Girros',
+        'category' => App\Enum\MonsterCategory::FANGED_WYVERN,
+        'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+        'setup' => [
+            'en' => 'Locate the 3 Girros Pack physiology cards, 5 Girros pack behaviour cards, and 4 Girros Pack tokens.<br>While preparing for the gathering phase, take the Girros Pack physiology card matching the difficulty of your selected ques and return the rest to the game box, then shuffle the Girros Pack behaviour cards to create a Girros Pack behaviour deck.<br>While preparing for the hunter phase, tak 1 Girros Pack token per hunter and return the rest to the game box, then place each of them on a Girros Pack starting position of your choice, as shown on the quest\'s minimap. Girros Pack tokens are dials that track the health of each Girros Pack token. Set the health of each Girros Pack token to the health value shown on the Girros Pack physiology card.',
+            'es' => 'Localiza las 3 cartas de fisiología de la Manada de Girros, las 5 cartas de comportamiento de la Manada de Girros y las 4 fichas de Manada de Girros.<br>Mientras preparas la fase de recolección, coge la carta de fisiología de la Manada de Girros que coincida con la dificultad de tu misión seleccionada y devuelve el resto a la caja del juego, después baraja las cartas de comportamiento de la Manada de Girros para crear un mazo de comportamiento de la Manada de Girros.<br>Mientras preparas la fase de cazadores, coge 1 ficha de Manada de Girros por cazador y devuelve el resto a la caja del juego, después coloca cada una en una posición inicial de la Manada de Girros de tu elección, como se muestra en el minimapa de la misión. Las fichas de Manada de Girros son medidores que registran la salud de cada ficha de Manada de Girros. Ajusta la salud de cada ficha de Manada de Girros al valor de salud que se muestra en la carta de fisiología de la Manada de Girros.',
+        ],
+        'mechanics' => [
+            [
+                'title' => [
+                    'en' => 'Special Rules',
+                    'es' => 'Reglas Especiales',
+                ],
+                'description' => [
+                    [
+                        'title' => [
+                            'en' => '',
+                            'es' => '',
+                        ],
+                        'description' => [
+                            'en' => 'After resolving a Great Girros behaviour card, before resolving :hunter_behaviour_icon:, if there\'s 1 ore more Girros Pack tokens on the game board, draw 1 Girros Pack behaviour card and resolve it with each Girros Pack token on the board.<br>When Great Girros reveals a behaviour with :girros_icon:, if there are fewer Girros Pack tokens than hunters on the game board, place 1 Girros Pack token on a Girros Pack stating position of your choice, and set its health to the value shown on the Girros Pack physiology card.',
+                            'es' => 'Después de resolver una carta de comportamiento de Gran Girros, antes de resolver :hunter_behaviour_icon:, si hay 1 o más fichas de Manada de Girros en el tablero de juego, roba 1 carta de comportamiento de la Manada de Girros y resúlvela con cada ficha de Manada de Girros del tablero.<br>Cuando Gran Girros revela un comportamiento con :girros_icon:, si hay menos fichas de Manada de Girros que cazadores en el tablero de juego, coloca 1 ficha de Manada de Girros en una posición inicial de la Manada de Girros de tu elección, y ajusta su salud al valor que se muestra en la carta de fisiología de la Manada de Girros.',
+                        ],
+                    ],
+                    [
+                        'title' => [
+                            'en' => 'Girros Pack Tokens',
+                            'es' => 'Fichas de Manada de Girros',
+                        ],
+                        'description' => [
+                            'en' => 'Girros Pack tokens are monsters, with the following exceptions:<ul><li>Girros Pack tokens don\'t have arcs of body parts, and aren\'t affected by elemental damage or status ailments.</li><li>When a hunter is moved by a Girros Pack token, they may move to any adjacent node except the one the Girros Pack token moved from. Great Girros and Girros Pack tokens can\'t enter a node occupied by Great Girros or a Girros Pack token.</li><li>When a Girros Pack is reduced to 0 health, it has been slain. Remove it from the game board. Regardless of how many Girros Pack tokens are slain, the quest isn\'t complete until Great Girros has been slain.</li></ul>',
+                            'es' => 'Las fichas de Manada de Girros son monstruos, con las siguientes excepciones:<ul><li>Las fichas de Manada de Girros no tienen arcos de partes del cuerpo, y no se ven afectadas por el daño elemental ni por las dolencias de estado.</li><li>Cuando un cazador es movido por una ficha de Manada de Girros, puede moverse a cualquier nodo adyacente excepto aquel del que partió la ficha de Manada de Girros. Gran Girros y las fichas de Manada de Girros no pueden entrar en un nodo ocupado por Gran Girros o por una ficha de Manada de Girros.</li><li>Cuando una Manada de Girros se queda a 0 de salud, ha sido abatida. Retírala del tablero de juego. Independientemente de cuántas fichas de Manada de Girros sean abatidas, la misión no está completa hasta que Gran Girros haya sido abatido.</li></ul>',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'items' => [
+            'Great Girros Tail',
+            'Great Girros Fang',
+            'Great Girros Hide',
+            'Great Girros Scale',
+        ],
+        'resistance' => [
+            'fire' => null,
+            'water' => 1,
+            'thunder' => null,
+            'ice' => 2,
+            'dragon' => null,
+
+            'paralysis' => null,
+            'poison' => 2,
+            'sleep' => 2,
+            'nitro' => 2,
+            'stun' => 2,
+        ],
+        'difficulty' => [
+            [
+                'difficulty' => App\Enum\MonsterDifficulty::EASY,
+                'stars' => 1,
+                'health' => 60,
+                'ability' => [
+                    'name' => [
+                        'en' => 'Girros Swarm',
+                        'es' => 'Enjambre de Girros',
+                    ],
+                    'description' => [
+                        'en' => 'When Great Girros reveals a behaviour with :girros_icon:, if there are fewer Girros Pack tokens than hunters on the game board, place 1 Girros Pack token on a Girros Pack stating position of your choice.',
+                        'es' => 'Cuando Gran Girros revela un comportamiento con :girros_icon:, si hay menos fichas de Manada de Girros que cazadores en el tablero de juego, coloca 1 ficha de Manada de Girros en una posición inicial de la Manada de Girros de tu elección.',
+                    ],
+                ],
+                'parts' => [
+                    [
+                        'icon' => 'head',
+                        'direction' => 'up',
+                        'defense' => 1,
+                        'broken' => 4,
+                        'ability-broken' => [
+                            'en' => 'Behaviours with :head_icon: no longer cause the :paralysis_icon: status ailment.',
+                            'es' => 'Los comportamientos con :head_icon: ya no causan el :paralysis_icon: dolencia de estado.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'back',
+                        'direction' => 'down',
+                        'defense' => 1,
+                        'broken' => 3,
+                    ],
+                    [
+                        'icon' => 'claw',
+                        'direction' => 'left-right',
+                        'defense' => 2,
+                        'broken' => 3,
+                    ],
+                ],
+            ],
+            [
+                'difficulty' => App\Enum\MonsterDifficulty::NORMAL,
+                'stars' => 2,
+                'health' => 65,
+                'ability' => [
+                    'name' => [
+                        'en' => 'Ravenous Girros Swarm',
+                        'es' => 'Enjambre Voraz de Girros',
+                    ],
+                    'description' => [
+                        'en' => 'When Great Girros reveals a behaviour with :girros_icon:, if there are fewer Girros Pack tokens than hunters on the game board, place 1 Girros Pack token on a Girros Pack stating position of your choice. Behaviours with :head_icon: gain +1 :damage_icon:.',
+                        'es' => 'Cuando Gran Girros revela un comportamiento con :girros_icon:, si hay menos fichas de Manada de Girros que cazadores en el tablero de juego, coloca 1 ficha de Manada de Girros en una posición inicial de la Manada de Girros de tu elección. Los comportamientos con :head_icon: ganan +1 :damage_icon:.',
+                    ],
+                ],
+                'parts' => [
+                    [
+                        'icon' => 'head',
+                        'direction' => 'up',
+                        'defense' => 2,
+                        'broken' => 5,
+                        'ability-broken' => [
+                            'en' => 'Behaviours with :head_icon: no longer cause the :paralysis_icon: status ailment.',
+                            'es' => 'Los comportamientos con :head_icon: ya no causan el :paralysis_icon: dolencia de estado.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'back',
+                        'direction' => 'down',
+                        'defense' => 1,
+                        'broken' => 4,
+                    ],
+                    [
+                        'icon' => 'claw',
+                        'direction' => 'left-right',
+                        'defense' => 2,
+                        'broken' => 4,
+                        'ability-broken' => [
+                            'en' => 'Behaviours with :claw_icon: have -1 :movement_icon:.',
+                            'es' => 'Los comportamientos con :claw_icon: tienen -1 :movement_icon:.',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'difficulty' => App\Enum\MonsterDifficulty::HARD,
+                'stars' => 3,
+                'health' => 70,
+                'ability' => [
+                    'name' => [
+                        'en' => 'Relentless Girros Swarm',
+                        'es' => 'Enjambre Implacable de Girros',
+                    ],
+                    'description' => [
+                        'en' => 'When Great Girros reveals a behaviour with :girros_icon:, if there are fewer Girros Pack tokens than hunters on the game board, place 1 Girros Pack token on a Girros Pack stating position of your choice. Behaviours with :head_icon: gain +1 :damage_icon: and +1 :dodge_icon:.',
+                        'es' => 'Cuando Gran Girros revela un comportamiento con :girros_icon:, si hay menos fichas de Manada de Girros que cazadores en el tablero de juego, coloca 1 ficha de Manada de Girros en una posición inicial de la Manada de Girros de tu elección. Los comportamientos con :head_icon: ganan +1 :damage_icon: y +1 :dodge_icon:.',
+                    ],
+                ],
+                'parts' => [
+                    [
+                        'icon' => 'head',
+                        'direction' => 'up',
+                        'defense' => 2,
+                        'broken' => 5,
+                        'ability-broken' => [
+                            'en' => 'Behaviours with :head_icon: no longer cause the :paralysis_icon: status ailment.',
+                            'es' => 'Los comportamientos con :head_icon: ya no causan el :paralysis_icon: dolencia de estado.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'back',
+                        'direction' => 'down',
+                        'defense' => 2,
+                        'broken' => 5,
+                        'ability-broken' => [
+                            'en' => 'This body part has -1 :defense_icon:.',
+                            'es' => 'Esta parte del cuerpo tiene -1 :defense_icon:.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'claw',
+                        'direction' => 'left-right',
+                        'defense' => 2,
+                        'broken' => 4,
+                        'ability-broken' => [
+                            'en' => 'Behaviours with :claw_icon: have -1 :movement_icon:.',
+                            'es' => 'Los comportamientos con :claw_icon: tienen -1 :movement_icon:.',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'rewards' => [
+            1 => [
+                'name' => 'Great Girros Tail',
+            ],
+            2 => [
+                'name' => 'Great Girros Fang',
+            ],
+            3 => [
+                'name' => 'Great Girros Scale',
+            ],
+            4 => [
+                'name' => 'Great Girros Hide',
+            ],
+            5 => [
+                'name' => 'Great Girros Scale',
+            ],
+            6 => [
+                'name' => 'Great Girros Fang',
+                'extra' => [
+                    'en' => 'Gain 1 if the :head_icon: were broken.',
+                    'es' => 'Gana 1 si el :head_icon: estuviera roto.',
+                ],
+            ],
+            7 => [
+                'name' => 'Great Girros Scale',
+            ],
+            8 => [
+                'name' => 'Great Girros Hide',
+                'extra' => [
+                    'en' => 'Gain 1 if the :back_icon: were broken.',
+                    'es' => 'Gana 1 si el :back_icon: estuviera roto.',
+                ],
+            ],
+            9 => [
+                'name' => 'Great Girros Fang',
+            ],
+            10 => [
+                'name' => 'Great Girros Scale',
+                'extra' => [
+                    'en' => 'Gain 1 if the :claw_icon: were broken.',
+                    'es' => 'Gana 1 si el :claw_icon: estuviera roto.',
+                ],
+            ],
+            11 => [
+                'name' => 'Great Girros Hide',
+            ],
+            12 => [
+                'name' => 'Great Girros Tail',
+            ],
+        ],
+    ],
+    'Radobaan' => [
+        'category' => App\Enum\MonsterCategory::BRUTE_WYVERN,
+        'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+        'setup' => [
+            'en' => 'Locate the 8 bone tokens.<br>While preparing for the gathering phase, place 2 bone tokens in the bone token stash for each body part on Radobaan\'s physiology card',
+            'es' => 'Localiza las 8 fichas de hueso.<br>Mientras preparas la fase de recolección, coloca 2 fichas de hueso en la reserva de fichas de hueso de cada parte del cuerpo en la carta de fisiología de Radobaan',
+        ],
+        'mechanics' => [
+            [
+                'title' => [
+                    'en' => 'Special Rules',
+                    'es' => 'Reglas Especiales',
+                ],
+                'description' => [
+                    [
+                        'title' => [
+                            'en' => '',
+                            'es' => '',
+                        ],
+                        'description' => [
+                            'en' => 'For each bone token in a bone token stash, the associated body part has +1 :defense_icon:.<br>Each bone token stash is numbered corresponding to the faces of a die, and can hold a maximum of 2 bone tokens.<br>After resolving an attack against a body part with 1 or more bone tokens in its bone token stash, remove a number of bone tokens from that body part up to the :break_icon: value oif your attack card, including any :break_icon: bonuses. Place each of these bone tokens onto any node adjacent to Radobaan that doesn\'t already contain a bone token. If there are no adjacent nodes available, place the tokens in the nodes closest to the monster that don\'t already contain a bone token.<br>During its turn, if Radobaan moves onto a node containing a bone token, roll a die. If the number rolled corresponds to a bone token stash with less than 2 bone tokens, place the bone token in that bone token stash. Otherwise, place it in any other bone token stash with fewer than 2 bone tokens.<br>If Radobaan ens it movement ion a node adjacent to 1 or more bone tokens, choose 1 and add it to Radobaan\s physiology card as though it has moved onto that node.<br>At the end of Radobaan\'s movement, each hunter moved by Radobaan suffers 1 damage for each node they were moved. These hunters may play 1 attack card face down onto their stamina board to avoid suffering this damage.',
+                            'es' => 'Por cada ficha de hueso en una reserva de fichas de hueso, la parte del cuerpo asociada tiene +1 :defense_icon:.<br>Cada reserva de fichas de hueso está numerada según las caras de un dado, y puede contener un máximo de 2 fichas de hueso.<br>Después de resolver un ataque contra una parte del cuerpo con 1 o más fichas de hueso en su reserva, retira de esa parte del cuerpo un número de fichas de hueso hasta el valor de :break_icon: de tu carta de ataque, incluyendo cualquier bonificación de :break_icon:. Coloca cada una de estas fichas de hueso en cualquier nodo adyacente a Radobaan que no contenga ya una ficha de hueso. Si no hay nodos adyacentes disponibles, coloca las fichas en los nodos más cercanos al monstruo que no contengan ya una ficha de hueso.<br>Durante su turno, si Radobaan se mueve a un nodo que contiene una ficha de hueso, lanza un dado. Si el número obtenido corresponde a una reserva de fichas de hueso con menos de 2 fichas, coloca la ficha de hueso en esa reserva. En caso contrario, colócala en cualquier otra reserva de fichas de hueso con menos de 2 fichas.<br>Si Radobaan termina su movimiento en un nodo adyacente a 1 o más fichas de hueso, elige 1 y añádela a la carta de fisiología de Radobaan como si se hubiera movido a ese nodo.<br>Al final del movimiento de Radobaan, cada cazador movido por Radobaan sufre 1 daño por cada nodo que haya sido movido. Estos cazadores pueden jugar 1 carta de ataque boca abajo en su tablero de resistencia para evitar sufrir este daño.',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'items' => [
+            'Radobaan Oilshell',
+            'Radobaan Carapace',
+            'Radobaan Scale',
+
+            'Coma Sac',
+            'Sleep Sac',
+            'Wyvern Bonemass',
+        ],
+        'resistance' => [
+            'fire' => 2,
+            'water' => 2,
+            'thunder' => 2,
+            'ice' => 2,
+            'dragon' => 1,
+
+            'paralysis' => 2,
+            'poison' => 2,
+            'sleep' => null,
+            'nitro' => 2,
+            'stun' => 2,
+        ],
+        'difficulty' => [
+            [
+                'difficulty' => App\Enum\MonsterDifficulty::EASY,
+                'stars' => 1,
+                'health' => 65,
+                'ability' => [
+                    'name' => [
+                        'en' => 'Bone Armour',
+                        'es' => 'Armadura de Hueso',
+                    ],
+                    'description' => [
+                        'en' => 'For each bone token in a bone token stash, the associated body part has +1 :defense_icon:. At the end of Radobaan\'s movement, each hunter moved by Radobaan suffers 1 damage for each node they ware moved. There hunters may play 1 attack card face down onto their stamina board to avoid suffering this damage.',
+                        'es' => 'Por cada ficha de hueso en una reserva de fichas de hueso, la parte del cuerpo asociada tiene +1 :defense_icon:. Al final del movimiento de Radobaan, cada cazador movido por Radobaan sufre 1 daño por cada nodo que haya sido movido. Estos cazadores pueden jugar 1 carta de ataque boca abajo en su tablero de resistencia para evitar sufrir este daño.',
+                    ],
+                ],
+                'parts' => [
+                    [
+                        'icon' => 'head',
+                        'direction' => 'up',
+                        'defense' => 2,
+                        'broken' => 6,
+                        'bones' => [1, 2],
+                    ],
+                    [
+                        'icon' => 'back',
+                        'direction' => 'left-right',
+                        'defense' => 2,
+                        'broken' => 5,
+                        'bones' => [3],
+                        'ability-broken' => [
+                            'en' => ':back_icon: behaviours no longer cause :sleep_icon:.',
+                            'es' => 'Los comportamientos con :back_icon: ya no causan :sleep_icon:.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'paw',
+                        'direction' => 'left-right',
+                        'defense' => 2,
+                        'broken' => 6,
+                        'bones' => [4],
+                    ],
+                    [
+                        'icon' => 'tail',
+                        'direction' => 'down',
+                        'defense' => 2,
+                        'broken' => 5,
+                        'bones' => [5, 6],
+                        'ability-broken' => [
+                            'en' => 'Behaviours with :tail_icon: have -1 :range_icon:.',
+                            'es' => 'Los comportamientos con :tail_icon: tienen -1 :range_icon:.',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'difficulty' => App\Enum\MonsterDifficulty::NORMAL,
+                'stars' => 2,
+                'health' => 70,
+                'ability' => [
+                    'name' => [
+                        'en' => 'Spiked Bone Armour',
+                        'es' => 'Armadura de Hueso con Púas',
+                    ],
+                    'description' => [
+                        'en' => 'For each bone token in a bone token stash, the associated body part has +1 :defense_icon:. At the end of Radobaan\'s movement, each hunter moved by Radobaan suffers 1 damage for each node they ware moved. There hunters may play 1 attack card face down onto their stamina board to avoid suffering this damage. Behaviours gain +1 :damage_icon:.',
+                        'es' => 'Por cada ficha de hueso en una reserva de fichas de hueso, la parte del cuerpo asociada tiene +1 :defense_icon:. Al final del movimiento de Radobaan, cada cazador movido por Radobaan sufre 1 daño por cada nodo que haya sido movido. Estos cazadores pueden jugar 1 carta de ataque boca abajo en su tablero de resistencia para evitar sufrir este daño. Los comportamientos ganan +1 :damage_icon:.',
+                    ],
+                ],
+                'parts' => [
+                    [
+                        'icon' => 'head',
+                        'direction' => 'up',
+                        'defense' => 2,
+                        'broken' => 6,
+                        'bones' => [1, 2],
+                        'ability-broken' => [
+                            'en' => 'The monster\'s next behaviour :dodge_icon: is 1.',
+                            'es' => 'El :dodge_icon: del siguiente comportamiento del monstruo es 1.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'back',
+                        'direction' => 'left-right',
+                        'defense' => 3,
+                        'broken' => 5,
+                        'bones' => [3],
+                        'ability-broken' => [
+                            'en' => ':back_icon: behaviours no longer cause :sleep_icon:.',
+                            'es' => 'Los comportamientos con :back_icon: ya no causan :sleep_icon:.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'paw',
+                        'direction' => 'left-right',
+                        'defense' => 2,
+                        'broken' => 6,
+                        'bones' => [4],
+                    ],
+                    [
+                        'icon' => 'tail',
+                        'direction' => 'down',
+                        'defense' => 2,
+                        'broken' => 5,
+                        'bones' => [5, 6],
+                        'ability-broken' => [
+                            'en' => 'Behaviours with :tail_icon: have -1 :range_icon:.',
+                            'es' => 'Los comportamientos con :tail_icon: tienen -1 :range_icon:.',
+                        ],
+                    ],
+                ],
+            ],
+            [
+                'difficulty' => App\Enum\MonsterDifficulty::HARD,
+                'stars' => 3,
+                'health' => 75,
+                'ability' => [
+                    'name' => [
+                        'en' => 'Impaling Bone Armour',
+                        'es' => 'Armadura de Hueso Empaladora',
+                    ],
+                    'description' => [
+                        'en' => 'For each bone token in a bone token stash, the associated body part has +1 :defense_icon:. At the end of Radobaan\'s movement, each hunter moved by Radobaan suffers 1 damage for each node they ware moved. There hunters may play 1 attack card face down onto their stamina board to avoid suffering this damage. Behaviours gain +1 :damage_icon: and +1 :dodge_icon:.',
+                        'es' => 'Por cada ficha de hueso en una reserva de fichas de hueso, la parte del cuerpo asociada tiene +1 :defense_icon:. Al final del movimiento de Radobaan, cada cazador movido por Radobaan sufre 1 daño por cada nodo que haya sido movido. Estos cazadores pueden jugar 1 carta de ataque boca abajo en su tablero de resistencia para evitar sufrir este daño. Los comportamientos ganan +1 :damage_icon: y +1 :dodge_icon:.',
+                    ],
+                ],
+                'parts' => [
+                    [
+                        'icon' => 'head',
+                        'direction' => 'up',
+                        'defense' => 2,
+                        'broken' => 5,
+                        'bones' => [1, 2],
+                        'ability-broken' => [
+                            'en' => 'The monster\'s next behaviour :dodge_icon: is 1.',
+                            'es' => 'El :dodge_icon: del siguiente comportamiento del monstruo es 1.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'back',
+                        'direction' => 'left-right',
+                        'defense' => 3,
+                        'broken' => 6,
+                        'bones' => [3],
+                        'ability-broken' => [
+                            'en' => ':back_icon: behaviours no longer cause :sleep_icon:.',
+                            'es' => 'Los comportamientos con :back_icon: ya no causan :sleep_icon:.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'paw',
+                        'direction' => 'left-right',
+                        'defense' => 3,
+                        'broken' => 5,
+                        'bones' => [4],
+                        'ability-broken' => [
+                            'en' => 'Behaviours with :paw_icon: have -2 :movement_icon:.',
+                            'es' => 'Los comportamientos con :paw_icon: tienen -2 :movement_icon:.',
+                        ],
+                    ],
+                    [
+                        'icon' => 'tail',
+                        'direction' => 'down',
+                        'defense' => 2,
+                        'broken' => 6,
+                        'bones' => [5, 6],
+                        'ability-broken' => [
+                            'en' => 'Behaviours with :tail_icon: have -1 :range_icon:.',
+                            'es' => 'Los comportamientos con :tail_icon: tienen -1 :range_icon:.',
+                        ],
+                    ],
+                ],
+            ],
+        ],
+        'rewards' => [
+            1 => [
+                'name' => 'Coma Sac',
+            ],
+            2 => [
+                'name' => 'Radobaan Carapace',
+            ],
+            3 => [
+                'name' => 'Sleep Sac',
+            ],
+            4 => [
+                'name' => 'Radobaan Scale',
+            ],
+            5 => [
+                'name' => 'Wyvern Bonemass',
+                'extra' => [
+                    'en' => 'Gain 1 if the :tail_icon: were broken.',
+                    'es' => 'Gana 1 si el :tail_icon: estuviera roto.',
+                ],
+            ],
+            6 => [
+                'name' => 'Radobaan Oilshell',
+                'extra' => [
+                    'en' => 'Gain 1 if the :head_icon: were broken.',
+                    'es' => 'Gana 1 si el :head_icon: estuviera roto.',
+                ],
+            ],
+            7 => [
+                'name' => 'Radobaan Scale',
+                'extra' => [
+                    'en' => 'Gain 1 if the :paw_icon: were broken.',
+                    'es' => 'Gana 1 si el :paw_icon: estuviera roto.',
+                ],
+            ],
+            8 => [
+                'name' => 'Radobaan Carapace',
+                'extra' => [
+                    'en' => 'Gain 1 if the :back_icon: were broken.',
+                    'es' => 'Gana 1 si el :back_icon: estuviera roto.',
+                ],
+            ],
+            9 => [
+                'name' => 'Sleep Sac',
+            ],
+            10 => [
+                'name' => 'Radobaan Oilshell',
+            ],
+            11 => [
+                'name' => 'Wyvern Bonemass',
+            ],
+            12 => [
+                'name' => 'Coma Sac',
+            ],
+        ],
+    ],
+
     'Teostra' => [
         'category' => App\Enum\MonsterCategory::ELDER_DRAGON,
         'expansion' => App\Enum\MonsterExpansion::TEOSTRA_EXPANSION,

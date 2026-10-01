@@ -1,15 +1,33 @@
 <script setup>
+import _ from "lodash";
+import {computed} from "vue";
 import Card from "@/Components/Card.vue";
 import Calendar from "@/Components/Icons/Calendar.vue";
 import UpdateCampaignDayModal from "@/Pages/Campaign/Partials/UpdateCampaignDayModal.vue";
 
-defineProps({
+const props = defineProps({
     campaign: Object,
     day: Object,
     days: [Array, Object],
     monsters: [Array, Object],
+    // Passed straight through to the edit modal, which is the only thing that
+    // needs it; `CampaignDay` itself only reads a day back.
+    maxActivities: Number,
     canEdit: Boolean
 })
+
+// A hunter holds one pivot row per activity, so `day.hunters` repeats a hunter
+// who did more than one. Grouped back into one line per hunter: listing the
+// raw rows would print the name three times, and the `:key` would be a
+// duplicate.
+const hunterActivities = computed(() => _.map(
+    _.groupBy(props.day.hunters, 'id'),
+    (rows) => ({
+        id: rows[0].id,
+        name: rows[0].name,
+        activities: rows.map((row) => row.pivot.downtime_activity).filter(Boolean),
+    })
+))
 </script>
 
 <template>
@@ -18,6 +36,7 @@ defineProps({
         :campaign="campaign"
         :days="days"
         :monsters="monsters"
+        :max-activities="maxActivities"
         :day="day"
     >
         <Card
@@ -49,12 +68,21 @@ defineProps({
                 class="flex flex-col gap-2"
             >
                 <div
-                    v-for="hunter in day.hunters"
+                    v-for="hunter in hunterActivities"
                     :key="hunter.id"
-                    class="flex gap-2 items-center"
+                    class="flex gap-2 items-start"
                 >
                     <span class="text-gray-600 dark:text-gray-400">{{ hunter.name }}</span>
-                    {{ hunter.pivot.downtime_activity_id ? hunter.pivot.downtime_activity.name : '-' }}
+                    <span v-if="! hunter.activities.length">-</span>
+                    <span
+                        v-else
+                        class="flex flex-col"
+                    >
+                        <span
+                            v-for="activity in hunter.activities"
+                            :key="activity.id"
+                        >{{ activity.name }}</span>
+                    </span>
                 </div>
             </div>
         </Card>

@@ -39,7 +39,11 @@ vi.mock(import('@/recaptcha'), () => ({
 // component's rendering is supposed to depend on the actual translated text,
 // only on `$t` existing and returning something printable. Left at their
 // defaults, that warning would drown out the one this suite exists to catch.
-const i18n = createI18n({
+// Exported so a suite that does care about the catalog (`campaignRules.test.
+// ts`, whose whole subject is reading a list of rules out of it) can load its
+// own messages into this same instance rather than installing a second i18n
+// plugin, which vue-i18n does not allow on one app.
+export const i18n = createI18n({
     legacy: false,
     locale: 'en',
     fallbackLocale: 'en',
@@ -95,6 +99,14 @@ config.global.stubs = {
     // Inertia's own components need a running app and are not what is under test.
     Link: {template: '<a><slot /></a>'},
     Head: {template: '<div><slot /></div>'},
+    // `md-editor-v3`, which `WysiwygInput.vue` wraps, fetches two stylesheets
+    // from `unpkg.com` as it mounts (highlight.js and katex). happy-dom really
+    // tries, so mounting either campaign form turns the suite into something
+    // that fails when the network does, and leaves aborted requests behind on
+    // teardown. The editor is also 861 kB of CodeMirror. Nothing here is about
+    // the editor, so it never mounts; a test that is about it should mount it
+    // on purpose and deal with the fetches.
+    WysiwygInput: {template: '<textarea />'},
 };
 
 // A handful of components read `usePage()` or the injected `$page` global
@@ -151,7 +163,14 @@ mount(InertiaApp, {
                         created_at: null,
                         updated_at: null,
                         profile_photo_url: '/images/avatar.png',
-                        current_team: null,
+                        current_team: {
+                            id: 1,
+                            user_id: 1,
+                            name: 'Test Team',
+                            personal_team: true,
+                            created_at: null,
+                            updated_at: null,
+                        },
                         campaigns: [],
                         two_factor_enabled: false,
                     },

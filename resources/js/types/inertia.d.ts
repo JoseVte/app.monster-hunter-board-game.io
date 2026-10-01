@@ -167,8 +167,13 @@ declare module '@inertiajs/core' {
 // the symptom: drop a throwaway `.vue` anywhere in `resources/js` with
 //
 //   <script setup lang="ts"></script>
-//   <template><span>{{ $t('x') }}{{ route('dashboard') }}
-//     {{ replaceIcons('y') }}{{ getRarityColor(1) }}</span></template>
+//   <template><span>{{ $t(SOME_KEY) }}{{ route('dashboard') }}
+//     {{ replaceIcons(SOME_TEXT) }}{{ getRarityColor(1) }}</span></template>
+//
+// The two arguments are written as bare identifiers rather than as string
+// literals on purpose: `artisan translations:extract-vue` scans for `$t('...')`
+// and cannot tell a comment from a call, so a quoted example here lands in
+// `en.json` and `es.json` as a real key that nobody ever translates.
 //
 // and run `npm run typecheck`. Against `declare module 'vue'` all four report
 // TS2339. Against `declare module '@vue/runtime-core'` (this file, as it

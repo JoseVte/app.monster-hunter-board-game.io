@@ -264,7 +264,9 @@ test('a weapon parent is never resolved across types', function (): void {
         }
     }
 
-    expect(array_sum($counts))->toEqual(284);
+    // 314 since the Picking Bones expansion added thirty weapons across twelve
+    // of the fourteen types.
+    expect(array_sum($counts))->toEqual(314);
 });
 
 test('no more armour skills are left without a description', function (): void {
@@ -346,6 +348,7 @@ test('a weapon under an expansion section declares that expansion', function ():
         'ANCIENT FOREST' => 'ANCIENT_FOREST',
         'WILDSPIRE WASTE' => 'WILDSPIRE_WASTE',
         'KULU YA KU EXPANSION' => 'KULU_YA_KU_EXPANSION',
+        'PICKING BONES EXPANSION' => 'PICKING_BONES',
         'TEOSTRA EXPANSION' => 'TEOSTRA_EXPANSION',
         'NERGIGANTE EXPANSION' => 'NERGIGANTE_EXPANSION',
         'KUSHALA EXPANSION' => 'KUSHALA_EXPANSION',

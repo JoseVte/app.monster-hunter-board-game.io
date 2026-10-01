@@ -23,7 +23,7 @@ function mappedIcons(): array
 {
     preg_match_all(
         '/^    ([a-z0-9_]+): \{ src:/m',
-        file_get_contents(resource_path('js/icons.js')),
+        file_get_contents(resource_path('js/icons.ts')),
         $matches,
     );
 
@@ -32,8 +32,14 @@ function mappedIcons(): array
 
 function pendingIcons(): array
 {
-    $source = file_get_contents(resource_path('js/icons.js'));
-    $block = substr($source, strpos($source, 'const pending = {'));
+    $source = file_get_contents(resource_path('js/icons.ts'));
+
+    // Anchored on the declaration's name rather than its whole first line: the
+    // TypeScript conversion turned `const pending = {` into
+    // `const pending: Record<string, string> = {`, strpos stopped matching,
+    // and substr($source, false) handed the rest of this function the whole
+    // file, so every pending token silently read as unmapped.
+    $block = substr($source, strpos($source, 'const pending'));
     $block = substr($block, 0, strpos($block, '};'));
 
     preg_match_all('/^    ([a-z0-9_]+):/m', $block, $matches);
@@ -80,7 +86,7 @@ test('every icon token the data uses is known to the frontend', function (): voi
 test('every mapped icon points at a file that exists', function (): void {
     preg_match_all(
         "/^import [a-zA-Z]+ from '~\/((?:types|icons)\/[^']+)';/m",
-        file_get_contents(resource_path('js/icons.js')),
+        file_get_contents(resource_path('js/icons.ts')),
         $matches,
     );
 

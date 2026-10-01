@@ -6,7 +6,7 @@ return [
         'es' => 'Hacha Cargada',
     ],
     'description' => [
-        'en' => 'When you play an attack card with :charged_blade_vial_plus:, draw +1 :damage_attack_icon: for every :charged_blade_vial: on face up attack cards on your stamina board. Then discard the rightmost face up attack card with :charged_blade_vial: on your stamina board.',
+        'en' => 'When you play an attack card with :charged_blade_vial_plus:, discard any number of attack cards with :charged_blade_vial: from your stamina board. Draw +1 :damage_attack_icon: for each :charged_blade_vial: on the discarded cards.',
         'es' => 'Cuando juegas una carta de ataque con :charged_blade_vial_plus:, roba +1 :damage_attack_icon: por cada :charged_blade_vial: en cartas de ataque boca arriba en tu tablero de resistencia. Luego descarta la carta de ataque boca arriba situada más a la derecha con :charged_blade_vial: en tu tablero de resistencia.',
     ],
     'image' => 'weapon-types/charge-blade.svg',
@@ -397,6 +397,67 @@ return [
             ],
         ],
         // KULU YA KU EXPANSION <NONE>
+        // PICKING BONES EXPANSION
+        'Girros Strongarm' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Bone Strongarm',
+            'branch' => 'Great Girros',
+            'rarity' => 3,
+            'name' => 'Aspa Girros',
+            'defense' => 1,
+            'status_attacks' => [
+                'stun',
+                'paralysis',
+            ],
+            'count_attack_1' => 3,
+            'count_attack_2' => 4,
+            'count_attack_3' => 3,
+            'items' => [
+                'Great Girros Fang' => 3,
+                'Great Girros Scale' => 4,
+                'Girros Fang' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Weak Slash' => 2,
+                ],
+                'add' => [
+                    'Paralyzing Slash' => 2,
+                ],
+            ],
+        ],
+        'Girros Nadja' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Girros Strongarm',
+            'branch' => 'Great Girros',
+            'rarity' => 4,
+            'name' => 'Nadja Girros',
+            'defense' => 1,
+            'status_attacks' => [
+                'stun',
+                'paralysis',
+            ],
+            'count_attack_1' => 5,
+            'count_attack_2' => 4,
+            'count_attack_3' => 1,
+            'count_attack_4' => 2,
+            'items' => [
+                'Great Girros Fang' => 2,
+                'Great Girros Scale' => 2,
+                'Great Girros Tail' => 2,
+                'Girros Fang' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Weak Slash' => 2,
+                    'Return Stroke' => 3,
+                ],
+                'add' => [
+                    'Paralyzing Slash' => 2,
+                    'Swarm Stroke' => 3,
+                ],
+            ],
+        ],
         // NERGIGANTE EXPANSION
         'Nergal Lacerator' => [
             'expansion' => App\Enum\MonsterExpansion::NERGIGANTE_EXPANSION,

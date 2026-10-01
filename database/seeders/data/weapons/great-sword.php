@@ -379,6 +379,120 @@ return [
             ],
         ],
         // KULU YA KU EXPANSION <NONE>
+        // PICKING BONES EXPANSION
+        'Girros Blade' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Buster Sword',
+            'branch' => 'Great Girros',
+            'rarity' => 3,
+            'name' => 'Filo Girros',
+            'status_attacks' => [
+                'stun',
+            ],
+            'count_attack_2' => 6,
+            'count_attack_3' => 5,
+            'count_attack_4' => 1,
+            'items' => [
+                'Great Girros Fang' => 3,
+                'Great Girros Scale' => 4,
+                'Girros Fang' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Rising Slash' => 3,
+                ],
+                'add' => [
+                    'Swarm Slash' => 3,
+                ],
+            ],
+        ],
+        'Malady\'s Kiss' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Girros Blade',
+            'branch' => 'Great Girros',
+            'rarity' => 4,
+            'name' => 'Beso de Plaga',
+            'status_attacks' => [
+                'stun',
+                'paralysis',
+            ],
+            'count_attack_2' => 6,
+            'count_attack_3' => 6,
+            'count_attack_4' => 2,
+            'items' => [
+                'Great Girros Fang' => 2,
+                'Great Girros Scale' => 2,
+                'Great Girros Tail' => 2,
+                'Girros Fang' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Rising Slash' => 3,
+                    'Any Card' => 2,
+                ],
+                'add' => [
+                    'Swarm Slash' => 3,
+                    'Paralysis Slash' => 3,
+                ],
+            ],
+        ],
+        'Spiked Blade' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Bone Blade',
+            'branch' => 'Radobaan',
+            'rarity' => 3,
+            'name' => 'Espada Sierra',
+            'status_attacks' => [
+                'stun',
+            ],
+            'count_attack_2' => 6,
+            'count_attack_3' => 3,
+            'count_attack_4' => 1,
+            'items' => [
+                'Wyvern Bonemass' => 2,
+                'Radobaan Scale' => 3,
+                'Sleep Sac' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Great Sword Block' => 2,
+                ],
+                'add' => [
+                    'Spiked Block' => 2,
+                ],
+            ],
+        ],
+        'Radobaan Slab' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Spiked Blade',
+            'branch' => 'Radobaan',
+            'rarity' => 4,
+            'name' => 'Losa Radobaan',
+            'defense' => 1,
+            'status_attacks' => [
+                'stun',
+                'sleep',
+            ],
+            'count_attack_2' => 6,
+            'count_attack_3' => 5,
+            'count_attack_4' => 1,
+            'items' => [
+                'Radobaan Carapace' => 4,
+                'Radobaan Oilshell' => 2,
+                'Coma Sac' => 1,
+                'Monster Keenbone' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Great Sword Block' => 2,
+                    'Wide Slash' => 2,
+                ],
+                'add' => [
+                    'Spiked Block' => 2,
+                    'Sleep Gas Slash' => 2,
+                ],
+            ],
+        ],
         // NERGIGANTE EXPANSION
         'Nergal Judicator' => [
             'expansion' => App\Enum\MonsterExpansion::NERGIGANTE_EXPANSION,

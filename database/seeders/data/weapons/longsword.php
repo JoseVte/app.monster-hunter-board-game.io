@@ -400,6 +400,59 @@ Cuando el símbolo del espíritu solo blanco está en la parte superior, la cart
                 ],
             ],
         ],
+        // PICKING BONES EXPANSION
+        'Flickering Glow' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Iron Katana',
+            'branch' => 'Tzitzi-Ya-Ku',
+            'rarity' => 3,
+            'name' => 'Destello Tenue',
+            'count_attack_1' => 2,
+            'count_attack_2' => 8,
+            'count_attack_3' => 2,
+            'items' => [
+                'Tzitzi-Ya-Ku Claw' => 2,
+                'Tzitzi-Ya-Ku Photophore' => 1,
+                'Tzitzi-Ya-Ku Scale' => 3,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Foresight Slash' => 2,
+                ],
+                'add' => [
+                    'Flash Foresight Slash' => 2,
+                ],
+            ],
+        ],
+        'Dazzling Flash' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Flickering Glow',
+            'branch' => 'Tzitzi-Ya-Ku',
+            'rarity' => 4,
+            'name' => 'Resplandor Final',
+            'status_attacks' => [
+                'stun',
+            ],
+            'count_attack_1' => 3,
+            'count_attack_2' => 5,
+            'count_attack_3' => 6,
+            'items' => [
+                'Tzitzi-Ya-Ku Claw' => 2,
+                'Tzitzi-Ya-Ku Photophore' => 1,
+                'Tzitzi-Ya-Ku Scale' => 5,
+                'Lightcrystal' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Foresight Slash' => 2,
+                    'Spirit Helm Breaker' => 2,
+                ],
+                'add' => [
+                    'Flash Foresight Slash' => 2,
+                    'Flash Spirit Helm Breaker' => 2,
+                ],
+            ],
+        ],
         // NERGIGANTE EXPANSION
         'Nergal Reaver' => [
             'expansion' => App\Enum\MonsterExpansion::NERGIGANTE_EXPANSION,

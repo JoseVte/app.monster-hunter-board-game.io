@@ -114,7 +114,7 @@ return [
             'parent' => 'Chief Kukri',
             'branch' => 'bone',
             'rarity' => 3,
-            'name' => 'Grand Barong',
+            'name' => 'Gran Barong',
             'defense' => 1,
             'status_attacks' => [
                 'stun',
@@ -384,6 +384,126 @@ return [
             ],
         ],
         // KULU YA KU EXPANSION <NONE>
+        // PICKING BONES EXPANSION
+        'Girros Knife' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Hunter\'s Knife',
+            'branch' => 'Great Girros',
+            'rarity' => 3,
+            'name' => 'Cuchillo Girros',
+            'defense' => 1,
+            'status_attacks' => [
+                'stun',
+                'paralysis',
+            ],
+            'count_attack_1' => 4,
+            'count_attack_2' => 3,
+            'count_attack_3' => 5,
+            'items' => [
+                'Great Girros Fang' => 3,
+                'Great Girros Scale' => 4,
+                'Girros Fang' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Sword & Shield Combo' => 2,
+                ],
+                'add' => [
+                    'Paralysis Combo' => 2,
+                ],
+            ],
+        ],
+        'Malady\'s Tabar' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Girros Knife',
+            'branch' => 'Great Girros',
+            'rarity' => 4,
+            'name' => 'Tabar de plaga',
+            'defense' => 1,
+            'status_attacks' => [
+                'stun',
+                'paralysis',
+            ],
+            'count_attack_1' => 3,
+            'count_attack_2' => 6,
+            'count_attack_3' => 4,
+            'count_attack_4' => 1,
+            'items' => [
+                'Great Girros Fang' => 2,
+                'Great Girros Scale' => 2,
+                'Great Girros Tail' => 2,
+                'Girros Fang' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Sword & Shield Combo' => 2,
+                    'Chop' => 2,
+                ],
+                'add' => [
+                    'Paralysis Combo' => 2,
+                    'Swarm Chop' => 2,
+                ],
+            ],
+        ],
+        'Spiked Edge' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Bone Kukri',
+            'branch' => 'Radobaan',
+            'rarity' => 3,
+            'name' => 'Filo Sierra',
+            'defense' => 1,
+            'status_attacks' => [
+                'stun',
+            ],
+            'count_attack_1' => 2,
+            'count_attack_2' => 5,
+            'count_attack_3' => 3,
+            'items' => [
+                'Wyvern Bonemass' => 2,
+                'Radobaan Scale' => 3,
+                'Sleep Sac' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Guard Up' => 2,
+                ],
+                'add' => [
+                    'Spiked Shield' => 2,
+                ],
+            ],
+        ],
+        'Baan Claw' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Spiked Edge',
+            'branch' => 'Radobaan',
+            'rarity' => 4,
+            'name' => 'Garra Baan',
+            'defense' => 1,
+            'status_attacks' => [
+                'stun',
+                'sleep',
+            ],
+            'count_attack_2' => 7,
+            'count_attack_3' => 4,
+            'count_attack_4' => 1,
+            'items' => [
+                'Radobaan Carapace' => 4,
+                'Radobaan Oilshell' => 2,
+                'Coma Sac' => 1,
+                'Monster Keenbone' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Guard Up' => 2,
+                    'Rising Slash' => 1,
+                    'Round Slash' => 1,
+                ],
+                'add' => [
+                    'Spiked Shield' => 2,
+                    'Sleep Gas Slash' => 2,
+                ],
+            ],
+        ],
         // NERGIGANTE EXPANSION
         'Nergal Jack' => [
             'expansion' => App\Enum\MonsterExpansion::NERGIGANTE_EXPANSION,

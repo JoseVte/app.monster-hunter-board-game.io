@@ -280,7 +280,7 @@ same code.
 
 ### The TypeScript conversion
 
-A snapshot, taken 24 September 2026, not a permanent claim: 36 of the 163 `.vue` files under
+A snapshot, taken 29 September 2026, not a permanent claim: 38 of the 165 `.vue` files under
 `resources/js` carry `lang="ts"`. The entry points, the five pure modules, the three
 infrastructure modules, the shared props and route names, and the Wiki are typed: 16 files
 under `Pages/Wiki` plus 20 shared components with a `<script>` block, the ones the Wiki
@@ -360,7 +360,7 @@ on to override one of those fields' types stops describing a subset and starts d
 incompatible sibling, rejecting every caller that still holds the real model.
 
 The ratchet holds two numbers, both re-measured rather than carried over from an earlier
-task: of 163 `.vue` files, 142 contain a `<script>` block (the other 21 are template only SVG
+task: of 165 `.vue` files, 144 contain a `<script>` block (the other 21 are template only SVG
 icons, which can never carry `lang="ts"` and are excluded rather than left in the ceiling to
 weaken it), and of those 142, 106 lack `lang="ts"`. `FrontendRatchetTest` asserts all three
 counts, not just the last, because a file walk that silently matched nothing would make the
@@ -824,6 +824,113 @@ written, the oldest from July 2023.
 `Weapon`s (grouped by `WeaponType`, with a `parent_id` crafting tree and `WeaponAttack`s)
 and `Armor`s (with `ArmorSkill`s). Crafting requirements live in the `count_item_*` pivots.
 
+**A hunter spends a downtime day on up to three different activities.** The number is
+`Campaign::MAX_DOWNTIME_ACTIVITIES`; `AddOrUpdateCampaignDayRequest` asserts it and
+`CampaignController::show` sends it to the page as `maxDowntimeActivities`, so the two
+modals that build a day do not write a 3 of their own.
+
+It was briefly a per-campaign opt-in, `campaigns.alternative_rules`, added and then
+dropped a week later (`..._make_three_downtime_activities_the_rule`) once the rulebook
+text went in: the second entry under `downtime` in
+`resources/lang/en/campaign-rules.php` states the three flatly, with no alternative
+attached, so there was nothing for the flag to switch between. Nothing was deployed with
+it, so the rollback restores the column at its default rather than any campaign's value.
+
+The storage is the pivot: `day_downtime_activity_hunter` gets one row per hunter per
+activity, which it could already hold (it has its own `id` and no unique key).
+`days.downtime_activity_id` is the party's single activity and is filled only when
+everybody spent the day on one, so a set leaves it null and the pivot rows are the whole
+answer. `day.hunters` therefore repeats a hunter once per activity, which
+`CampaignDay.vue` and `UpdateCampaignDayModal.vue` both group back by hunter; rendering
+the raw list prints the name three times under duplicate `:key`s.
+
+**The three have to be different, and that is checked by hand in the request's
+`after()`**, not with Laravel's `distinct`. `distinct` on `hunter_day_id.*.*` compares
+every entry against every other one across the whole array, so it would also refuse two
+hunters choosing the same activity, which the rules allow and which is the common case.
+It is correct on `day_id.*`, a flat list, and is used there.
+
+`prepareForValidation()` widens the old scalar shape (`day_id` and each `hunter_day_id`
+entry as a single id) into a one-entry list, so the rules and the controller read one
+shape and a caller that still sends the old one keeps working.
+
+Two bugs came out of this and are fixed: `days.all_hunters_same_activity` was never in
+`Day::$fillable`, so every `update()` of it was silently discarded and the edit modal
+always opened on the per-hunter branch; and `updateDay`'s reconcile-in-place branch
+attached a hunter it had not seen before with the whole party's activity instead of
+their own. It detaches and rewrites now.
+
+`tests/Feature/Campaign/DowntimeActivitiesTest.php` covers it.
+
+**`campaigns.expansions` records which boxes are in play, and the timer follows
+from it.** It is a nullable JSON column of `App\Enum\MonsterExpansion` case
+names rather than a pivot table, because an expansion is an enum case and there
+is no row to point at. `Campaign::expansionCases()` reads it, dropping a name
+the enum no longer declares rather than throwing: a renamed case should cost an
+expansion off a listing, not the ability to open the campaign at all.
+
+**Two of the eight cases are base games, not expansions.** The Ancient Forest
+and the Wildspire Waste are each a complete game, and a campaign is played out
+of one of them or both, so `App\Rules\IncludesABaseGame` refuses a set of
+expansions with neither. `MonsterExpansion::isBaseGame()` is the distinction and
+it exists only for this: everywhere else the enum appears (a monster's box, a
+weapon recipe's, an armour's) the question is just which box a thing came out
+of. The two forms show the base games and the add-ons as separate groups for
+the same reason.
+
+The rule is `sometimes`, not `required`, so a request that never mentions
+expansions leaves them alone. That is what keeps a plain rename working and
+what keeps every campaign stored before the column existed saveable. The flip
+side, which is deliberate: both forms always send the key, so a campaign with
+no base game recorded cannot be saved from either of them until one is ticked.
+
+**Both forms say so before they submit**, through `hasBaseGame()` in
+`resources/js/campaign.ts`, which reads what counts as a base game off the
+options the page was given rather than off a list of names of its own. It
+writes the refusal with `form.setError('expansions', ...)`, the same key the
+server's own message arrives under, so the one `InputError` beneath the base
+game group renders whichever side refused. **The sentence is the rule's own
+literal, character for character**: `IncludesABaseGame` `__()`s it, which is
+what puts it in the lang files at all, and the `t()` call in the forms looks
+that same key up. Change one without the other and the client shows English
+where the server would have shown Spanish.
+
+The create form opens with one box already ticked.
+`MonsterExpansion::defaultCampaignBox()` names it (the Ancient Forest) and
+`CampaignController` sends it as `defaultExpansions`, rather than the form
+holding the string: renaming the case would otherwise leave the form ticking
+nothing and failing its own guard on first submit.
+
+`Campaign::suggestedMaxDays()` is `BASE_MAX_DAYS` (25, the number the first
+downtime rule states in words) plus each expansion's
+`MonsterExpansion::extraCampaignDays()`. Neither base game adds anything: 25 is
+what the core rulebook gives you whichever of the two you own, and owning both
+does not lengthen it. Picking Bones adds 15 and the five monster expansions add
+5 each. `CampaignTimerTest` parses the English rule text for "add N days" and
+fails if it disagrees with the enum, so the two statements of that fact cannot
+drift.
+
+**`campaigns.max_days_automatic` is enforced in a `saving` hook, not in the
+controller.** With it on, `Campaign::booted()` overwrites `max_days` with the
+suggestion on every save, from any path: the two forms, the factory, the
+seeders, a future console command. That is what makes "automatic" a property of
+the row rather than of the screen that happened to write it, and it means the
+number a client posts for an automatic campaign can never land. It defaults to
+false so every campaign that already exists keeps the timer somebody typed.
+`CreateCampaignRequest` and `UpdateCampaignRequest` only require `max_days`
+when the campaign is on manual.
+
+`CampaignTimerFields.vue` is the expansion checkboxes, the switch and the field,
+shared by the create and the edit form rather than written twice, so the two
+screens cannot compute the timer differently. On manual it still prints the
+suggestion under the field: turning the switch off is for overriding the number,
+not for losing sight of it. `CampaignRules.vue` now shows the rules for the
+expansions in play only; it listed all eight while nothing recorded which ones a
+campaign uses. It renders three kinds of section: `campaign-rules.base` (the
+core rulebook's own rules, which hold whichever base game is in play, so they
+are not keyed by expansion), `campaign-rules.downtime`, and one per selected
+expansion. `base` is an empty list today and an empty list renders nothing.
+
 A weapon is made through a **`WeaponRecipe`**, which carries the monster line it belongs to
 and what it costs. Most weapons have exactly one; `Twin Nails` and `Fire and Ice` in dual
 blades have two, because either Teostra or Kushala Daora parts will build them, at different
@@ -902,16 +1009,49 @@ failures at once.
 
 ### Frontend tests
 
-`resources/js/__tests__/` holds one unit-test file for each of five pure, stateless modules,
-`damage.ts`, `armorDefense.ts`, `armorSkills.ts`, `rarity.ts` and `icons.ts`. All five were
+`resources/js/__tests__/` holds one unit-test file for each of six pure, stateless modules,
+`damage.ts`, `armorDefense.ts`, `armorSkills.ts`, `rarity.ts`, `icons.ts` and `campaign.ts`. All five were
 converted to TypeScript earlier on this branch (see "The TypeScript conversion" above); the
 test files themselves were `.test.ts` from the day they were written, before that conversion,
 for the reason the next paragraph pins. `smoke.test.ts` mounts every page and partial under
 `Pages/Wiki` and every page under `Pages/Auth`, and asserts each one renders something and
 warns about nothing; Auth was added as the cheapest useful widening beyond the Wiki, since
 nineteen of the Wiki's 29 shared components are also used outside it and the Wiki glob alone
-cannot see that. `npm run test:run` is Vitest: 6 files, 64 tests, and the run is meant to stay
+cannot see that. `campaignForms.test.ts` mounts `Campaign/Create.vue` and `Campaign/Edit.vue`
+whole. `npm run test:run` is Vitest: 10 files, 93 tests, and the run is meant to stay
 pristine, no skips and nothing printed.
+
+**Stub `router.post`/`router.put` in any test that submits an Inertia form.**
+`useForm().post(...)` ends up at `router[method](url, data, options)`, which under
+happy-dom fires a real XHR at a server that is not there and surfaces as an unhandled
+rejection after the test has already passed. Stubbing them also turns "did it submit"
+into something assertable either way, which is how the base-game guard is pinned.
+And scope `find('form')`: `AppLayout` carries a logout form of its own and it is the
+first one in the document, so the obvious selector submits that instead.
+
+**Mount the page, not just the partial.** `Create.vue` took `baseMaxDays` from the
+controller and never declared or forwarded it, so `CampaignTimerFields` added
+`undefined` to the expansions' days and every create page read "Suggested: NaN days".
+Both forms had tests; neither page did, and the prop never crossed a boundary any of
+them watched. `Edit.vue` was correct, which is why only half the feature was broken.
+The same test's warnings assertion then caught a second, older one: both `Create.vue`
+and `CreateCampaignForm.vue` declared `teams: Array` while the controller sends
+`allTeams()->pluck('name', 'id')`, an object, so every visit to the create page logged
+two "Invalid prop" warnings.
+
+**`WysiwygInput` is stubbed for the whole suite, and not only for speed.**
+`md-editor-v3` fetches two stylesheets from `unpkg.com` (highlight.js and katex) as it
+mounts, happy-dom really tries, and the aborted requests surface on teardown; mounting
+either campaign form without the stub makes the suite fail when the network does. That
+the editor pulls from a third-party CDN at runtime is a production fact worth knowing
+too, not just a test problem. A test that is actually about the editor should mount it
+deliberately and deal with the fetches.
+
+The fake page's `auth.user.current_team` is a real object rather than `null`.
+`CreateCampaignForm` reads `usePage().props.auth.user.current_team.id` unguarded, so a
+null one makes any campaign page throw on mount. The team-switching branches it used to
+keep out of the picture are gated behind `jetstream.hasTeamFeatures`, which stays false,
+and the four snapshots are unchanged by the switch.
 
 They were written against plain JavaScript, before any file moved to TypeScript, and that
 ordering was deliberate rather than incidental. Written afterwards, a test can only describe
@@ -1033,6 +1173,36 @@ Two separate mechanisms, do not confuse them:
    they reach Inertia, so the frontend always receives plain strings.
    `scopeSearchTranslate()` is the MySQL `JSON_EXTRACT` search helper (note: it will not
    work under the sqlite test connection).
+
+3. **Reference text that is a list**, which so far means the campaign rules in
+   `resources/lang/{en,es}/campaign-rules.php`. These are directory-based PHP
+   lang files, not the JSON ones. Edit them by hand and keep the two languages
+   in step, since the form renders one bullet per entry and a shorter list just
+   shows fewer rules.
+   **`artisan localize` rewrites these files, it does not leave them alone.**
+   This file claimed the opposite for one commit, and the claim cost the two
+   long header comments that used to explain why the rules live here: the
+   command reads every PHP lang file and writes it back out, dropping comments
+   and re-keying a list as `'0' => ...`, `'1' => ...`. The re-keying is
+   harmless (PHP casts a numeric string key to an int, so it is still a list by
+   the time it is serialised, and `tm()` still receives an array), the comment
+   loss is not, which is why the explanation lives here instead. **Do not put
+   anything but translatable text in them**: a day count, a flag or an id would
+   survive the rewrite but belongs with the code that reads it, which is why
+   `MonsterExpansion::extraCampaignDays()` holds the "+15 days" that the
+   Picking Bones rule text also states in words.
+   `artisan vue:translations` mirrors them into the generated file as real
+   nested arrays, and `CampaignRules.vue` reads them with vue-i18n's `tm()` plus
+   `rt()`, which is the only place in the app that reads the catalog as a list
+   rather than as a string. They used to sit in
+   `database/seeders/data/downtime-activities.php` beside the activities, where
+   nothing seeded them because no table wants them. `config/` was the other
+   candidate and was rejected: see "Seeding" for what `config:cache` did to the
+   431 kB of seed data that used to live there.
+   `tests/Feature/CampaignRulesLangTest.php` pins the two languages against each
+   other and against `App\Enum\MonsterExpansion`, whose case names key the
+   per-expansion rules; `resources/js/__tests__/campaignRules.test.ts` pins the
+   `tm()` read itself.
 
 Locale is resolved by `App\Http\Middleware\Localization`.
 

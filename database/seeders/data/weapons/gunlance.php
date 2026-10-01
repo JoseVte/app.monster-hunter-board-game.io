@@ -395,6 +395,64 @@ return [
             ],
         ],
         // KULU YA KU EXPANSION <NONE>
+        // PICKING BONES EXPANSION
+        'Girros Gunlance' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Iron Gunlance',
+            'branch' => 'Great Girros',
+            'rarity' => 3,
+            'name' => 'Lanza pistola Girros',
+            'defense' => 1,
+            'status_attacks' => [
+                'paralysis',
+            ],
+            'count_attack_1' => 2,
+            'count_attack_2' => 4,
+            'count_attack_3' => 4,
+            'items' => [
+                'Great Girros Fang' => 3,
+                'Great Girros Scale' => 4,
+                'Girros Fang' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Full Burst' => 2,
+                ],
+                'add' => [
+                    'Paralysing Burst' => 2,
+                ],
+            ],
+        ],
+        'Deathfang Cannon' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Girros Gunlance',
+            'branch' => 'Great Girros',
+            'rarity' => 4,
+            'name' => 'Cañón Colmillo Mortis',
+            'defense' => 1,
+            'status_attacks' => [
+                'paralysis',
+            ],
+            'count_attack_1' => 2,
+            'count_attack_2' => 4,
+            'count_attack_3' => 6,
+            'items' => [
+                'Great Girros Fang' => 2,
+                'Great Girros Scale' => 2,
+                'Great Girros Tail' => 2,
+                'Girros Fang' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Full Burst' => 2,
+                    'Rising Slash' => 2,
+                ],
+                'add' => [
+                    'Paralysing Burst' => 2,
+                    'Swarm Slash' => 2,
+                ],
+            ],
+        ],
         // NERGIGANTE EXPANSION
         'Nergal Ram' => [
             'expansion' => App\Enum\MonsterExpansion::NERGIGANTE_EXPANSION,

@@ -3,8 +3,10 @@ export default {
         "(and {count} more error)": "(and {count} more error)",
         "(and {count} more errors)": "(and {count} more errors)",
         "- Missing hunter -": "- Missing hunter -",
+        "...": "...",
         "{inviter} has invited you to join {app}.": "{inviter} has invited you to join {app}.",
         "Ability": "Ability",
+        "A campaign is played out of one of these, or both. Pick at least one.": "A campaign is played out of one of these, or both. Pick at least one.",
         "Accept Invitation": "Accept Invitation",
         "Accumulated total": "Accumulated total",
         "Active Skills": "Active Skills",
@@ -25,6 +27,8 @@ export default {
         "Add to list": "Add to list",
         "Administrator": "Administrator",
         "Administrator users can perform any action.": "Administrator users can perform any action.",
+        "A hunter cannot perform the same activity twice in one day.": "A hunter cannot perform the same activity twice in one day.",
+        "A hunter may perform at most {max} activities in one day.": "A hunter may perform at most {max} activities in one day.",
         "All of the people/hunters that are part of this campaign.": "All of the people/hunters that are part of this campaign.",
         "All of the people that are part of this campaign.": "All of the people that are part of this campaign.",
         "All of the people that are part of this team.": "All of the people that are part of this team.",
@@ -62,6 +66,7 @@ export default {
         "Back": "Back",
         "Back to": "Back to",
         "Back to all weapon types": "Back to all weapon types",
+        "Base game": "Base game",
         "Before continuing, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.": "Before continuing, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.",
         "Bird Wyvern": "Bird Wyvern",
         "Body": "Body",
@@ -74,6 +79,7 @@ export default {
         "Campaign Members": "Campaign Members",
         "Campaign Members/Hunters": "Campaign Members/Hunters",
         "Campaign Owner": "Campaign Owner",
+        "Campaign Rules": "Campaign Rules",
         "Campaigns": "Campaigns",
         "Campaign Team": "Campaign Team",
         "Campaign tracker": "Campaign tracker",
@@ -131,6 +137,7 @@ export default {
         "Dashboard": "Dashboard",
         "Day": "Day",
         "Days": "Days",
+        "days": "days",
         "Defense": "Defense",
         "Delete": "Delete",
         "Delete Account": "Delete Account",
@@ -146,6 +153,7 @@ export default {
         "Dismiss": "Dismiss",
         "Do it in 3 easy steps": "Do it in 3 easy steps",
         "Done.": "Done.",
+        "Downtime": "Downtime",
         "Downtime Activities": "Downtime Activities",
         "Downtime activity": "Downtime activity",
         "Dragon": "Dragon",
@@ -168,6 +176,7 @@ export default {
         "Equipped": "Equipped",
         "Every monster, weapon, armour and item from the base game and the expansions, in both languages. Filter by monster, expansion or rarity and find the piece you are arguing about without emptying the box on the table.": "Every monster, weapon, armour and item from the base game and the expansions, in both languages. Filter by monster, expansion or rarity and find the piece you are arguing about without emptying the box on the table.",
         "Expansion": "Expansion",
+        "Expansions": "Expansions",
         "Fanged Wyvern": "Fanged Wyvern",
         "Filter": "Filter",
         "Finish enabling two factor authentication.": "Finish enabling two factor authentication.",
@@ -327,6 +336,8 @@ export default {
         "Permanently delete your account.": "Permanently delete your account.",
         "Permissions": "Permissions",
         "Photo": "Photo",
+        "Pick at least one of the base games.": "Pick at least one of the base games.",
+        "Picking Bones Expansion": "Picking Bones Expansion",
         "Piscine Wyvern": "Piscine Wyvern",
         "Please click the button below to verify your email address.": "Please click the button below to verify your email address.",
         "Please confirm access to your account by entering one of your emergency recovery codes.": "Please confirm access to your account by entering one of your emergency recovery codes.",
@@ -412,6 +423,7 @@ export default {
         "Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.": "Store these recovery codes in a secure password manager. They can be used to recover access to your account if your two factor authentication device is lost.",
         "Stun": "Stun",
         "Submit": "Submit",
+        "Suggested": "Suggested",
         "Switch Campaigns": "Switch Campaigns",
         "Switch Teams": "Switch Teams",
         "Tail": "Tail",
@@ -532,12 +544,14 @@ export default {
         "When an user hunter 50 monsters": "When an user hunter 50 monsters",
         "When an user hunter 100 monsters": "When an user hunter 100 monsters",
         "When two factor authentication is enabled, you will be prompted for a secure, random token during authentication. You may retrieve this token from your phone's Google Authenticator application.": "When two factor authentication is enabled, you will be prompted for a secure, random token during authentication. You may retrieve this token from your phone's Google Authenticator application.",
+        "Which boxes are in play. Their rules and extra days are added to the campaign.": "Which boxes are in play. Their rules and extra days are added to the campaign.",
         "Whoops!": "Whoops!",
         "Whoops! Something went wrong.": "Whoops! Something went wrong.",
         "Whoops! That page doesn’t exist.": "Whoops! That page doesn’t exist.",
         "Wiki": "Wiki",
         "Wildspire Waste": "Wildspire Waste",
         "Wing": "Wing",
+        "Work the timer out from the expansions": "Work the timer out from the expansions",
         "You are free to connect any social accounts to your profile and may remove any connected accounts at any time. If you feel any of your connected accounts have been compromised, you should disconnect them immediately and change your password.": "You are free to connect any social accounts to your profile and may remove any connected accounts at any time. If you feel any of your connected accounts have been compromised, you should disconnect them immediately and change your password.",
         "You are receiving this email because we received a password reset request for your account.": "You are receiving this email because we received a password reset request for your account.",
         "You have been invited to {app}": "You have been invited to {app}",
@@ -560,6 +574,45 @@ export default {
             "failed": "These credentials do not match our records.",
             "password": "The password is incorrect.",
             "throttle": "Too many login attempts. Please try again in {seconds} seconds."
+        },
+        "campaign-rules": {
+            "base": [],
+            "downtime": [
+                "Of the 25 days you have to complete the campaign (where each quest takes up 1 day), you may spend 1 day at a time performing downtime activities.",
+                "When you spend a campaign day on downtime, each hunter may choose up to 3 activities to perform. Each activity may only be completed one per day by each hunter."
+            ],
+            "expansions": {
+                "KIRIN_EXPANSION": [
+                    "Add 5 days to your campaign timer.",
+                    "When you've completed your first quest, Great Jagras or Barroth, you may select the assigned quest for Kirin.",
+                    "Completing the assigned quest for Kirin allows you to select the investigation quest for Kirin."
+                ],
+                "KULU_YA_KU_EXPANSION": [
+                    "Add 5 days to your campaign timer.",
+                    "When you've completed your first quest, Great Jagras or Barroth, you may select the assigned quest for Kulu-Ya-Ku.",
+                    "Completing the assigned quest for Kulu-Ya-Ku allows you to select the investigation quest for Kulu-Ya-Ku."
+                ],
+                "KUSHALA_EXPANSION": [
+                    "Add 5 days to your campaign timer.",
+                    "When you've completed your first quest, Great Jagras or Barroth, you may select the assigned quest for Kushala Daora.",
+                    "Completing the assigned quest for Kushala Daora allows you to select the investigation quest for Kushala Daora."
+                ],
+                "NERGIGANTE_EXPANSION": [
+                    "Add 5 days to your campaign timer.",
+                    "When you've completed your first quest, Great Jagras or Barroth, you may select the assigned quest for Nergigante.",
+                    "Completing the assigned quest for Nergigante allows you to select the investigation quest for Nergigante."
+                ],
+                "PICKING_BONES": [
+                    "Add 15 days to your campaign timer.",
+                    "When you've completed your first quest, Great Jagras or Barroth, you may select the assigned quest for a Picking Bones monster.",
+                    "Completing the assigned quest for a Picking Bones monster allows you to select the investigation quest for that monster."
+                ],
+                "TEOSTRA_EXPANSION": [
+                    "Add 5 days to your campaign timer.",
+                    "When you've completed your first quest, Great Jagras or Barroth, you may select the assigned quest for Teostra.",
+                    "Completing the assigned quest for Teostra allows you to select the investigation quest for Teostra."
+                ]
+            }
         },
         "http-statuses": {
             "0": "Unknown Error",
@@ -874,8 +927,10 @@ export default {
         "(and {count} more error)": "(y {count} error más)",
         "(and {count} more errors)": "(y {count} errores más)",
         "- Missing hunter -": "- Falta cazador -",
+        "...": "",
         "{inviter} has invited you to join {app}.": "{inviter} te ha invitado a unirte a {app}.",
         "Ability": "Habilidad",
+        "A campaign is played out of one of these, or both. Pick at least one.": "Una campaña se juega con uno de estos, o con los dos. Elige al menos uno.",
         "Accept Invitation": "Aceptar invitación",
         "Accumulated total": "Total acumulado",
         "Active Skills": "Habilidades activas",
@@ -896,6 +951,8 @@ export default {
         "Add to list": "Añadir a la lista",
         "Administrator": "Administrador",
         "Administrator users can perform any action.": "Los administradores pueden realizar cualquier acción.",
+        "A hunter cannot perform the same activity twice in one day.": "Un cazador no puede realizar la misma actividad dos veces en un mismo día.",
+        "A hunter may perform at most {max} activities in one day.": "Un cazador puede realizar como máximo {max} actividades en un mismo día.",
         "All of the people/hunters that are part of this campaign.": "Todas las personas/cazadores que forman parte de esta campaña.",
         "All of the people that are part of this campaign.": "Todas las personas que forman parte de esta campaña.",
         "All of the people that are part of this team.": "Todas las personas que forman parte de este equipo.",
@@ -933,6 +990,7 @@ export default {
         "Back": "Espalda",
         "Back to": "Volver a",
         "Back to all weapon types": "Atrás hacia todos los tipos de armas",
+        "Base game": "Juego base",
         "Before continuing, could you verify your email address by clicking on the link we just emailed to you? If you didn't receive the email, we will gladly send you another.": "Antes de continuar, ¿podría verificar su dirección de correo electrónico haciendo clic en el enlace que le acabamos de enviar? Si no recibió el correo electrónico, con gusto le enviaremos otro.",
         "Bird Wyvern": "Wyvern Pájaro",
         "Body": "Cuerpo",
@@ -946,6 +1004,7 @@ export default {
         "Campaign Members": "Miembros de la Campaña",
         "Campaign Members/Hunters": "Miembros/Cazadores de la Campaña",
         "Campaign Owner": "Propietario de la Campaña",
+        "Campaign Rules": "Reglas de la Campaña",
         "Campaigns": "Campañas",
         "Campaign Team": "Equipo de la Campaña",
         "Campaign tracker": "Seguimiento de campañas",
@@ -1023,6 +1082,7 @@ export default {
         "Dismiss": "Descartar",
         "Do it in 3 easy steps": "Hazlo en 3 sencillos pasos",
         "Done.": "Hecho.",
+        "Downtime": "Tiempo muerto",
         "Downtime Activities": "Actividades en Tiempo muerto",
         "Downtime activity": "Actividad en tiempo muerto",
         "Dragon": "Dragón",
@@ -1045,6 +1105,7 @@ export default {
         "Equipped": "Equipado",
         "Every monster, weapon, armour and item from the base game and the expansions, in both languages. Filter by monster, expansion or rarity and find the piece you are arguing about without emptying the box on the table.": "Todos los monstruos, armas, armaduras y objetos del juego base y las expansiones, en los dos idiomas. Filtra por monstruo, expansión o rareza y encuentra la pieza que estáis discutiendo sin vaciar la caja sobre la mesa.",
         "Expansion": "Expansión",
+        "Expansions": "Expansiones",
         "Fanged Wyvern": "Wyvern con Colmillos",
         "Filter": "Filtrar",
         "Finish enabling two factor authentication.": "Termine de habilitar la autenticación de dos factores.",
@@ -1206,6 +1267,8 @@ export default {
         "Permanently delete your account.": "Eliminar su cuenta de forma permanente.",
         "Permissions": "Permisos",
         "Photo": "Foto",
+        "Pick at least one of the base games.": "Elige al menos uno de los juegos base.",
+        "Picking Bones Expansion": "Expansión Picking Bones",
         "Piscine Wyvern": "Wyvern Nadador",
         "Please click the button below to verify your email address.": "Por favor, haga clic en el botón de abajo para verificar su dirección de correo electrónico.",
         "Please confirm access to your account by entering one of your emergency recovery codes.": "Por favor confirme el acceso a su cuenta ingresando uno de sus códigos de recuperación de emergencia.",
@@ -1292,6 +1355,7 @@ export default {
         "Stun": "Aturdimiento",
         "Submit": "Enviar",
         "submitted": "enviado",
+        "Suggested": "Sugerido",
         "Switch Campaigns": "Cambiar de campaña",
         "Switch Teams": "Cambiar de equipo",
         "Tail": "Cola",
@@ -1412,12 +1476,14 @@ export default {
         "When an user hunter 50 monsters": "Cuando un usuario caza 50 monstruos",
         "When an user hunter 100 monsters": "Cuando un usuario caza 100 monstruos",
         "When two factor authentication is enabled, you will be prompted for a secure, random token during authentication. You may retrieve this token from your phone's Google Authenticator application.": "Cuando la autenticación de dos factores esté habilitada, le pediremos un token aleatorio seguro durante la autenticación. Puede recuperar este token desde la aplicación Google Authenticator de su teléfono.",
+        "Which boxes are in play. Their rules and extra days are added to the campaign.": "Qué cajas están en juego. Sus reglas y sus días de más se suman a la campaña.",
         "Whoops!": "¡Ups!",
         "Whoops! Something went wrong.": "¡Ups! Algo salió mal.",
         "Whoops! That page doesn’t exist.": "¡Vaya! Esa pagina no existe.",
         "Wiki": "Wiki",
         "Wildspire Waste": "Yermo de Agujas",
         "Wing": "Ala",
+        "Work the timer out from the expansions": "Calcular los días a partir de las expansiones",
         "You are free to connect any social accounts to your profile and may remove any connected accounts at any time. If you feel any of your connected accounts have been compromised, you should disconnect them immediately and change your password.": "Usted es libre de conectar cualquier cuenta social a su perfil y puede eliminar cualquier cuenta conectada en cualquier momento. Si cree que alguna de sus cuentas conectadas se ha visto comprometida, debe desconectarla de inmediato y cambiar su contraseña.",
         "You are receiving this email because we received a password reset request for your account.": "Ha recibido este mensaje porque se solicitó un restablecimiento de contraseña para su cuenta.",
         "You have been invited to {app}": "Te han invitado a {app}",
@@ -1440,6 +1506,45 @@ export default {
             "failed": "Estas credenciales no coinciden con nuestros registros.",
             "password": "La contraseña es incorrecta.",
             "throttle": "Demasiados intentos de acceso. Por favor intente nuevamente en {seconds} segundos."
+        },
+        "campaign-rules": {
+            "base": [],
+            "downtime": [
+                "De los 25 días que tienes para completar la campaña (donde cada misión ocupa 1 día), puedes dedicar 1 día a la vez a realizar actividades en tiempo muerto.",
+                "Cuando dedicas un día de campaña a tiempo muerto, cada cazador puede elegir hasta 3 actividades para realizar. Cada actividad solo puede completarse una vez por día por cada cazador."
+            ],
+            "expansions": {
+                "KIRIN_EXPANSION": [
+                    "Añade 5 días al temporizador de tu campaña.",
+                    "Cuando hayas completado tu primera misión, Gran Jagras o Barroth, puedes seleccionar la misión asignada para Kirin.",
+                    "Completar la misión asignada para Kirin te permite seleccionar la búsqueda de investigación de Kirin."
+                ],
+                "KULU_YA_KU_EXPANSION": [
+                    "Añade 5 días al temporizador de tu campaña.",
+                    "Cuando hayas completado tu primera misión, Gran Jagras o Barroth, puedes seleccionar la misión asignada para Kulu-Ya-Ku.",
+                    "Completar la misión asignada para Kulu-Ya-Ku te permite seleccionar la búsqueda de investigación de Kulu-Ya-Ku."
+                ],
+                "KUSHALA_EXPANSION": [
+                    "Añade 5 días al temporizador de tu campaña.",
+                    "Cuando hayas completado tu primera misión, Gran Jagras o Barroth, puedes seleccionar la misión asignada para Kushala Daora.",
+                    "Completar la misión asignada para Kushala Daora te permite seleccionar la búsqueda de investigación de Kushala Daora."
+                ],
+                "NERGIGANTE_EXPANSION": [
+                    "Añade 5 días al temporizador de tu campaña.",
+                    "Cuando hayas completado tu primera misión, Gran Jagras o Barroth, puedes seleccionar la misión asignada para Nergigante.",
+                    "Completar la misión asignada para Nergigante te permite seleccionar la búsqueda de investigación de Nergigante."
+                ],
+                "PICKING_BONES": [
+                    "Añade 15 días al temporizador de tu campaña.",
+                    "Cuando hayas completado tu primera misión, Gran Jagras o Barroth, puedes seleccionar la misión asignada para un monstruo de Picking Bones.",
+                    "Completar la misión asignada para un monstruo de Picking Bones te permite seleccionar la búsqueda de investigación de ese monstruo."
+                ],
+                "TEOSTRA_EXPANSION": [
+                    "Añade 5 días al temporizador de tu campaña.",
+                    "Cuando hayas completado tu primera misión, Gran Jagras o Barroth, puedes seleccionar la misión asignada para Teostra.",
+                    "Completar la misión asignada para Teostra te permite seleccionar la búsqueda de investigación de Teostra."
+                ]
+            }
         },
         "http-statuses": {
             "0": "Error desconocido",

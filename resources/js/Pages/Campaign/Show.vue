@@ -19,6 +19,7 @@ import CampaignDay from "@/Pages/Campaign/Partials/CampaignDay.vue";
 const props = defineProps({
     campaign: Object,
     downtimeDays: [Array, Object],
+    maxDowntimeActivities: Number,
     monsters: [Array, Object],
     availableRoles: Array,
     permissions: Object,
@@ -140,6 +141,7 @@ watch(showFullCalendar, (showFullCalendarValue) => storage.setStorageSync('show-
                                                 :current-day="campaign.days_count + 1"
                                                 :days="downtimeDays"
                                                 :monsters="monsters"
+                                                :max-activities="maxDowntimeActivities"
                                             />
                                         </div>
                                     </div>
@@ -179,6 +181,7 @@ watch(showFullCalendar, (showFullCalendarValue) => storage.setStorageSync('show-
                                 :day="day"
                                 :days="downtimeDays"
                                 :monsters="monsters"
+                                :max-activities="maxDowntimeActivities"
                                 :can-edit="permissions.canUpdateCampaign"
                             />
                         </div>

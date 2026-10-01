@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\File;
 
 // Google asks for the badge or a visible attribution, one of the two.
-// resources/js/recaptcha.js keeps the badge hidden, so the attribution is the
+// resources/js/recaptcha.ts keeps the badge hidden, so the attribution is the
 // only thing holding up that end, and it lives in a component a new form can
 // simply forget. Nothing about forgetting it is visible: the form works, the
 // captcha works, and the terms quietly stop being met.

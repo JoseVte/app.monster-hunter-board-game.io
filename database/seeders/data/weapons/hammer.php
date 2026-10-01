@@ -431,6 +431,119 @@ Tienes cartas de ataque con :charge_hammer_icon_1: o :charge_hammer_icon_2: en t
                 ],
             ],
         ],
+        // PICKING BONES EXPANSION
+        'Girros Hammer' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Iron Hammer',
+            'branch' => 'Great Girros',
+            'rarity' => 3,
+            'name' => 'Martillo Girros',
+            'status_attacks' => [
+                'stun',
+            ],
+            'count_attack_1' => 3,
+            'count_attack_2' => 2,
+            'count_attack_4' => 4,
+            'items' => [
+                'Great Girros Fang' => 3,
+                'Great Girros Scale' => 4,
+                'Girros Fang' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Big Bang' => 4,
+                ],
+                'add' => [
+                    'Swarming Big Bang' => 4,
+                ],
+            ],
+        ],
+        'Malady\'s Fist' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Girros Hammer',
+            'branch' => 'Great Girros',
+            'rarity' => 4,
+            'name' => 'Puño de Plaga',
+            'status_attacks' => [
+                'stun',
+                'paralysis',
+            ],
+            'count_attack_1' => 2,
+            'count_attack_2' => 7,
+            'count_attack_4' => 5,
+            'items' => [
+                'Great Girros Fang' => 2,
+                'Great Girros Scale' => 2,
+                'Great Girros Tail' => 2,
+                'Girros Fang' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Big Bang' => 4,
+                    'Upswing' => 2,
+                ],
+                'add' => [
+                    'Swarming Big Bang' => 4,
+                    'Paralysis Upswing' => 2,
+                ],
+            ],
+        ],
+        'Bone Spike' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Bone Bludgeon',
+            'branch' => 'Radobaan',
+            'rarity' => 3,
+            'name' => 'Púa Ósea',
+            'status_attacks' => [
+                'stun',
+            ],
+            'count_attack_1' => 4,
+            'count_attack_2' => 3,
+            'count_attack_4' => 3,
+            'items' => [
+                'Wyvern Bonemass' => 2,
+                'Radobaan Scale' => 3,
+                'Sleep Sac' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Spinning Bludgeon' => 2,
+                ],
+                'add' => [
+                    'Spiked Bludgeon' => 2,
+                ],
+            ],
+        ],
+        'Baan Strike' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Bone Spike',
+            'branch' => 'Radobaan',
+            'rarity' => 4,
+            'name' => 'Maza Baan',
+            'status_attacks' => [
+                'stun',
+                'sleep',
+            ],
+            'count_attack_1' => 2,
+            'count_attack_2' => 6,
+            'count_attack_4' => 4,
+            'items' => [
+                'Radobaan Carapace' => 4,
+                'Radobaan Oilshell' => 2,
+                'Coma Sac' => 1,
+                'Monster Keenbone' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Spinning Bludgeon' => 2,
+                    'Side Smash' => 2,
+                ],
+                'add' => [
+                    'Spiked Bludgeon' => 2,
+                    'Sleep Gas Smash' => 2,
+                ],
+            ],
+        ],
         // NERGIGANTE EXPANSION
         'Nergal Crusher' => [
             'expansion' => App\Enum\MonsterExpansion::NERGIGANTE_EXPANSION,

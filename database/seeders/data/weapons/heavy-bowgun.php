@@ -423,6 +423,129 @@ Después de colocar la carta de ataque boca arriba en tu tablero de resistencia,
             ],
         ],
         // KULU YA KU EXPANSION <NONE>
+        // PICKING BONES EXPANSION
+        'Luminous Assault' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Iron Assault',
+            'branch' => 'Tzitzi-Ya-Ku',
+            'rarity' => 3,
+            'name' => 'Asalto Lumínico',
+            'deviation' => App\Enum\DeviationWeapon::LOW,
+            'status_attacks' => [
+                'stun',
+            ],
+            'count_attack_1' => 3,
+            'count_attack_2' => 6,
+            'count_attack_3' => 3,
+            'items' => [
+                'Tzitzi-Ya-Ku Claw' => 2,
+                'Tzitzi-Ya-Ku Photophore' => 1,
+                'Tzitzi-Ya-Ku Scale' => 3,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Sticky Ammo 1' => 1,
+                    'Cluster Ammo 1' => 2,
+                ],
+                'add' => [
+                    'Sticky Ammo 2' => 1,
+                    'Flash Bomb' => 2,
+                ],
+            ],
+        ],
+        'Arma Destroyer' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Luminous Assault',
+            'branch' => 'Tzitzi-Ya-Ku',
+            'rarity' => 4,
+            'name' => 'Destructor Arma',
+            'deviation' => App\Enum\DeviationWeapon::LOW,
+            'status_attacks' => [
+                'stun',
+            ],
+            'count_attack_1' => 3,
+            'count_attack_2' => 6,
+            'count_attack_3' => 4,
+            'count_attack_4' => 1,
+            'items' => [
+                'Tzitzi-Ya-Ku Claw' => 2,
+                'Tzitzi-Ya-Ku Photophore' => 1,
+                'Tzitzi-Ya-Ku Scale' => 5,
+                'Lightcrystal' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Sticky Ammo 1' => 1,
+                    'Cluster Ammo 1' => 2,
+                    'Pierce Ammo 1' => 2,
+                ],
+                'add' => [
+                    'Sticky Ammo 2' => 1,
+                    'Flash Bomb' => 2,
+                    'Flash Pierce Ammo' => 2,
+                ],
+            ],
+        ],
+        'Spiked Shooter' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Bone Shooter',
+            'branch' => 'Radobaan',
+            'rarity' => 3,
+            'name' => 'Cañón Sierra',
+            'deviation' => App\Enum\DeviationWeapon::AVERAGE,
+            'status_attacks' => [
+                'stun',
+                'sleep',
+            ],
+            'count_attack_1' => 2,
+            'count_attack_2' => 6,
+            'count_attack_4' => 2,
+            'items' => [
+                'Wyvern Bonemass' => 2,
+                'Radobaan Scale' => 3,
+                'Sleep Sac' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Normal Ammo 1' => 2,
+                ],
+                'add' => [
+                    'Sleep Gas Ammo' => 2,
+                ],
+            ],
+        ],
+        'Baan Roar' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Spiked Shooter',
+            'branch' => 'Radobaan',
+            'rarity' => 4,
+            'name' => 'Rugido Baan',
+            'deviation' => App\Enum\DeviationWeapon::AVERAGE,
+            'status_attacks' => [
+                'stun',
+                'sleep',
+            ],
+            'count_attack_1' => 3,
+            'count_attack_2' => 5,
+            'count_attack_3' => 3,
+            'count_attack_4' => 1,
+            'items' => [
+                'Radobaan Carapace' => 4,
+                'Radobaan Oilshell' => 2,
+                'Coma Sac' => 1,
+                'Monster Keenbone' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Normal Ammo 1' => 2,
+                    'Cluster Ammo 1' => 2,
+                ],
+                'add' => [
+                    'Sleep Gas Ammo' => 2,
+                    'Spike Cluster Bomb' => 2,
+                ],
+            ],
+        ],
         // NERGIGANTE EXPANSION
         'Nergal Roar' => [
             'expansion' => App\Enum\MonsterExpansion::NERGIGANTE_EXPANSION,

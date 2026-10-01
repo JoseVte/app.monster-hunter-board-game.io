@@ -8,6 +8,8 @@ import DeleteCampaignForm from "@/Pages/Campaign/Partials/DeleteCampaignForm.vue
 
 defineProps({
     campaign: Object,
+    expansions: Array,
+    baseMaxDays: Number,
 });
 </script>
 
@@ -32,6 +34,8 @@ defineProps({
 
                 <UpdateCampaignForm
                     :campaign="campaign"
+                    :expansions="expansions"
+                    :base-max-days="baseMaxDays"
                 />
 
                 <SectionBorder />

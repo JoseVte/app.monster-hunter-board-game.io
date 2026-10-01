@@ -16,6 +16,36 @@ return [
         ],
         [
             'name' => [
+                'en' => 'Sleep Resistance',
+                'es' => 'Anti Sueño',
+            ],
+            'description' => [
+                'en' => "This hunter can't suffer the :sleep_icon: status ailment.",
+                'es' => 'Este cazador no puede sufrir el :sleep_icon: dolencia de estado.',
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Stun Resistance',
+                'es' => 'Anti Aturdimiento',
+            ],
+            'description' => [
+                'en' => "This hunter can't suffer the :stun_icon: status ailment.",
+                'es' => 'Este cazador no puede sufrir el :stun_icon: dolencia de estado.',
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Lesser Paralysis Resistance',
+                'es' => 'Anti Parálisis Leve',
+            ],
+            'description' => [
+                'en' => 'When this hunter suffers the :paralysis_icon: status ailment, discard down to 3 cards in your hand instead of 2.',
+                'es' => 'Cuando este cazador sufre el :paralysis_icon: dolencia de estado, descarta cartas hasta quedarte con 3 en tu mano en lugar de 2.',
+            ],
+        ],
+        [
+            'name' => [
                 'en' => 'Speed Eating',
                 'es' => 'Velocidad al Comer',
             ],
@@ -36,12 +66,42 @@ return [
         ],
         [
             'name' => [
+                'en' => 'Paralysis Attack',
+                'es' => 'Ataque de Parálisis',
+            ],
+            'description' => [
+                'en' => 'Once per quest, when this hunter uses a :paralysis_icon: status ailment attack card, place +1 :paralysis_icon: token.',
+                'es' => 'Una vez por misión, cuando este cazador usa una :paralysis_icon: carta de ataque de afección de estado, coloca +1 :paralysis_icon: ficha.',
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Sleep Attack',
+                'es' => 'Ataque de Sueño',
+            ],
+            'description' => [
+                'en' => 'Once per quest, when this hunter uses a :sleep_icon: status ailment attack card, place +1 :sleep_icon: token.',
+                'es' => 'Una vez por misión, cuando este cazador usa una :sleep_icon: carta de ataque de afección de estado, coloca +1 :sleep_icon: ficha.',
+            ],
+        ],
+        [
+            'name' => [
                 'en' => 'Palico Rally',
                 'es' => 'Mejora de Camarada',
             ],
             'description' => [
                 'en' => 'This hunter may use their Palico ability twice per quest.',
                 'es' => 'Este cazador puede usar su habilidad Palico dos veces por misión.',
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Horn Maestro',
+                'es' => 'Maestro del Cuerno',
+            ],
+            'description' => [
+                'en' => 'When this hunter plays a song, that song gains +1 :range_icon:.',
+                'es' => 'Cuando este cazador toca una canción, esa canción gana +1 :range_icon:.',
             ],
         ],
         [
@@ -66,6 +126,26 @@ return [
         ],
         [
             'name' => [
+                'en' => 'Fire Attack',
+                'es' => 'Ataque de Fuego',
+            ],
+            'description' => [
+                'en' => 'When this hunter plays a :fire_icon: elemental attack, draw +1 :damage_attack_icon:.',
+                'es' => 'Cuando este cazador juega un :fire_icon: ataque elemental, obtiene +1 :damage_attack_icon:.',
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Water Attack',
+                'es' => 'Ataque de Agua',
+            ],
+            'description' => [
+                'en' => 'When this hunter plays a :water_icon: elemental attack, draw +1 :damage_attack_icon:.',
+                'es' => 'Cuando este cazador juega un :water_icon: ataque elemental, obtiene +1 :damage_attack_icon:.',
+            ],
+        ],
+        [
+            'name' => [
                 'en' => 'Thunder Attack',
                 'es' => 'Ataque de Rayo',
             ],
@@ -76,12 +156,12 @@ return [
         ],
         [
             'name' => [
-                'en' => 'Fire Attack',
-                'es' => 'Ataque de Fuego',
+                'en' => 'Ice Attack',
+                'es' => 'Ataque de Hielo',
             ],
             'description' => [
-                'en' => 'When this hunter plays a :fire_icon: elemental attack, draw +1 :damage_attack_icon:.',
-                'es' => 'Cuando este cazador juega un :fire_icon: ataque elemental, obtiene +1 :damage_attack_icon:.',
+                'en' => 'When this hunter plays a :ice_icon: elemental attack, draw +1 :damage_attack_icon:.',
+                'es' => 'Cuando este cazador juega un :ice_icon: ataque elemental, obtiene +1 :damage_attack_icon:.',
             ],
         ],
         [
@@ -106,16 +186,6 @@ return [
         ],
         [
             'name' => [
-                'en' => 'Sleep Resistance',
-                'es' => 'Anti Sueño',
-            ],
-            'description' => [
-                'en' => "This hunter can't suffer the :sleep_icon: status ailment.",
-                'es' => 'Este cazador no puede sufrir el :sleep_icon: dolencia de estado.',
-            ],
-        ],
-        [
-            'name' => [
                 'en' => 'Intimidator',
                 'es' => 'Intimidador',
             ],
@@ -135,28 +205,6 @@ return [
             ],
         ],
         [
-            'bonus-set' => ['Rathalos Helm', 'Rathalos Mail', 'Rathalos Greaves'],
-            'name' => [
-                'en' => 'Rathalos Mastery',
-                'es' => 'Maestría de Rathalos',
-            ],
-            'description' => [
-                'en' => "When this hunter plays a :fire_icon: elemental attack card, instead of placing an elemental token draw 1 elemental damage card. This doesn't effect monsters with immunity :fire_icon:.",
-                'es' => 'Cuando este cazador juega una carta de ataque elemental :fire_icon:, en lugar de colocar una ficha elemental, roba 1 carta de daño elemental. Esto no afecta a los monstruos con inmunidad :fire_icon:.',
-            ],
-        ],
-        [
-            'bonus-set' => ['Rath Soul Helm', 'Rath Soul Mail', 'Rath Soul Greaves'],
-            'name' => [
-                'en' => 'Azure Rathalos Mastery',
-                'es' => 'Maestría de Rathalos Celeste',
-            ],
-            'description' => [
-                'en' => 'When this hunter would draw an elemental damage card, draw 3 cards before choosing 1 to resolve.',
-                'es' => 'Cuando este cazador robara una carta de daño elemental, roba 3 cartas antes de elegir 1 para resolver.',
-            ],
-        ],
-        [
             'name' => [
                 'en' => 'Guard',
                 'es' => 'Escudo',
@@ -164,16 +212,6 @@ return [
             'description' => [
                 'en' => 'When this hunter plays an attack card that grants additional armour, the card gains +1 :defense_icon:.',
                 'es' => 'Cuando este cazador juega una carta de ataque que otorga armadura adicional, la carta gana +1 :defense_icon:.',
-            ],
-        ],
-        [
-            'name' => [
-                'en' => 'Stun Resistance',
-                'es' => 'Anti Aturdimiento',
-            ],
-            'description' => [
-                'en' => "This hunter can't suffer the :stun_icon: status ailment.",
-                'es' => 'Este cazador no puede sufrir el :stun_icon: dolencia de estado.',
             ],
         ],
         [
@@ -208,16 +246,6 @@ return [
         ],
         [
             'name' => [
-                'en' => 'Water Attack',
-                'es' => 'Ataque de Agua',
-            ],
-            'description' => [
-                'en' => 'When this hunter plays a :water_icon: elemental attack, draw +1 :damage_attack_icon:.',
-                'es' => 'Cuando este cazador juega un :water_icon: ataque elemental, obtiene +1 :damage_attack_icon:.',
-            ],
-        ],
-        [
-            'name' => [
                 'en' => 'Heroics',
                 'es' => 'Bonus Salud Baja',
             ],
@@ -244,28 +272,6 @@ return [
             'description' => [
                 'en' => 'When this hunter plays an attack card with 1 or more :break_icon:, the card gains +1 :break_icon:.',
                 'es' => 'Cuando este cazador juega una carta de ataque con 1 o más :break_icon:, la carta gana +1 :break_icon:.',
-            ],
-        ],
-        [
-            'bonus-set' => ['Diablos Helm', 'Diablos Mail', 'Diablos Greaves'],
-            'name' => [
-                'en' => 'Diablos Mastery',
-                'es' => 'Maestría de Diablos',
-            ],
-            'description' => [
-                'en' => 'When this hunter plays an attack card without an elemental damage symbol, draw +1 :damage_attack_icon:.',
-                'es' => 'Cuando este cazador juega una carta de ataque sin un símbolo de daño elemental, roba +1 :damage_attack_icon:.',
-            ],
-        ],
-        [
-            'bonus-set' => ['Diablos Nero Helm', 'Diablos Nero Mail', 'Diablos Nero Greaves'],
-            'name' => [
-                'en' => 'Black Diablos Mastery',
-                'es' => 'Maestría de Diablos Negra',
-            ],
-            'description' => [
-                'en' => 'When this hunter plays an attack card without an elemental damage symbol, draw +1 :damage_attack_icon:.',
-                'es' => 'Cuando este cazador juega una carta de ataque sin un símbolo de daño elemental, roba +1 :damage_attack_icon:.',
             ],
         ],
         [
@@ -299,6 +305,70 @@ return [
             ],
         ],
         [
+            'name' => [
+                'en' => 'Latent Power',
+                'es' => 'Poder Latente',
+            ],
+            'description' => [
+                'en' => 'If this hunter suffered damage during the monster\'s last turn, draw +1 :damage_attack_icon: for the first attack card you play this turn which inflicts damage.',
+                'es' => 'Si este cazador sufrió daño durante el último turno del monstruo, roba +1 :damage_attack_icon: para la primera carta de ataque que juegues este turno que inflige daño.',
+            ],
+        ],
+        [
+            'name' => [
+                'en' => 'Handicraft',
+                'es' => 'Artesano',
+            ],
+            'description' => [
+                'en' => 'Once per quest, if your damage deck becomes empty while resolving an attack card, you may immediately sharpen and continue to resolve the attack.',
+                'es' => 'Una vez por misión, si tu mazo de daño se vuelve vacío mientras resuelves una carta de ataque, puedes afilar inmediatamente y continuar resolviendo el ataque.',
+            ],
+        ],
+        [
+            'bonus-set' => ['Rathalos Helm', 'Rathalos Mail', 'Rathalos Greaves'],
+            'name' => [
+                'en' => 'Rathalos Mastery',
+                'es' => 'Maestría de Rathalos',
+            ],
+            'description' => [
+                'en' => "When this hunter plays a :fire_icon: elemental attack card, instead of placing an elemental token draw 1 elemental damage card. This doesn't effect monsters with immunity :fire_icon:.",
+                'es' => 'Cuando este cazador juega una carta de ataque elemental :fire_icon:, en lugar de colocar una ficha elemental, roba 1 carta de daño elemental. Esto no afecta a los monstruos con inmunidad :fire_icon:.',
+            ],
+        ],
+        [
+            'bonus-set' => ['Rath Soul Helm', 'Rath Soul Mail', 'Rath Soul Greaves'],
+            'name' => [
+                'en' => 'Azure Rathalos Mastery',
+                'es' => 'Maestría de Rathalos Celeste',
+            ],
+            'description' => [
+                'en' => 'When this hunter would draw an elemental damage card, draw 3 cards before choosing 1 to resolve.',
+                'es' => 'Cuando este cazador robara una carta de daño elemental, roba 3 cartas antes de elegir 1 para resolver.',
+            ],
+        ],
+        [
+            'bonus-set' => ['Diablos Helm', 'Diablos Mail', 'Diablos Greaves'],
+            'name' => [
+                'en' => 'Diablos Mastery',
+                'es' => 'Maestría de Diablos',
+            ],
+            'description' => [
+                'en' => 'When this hunter plays an attack card without an elemental damage symbol, draw +1 :damage_attack_icon:.',
+                'es' => 'Cuando este cazador juega una carta de ataque sin un símbolo de daño elemental, roba +1 :damage_attack_icon:.',
+            ],
+        ],
+        [
+            'bonus-set' => ['Diablos Nero Helm', 'Diablos Nero Mail', 'Diablos Nero Greaves'],
+            'name' => [
+                'en' => 'Black Diablos Mastery',
+                'es' => 'Maestría de Diablos Negra',
+            ],
+            'description' => [
+                'en' => 'When this hunter plays an attack card without an elemental damage symbol, draw +1 :damage_attack_icon:.',
+                'es' => 'Cuando este cazador juega una carta de ataque sin un símbolo de daño elemental, roba +1 :damage_attack_icon:.',
+            ],
+        ],
+        [
             'bonus-set' => ['Nergigante Helm', 'Nergigante Mail', 'Nergigante Greaves'],
             'name' => [
                 'en' => 'Nergigante Hunger',
@@ -307,16 +377,6 @@ return [
             'description' => [
                 'en' => 'If your hunter inflicts 1 or more damage to the monster during your turn, recover 1 health.',
                 'es' => 'Si tu cazador inflige 1 o más daños al monstruo durante tu turno, recupera 1 de salud.',
-            ],
-        ],
-        [
-            'name' => [
-                'en' => 'Latent Power',
-                'es' => 'Poder Latente',
-            ],
-            'description' => [
-                'en' => 'If this hunter suffered damage during the monster\'s last turn, draw +1 :damage_attack_icon: for the first attack card you play this turn which inflicts damage.',
-                'es' => 'Si este cazador sufrió daño durante el último turno del monstruo, roba +1 :damage_attack_icon: para la primera carta de ataque que juegues este turno que inflige daño.',
             ],
         ],
         [
@@ -331,16 +391,6 @@ return [
             ],
         ],
         [
-            'name' => [
-                'en' => 'Ice Attack',
-                'es' => 'Ataque de Hielo',
-            ],
-            'description' => [
-                'en' => 'When this hunter plays a :ice_icon: elemental attack, draw +1 :damage_attack_icon:.',
-                'es' => 'Cuando este cazador juega un :ice_icon: ataque elemental, obtiene +1 :damage_attack_icon:.',
-            ],
-        ],
-        [
             'bonus-set' => ['Kushala Glare', 'Kushala Cista', 'Kushala Crus'],
             'name' => [
                 'en' => 'Kushala Daora Flight',
@@ -349,16 +399,6 @@ return [
             'description' => [
                 'en' => 'When this hunter plays 1 or more attack cards to doge monster attacks or sprint, add +1 :dodge_icon: to their agility total.',
                 'es' => 'Cuando este cazador juega 1 o más cartas de ataque para esquivar ataques del monstruo o correr, agrega +1 :dodge_icon: a su total de agilidad.',
-            ],
-        ],
-        [
-            'name' => [
-                'en' => 'Handicraft',
-                'es' => 'Artesano',
-            ],
-            'description' => [
-                'en' => 'Once per quest, if your damage deck becomes empty while resolving an attack card, you may immediately sharpen and continue to resolve the attack.',
-                'es' => 'Una vez por misión, si tu mazo de daño se vuelve vacío mientras resuelves una carta de ataque, puedes afilar inmediatamente y continuar resolviendo el ataque.',
             ],
         ],
         [
@@ -552,6 +592,46 @@ return [
             'expansion' => App\Enum\MonsterExpansion::KULU_YA_KU_EXPANSION,
             'branch' => 'Kulu-Ya-Ku',
             'rarity' => 5,
+        ],
+        'Tzitzi Headgear' => [
+            'name' => 'Defensa de Tzitzi',
+            'items' => [
+                'Tzitzi-Ya-Ku Scale' => 1,
+                'Tzitzi-Ya-Ku Hide' => 2,
+                'Coral Crystal' => 1,
+            ],
+            'defense' => 1,
+            'skill' => 'Stun Resistance',
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'branch' => 'Tzitzi-Ya-Ku',
+            'rarity' => 3,
+        ],
+        'Girros Mask' => [
+            'name' => 'Máscara de Girros',
+            'items' => [
+                'Great Girros Scale' => 1,
+                'Great Girros Hide' => 2,
+                'Girros Scale' => 1,
+            ],
+            'defense' => 1,
+            'defense_thunder' => 1,
+            'skill' => 'Horn Maestro',
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'branch' => 'Great Girros',
+            'rarity' => 3,
+        ],
+        'Baan Helm' => [
+            'name' => 'Yelmo de Baan',
+            'items' => [
+                'Radobaan Oilshell' => 2,
+                'Wyvern Bonemass' => 1,
+            ],
+            'defense' => 1,
+            'defense_water' => 1,
+            'skill' => 'Slugger',
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'branch' => 'Radobaan',
+            'rarity' => 3,
         ],
         'Nergigante Helm' => [
             'name' => 'Yelmo de Nergigante',
@@ -795,6 +875,48 @@ return [
             'branch' => 'Kulu-Ya-Ku',
             'rarity' => 5,
         ],
+        'Tzitzi Mail' => [
+            'name' => 'Cota de Tzitzi',
+            'items' => [
+                'Tzitzi-Ya-Ku Hide' => 1,
+                'Tzitzi-Ya-Ku Claw' => 1,
+                'Tzitzi-Ya-Ku Photophore' => 1,
+                'Lightcrystal' => 1,
+            ],
+            'defense' => 1,
+            'skill' => 'Water Attack',
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'branch' => 'Tzitzi-Ya-Ku',
+            'rarity' => 3,
+        ],
+        'Girros Mail' => [
+            'name' => 'Cota de Girros',
+            'items' => [
+                'Great Girros Hide' => 2,
+                'Great Girros Tail' => 1,
+                'Paralysis Sac' => 1,
+            ],
+            'defense' => 1,
+            'defense_thunder' => 1,
+            'skill' => 'Lesser Paralysis Resistance',
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'branch' => 'Great Girros',
+            'rarity' => 3,
+        ],
+        'Baan Mail' => [
+            'name' => 'Cota de Baan',
+            'items' => [
+                'Radobaan Scale' => 1,
+                'Radobaan Oilshell' => 2,
+                'Sleep Sac' => 1,
+            ],
+            'defense' => 1,
+            'defense_water' => 1,
+            'skill' => 'Sleep Attack',
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'branch' => 'Radobaan',
+            'rarity' => 3,
+        ],
         'Nergigante Mail' => [
             'name' => 'Cota de Nergigante',
             'items' => [
@@ -1030,6 +1152,45 @@ return [
             'expansion' => App\Enum\MonsterExpansion::KULU_YA_KU_EXPANSION,
             'branch' => 'Kulu-Ya-Ku',
             'rarity' => 5,
+        ],
+        'Tzitzi Greaves' => [
+            'name' => 'Grebas de Tzitzi',
+            'items' => [
+                'Tzitzi-Ya-Ku Hide' => 2,
+                'Tzitzi-Ya-Ku Claw' => 1,
+            ],
+            'defense' => 1,
+            'skill' => 'Sleep Resistance',
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'branch' => 'Tzitzi-Ya-Ku',
+            'rarity' => 3,
+        ],
+        'Girros Greaves' => [
+            'name' => 'Grebas de Girros',
+            'items' => [
+                'Great Girros Hide' => 2,
+                'Great Girros Fang' => 1,
+                'Monster Bone Medium' => 1,
+            ],
+            'defense' => 1,
+            'defense_thunder' => 1,
+            'skill' => 'Paralysis Attack',
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'branch' => 'Great Girros',
+            'rarity' => 3,
+        ],
+        'Baan Greaves' => [
+            'name' => 'Grebas de Baan',
+            'items' => [
+                'Radobaan Scale' => 1,
+                'Wyvern Bonemass' => 2,
+            ],
+            'defense' => 1,
+            'defense_water' => 1,
+            'skill' => 'Guard',
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'branch' => 'Radobaan',
+            'rarity' => 3,
         ],
         'Nergigante Greaves' => [
             'name' => 'Grebas de Nergigante',

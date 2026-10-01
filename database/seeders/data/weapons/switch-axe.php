@@ -146,7 +146,7 @@ Cuando robas cartas de ataque, puedes elegir cualquier cantidad de cartas de cua
             'parent' => 'Bone Axe',
             'branch' => 'Anjanath',
             'rarity' => 3,
-            'name' => 'Flammenebeil',
+            'name' => 'Flammenbeil',
             'elemental_attacks' => [
                 'fire',
             ],

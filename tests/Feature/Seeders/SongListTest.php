@@ -19,7 +19,9 @@ beforeEach(function (): void {
 });
 
 test('every song effect in the data is seeded with its rules text', function (): void {
-    expect(SongEffect::count())->toBe(11);
+    // Twelve since the Picking Bones expansion: its Radobaan Song List brought
+    // Fire Resistance Boost, which no earlier horn plays.
+    expect(SongEffect::count())->toBe(12);
 
     $attack = SongEffect::where('name->en', 'Attack Up')->firstOrFail();
 
@@ -31,7 +33,7 @@ test('a song list belongs to the weapon type that plays it', function (): void {
     $ore = SongList::where('name->en', 'Ore Song List')->firstOrFail();
 
     expect($ore->weaponType->getTranslation('name', 'en'))->toBe('Hunting Horn')
-        ->and(SongList::count())->toBe(10);
+        ->and(SongList::count())->toBe(11);
 });
 
 test('a song carries the notes it is played with, in order', function (): void {
@@ -65,8 +67,8 @@ test('a weapon of any other type points at no list', function (): void {
 test('seeding twice leaves one of everything', function (): void {
     $this->seed(WeaponsSeeder::class);
 
-    expect(SongEffect::count())->toBe(11)
-        ->and(SongList::count())->toBe(10)
+    expect(SongEffect::count())->toBe(12)
+        ->and(SongList::count())->toBe(11)
         ->and(Song::count())->toBe(SongList::withCount('songs')->get()->sum('songs_count'));
 });
 

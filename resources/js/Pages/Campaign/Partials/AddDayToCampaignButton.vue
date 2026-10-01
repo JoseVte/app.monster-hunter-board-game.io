@@ -18,7 +18,11 @@ const props = defineProps({
     currentDay: {
         type: Number,
         default: 0,
-    }
+    },
+    // `Campaign::MAX_DOWNTIME_ACTIVITIES`, sent by `CampaignController::show`
+    // rather than written out here, so the cap the form enforces and the one
+    // `AddOrUpdateCampaignDayRequest` asserts are the same number.
+    maxActivities: Number
 });
 const typeDayInput = ref(null);
 const confirmingAddDay = ref(false);
@@ -28,12 +32,15 @@ const confirmAddDay = () => {
     setTimeout(() => typeDayInput.value.$el.focus(), 250);
 };
 
-const huntersDays = _.mapValues(_.keyBy(props.campaign.users, 'id'), () => '')
+
+// A list per hunter rather than a single activity, which is the shape the
+// request now reads whichever rules the campaign plays by.
+const huntersDays = _.mapValues(_.keyBy(props.campaign.users, 'id'), () => [])
 
 const form = useForm({
     type_day: '',
     all_hunters_same_activity: true,
-    day_id: null,
+    day_id: [],
     hunter_day_id: huntersDays,
     monster_id: null,
     difficulty: null,
@@ -46,8 +53,8 @@ const addDay = () => {
     form.transform((data) => ({
         ...data,
         type_day: data.type_day ? data.type_day.key : null,
-        day_id: data.day_id ? data.day_id.id : null,
-        hunter_day_id: data.hunter_day_id ? _.mapValues(data.hunter_day_id, (day) => day.id) : huntersDays,
+        day_id: _.map(data.day_id, 'id'),
+        hunter_day_id: _.mapValues(data.hunter_day_id, (activities) => _.map(activities, 'id')),
         monster_id: data.monster_id ? data.monster_id.id : null,
         difficulty: data.difficulty ? data.difficulty.key : null,
     })).put(route('campaigns.add-day', [props.campaign]), {
@@ -157,6 +164,8 @@ const closeModal = () => {
                                 :options="days"
                                 label="name"
                                 track-by="id"
+                                multiple
+                                :max="maxActivities"
                                 :allow-empty="false"
                                 :placeholder="$t('Day')"
                             />
@@ -166,13 +175,15 @@ const closeModal = () => {
                                 class="mt-2"
                             />
                         </div>
-                        <template v-if="form.day_id">
+                        <template v-if="form.day_id.length">
                             <h3 class="font-medium text-gray-700 dark:text-gray-300">
                                 {{ $t('Description') }}
                             </h3>
                             <div
+                                v-for="activity in form.day_id"
+                                :key="activity.id"
                                 class="sm:col-span-2 day-description"
-                                v-html="_.find(days, (day) => day.id === form.day_id.id).description"
+                                v-html="activity.description"
                             />
                         </template>
                     </template>
@@ -208,19 +219,20 @@ const closeModal = () => {
                                 :options="days"
                                 label="name"
                                 track-by="id"
+                                multiple
+                                :max="maxActivities"
                                 :allow-empty="false"
                                 :placeholder="$t('Day')"
                             />
 
+                            <!-- Laravel names a per-hunter failure
+                                 `hunter_day_id.<hunter>` and Inertia hands the
+                                 bag over with those dotted keys intact, so the
+                                 hunter's own error is looked up by that key
+                                 and the bare one is the fallback for a failure
+                                 about the whole array. -->
                             <InputError
-                                v-if="_.isArray(form.errors.hunter_day_id)"
-                                :message="_.find(form.errors.hunter_day_id, (day, userId) => userId === user.id)"
-                                class="mt-2"
-                            />
-
-                            <InputError
-                                v-else
-                                :message="form.errors.hunter_day_id"
+                                :message="form.errors[`hunter_day_id.${user.id}`] ?? form.errors.hunter_day_id"
                                 class="mt-2"
                             />
                         </div>

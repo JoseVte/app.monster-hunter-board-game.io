@@ -8,7 +8,7 @@ export type InvitationStatus = 'pending' | 'accepted' | 'revoked' | 'expired';
 export type ItemType = 'COMMON' | 'OTHER' | 'MONSTER_PART';
 export type MonsterCategory = 'FANGED_WYVERN' | 'PISCINE_WYVERN' | 'BIRD_WYVERN' | 'FLYING_WYVERN' | 'BRUTE_WYVERN' | 'ELDER_DRAGON';
 export type MonsterDifficulty = 'EASY' | 'NORMAL' | 'HARD' | 'ARENA_EASY' | 'ARENA_NORMAL' | 'ARENA_HARD';
-export type MonsterExpansion = 'ANCIENT_FOREST' | 'WILDSPIRE_WASTE' | 'KULU_YA_KU_EXPANSION' | 'TEOSTRA_EXPANSION' | 'NERGIGANTE_EXPANSION' | 'KUSHALA_EXPANSION' | 'KIRIN_EXPANSION';
+export type MonsterExpansion = 'ANCIENT_FOREST' | 'WILDSPIRE_WASTE' | 'KULU_YA_KU_EXPANSION' | 'PICKING_BONES' | 'TEOSTRA_EXPANSION' | 'NERGIGANTE_EXPANSION' | 'KUSHALA_EXPANSION' | 'KIRIN_EXPANSION';
 }
 namespace Models {
 export type Achievement = {
@@ -66,7 +66,9 @@ team_id: number,
 name: string,
 description: string | null,
 max_days: number,
+max_days_automatic: boolean,
 health_potions: number,
+expansions: Array<App.Enum.MonsterExpansion> | null,
 created_at: string | null,
 updated_at: string | null,
 description_parsed?: string,

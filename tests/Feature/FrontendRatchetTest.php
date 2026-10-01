@@ -8,7 +8,7 @@
 // would make the ceiling trivially true, which is exactly how this repository
 // has twice shipped a green check that checked nothing: a typecheck over 175
 // files that read none of them, and a smoke test whose glob could have
-// matched zero. 21 of the 163 `.vue` files carry no `<script>` block at all
+// matched zero. 21 of the 165 `.vue` files carry no `<script>` block at all
 // (pure template icons); a file with no script can never carry `lang="ts"`,
 // so they are excluded from the untyped count rather than left in it to
 // quietly weaken what the ceiling measures. Asserting the with-script count
@@ -23,14 +23,14 @@ test('the number of components without lang="ts" never rises', function (): void
         }
     }
 
-    expect($all)->toHaveCount(163, 'The total number of .vue files moved.');
+    expect($all)->toHaveCount(165, 'The total number of .vue files moved.');
 
     $withScript = array_values(array_filter(
         $all,
         fn (string $path): bool => str_contains(file_get_contents($path), '<script'),
     ));
 
-    expect($withScript)->toHaveCount(142, 'The number of .vue files with a <script> block moved.');
+    expect($withScript)->toHaveCount(144, 'The number of .vue files with a <script> block moved.');
 
     // `preg_match` rather than `str_contains('lang="ts"', ...)`: a single-quoted
     // `lang='ts'` is valid Vue SFC syntax and would otherwise count as untyped.

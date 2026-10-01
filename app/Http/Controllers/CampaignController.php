@@ -9,6 +9,7 @@ use Inertia\Inertia;
 use Inertia\Response;
 use App\Models\Monster;
 use App\Models\Campaign;
+use App\Enum\MonsterExpansion;
 use App\Models\DowntimeActivity;
 use App\Events\UserMonsterHunted;
 use Spatie\Permission\Models\Role;
@@ -35,7 +36,10 @@ class CampaignController extends Controller
     {
         $teams = auth()->user()->allTeams()->pluck('name', 'id')->toArray();
 
-        return Inertia::render('Campaign/Create', compact('teams'));
+        return Inertia::render('Campaign/Create', [
+            'teams' => $teams,
+            ...$this->campaignRuleOptions(),
+        ]);
     }
 
     public function store(CreateCampaignRequest $request): RedirectResponse
@@ -84,6 +88,9 @@ class CampaignController extends Controller
             'campaign' => $campaign,
             'downtimeDays' => $downtimeDays,
             'monsters' => $monsters,
+            // The cap on a hunter's downtime day, sent so the two modals that
+            // build one do not write the number out themselves.
+            'maxDowntimeActivities' => Campaign::MAX_DOWNTIME_ACTIVITIES,
             'availableRoles' => collect(config('permission.campaign-roles'))
                 ->map(fn (array $role): array => [
                     ...$role,
@@ -105,7 +112,31 @@ class CampaignController extends Controller
     {
         $campaign->load('team', 'team.owner');
 
-        return Inertia::render('Campaign/Edit', compact('campaign'));
+        return Inertia::render('Campaign/Edit', [
+            'campaign' => $campaign,
+            ...$this->campaignRuleOptions(),
+        ]);
+    }
+
+    /**
+     * What both campaign forms need to show the rules and work the timer out.
+     *
+     * Only the names and the day counts travel. The rule text itself is in
+     * `resources/lang/{en,es}/campaign-rules.php`, keyed by the case name sent
+     * here as `key`, and the form reads it straight from vue-i18n.
+     *
+     * @return array{expansions: array<int, array{key: string, label: string, base_game: bool, extra_days: int}>, baseMaxDays: int, defaultExpansions: array<int, string>}
+     */
+    private function campaignRuleOptions(): array
+    {
+        return [
+            'expansions' => MonsterExpansion::asCampaignOptions(),
+            'baseMaxDays' => Campaign::BASE_MAX_DAYS,
+            // What the create form starts out with ticked. Sent rather than
+            // written into the form, so the default and the enum cannot drift.
+            // The edit form ignores it and reads the campaign's own set.
+            'defaultExpansions' => [MonsterExpansion::defaultCampaignBox()->name],
+        ];
     }
 
     public function update(UpdateCampaignRequest $request, Campaign $campaign): RedirectResponse
@@ -124,7 +155,7 @@ class CampaignController extends Controller
 
     public function addDay(AddOrUpdateCampaignDayRequest $request, Campaign $campaign): RedirectResponse
     {
-        DB::transaction(static function () use ($campaign, $request): void {
+        DB::transaction(function () use ($campaign, $request): void {
             if ($request->get('type_day') === 'MONSTER') {
                 $day = $campaign->days()->create([
                     'number' => $campaign->days()->count() + 1,
@@ -142,25 +173,8 @@ class CampaignController extends Controller
                 $day = $campaign->days()->create([
                     'number' => $campaign->days()->count() + 1,
                 ]);
-                if ($request->boolean('all_hunters_same_activity')) {
-                    $day->update([
-                        'downtime_activity_id' => $request->get('day_id'),
-                        'all_hunters_same_activity' => true,
-                    ]);
-                    foreach ($campaign->users as $user) {
-                        if ($user->membership->hunter_id) {
-                            $day->hunters()->attach($user->membership->hunter_id, [
-                                'downtime_activity_id' => $request->get('day_id'),
-                            ]);
-                        }
-                    }
-                } else {
-                    foreach ($request->get('hunter_day_id') as $hunterId => $dayId) {
-                        $day->hunters()->attach($hunterId, [
-                            'downtime_activity_id' => $dayId,
-                        ]);
-                    }
-                }
+
+                $this->fillDowntimeDay($campaign, $day, $request);
             }
         });
 
@@ -169,7 +183,7 @@ class CampaignController extends Controller
 
     public function updateDay(AddOrUpdateCampaignDayRequest $request, Campaign $campaign, Day $day): RedirectResponse
     {
-        DB::transaction(static function () use ($campaign, $day, $request): void {
+        DB::transaction(function () use ($campaign, $day, $request): void {
             if ($request->get('type_day') === 'MONSTER') {
                 $day->update([
                     'downtime_activity_id' => null,
@@ -184,44 +198,62 @@ class CampaignController extends Controller
             }
 
             if ($request->get('type_day') === 'DOWNTIME') {
-                $day->update([
-                    'downtime_activity_id' => $request->get('day_id'),
-                    'all_hunters_same_activity' => $request->boolean('all_hunters_same_activity'),
-                    'monster_id' => null,
-                    'difficulty' => null,
-                    'hunted' => false,
-                ]);
-                if ($request->boolean('all_hunters_same_activity')) {
-                    foreach ($campaign->users as $user) {
-                        if ($user->membership->hunter_id) {
-                            if ($day->hunters()->find($user->membership->hunter_id)) {
-                                $day->hunters()->updateExistingPivot($user->membership->hunter_id, [
-                                    'downtime_activity_id' => $request->get('day_id'),
-                                ]);
-                            } else {
-                                $day->hunters()->attach($user->membership->hunter_id, [
-                                    'downtime_activity_id' => $request->get('day_id'),
-                                ]);
-                            }
-                        }
-                    }
-                } else {
-                    foreach ($request->get('hunter_day_id') as $hunterId => $dayId) {
-                        if ($day->hunters()->find($hunterId)) {
-                            $day->hunters()->updateExistingPivot($hunterId, [
-                                'downtime_activity_id' => $dayId,
-                            ]);
-                        } else {
-                            $day->hunters()->attach($hunterId, [
-                                'downtime_activity_id' => $request->get('day_id'),
-                            ]);
-                        }
-                    }
-                }
+                // Cleared and written again rather than reconciled in place. A
+                // hunter now holds a row per activity instead of exactly one,
+                // so `updateExistingPivot` has no single row to address, and
+                // the version that reconciled by hand attached new hunters
+                // with the whole party's activity instead of their own.
+                $day->hunters()->detach();
+
+                $this->fillDowntimeDay($campaign, $day, $request);
             }
         });
 
         return back(303);
+    }
+
+    /**
+     * Write a downtime day's activities, one pivot row per hunter per activity.
+     *
+     * A hunter holds up to `Campaign::MAX_DOWNTIME_ACTIVITIES` different ones.
+     * The request has already capped the count, refused a repeat, and widened
+     * the old scalar shape into a list, so there is one loop here rather than
+     * a branch.
+     */
+    private function fillDowntimeDay(Campaign $campaign, Day $day, AddOrUpdateCampaignDayRequest $request): void
+    {
+        $sameForEveryone = $request->boolean('all_hunters_same_activity');
+
+        $shared = (array) $request->input('day_id', []);
+
+        $day->update([
+            // The column holds the whole party's activity and can only hold
+            // one, so it is filled when everybody spent the day on a single
+            // activity and left null the moment there is a set to record. The
+            // pivot rows are the complete answer either way.
+            'downtime_activity_id' => $sameForEveryone && count($shared) === 1 ? $shared[0] : null,
+            'all_hunters_same_activity' => $sameForEveryone,
+            // A day that used to be a hunt keeps nothing of it. `updateDay`
+            // relies on this rather than clearing the three itself, so the
+            // day is written once either way.
+            'monster_id' => null,
+            'difficulty' => null,
+            'hunted' => false,
+        ]);
+
+        $byHunter = $sameForEveryone
+            ? $campaign->users
+                ->pluck('membership.hunter_id')
+                ->filter()
+                ->mapWithKeys(fn (int $hunterId): array => [$hunterId => $shared])
+                ->all()
+            : (array) $request->input('hunter_day_id', []);
+
+        foreach ($byHunter as $hunterId => $activities) {
+            foreach ((array) $activities as $activityId) {
+                $day->hunters()->attach($hunterId, ['downtime_activity_id' => $activityId]);
+            }
+        }
     }
 
     public function destroy(Campaign $campaign): RedirectResponse

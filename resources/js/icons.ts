@@ -156,6 +156,11 @@ const pending: Record<string, string> = {
     shelling_up_icon: 'Shelling',
     // Monster ability, mechanics and reward text, now seeded, carries these.
     investigation_behaviour_icon: 'Investigation behaviour',
+    // The Picking Bones expansion's two monsters each mark their own behaviour
+    // cards with a symbol of their own, so the label is the monster rather than
+    // a mechanic: the sentence around it reads "reveals a behaviour with ...".
+    tzitzi_icon: 'Tzitzi-Ya-Ku',
+    girros_icon: 'Great Girros',
 };
 
 // Not every token ends in `_icon`: the data also writes :charged_blade_vial:,

@@ -447,6 +447,73 @@ return [
                 ],
             ],
         ],
+        // PICKING BONES EXPANSION
+        'Rathslinger I' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Iron Bow',
+            'branch' => 'Rathalos',
+            'rarity' => 3,
+            'name' => 'Ratheslinga I',
+            'elemental_attacks' => [
+                'fire',
+            ],
+            'status_attacks' => [
+                'poison',
+            ],
+            'count_attack_1' => 1,
+            'count_attack_2' => 7,
+            'count_attack_3' => 4,
+            'items' => [
+                'Rathalos Scale' => 1,
+                'Rathalos Webbing' => 2,
+                'Inferno Sac' => 1,
+                'Rathalos Marrow' => 2,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Power Coating' => 2,
+                    'Shot' => 3,
+                ],
+                'add' => [
+                    'Poison Coating' => 2,
+                    'Flame Shot' => 3,
+                ],
+            ],
+        ],
+        'Rathslinger II' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Rathslinger I',
+            'branch' => 'Rathalos',
+            'rarity' => 4,
+            'name' => 'Ratheslinga II',
+            'defense' => 1,
+            'elemental_attacks' => [
+                'fire',
+            ],
+            'status_attacks' => [
+                'poison',
+            ],
+            'count_attack_2' => 8,
+            'count_attack_3' => 6,
+            'items' => [
+                'Rathalos Scale' => 2,
+                'Rathalos Carapace' => 2,
+                'Rathalos Wing' => 2,
+                'Rathalos Medulla' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Power Coating' => 2,
+                    'Shot' => 4,
+                    'Dragon Piercer' => 1,
+                ],
+                'add' => [
+                    'Poison Coating' => 2,
+                    'Flame Shot' => 3,
+                    'Dragon\'s Fire' => 2,
+                ],
+            ],
+        ],
         // NERGIGANTE EXPANSION
         'Nergal Whisper' => [
             'expansion' => App\Enum\MonsterExpansion::NERGIGANTE_EXPANSION,

@@ -414,6 +414,59 @@ return [
                 ],
             ],
         ],
+        // PICKING BONES EXPANSION
+        'Luminous Daggers' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Matched Slicers',
+            'branch' => 'Tzitzi-Ya-Ku',
+            'rarity' => 3,
+            'name' => 'Dagas Lumínicas',
+            'count_attack_1' => 2,
+            'count_attack_2' => 6,
+            'count_attack_3' => 4,
+            'items' => [
+                'Tzitzi-Ya-Ku Claw' => 2,
+                'Tzitzi-Ya-Ku Photophore' => 1,
+                'Tzitzi-Ya-Ku Scale' => 3,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Bladed Fangs' => 2,
+                ],
+                'add' => [
+                    'Flash Fangs' => 2,
+                ],
+            ],
+        ],
+        'Dual Destroyers' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Luminous Daggers',
+            'branch' => 'Tzitzi-Ya-Ku',
+            'rarity' => 4,
+            'name' => 'Duodestructoras',
+            'status_attacks' => [
+                'stun',
+            ],
+            'count_attack_2' => 6,
+            'count_attack_3' => 6,
+            'count_attack_4' => 2,
+            'items' => [
+                'Tzitzi-Ya-Ku Claw' => 2,
+                'Tzitzi-Ya-Ku Photophore' => 1,
+                'Tzitzi-Ya-Ku Scale' => 5,
+                'Lightcrystal' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Bladed Fangs' => 2,
+                    'Rapid Spin' => 2,
+                ],
+                'add' => [
+                    'Flash Fangs' => 2,
+                    'Flash Spin' => 2,
+                ],
+            ],
+        ],
         // NERGIGANTE EXPANSION
         'Nergal Gouge' => [
             'expansion' => App\Enum\MonsterExpansion::NERGIGANTE_EXPANSION,

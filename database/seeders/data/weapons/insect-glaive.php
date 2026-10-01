@@ -399,6 +399,59 @@ Si tienes tres cartas boca arriba de Kinsect: Harvest Extract al final de tu tur
                 ],
             ],
         ],
+        // PICKING BONES EXPANSION
+        'Luminous Blade' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Iron Blade',
+            'branch' => 'Tzitzi-Ya-Ku',
+            'rarity' => 3,
+            'name' => 'Hoja Lumínica',
+            'count_attack_1' => 4,
+            'count_attack_2' => 3,
+            'count_attack_3' => 5,
+            'items' => [
+                'Tzitzi-Ya-Ku Claw' => 2,
+                'Tzitzi-Ya-Ku Photophore' => 1,
+                'Tzitzi-Ya-Ku Scale' => 3,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Wide Sweep' => 3,
+                ],
+                'add' => [
+                    'Flash Sweep' => 3,
+                ],
+            ],
+        ],
+        'Destroyer Bo' => [
+            'expansion' => App\Enum\MonsterExpansion::PICKING_BONES,
+            'parent' => 'Luminous Blade',
+            'branch' => 'Tzitzi-Ya-Ku',
+            'rarity' => 4,
+            'name' => 'Bo Destructor',
+            'status_attacks' => [
+                'stun',
+            ],
+            'count_attack_1' => 3,
+            'count_attack_2' => 6,
+            'count_attack_3' => 5,
+            'items' => [
+                'Tzitzi-Ya-Ku Claw' => 2,
+                'Tzitzi-Ya-Ku Photophore' => 1,
+                'Tzitzi-Ya-Ku Scale' => 5,
+                'Lightcrystal' => 1,
+            ],
+            'attacks' => [
+                'remove' => [
+                    'Wide Sweep' => 3,
+                    'Tornado Slash' => 2,
+                ],
+                'add' => [
+                    'Flash Sweep' => 3,
+                    'Flash Slash' => 2,
+                ],
+            ],
+        ],
         // NERGIGANTE EXPANSION
         'Nergal Reaper' => [
             'expansion' => App\Enum\MonsterExpansion::NERGIGANTE_EXPANSION,

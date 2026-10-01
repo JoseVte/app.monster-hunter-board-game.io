@@ -18,6 +18,13 @@ class Day extends Model
         'number',
         'difficulty',
         'hunted',
+        // Declared by the create migration since day one and left out of this
+        // list, so every `$day->update(['all_hunters_same_activity' => ...])`
+        // in `CampaignController` was silently discarded and the column never
+        // held anything but its default. The edit modal reads it to decide
+        // whether to offer one activity for the party or one per hunter, so
+        // the modal always opened on the per-hunter branch.
+        'all_hunters_same_activity',
 
         'campaign_id',
         'monster_id',
