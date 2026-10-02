@@ -1,6 +1,7 @@
 import {config, mount} from '@vue/test-utils';
 import {defineComponent, nextTick} from 'vue';
 import type {Component} from 'vue';
+import type {PageProps} from '@inertiajs/core';
 import {createI18n} from 'vue-i18n';
 import {App as InertiaApp, usePage} from '@inertiajs/vue3';
 import {vi} from 'vitest';
@@ -95,6 +96,11 @@ config.global.plugins = [i18n];
 
 config.global.mixins = [{methods: {replaceIcons, getRarityColor, route: mockRoute}}];
 
+// The third way `route` reaches a component, and the only one that works on the
+// SSR server too: `ZiggyVue` provides it under `'route'`, and a component that
+// needs it while rendering (`Breadcrumb.vue`) injects it from there.
+config.global.provide = {route: mockRoute};
+
 config.global.stubs = {
     // Inertia's own components need a running app and are not what is under test.
     Link: {template: '<a><slot /></a>'},
@@ -131,125 +137,139 @@ async function flush() {
     await nextTick();
 }
 
-mount(InertiaApp, {
-    props: {
-        initialPage: {
-            component: 'Smoke',
-            props: {
-                // AppLayout.vue reads `auth.user.current_team` and
-                // `auth.user.campaigns` through `usePage()` directly, and
-                // `auth.user.name`/`.email` through the `$page` global
-                // property in its template. A null `current_team` keeps the
-                // team-switching branches, which need a much larger shape
-                // (`all_teams`, etc.), out of the picture entirely: they are
-                // gated behind `jetstream.hasTeamFeatures`, set to false below
-                // for the same reason. `auth.user` is typed against the real
-                // `App.Models.User` plus Jetstream's own additions now
-                // (`resources/js/types/inertia.d.ts`), so the base columns
-                // nothing under test reads (`id`, `email_verified_at`, and so
-                // on) still need a placeholder value each; `two_factor_enabled`
-                // is Jetstream's own addition, not the model's, and is
-                // required the same way.
-                auth: {
-                    user: {
-                        id: 1,
-                        name: 'Test Hunter',
-                        email: 'test@example.com',
-                        email_verified_at: null,
-                        two_factor_confirmed_at: null,
-                        current_team_id: null,
-                        current_connected_account_id: null,
-                        profile_photo_path: null,
-                        created_at: null,
-                        updated_at: null,
-                        profile_photo_url: '/images/avatar.png',
-                        current_team: {
-                            id: 1,
-                            user_id: 1,
-                            name: 'Test Team',
-                            personal_team: true,
-                            created_at: null,
-                            updated_at: null,
-                        },
-                        campaigns: [],
-                        two_factor_enabled: false,
-                    },
-                },
-                // `level.current`/`.next_percentage` are read unconditionally
-                // by AppLayout.vue (the profile dropdown's level bar is not
-                // behind the `hasApiFeatures` gate, only the API tokens link
-                // next to it is). `jetstream` is typed against every field
-                // `ShareInertiaData::handle()` actually sends now, not just
-                // the five below this suite reads, so the rest are filler too.
-                jetstream: {
-                    hasTeamFeatures: false,
-                    managesProfilePhotos: false,
-                    hasApiFeatures: false,
-                    canCreateTeams: false,
-                    flash: {},
-                    canManageTwoFactorAuthentication: false,
-                    canUpdatePassword: false,
-                    canUpdateProfileInformation: false,
-                    hasEmailVerification: false,
-                    hasAccountDeletionFeatures: false,
-                    hasTermsAndPrivacyPolicyFeature: false,
-                },
-                level: {current: 1, next: 100, next_percentage: 0, points: 0},
-                locale: 'en',
-                current_campaign: null,
-                current_campaign_id: null,
-                has_campaign_hunter: false,
-                // `Login.vue` reads `canRegister` through `$page.props` to
-                // decide whether `AuthenticationCard` offers a login or a
-                // register link. `false` (the app's own default, see
-                // `config/fortify.php`'s `AUTH_CAN_REGISTER` gate) exercises
-                // the branch every other page in this bag never touches.
-                canRegister: false,
-                // Read by every Auth page that calls `useRecaptcha` (see the
-                // mock above); the value itself is never inspected by the
-                // mock, but it stands in for the real
-                // `config('services.google-recaptcha.site-key')` share.
-                recaptcha_site_key: 'test-site-key',
-                // Inertia's own `PageProps` requires this even though nothing
-                // under test reads it.
-                errors: {},
-                // The seven keys below are the rest of `Inertia.SharedProps`
-                // (`resources/js/types/inertia.d.ts`): `share()` (plus, for
-                // `errorBags`, Jetstream's `ShareInertiaData`) sends every one
-                // of them unconditionally, so the type requires them too, and
-                // none of the Wiki/Auth pages or shared components this suite
-                // mounts reads any of them except `SocialLogin.vue`'s
-                // `socialLogin.providers`, which already falls back with `??`.
-                // Left at the emptiest value their type allows, the same way
-                // `errors` above is. `user` is one nested object, not the
-                // four flat, dotted keys this file used to list here:
-                // `PropsResolver::unpackDotProps()` nests every dotted
-                // top-level key from `share()` before a page ever sees it, so
-                // `'user.achievements'` was never a real key at runtime; see
-                // `inertia.d.ts`'s own header comment for the source dive.
-                errorBags: {},
-                ziggy: {location: '', query: {}},
-                socialLogin: {providers: [], linked: [], hasPassword: false},
-                user: {campaigns: [], roles: [], permissions: [], achievements: []},
-                dayType: [],
-                monsterDifficulty: [],
-                jetstreamAcceptText: '',
+// What `HandleInertiaRequests::share()` (and Jetstream's `ShareInertiaData`)
+// send on every request, as the fake page hands it to every component under
+// test. Exported because `ssr.test.ts` renders pages on a Node server, where
+// none of the DOM mounting below can run, and its fake pages need the same
+// shared props a real request carries.
+export const sharedPageProps = {
+    // AppLayout.vue reads `auth.user.current_team` and
+    // `auth.user.campaigns` through `usePage()` directly, and
+    // `auth.user.name`/`.email` through the `$page` global
+    // property in its template. A null `current_team` keeps the
+    // team-switching branches, which need a much larger shape
+    // (`all_teams`, etc.), out of the picture entirely: they are
+    // gated behind `jetstream.hasTeamFeatures`, set to false below
+    // for the same reason. `auth.user` is typed against the real
+    // `App.Models.User` plus Jetstream's own additions now
+    // (`resources/js/types/inertia.d.ts`), so the base columns
+    // nothing under test reads (`id`, `email_verified_at`, and so
+    // on) still need a placeholder value each; `two_factor_enabled`
+    // is Jetstream's own addition, not the model's, and is
+    // required the same way.
+    auth: {
+        user: {
+            id: 1,
+            name: 'Test Hunter',
+            email: 'test@example.com',
+            email_verified_at: null,
+            two_factor_confirmed_at: null,
+            current_team_id: null,
+            current_connected_account_id: null,
+            profile_photo_path: null,
+            created_at: null,
+            updated_at: null,
+            profile_photo_url: '/images/avatar.png',
+            current_team: {
+                id: 1,
+                user_id: 1,
+                name: 'Test Team',
+                personal_team: true,
+                created_at: null,
+                updated_at: null,
             },
-            url: '/',
-            version: null,
-            // `Page`'s own bookkeeping fields, required by the type even
-            // though nothing under test reads them either.
-            rescuedProps: [],
-            flash: {},
-            rememberedState: {},
+            campaigns: [],
+            two_factor_enabled: false,
         },
-        resolveComponent: () => defineComponent({render: () => null}),
     },
-});
+    // `level.current`/`.next_percentage` are read unconditionally
+    // by AppLayout.vue (the profile dropdown's level bar is not
+    // behind the `hasApiFeatures` gate, only the API tokens link
+    // next to it is). `jetstream` is typed against every field
+    // `ShareInertiaData::handle()` actually sends now, not just
+    // the five below this suite reads, so the rest are filler too.
+    jetstream: {
+        hasTeamFeatures: false,
+        managesProfilePhotos: false,
+        hasApiFeatures: false,
+        canCreateTeams: false,
+        flash: {},
+        canManageTwoFactorAuthentication: false,
+        canUpdatePassword: false,
+        canUpdateProfileInformation: false,
+        hasEmailVerification: false,
+        hasAccountDeletionFeatures: false,
+        hasTermsAndPrivacyPolicyFeature: false,
+    },
+    level: {current: 1, next: 100, next_percentage: 0, points: 0},
+    locale: 'en',
+    appName: 'Monster Hunter World: Board Game',
+    current_campaign: null,
+    current_campaign_id: null,
+    has_campaign_hunter: false,
+    // `Login.vue` reads `canRegister` through `$page.props` to
+    // decide whether `AuthenticationCard` offers a login or a
+    // register link. `false` (the app's own default, see
+    // `config/fortify.php`'s `AUTH_CAN_REGISTER` gate) exercises
+    // the branch every other page in this bag never touches.
+    canRegister: false,
+    // Read by every Auth page that calls `useRecaptcha` (see the
+    // mock above); the value itself is never inspected by the
+    // mock, but it stands in for the real
+    // `config('services.google-recaptcha.site-key')` share.
+    recaptcha_site_key: 'test-site-key',
+    // Inertia's own `PageProps` requires this even though nothing
+    // under test reads it.
+    errors: {},
+    // The seven keys below are the rest of `Inertia.SharedProps`
+    // (`resources/js/types/inertia.d.ts`): `share()` (plus, for
+    // `errorBags`, Jetstream's `ShareInertiaData`) sends every one
+    // of them unconditionally, so the type requires them too, and
+    // none of the Wiki/Auth pages or shared components this suite
+    // mounts reads any of them except `SocialLogin.vue`'s
+    // `socialLogin.providers`, which already falls back with `??`.
+    // Left at the emptiest value their type allows, the same way
+    // `errors` above is. `user` is one nested object, not the
+    // four flat, dotted keys this file used to list here:
+    // `PropsResolver::unpackDotProps()` nests every dotted
+    // top-level key from `share()` before a page ever sees it, so
+    // `'user.achievements'` was never a real key at runtime; see
+    // `inertia.d.ts`'s own header comment for the source dive.
+    errorBags: {},
+    ziggy: {location: '', query: {}},
+    socialLogin: {providers: [], linked: [], hasPassword: false},
+    user: {campaigns: [], roles: [], permissions: [], achievements: []},
+    dayType: [],
+    monsterDifficulty: [],
+    jetstreamAcceptText: '',
+} satisfies PageProps;
 
-await flush();
+// `@vitest-environment node` (which `ssr.test.ts` uses, to render the way the
+// SSR bundle does, with no `window` to lean on) has no DOM to mount into, so
+// everything that needs one is skipped there. That suite does not use
+// `mountComponent` at all; it calls the real SSR render function instead.
+if (typeof document !== 'undefined') {
+    mount(InertiaApp, {
+        props: {
+            initialPage: {
+                component: 'Smoke',
+                props: sharedPageProps,
+                url: '/',
+                version: null,
+                // `Page`'s own bookkeeping fields, required by the type even
+                // though nothing under test reads them either.
+                rescuedProps: [],
+                flash: {},
+                rememberedState: {},
+            },
+            resolveComponent: () => defineComponent({render: () => null}),
+        },
+    });
 
-config.global.mocks = {$page: usePage()};
+    await flush();
+
+    config.global.mocks = {$page: usePage()};
+}
 
 // A thin wrapper over `@vue/test-utils`'s own `mount`, so a later suite can
 // mount a page without re-establishing the i18n plugin, the `route`/icon

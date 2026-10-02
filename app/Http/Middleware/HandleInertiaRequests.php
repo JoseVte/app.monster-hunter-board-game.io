@@ -64,6 +64,11 @@ class HandleInertiaRequests extends Middleware
                 'query' => $request->query(),
             ]),
             'locale' => app()->getLocale(),
+            // For the SSR server's title suffix. The browser reads the name off
+            // the `<title>` Blade renders, but the Node process has no `.env`
+            // of its own and printed "Log in - " with nothing after it; this
+            // makes `config('app.name')` the one source for both.
+            'appName' => config('app.name'),
             'user.campaigns' => $user->campaigns ?? [],
             'user.roles' => $user ? $user->roles->pluck('name') : [],
             'user.permissions' => $user ? $user->getPermissionsViaRoles()->pluck('name') : [],

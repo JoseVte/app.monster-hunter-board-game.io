@@ -2,6 +2,7 @@ import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
 import {flushPromises} from '@vue/test-utils';
 import {router} from '@inertiajs/vue3';
 import {mountComponent} from './setup';
+import {createProps, editProps} from './campaignPageProps';
 import Create from '@/Pages/Campaign/Create.vue';
 import Edit from '@/Pages/Campaign/Edit.vue';
 
@@ -15,39 +16,6 @@ import Edit from '@/Pages/Campaign/Edit.vue';
 //
 // Vue does warn about the missing required prop, which is why the warnings
 // assertion below is the general guard and the NaN one is the specific one.
-const expansions = [
-    {key: 'ANCIENT_FOREST', label: 'Ancient Forest', base_game: true, extra_days: 0},
-    {key: 'PICKING_BONES', label: 'Picking Bones Expansion', base_game: false, extra_days: 15},
-];
-
-// What `CampaignController::create()` and `edit()` actually send, key for key.
-const createProps = {
-    teams: {1: 'Test Team'},
-    expansions,
-    baseMaxDays: 25,
-    defaultExpansions: ['ANCIENT_FOREST'],
-};
-
-const editProps = {
-    campaign: {
-        id: 1,
-        team_id: 1,
-        name: 'A campaign',
-        description: 'Something',
-        max_days: 40,
-        max_days_automatic: true,
-        health_potions: 0,
-        // Null rather than `[]`, the way a campaign stored before the column
-        // existed reads, since that is the case the edit form guards with `??`.
-        expansions: null,
-        created_at: null,
-        updated_at: null,
-        team: {id: 1, name: 'Test Team', user_id: 1, personal_team: true, owner: {id: 1, name: 'Owner'}},
-    },
-    expansions,
-    baseMaxDays: 25,
-};
-
 // `AppLayout` wraps both pages and carries a logout `<form>` of its own, which
 // is the first one in the document; submitting that instead fires a real
 // Inertia request at `/logout`. The campaign form is the one holding the timer

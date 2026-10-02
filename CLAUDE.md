@@ -92,6 +92,19 @@ The editor chunk is 861 kB of JS and 70 kB of CSS, up from toast-ui's 456 plus 1
 all of it is CodeMirror. It is a dynamic import, so it only loads on the campaign create and
 edit forms.
 
+**The editor fetches nothing from a third party, and that has to be kept.** Out of the box
+`md-editor-v3` loads eight assets from `unpkg.com` every time it mounts (highlight.js, KaTeX,
+Mermaid, ECharts and Prettier, two CSS and six JS, Mermaid and ECharts a megabyte or more
+each), which handed every visitor's address to that CDN on the two campaign forms. The
+`no-katex`, `no-mermaid`, `no-highlight`, `no-echarts` and `no-prettier` props turn all of it
+off. That loses nothing a reader would see: the server renders descriptions with plain
+CommonMark, which draws none of those, so the preview was showing formulas and coloured code
+no reader ever got, the same dishonesty `html: false` already fixes for raw HTML. Cropper is
+off through `no-upload-img`, and screenfull is only fetched by the `fullscreen` toolbar
+button, which is not in the toolbar. `resources/js/__tests__/wysiwygInput.test.ts` mounts the
+real editor and fails on any remote `<link>` or `<script>`; with the props removed it lists
+all eight.
+
 ### Cookies and tracking
 
 **The app sets no cookie that needs consent, and there is no cookie banner.** That is a
@@ -209,7 +222,7 @@ machine where the mistake is most likely to be made, so it would pin nothing.
 under `app/` through `App\Support\TypeScript\ModelShape` and `ModelTransformer` and writes
 `resources/js/types/generated.d.ts`, then `artisan ziggy:generate --types-only` writes
 `resources/js/types/ziggy.d.ts` beside it. Both files are committed rather than built on
-demand, because the eventual conversion of 163 `.vue` files to TypeScript needs them on
+demand, because the conversion of the remaining `.vue` files to TypeScript needs them on
 disk to typecheck against, not produced by a step a contributor might forget. The transform
 needs a migrated database, since `Schema::getColumns()` reads the real table rather than a
 model's own casts alone, so it cannot run from a bare checkout.
@@ -362,7 +375,7 @@ incompatible sibling, rejecting every caller that still holds the real model.
 The ratchet holds two numbers, both re-measured rather than carried over from an earlier
 task: of 165 `.vue` files, 144 contain a `<script>` block (the other 21 are template only SVG
 icons, which can never carry `lang="ts"` and are excluded rather than left in the ceiling to
-weaken it), and of those 142, 106 lack `lang="ts"`. `FrontendRatchetTest` asserts all three
+weaken it), and of those 144, 106 lack `lang="ts"`. `FrontendRatchetTest` asserts all three
 counts, not just the last, because a file walk that silently matched nothing would make the
 ceiling trivially true, which is the exact shape of green this repository has already shipped
 twice. Converting a component is not finished until the ceiling in that test is lowered to
@@ -416,17 +429,74 @@ optional on both craft pages, and both controllers always send it, as `[]` for a
 `WeaponController.php:68` eager-loads `recipes.monster`, and `Weapon/Detail.vue` never reads
 it: a wasted join and payload, backend work rather than a type to fix.
 
-**A production bug this work surfaced, and not the task's to fix, but not to lose either.**
-`resources/js/ssr.ts` installs Inertia's plugin and `ZiggyVue` and nothing else; `app.ts`
-installs five things, including `vue-i18n` and the global mixin that adds `replaceIcons`/
-`getRarityColor`. A server side render of any component that calls `$t()`, or either of
-those two mixin methods, which by now is nearly every one of them, dies with "Need to install
-with 'app.use' function". `config('inertia.ssr')` is `enabled: true` by default with `throw_on_error:
-false`, so a production deploy builds and ships an SSR bundle, fails to render with it on
-every request, and falls back to client rendering silently, with nothing in the logs pointing
-at the cause. `main` has the same gap in the same two files, so this predates the TypeScript
-work; it was only found because getting `$t()` typed at all meant reading both entry points
-side by side.
+### Server side rendering
+
+**SSR did not work at all until 2 October 2026, and nothing said so.** Three faults, each
+enough on its own, all masked by `throw_on_error: false`, which turns a failed server render
+into a silent fallback to client rendering with nothing in the logs:
+
+1. `ssr.ts` installed Inertia's plugin and `ZiggyVue` and nothing else, while `app.ts` also
+   installed vue-i18n and the `replaceIcons`/`getRarityColor` mixin. Every page calling
+   `$t()`, which is every page, died with "Need to install with 'app.use' function".
+2. `useRecaptcha()` called `recaptcha-v3`'s `load()` during `setup`. On the server that is a
+   rejected promise nobody awaits, and Node exits on an unhandled rejection: **the first visit
+   to `/login` killed the SSR process**, for every visitor, until something restarted it.
+3. `Breadcrumb.vue` called the bare global `route()` inside a computed the template reads.
+   That global is Blade's `@routes`, which exists only in a browser, so every page with an
+   empty trail (the wiki index, the campaign create page) failed with "route is not defined".
+
+What holds each of those now:
+
+- **`resources/js/appPlugins.ts`** is the one list of what both apps install, and both entry
+  points call it. It builds **a fresh vue-i18n instance per call**, never one at module scope:
+  the SSR process loads the module once and serves every request from it, so a shared
+  instance would hand one visitor's locale to the next. What stays out of it is what only
+  one side can have: `vue3-storage` (it wraps `sessionStorage`) and Ziggy's configuration
+  (Blade's `@routes` in a browser, the page's own `ziggy` prop on the server).
+- **`resources/js/ssrRender.ts`** holds the render itself, apart from `ssr.ts`, because
+  `createServer()` binds a port the moment it runs and a test cannot call it. `ssr.ts` hands
+  `renderPage()` to `createServer()` and also **logs unhandled rejections instead of
+  exiting**: each render is independent and holds no state, so carrying on is safe, and one
+  stray promise in one component no longer takes server rendering away from the whole site.
+- **`useRecaptcha()` loads the script from `onMounted`**, which only ever runs in a browser,
+  and `execute()` loads it too so a submit can never race a mount.
+- **A component that needs a URL while rendering injects `route`** (`inject('route')`),
+  which `ZiggyVue` provides on both sides. Calling the bare global from a handler (a submit,
+  a click) is fine and that is nearly every call site; it is only render-time code that has
+  to avoid it.
+- The title suffix comes from an `appName` shared prop (`config('app.name')`), because the
+  SSR process is started without a `.env` and the `process.env.APP_NAME` it used to read was
+  never there: titles came out as "Log in - " with nothing after.
+- `@inertiaHead` sits **above** the static `<title>` in `app.blade.php`. With SSR on it
+  prints the page's own title, and a crawler reads the first `<title>` in the document:
+  below the static one, every page was indexed as the bare app name.
+
+A fourth, found once the first three were gone: `WysiwygInput.vue` read `document` during
+`setup` to pick its theme, so both campaign forms threw on the server. It is guarded now and
+`md-editor-v3` itself renders on a server without complaint. The server draws the light
+editor; the client renders the page again on load (see below), so a dark visitor still gets
+the dark one.
+
+**The client does not hydrate.** `app.ts` mounts with `createApp`, which clears `#app` and
+renders from scratch, rather than `createSSRApp`, which would adopt the server's markup. So
+the server HTML is what a crawler reads and what a visitor sees until the bundle runs, and
+then it is replaced. Switching to hydration would remove that redraw but needs every
+component to render the same thing on both sides, and several read `localStorage`,
+`sessionStorage` or the `dark` class while setting up; it is its own piece of work.
+
+`resources/js/__tests__/ssr.test.ts` renders every Wiki and Auth page, and both campaign
+forms, through `renderPage()` in a real Node environment (`@vitest-environment node`, no `window`, no
+`document`), which `smoke.test.ts`'s happy-dom could never do. It was checked against each of
+the three faults put back in on purpose, and catches all three. One trap in it worth knowing:
+`recaptcha.ts` caches its promise at module scope, so only the first page ever reaches
+`load()`, and a `vi.fn()` whose history is reset between tests left the dedicated check
+looking at an empty record and passing with the bug restored. The calls go into a
+`vi.hoisted` array nothing resets, asserted empty after every page.
+
+**To see it for real**: `npm run build`, `node bootstrap/ssr/ssr.js`, then request a public
+page (`/`, `/login`) and look for `data-server-rendered="true"` on `#app`. The wiki redirects
+to `/login` without a session, so following redirects silently tests the login page over
+and over.
 
 ### The public page
 
@@ -480,10 +550,11 @@ a visitor, since only one language loads.
 to fill in a registration form that does not exist and has no link. Step one now says the
 app is invitation only.
 
-The page's `<Head>` carries a title and nothing else. `app.ts` appends `" - <app name>"` to
-it, so it holds only the distinguishing part, and the description belongs in
-`resources/views/app.blade.php`: `@inertiaHead` is inserted after the static tags, so a meta
-given in a page component is the second one on the page and a crawler reads the first.
+The page's `<Head>` carries a title and nothing else. `appTitle()` appends `" - <app name>"`
+to it on both sides, so it holds only the distinguishing part. The description lives in
+`resources/views/app.blade.php`. `@inertiaHead` now prints above the static title and
+description (see "Server side rendering"), so a description given in a page component would
+come first and win; none does today.
 
 ### Game icons
 
@@ -760,6 +831,52 @@ Screenshots and console logs from a failing run upload as an artifact
 (`tests/Browser/screenshots`, `tests/Browser/console`); a Dusk failure without them is close to
 unreadable.
 
+`tests/Browser/CampaignTest.php` creates a campaign in Chrome end to end (default box, the
+timer moving with the boxes, the base game guard, manual mode). Locally the suite runs with
+`php artisan dusk` against the Herd site, after `php artisan dusk:chrome-driver --detect` once
+and an `npm run build` so the site serves current assets.
+
+**Every browser test starts by clearing the served app's file cache**
+(`resetServedAppCache()` in `tests/Browser/helpers.php`). Without it `AuthTest::register`
+failed one run in five locally with only "waited 5 seconds for location": the email
+verification route is `throttle:6,1`, the served app keeps its limiter in the file cache,
+which outlives every run, and `DatabaseTruncation` hands the same user ids out each time, so a
+seventh run inside a minute was refused. Eight back-to-back registrations reproduced it
+exactly. It is `cache:clear file` and not `Cache::flush()` because this process runs on the
+array store `phpunit.dusk.xml` sets while the served app uses the file store `.env.dusk`
+names. CI runs the suite once and never met it.
+
+**Chrome's password manager is off in the browser suite** (`DuskTestCase::driver()`), and
+that is what finally made `AuthTest` reliable. It logs in and registers with `password`,
+which is on Google's breach list; a second or so after the form submits, Chrome opens its
+own "Change your password" dialog, which takes the input for itself. The page underneath
+stays visible and scriptable and `elementFromPoint` still finds the button, but every click
+and keystroke WebDriver sends from then on is reported as sent and never reaches the
+document, for the rest of that browser session. Whether the test finished its clicks before
+the dialog opened was a race: about one full run in seven failed, on "waited 5 seconds for
+location [/]" after Log Out, and the next test in the same browser then found its typing
+missing. `CampaignTest` logs in with `loginAs()`, never types a password, and never failed.
+A probe that logged in and out ten times per browser failed in most rounds before the fix
+and passed 80 cycles of 80 after it; the full suite went from two or three failures in 20
+runs to none.
+
+It took eliminating a long list first, each measured rather than assumed: slow waits (15
+seconds failed the same way), the reCAPTCHA widget, the service worker, SPA navigation, the
+`--disable-gpu`, backgrounding and site isolation flags, WebDriver's Element Click against
+its Actions API, and a DOM re-render race. What gave it away was instrumenting the page:
+between two markers around the click, not one `pointerdown` arrived, with focus, frames and
+hit-testing all normal.
+
+**Each browser session keeps its Chrome profile where `DuskTestCase` can delete it.** Left
+to itself chromedriver puts a profile in a fresh `org.chromium.Chromium.scoped_dir.*` under
+the system temp directory and removes it once Chrome exits, and Dusk stops chromedriver the
+moment it has quit the browser, so it never did. Every session leaked 100 to 140 MB; a day of
+running the suite left 197 of them, 5 GB, and the disk filling up took Herd's MySQL down
+mid-migration (`monster_hunter_dusk`) and left Herd's PHP serving a fatal error from its
+dump interception until `herd restart`. The profiles now live under
+`sys_get_temp_dir()/monster-hunter-dusk-chrome`, emptied before every class and after it.
+If the suite ever starts failing everywhere at once, check free disk space before the code.
+
 ### Checking mail works
 
 `php artisan mail:test [recipient]` sends one real message through whatever mailer is
@@ -1010,16 +1127,26 @@ failures at once.
 ### Frontend tests
 
 `resources/js/__tests__/` holds one unit-test file for each of six pure, stateless modules,
-`damage.ts`, `armorDefense.ts`, `armorSkills.ts`, `rarity.ts`, `icons.ts` and `campaign.ts`. All five were
-converted to TypeScript earlier on this branch (see "The TypeScript conversion" above); the
+`damage.ts`, `armorDefense.ts`, `armorSkills.ts`, `rarity.ts`, `icons.ts` and `campaign.ts`. The first
+five were converted to TypeScript earlier on this branch (see "The TypeScript conversion"
+above) and `campaign.ts` was written in it; the
 test files themselves were `.test.ts` from the day they were written, before that conversion,
 for the reason the next paragraph pins. `smoke.test.ts` mounts every page and partial under
 `Pages/Wiki` and every page under `Pages/Auth`, and asserts each one renders something and
 warns about nothing; Auth was added as the cheapest useful widening beyond the Wiki, since
 nineteen of the Wiki's 29 shared components are also used outside it and the Wiki glob alone
-cannot see that. `campaignForms.test.ts` mounts `Campaign/Create.vue` and `Campaign/Edit.vue`
-whole. `npm run test:run` is Vitest: 10 files, 93 tests, and the run is meant to stay
-pristine, no skips and nothing printed.
+cannot see that. `ssr.test.ts` renders the same pages through the real SSR render function
+in Node (see "Server side rendering"); the props both suites hand those pages live in
+`pageProps.ts`, so the two cannot drift into testing different data.
+`campaignForms.test.ts` mounts `Campaign/Create.vue` and `Campaign/Edit.vue` whole.
+`campaignShow.test.ts` mounts `Campaign/Show.vue` and follows `maxDowntimeActivities` down
+to the add-day button and every day's edit modal. `npm run test:run` is Vitest: 13 files,
+130 tests, and the run is meant to stay pristine, no skips and nothing printed.
+
+`setup.ts` skips its DOM mounting under `@vitest-environment node`, which only `ssr.test.ts`
+uses, and exports the fake page's shared props as `sharedPageProps` for it. It also provides
+`route` through `config.global.provide`, the third way Ziggy reaches a component and the
+only one that works on the server.
 
 **Stub `router.post`/`router.put` in any test that submits an Inertia form.**
 `useForm().post(...)` ends up at `router[method](url, data, options)`, which under
@@ -1039,13 +1166,11 @@ and `CreateCampaignForm.vue` declared `teams: Array` while the controller sends
 `allTeams()->pluck('name', 'id')`, an object, so every visit to the create page logged
 two "Invalid prop" warnings.
 
-**`WysiwygInput` is stubbed for the whole suite, and not only for speed.**
-`md-editor-v3` fetches two stylesheets from `unpkg.com` (highlight.js and katex) as it
-mounts, happy-dom really tries, and the aborted requests surface on teardown; mounting
-either campaign form without the stub makes the suite fail when the network does. That
-the editor pulls from a third-party CDN at runtime is a production fact worth knowing
-too, not just a test problem. A test that is actually about the editor should mount it
-deliberately and deal with the fetches.
+**`WysiwygInput` is stubbed for the whole suite.** It is 861 kB of CodeMirror that no
+page test is about, and it was stubbed in the first place because it fetched from
+`unpkg.com` as it mounted, which happy-dom really tries. It no longer does (see "Rich
+text"), but the stub stays for the weight. `wysiwygInput.test.ts` is the one suite that
+mounts the real thing, as the root component, where a child stub does not apply.
 
 The fake page's `auth.user.current_team` is a real object rather than `null`.
 `CreateCampaignForm` reads `usePage().props.auth.user.current_team.id` unguarded, so a
@@ -1256,6 +1381,12 @@ migrations already declare, so dropping them on the way back would take a column
 a database that never needed the repair. The other two dropped tables no migration declares
 and schema belonging to a package that is no longer installed; there is nothing to rebuild
 them from.
+
+The three campaign migrations of late September and early October
+(`..._let_a_campaign_play_by_the_alternative_rules`, `..._record_which_expansions_a_campaign_plays_with`,
+`..._make_three_downtime_activities_the_rule`) were checked that way on MySQL 9.4 on 2 October
+2026: `migrate`, `migrate:refresh --seed`, then each rolled back and re-applied one at a time
+with the column list compared at every step.
 
 `tests/Feature/MigrationsTest.php` fails on a migration with no `down()`, which is the
 mistake that was made. It cannot catch a `down()` that undoes things in an order the

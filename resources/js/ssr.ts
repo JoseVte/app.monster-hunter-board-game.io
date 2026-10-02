@@ -1,25 +1,16 @@
-import { createSSRApp, h, type DefineComponent } from 'vue';
-import { renderToString } from '@vue/server-renderer';
-import { createInertiaApp } from '@inertiajs/vue3';
 import createServer from '@inertiajs/vue3/server';
-import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
-import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
+import {renderPage} from './ssrRender';
 
-const appName = process.env.APP_NAME;
+// Node exits on an unhandled rejection by default, and this process serves
+// every request, so one stray promise in one component (which is exactly what
+// `recaptcha-v3` used to leave behind on `/login`) took server rendering away
+// from the whole site until something restarted it. Each render is
+// independent and holds no state between requests, so logging and carrying on
+// is safe here in a way it would not be in a long-lived stateful process.
+// Logged to stderr, which is where the supervisor's log picks it up, so the
+// fault is still seen rather than swallowed.
+process.on('unhandledRejection', (reason) => {
+    console.error('[ssr] unhandled rejection, server kept running:', reason);
+});
 
-createServer((page) =>
-    createInertiaApp({
-        page,
-        render: renderToString,
-        title: (title) => `${title} - ${appName}`,
-        resolve: (name) => resolvePageComponent(`./Pages/${name}.vue`, import.meta.glob<DefineComponent>('./Pages/**/*.vue')),
-        setup({ App, props, plugin }) {
-            return createSSRApp({ render: () => h(App, props) })
-                .use(plugin)
-                .use(ZiggyVue, {
-                    ...page.props.ziggy,
-                    location: new URL(page.props.ziggy.location),
-                });
-        },
-    })
-);
+createServer((page) => renderPage(page));

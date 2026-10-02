@@ -3,10 +3,10 @@
 use App\Models\User;
 use Laravel\Dusk\Browser;
 use Database\Seeders\RolesSeeder;
-use App\Actions\PrepareNewAccount;
 use Illuminate\Support\Facades\URL;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Foundation\Testing\DatabaseTruncation;
+
+require_once __DIR__.'/helpers.php';
 
 uses(Tests\DuskTestCase::class, DatabaseTruncation::class);
 
@@ -18,20 +18,8 @@ uses(Tests\DuskTestCase::class, DatabaseTruncation::class);
 // would also pick up.
 beforeEach(function (): void {
     $this->seed(RolesSeeder::class);
+    resetServedAppCache();
 });
-
-// Every registration path goes through PrepareNewAccount: it grants the
-// standard role and a personal team, and campaigns.store requires a team_id
-// that exists and belongs to the caller. A user built without it cannot use
-// the app and the test would fail somewhere unhelpful.
-function duskUser(): User
-{
-    $user = User::factory()->create(['name' => 'Test Hunter', 'password' => Hash::make('password')]);
-
-    app(PrepareNewAccount::class)($user);
-
-    return $user;
-}
 
 test('login logout', function (): void {
     $user = duskUser();
@@ -75,6 +63,16 @@ test('register', function (): void {
             ->type('#password', 'password')
             ->type('#password_confirmation', 'password')
             ->check('#terms')
+            // Checked before submitting, so a failure here says the typing
+            // never reached the form rather than surfacing later as "waited 5
+            // seconds for a location". Both intermittent failures this was
+            // added to diagnose have been found since: the verification
+            // route's rate limit (`resetServedAppCache()`) and Chrome's
+            // breached-password dialog swallowing input
+            // (`DuskTestCase::driver()`). The check costs nothing to keep.
+            ->assertInputValue('#name', 'Test Hunter')
+            ->assertInputValue('#email', 'test-hunter@example.test')
+            ->assertChecked('#terms')
             ->press(mb_strtoupper(__('Register')))
             // Features::emailVerification() is on, and `verified` guards both
             // /dashboard and profile.show, so registering lands here rather

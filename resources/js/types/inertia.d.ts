@@ -106,6 +106,8 @@ declare namespace Inertia {
         current_campaign_id: number | null;
         has_campaign_hunter: boolean;
         locale: string;
+        // `config('app.name')`, for the SSR server's title suffix.
+        appName: string;
         // One nested object, the way `unpackDotProps()` actually delivers it
         // (see this file's header comment), not the four flat, dotted keys
         // `share()`'s own source reads as literal array keys.

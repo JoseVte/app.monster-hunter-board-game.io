@@ -1,3 +1,4 @@
+import { onMounted } from 'vue';
 import { load } from 'recaptcha-v3';
 import type { ReCaptchaInstance } from 'recaptcha-v3';
 
@@ -23,18 +24,28 @@ import type { ReCaptchaInstance } from 'recaptcha-v3';
  */
 let loading: Promise<ReCaptchaInstance> | null = null;
 
+/**
+ * The script is loaded from `onMounted`, never from `setup` itself.
+ *
+ * `setup` runs on the SSR server too, and there `recaptcha-v3`'s `load()`
+ * returns a rejected promise ("This is a library for the browser!"). Nothing
+ * awaits it during a render, so it surfaced as an unhandled rejection, and
+ * Node's default for those is to exit: the first visit to `/login` with SSR
+ * on took the whole SSR process down, and every page after it fell back to
+ * client rendering until something restarted it. `onMounted` only ever runs in
+ * a browser, which is the only place the script can live anyway.
+ *
+ * Loading on mount rather than on submit is deliberate: v3 scores how a visitor
+ * behaves on the page before the action, so it wants to be there from the
+ * start. `execute` loads it itself as well, so a submit can never race a mount
+ * that has not happened.
+ */
 export function useRecaptcha(siteKey: string) {
-    loading ??= load(siteKey, { autoHideBadge: true });
+    const ready = () => (loading ??= load(siteKey, { autoHideBadge: true }));
 
-    // Captured in a local so `execute` closes over a value TypeScript knows is
-    // non-null. `loading` itself is a mutable module-scope `let`; control flow
-    // analysis does not carry the narrowing from the `??=` above into a closure
-    // that reads the outer variable directly, since another call to this
-    // function could reassign it before `execute` runs. A fresh `const` has no
-    // such future reassignment to guard against, so the narrowing holds.
-    const instance = loading;
+    onMounted(ready);
 
     return {
-        execute: async (action: string) => (await instance).execute(action),
+        execute: async (action: string) => (await ready()).execute(action),
     };
 }

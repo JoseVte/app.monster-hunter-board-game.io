@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Models\Team;
 use App\Models\Campaign;
+use App\Enum\MonsterExpansion;
 use Spatie\Permission\Models\Role;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,6 +25,10 @@ class CampaignFactory extends Factory
             'name' => $this->faker->name,
             'description' => $this->faker->text,
             'max_days' => $this->faker->numberBetween(40, 60),
+            // A campaign the forms can save: `IncludesABaseGame` refuses one
+            // with no base game, and the demo campaign `CampaignSeeder` builds
+            // through this factory used to come out with none.
+            'expansions' => [MonsterExpansion::defaultCampaignBox()->name],
         ];
     }
 

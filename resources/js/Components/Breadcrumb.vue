@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import {computed, type Component} from 'vue';
+import {computed, inject, type Component} from 'vue';
 import {Link} from '@inertiajs/vue3';
 import {useI18n} from 'vue-i18n';
 import Dashboard from "@/Components/Icons/Dashboard.vue";
@@ -22,12 +22,22 @@ const props = defineProps<{
 
 const {t} = useI18n();
 
+// Ziggy's `route`, taken from the app rather than from the bare global. The
+// global is what Blade's `@routes` puts on `window`, so it exists in a browser
+// and nowhere else: this computed runs while the template renders, and on the
+// SSR server it threw "route is not defined" and sent every page with an empty
+// trail (the wiki index, the campaign create page) back to client rendering.
+// `ZiggyVue` provides the same function under `'route'` on both sides.
+// Handlers that call the global (a form's submit, a click) are fine as they
+// are: they only ever run in a browser.
+const routeTo = inject<typeof route>('route')!;
+
 // A page with nothing above it in the trail (an empty breadcrumbs array) still
 // needs somewhere for the mobile "back" link to go, so it falls back to the
 // dashboard rather than disappearing.
 const mobileBack = computed(() => props.breadcrumbs?.length
     ? props.breadcrumbs[props.breadcrumbs.length - 1]
-    : {url: route('dashboard'), title: t('Home')});
+    : {url: routeTo('dashboard'), title: t('Home')});
 </script>
 
 <template>
