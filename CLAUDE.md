@@ -828,6 +828,12 @@ the browser, and the two only end up looking at the same data if they agree on i
 mismatch there would have the browser writing to one database and the assertions reading
 another, and the failure would look like nothing at all.
 
+**Its mailer is `log`, and has to stay something that needs no server.** Registering sends
+the verification mail inside the request (`QUEUE_CONNECTION=sync`), and nothing listens on a
+mail port on the runner, so with SMTP the register POST is a 500 and `AuthTest::register`
+times out on "waited 5 seconds for location [/email/verify]". It never shows locally, where
+Herd's own mail server answers on 2525 and `.env.dusk` keeps SMTP.
+
 Screenshots and console logs from a failing run upload as an artifact
 (`tests/Browser/screenshots`, `tests/Browser/console`); a Dusk failure without them is close to
 unreadable.
