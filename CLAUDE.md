@@ -725,8 +725,9 @@ unrelated commit swept all of it in. Lint had been green minutes earlier, so the
 was reported as passing. Read the diff before committing; `git add -A` is how that gets
 missed.
 
-The other two majors are not rejected. They are not broken, only unreviewed, and hiding a
-legitimate upgrade forever is worse than seeing it offered.
+The other two majors were never rejected, and on 3 October 2026 they were taken: @vueuse 15
+and md-editor-v3 7 pass lint, typecheck, Vitest (including `wysiwygInput.test.ts`, which
+fails on any remote asset the editor loads), the build and the Dusk suite unchanged.
 
 ### Linting
 
