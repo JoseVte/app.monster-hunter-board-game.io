@@ -373,9 +373,9 @@ on to override one of those fields' types stops describing a subset and starts d
 incompatible sibling, rejecting every caller that still holds the real model.
 
 The ratchet holds two numbers, both re-measured rather than carried over from an earlier
-task: of 165 `.vue` files, 144 contain a `<script>` block (the other 21 are template only SVG
+task: of 166 `.vue` files, 145 contain a `<script>` block (the other 21 are template only SVG
 icons, which can never carry `lang="ts"` and are excluded rather than left in the ceiling to
-weaken it), and of those 144, 106 lack `lang="ts"`. `FrontendRatchetTest` asserts all three
+weaken it), and of those 145, 106 lack `lang="ts"`. `FrontendRatchetTest` asserts all three
 counts, not just the last, because a file walk that silently matched nothing would make the
 ceiling trivially true, which is the exact shape of green this repository has already shipped
 twice. Converting a component is not finished until the ceiling in that test is lowered to

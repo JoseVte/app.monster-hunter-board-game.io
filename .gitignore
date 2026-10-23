@@ -17,6 +17,7 @@ auth.json
 npm-debug.log
 /.fleet
 /.idea
+/anti-slop
 /.vscode
 /.claude
 /docs

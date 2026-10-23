@@ -1,9 +1,8 @@
 <script setup>
 import _ from "lodash";
 import {Head, Link} from '@inertiajs/vue3';
-import {computed, onMounted, ref} from "vue";
+import {computed} from "vue";
 import {useI18n} from "vue-i18n";
-import Typed from 'typed.js';
 import ApplicationLogo from "@/Components/ApplicationLogo.vue";
 import ButtonDark from "@/Layouts/Partials/ButtonDark.vue";
 import campaignEn from '~/screens/campaign-en.webp'
@@ -15,12 +14,12 @@ import hunterEs from '~/screens/hunter-es.webp'
 import heroImg1 from '~/hero/1.webp'
 import heroImg2 from '~/hero/2.webp'
 import heroImg3 from '~/hero/3.webp'
-import PrimaryButton from "@/Components/PrimaryButton.vue";
+import PrimaryLink from "@/Components/PrimaryLink.vue";
 import Dashboard from "@/Components/Icons/Dashboard.vue";
 import LoginIcon from "@/Components/Icons/LoginIcon.vue";
 import LocaleDropdown from "@/Components/Layout/LocaleDropdown.vue";
 import LegalFooter from "@/Components/Layout/LegalFooter.vue";
-const { t, locale } = useI18n({ useScope: 'global' })
+const { locale } = useI18n({ useScope: 'global' })
 
 // The screenshots show the app's own interface, so an English one on a Spanish
 // page reads as a different product. Each is captured in both languages and
@@ -48,21 +47,6 @@ defineProps({
     status: String,
 });
 
-const typing = ref(null);
-onMounted(() => {
-    new Typed(typing.value, {
-        strings: [
-            t('manage your campaigns'),
-            t('search items, weapons, etc.'),
-            t('manage your hunter')
-        ],
-        typeSpeed: 100,
-        backSpeed: 60,
-        showCursor: true,
-        cursorChar: '_',
-        loop: true
-    });
-});
 </script>
 
 <template>
@@ -74,7 +58,7 @@ onMounted(() => {
     -->
     <Head :title="$t('Campaign tracker')" />
 
-    <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-dots-darker bg-center bg-gray-100 dark:bg-dots-lighter dark:bg-gray-900 dark:text-white selection:bg-primary-500 selection:text-white">
+    <div class="relative sm:flex sm:justify-center sm:items-center min-h-screen bg-gray-100 dark:bg-gray-900 dark:text-white selection:bg-primary-500 selection:text-white">
         <div
             class="fixed top-0 z-50 flex w-full items-center justify-between gap-6 border-b border-gray-300 bg-white p-4 text-right sm:w-auto sm:border-x sm:py-2 sm:right-6 dark:border-gray-700 dark:bg-gray-800"
         >
@@ -141,18 +125,20 @@ onMounted(() => {
                     <div class="w-full m-auto md:w-187.5 lg:w-242.5 xl:w-292.5">
                         <div class="flex flex-col items-center gap-10 md:gap-4 h-[85vh]">
                             <div class="pt-10 md:pt-0 w-full">
-                                <h1 class="text-[40px] leading-8 md:text-[65px] md:leading-tight font-semibold text-center">
+                                <h1 class="px-4 text-[40px] leading-tight md:text-[65px] font-semibold text-center">
                                     {{ $t('Monster Hunter World: Board Game') }}
                                 </h1>
                             </div>
                             <div class="flex flex-col sm:items-center sm:justify-between sm:flex-row gap-4 w-full h-full">
                                 <div class="w-full md:w-1/2">
-                                    <div class="text-center md:text-left mb-8">
-                                        <h2 class="text-[32px] leading-8 xl:text-[50px] xl:leading-tight font-semibold">
-                                            <span>{{ $t('Website designed for') }}</span><br>
-                                            <span ref="typing" />
-                                        </h2>
-                                    </div>
+                                    <!--
+                                        A plain sentence, not the typing loop that used to
+                                        sit here: it never stopped, ignored reduced motion,
+                                        and left a screen reader reading half a word.
+                                    -->
+                                    <p class="px-4 md:px-0 text-center md:text-left mb-8 text-2xl leading-snug xl:text-4xl font-semibold">
+                                        {{ $t('Your board game campaign without the paper sheet: the days, the hunts, your hunters and everything they carry.') }}
+                                    </p>
                                 </div>
                                 <div class="px-4 md:px-0 w-full md:w-1/2 lg:pl-1/12 lg:w-5/12">
                                     <div class="mh-frame mx-auto w-fit bg-white p-6 text-gray-700 xl:p-8 dark:bg-gray-800">
@@ -160,41 +146,35 @@ onMounted(() => {
                                             v-if="$page.props.auth.user"
                                             class="flex flex-col items-center justify-center"
                                         >
-                                            <Link :href="route('dashboard')">
-                                                <PrimaryButton>
-                                                    <Dashboard class="h-6 w-6 mr-4" />
-                                                    {{ $t('Go to dashboard') }}
-                                                </PrimaryButton>
-                                            </Link>
+                                            <PrimaryLink :href="route('dashboard')">
+                                                <Dashboard class="h-6 w-6 mr-4" />
+                                                {{ $t('Go to dashboard') }}
+                                            </PrimaryLink>
                                         </div>
                                         <div
                                             v-else
                                             class="flex flex-col items-center justify-center"
                                         >
-                                            <Link
+                                            <PrimaryLink
                                                 v-if="canLogin"
                                                 :href="route('login')"
                                             >
-                                                <PrimaryButton>
-                                                    {{ $t('Log in') }}
-                                                </PrimaryButton>
-                                            </Link>
+                                                {{ $t('Log in') }}
+                                            </PrimaryLink>
                                             <div
                                                 v-if="canLogin && canRegister"
-                                                class="flex w-full flex-row items-center justify-between py-4 text-gray-500"
+                                                class="flex w-full flex-row items-center justify-between py-4 text-gray-700 dark:text-gray-300"
                                             >
                                                 <hr class="w-full mr-2">
                                                 {{ $t('Or') }}
                                                 <hr class="w-full ml-2">
                                             </div>
-                                            <Link
+                                            <PrimaryLink
                                                 v-if="canRegister"
                                                 :href="route('register')"
                                             >
-                                                <PrimaryButton>
-                                                    {{ $t('Register') }}
-                                                </PrimaryButton>
-                                            </Link>
+                                                {{ $t('Register') }}
+                                            </PrimaryLink>
                                         </div>
                                     </div>
                                 </div>
@@ -204,101 +184,116 @@ onMounted(() => {
                 </div>
             </section>
 
-            <section
-                class="section h-[85vh] relative flex flex-col items-center py-6 md:py-0 lg:flex-row-reverse md:text-lg max-w-7xl mx-auto mt-16"
-            >
-                <div
-                    class="bg-size-[65%] lg:bg-cover xl:bg-contain bg-center lg:bg-left bg-no-repeat w-full min-h-55 mb-8 sm:min-h-65 md:flex md:items-center md:w-full md:min-h-[50%] lg:basis-1/2 lg:mb-0 lg:h-full"
-                    :style="{backgroundImage: 'url('+campaignImg+')'}"
-                />
-                <div class="w-full md:w-162.5 lg:w-121.25 xl:w-146.25">
-                    <div class="px-2.5 md:px-0 lg:px-6 lg:basis-1/2 xl:ml-auto xl:w-11/12">
-                        <div class="relative pb-3 mb-4 after:content-[''] after:w-[32px] lg:after:w-10 after:absolute after:left-0 after:bottom-0 after:bg-primary-600 after:h-0.5">
-                            <h2 class="text-[28px] leading-tight lg:text-[46px] font-semibold">
-                                {{ $t('Powerful backend dashboard that gives you full control') }}
-                            </h2>
-                        </div>
-                        <p>{{ $t('Our dashboard gives you full control over your campaigns and hunters. From within the system you can create/edit campaign and craft your hunter weapons/armors.') }}</p>
+            <!--
+                Two screenshot sections, then the wiki with its list, then a
+                text only band: the page used to repeat one composition four
+                times. The screenshots are <img> with alt text rather than CSS
+                backgrounds, so they size to their own aspect ratio on a phone
+                instead of shrinking into a dark strip, and a screen reader is
+                told what they show.
+            -->
+            <section class="max-w-7xl mx-auto mt-16 px-4 md:px-8 grid gap-8 items-center lg:grid-cols-2 lg:gap-12 md:text-lg">
+                <img
+                    :src="campaignImg"
+                    :alt="$t('A campaign page: its description, the potion and day counters, and the hunters taking part.')"
+                    width="2200"
+                    height="1375"
+                    loading="lazy"
+                    class="mh-frame w-full h-auto"
+                >
+                <div>
+                    <div class="relative pb-3 mb-4 after:content-[''] after:w-8 lg:after:w-10 after:absolute after:left-0 after:bottom-0 after:bg-primary-600 after:h-0.5">
+                        <h2 class="text-[28px] leading-tight lg:text-[46px] font-semibold">
+                            {{ $t('Every day of the campaign, on one page') }}
+                        </h2>
                     </div>
+                    <p>{{ $t('Create the campaign with the boxes you play with, and the number of days follows from them. Then log each day: the monster you hunted and at what difficulty, or what each hunter did during downtime.') }}</p>
                 </div>
             </section>
 
-            <section
-                class="section h-screen relative flex flex-col items-center py-6 md:py-0 lg:flex-row md:text-lg max-w-full mx-auto mt-16"
-            >
-                <div
-                    class="bg-cover bg-center w-full min-h-55 mb-8 sm:min-h-65 md:flex md:items-center md:w-full md:min-h-[50%] lg:basis-1/2 lg:mb-0 lg:h-full"
-                    :style="{backgroundImage: 'url('+hunterImg+')'}"
-                />
-                <div class="w-full md:w-162.5 lg:w-121.25 xl:w-146.25">
-                    <div class="px-2.5 md:px-0 lg:px-6 lg:basis-1/2 xl:ml-auto xl:w-11/12">
-                        <div class="relative pb-3 mb-4 after:content-[''] after:w-8 lg:after:w-10 after:absolute after:left-0 after:bottom-0 after:bg-primary-600 after:h-0.5">
-                            <h2 class="text-[28px] leading-tight lg:text-[46px] font-semibold">
-                                {{ $t('Do it in 3 easy steps') }}
-                            </h2>
-                        </div>
-                        <div class="counter-list flex flex-col gap-2">
-                            <!--
-                                Step one depends on whether anyone can sign up.
-                                With AUTH_CAN_REGISTER off, which is the default,
-                                there is no registration form and no link to one,
-                                so telling a visitor to fill it in sends them
-                                looking for a page that does not exist.
-                            -->
-                            <div class="flex flex-col">
-                                <div class="text-[22px] font-bold text-gray-900 dark:text-gray-100">
-                                    {{ canRegister ? $t('Complete registration form') : $t('Get an invitation') }}
-                                </div>
-                                <p class="text-gray-500">
-                                    {{ canRegister
-                                        ? $t('Complete the registration form. Our team will be in touch to activate your account.')
-                                        : $t('The app is invitation only for now. Ask somebody already using it to send you one.') }}
-                                </p>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="text-[22px] font-bold text-gray-900 dark:text-gray-100">
-                                    {{ $t('Create a campaign') }}
-                                </div>
-                                <p class="text-gray-500">
-                                    {{ $t('Once you have an account, you can create your first Monster Hunter campaign.') }}
-                                </p>
-                            </div>
-                            <div class="flex flex-col">
-                                <div class="text-[22px] font-bold text-gray-900 dark:text-gray-100">
-                                    {{ $t('Register the hunters') }}
-                                </div>
-                                <p class="text-gray-500">
-                                    {{ $t('Add the hunters to the campaign to save your progress and your friends/hunters.') }}
-                                </p>
-                            </div>
-                        </div>
+            <section class="max-w-7xl mx-auto mt-24 px-4 md:px-8 grid gap-8 items-center lg:grid-cols-2 lg:gap-12 md:text-lg">
+                <img
+                    :src="hunterImg"
+                    :alt="$t('The armour tab of a hunter: total defence, active skills and the piece equipped in each slot.')"
+                    width="2200"
+                    height="1375"
+                    loading="lazy"
+                    class="mh-frame w-full h-auto lg:order-2"
+                >
+                <div class="lg:order-1">
+                    <div class="relative pb-3 mb-4 after:content-[''] after:w-8 lg:after:w-10 after:absolute after:left-0 after:bottom-0 after:bg-primary-600 after:h-0.5">
+                        <h2 class="text-[28px] leading-tight lg:text-[46px] font-semibold">
+                            {{ $t('The gear each hunter carries, and what it costs') }}
+                        </h2>
                     </div>
+                    <p>{{ $t('Every hunter keeps their own materials, weapons and armour. Craft from what they actually carry, and the app tells you which recipes they can afford.') }}</p>
                 </div>
             </section>
 
-            <section
-                class="section h-[85vh] relative flex flex-col items-center py-6 md:py-0 lg:flex-row-reverse md:text-lg max-w-7xl mx-auto mt-16"
-            >
-                <div
-                    class="bg-cover bg-center w-full min-h-55 mb-8 sm:min-h-65 md:flex md:items-center md:w-full md:min-h-[50%] lg:basis-1/2 lg:mb-0 lg:h-full"
-                    :style="{backgroundImage: 'url('+wikiImg+')'}"
-                />
-                <div class="w-full md:w-162.5 lg:w-121.25 xl:w-146.25">
-                    <div class="px-2.5 md:px-0 lg:px-6 lg:basis-1/2 xl:ml-auto xl:w-11/12">
-                        <div class="relative pb-3 mb-4 after:content-[''] after:w-8 lg:after:w-10 after:absolute after:left-0 after:bottom-0 after:bg-primary-600 after:h-0.5">
-                            <h2 class="text-[28px] leading-tight lg:text-[46px] font-semibold">
-                                {{ $t('The whole box, looked up in seconds') }}
-                            </h2>
-                        </div>
-                        <p class="mb-4">
-                            {{ $t('Every monster, weapon, armour and item from the base game and the expansions, in both languages. Filter by monster, expansion or rarity and find the piece you are arguing about without emptying the box on the table.') }}
-                        </p>
-                        <ul class="flex flex-col gap-2 text-gray-500">
-                            <li>{{ $t('Follow a weapon up its crafting tree and see what each upgrade costs before you spend it.') }}</li>
-                            <li>{{ $t('Read a monster like its card: difficulty tiers, resistances, body parts and the reward table.') }}</li>
-                            <li>{{ $t('Check what an armour set gives you, and which pieces you are still missing for the bonus.') }}</li>
-                        </ul>
+            <section class="max-w-7xl mx-auto mt-24 px-4 md:px-8 grid gap-8 items-start lg:grid-cols-2 lg:gap-12 md:text-lg">
+                <img
+                    :src="wikiImg"
+                    :alt="$t('The monster wiki: every monster with its category and the box it comes from.')"
+                    width="2200"
+                    height="1375"
+                    loading="lazy"
+                    class="mh-frame w-full h-auto"
+                >
+                <div>
+                    <div class="relative pb-3 mb-4 after:content-[''] after:w-8 lg:after:w-10 after:absolute after:left-0 after:bottom-0 after:bg-primary-600 after:h-0.5">
+                        <h2 class="text-[28px] leading-tight lg:text-[46px] font-semibold">
+                            {{ $t('The whole box, looked up in seconds') }}
+                        </h2>
                     </div>
+                    <p class="mb-4">
+                        {{ $t('Every monster, weapon, armour and item from the base game and the expansions, in both languages. Filter by monster, expansion or rarity and find the piece you are arguing about without emptying the box on the table.') }}
+                    </p>
+                    <ul class="flex flex-col gap-2 text-gray-700 dark:text-gray-300 list-disc pl-5 marker:text-primary-600">
+                        <li>{{ $t('Follow a weapon up its crafting tree and see what each upgrade costs before you spend it.') }}</li>
+                        <li>{{ $t('Read a monster like its card: difficulty tiers, resistances, body parts and the reward table.') }}</li>
+                        <li>{{ $t('Check what an armour set gives you, and which pieces you are still missing for the bonus.') }}</li>
+                    </ul>
+                </div>
+            </section>
+
+            <!--
+                How to get in, as a short ordered list rather than the big
+                numbered "3 easy steps" block. Step one depends on whether
+                anyone can sign up: with AUTH_CAN_REGISTER off, which is the
+                default, there is no registration form to send a visitor to.
+            -->
+            <section class="max-w-7xl mx-auto mt-24 mb-16 px-4 md:px-8 md:text-lg">
+                <div class="mh-frame bg-white dark:bg-gray-800 p-6 md:p-10 grid gap-6 lg:grid-cols-[1fr_2fr] lg:gap-12">
+                    <h2 class="text-[28px] leading-tight lg:text-[40px] font-semibold">
+                        {{ $t('Before your first hunt') }}
+                    </h2>
+                    <ol class="flex flex-col gap-4 list-decimal pl-6 marker:font-bold marker:text-primary-600">
+                        <li>
+                            <span class="font-bold text-gray-900 dark:text-gray-100">
+                                {{ canRegister ? $t('Create your account') : $t('Get an invitation') }}.
+                            </span>
+                            {{ ' ' }}
+                            <span class="text-gray-700 dark:text-gray-300">
+                                {{ canRegister
+                                    ? $t('Fill in the registration form and confirm your email address.')
+                                    : $t('The app is invitation only for now. Ask somebody already using it to send you one.') }}
+                            </span>
+                        </li>
+                        <li>
+                            <span class="font-bold text-gray-900 dark:text-gray-100">{{ $t('Create a campaign') }}.</span>
+                            {{ ' ' }}
+                            <span class="text-gray-700 dark:text-gray-300">
+                                {{ $t('Once you have an account, you can create your first Monster Hunter campaign.') }}
+                            </span>
+                        </li>
+                        <li>
+                            <span class="font-bold text-gray-900 dark:text-gray-100">{{ $t('Add your hunters') }}.</span>
+                            {{ ' ' }}
+                            <span class="text-gray-700 dark:text-gray-300">
+                                {{ $t('One per player, so each keeps their own gear and progress.') }}
+                            </span>
+                        </li>
+                    </ol>
                 </div>
             </section>
 
