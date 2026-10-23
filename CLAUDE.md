@@ -20,7 +20,7 @@ Repo: `JoseVte/app.monster-hunter-board-game.io`.
 
 | Layer | Choice |
 |---|---|
-| Backend | Laravel 13.30, PHP `^8.5`, `config.platform.php` pinned to 8.5.0 |
+| Backend | Laravel 13.30, PHP `^8.5`, `config.platform.php` pinned to 8.5.12 |
 | Frontend | Vue 3 + Inertia 3.x + Vite 8, SSR build enabled |
 | Styling | Tailwind 4 (CSS-first config) + Flowbite 4, Montserrat as the app font |
 | Auth / scaffolding | Jetstream (teams) + Fortify + Socialite (Google, GitHub, Discord) |
@@ -770,11 +770,18 @@ several of them carry local changes (the Campaign members UI is a fork of the Te
 `main`, and `dusk.yml` runs the browser suite in `tests/Browser`. All three pin every action
 to a commit SHA with the version in a trailing comment; keep that style when bumping.
 
-The workflow **must** stay on PHP 8.5 or newer. `config.platform.php` is pinned to 8.5.0, so
+The workflow **must** stay on PHP 8.5 or newer. `config.platform.php` is pinned to 8.5.12, so
 `composer install` happily succeeds on an older PHP (it simulates 8.3 when resolving) and
 then every subsequent `php` call dies in `vendor/composer/platform_check.php` with
 "Your Composer dependencies require a PHP version >= 8.5.0". The failure surfaces at
 `artisan key:generate`, nowhere near the real cause, so check the PHP version first.
+
+**The pin is 8.5.12, not 8.5.0, because of `roave/security-advisories`.** In October 2026 it
+started conflicting with every PHP 8.5 below 8.5.12, and Composer resolves against the pinned
+version rather than the binary it runs on, so with 8.5.0 `composer update` refused to resolve
+anything at all. Raise the pin when the advisories move again. The pin does not check the
+server: `platform_check.php` only enforces `^8.5`, so make sure production is on a patch release
+the advisories accept.
 
 The workflow does not set `DB_CONNECTION` or `DB_DATABASE`. PHPUnit's `<env>` entries do not
 override variables that already exist in the environment, so setting them in the workflow

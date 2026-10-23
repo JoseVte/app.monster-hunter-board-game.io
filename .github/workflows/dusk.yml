@@ -28,7 +28,7 @@ jobs:
     steps:
     - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
 
-    # Must stay 8.5 or newer. config.platform.php is pinned to 8.5.0, so
+    # Must stay 8.5 or newer. config.platform.php is pinned to 8.5.12, so
     # composer install succeeds on an older PHP and then every artisan call
     # dies in vendor/composer/platform_check.php, surfacing at key:generate,
     # nowhere near the cause.
