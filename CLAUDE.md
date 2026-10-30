@@ -27,9 +27,9 @@ Repo: `JoseVte/app.monster-hunter-board-game.io`.
 | Authorization | spatie/laravel-permission (roles) + policies |
 | i18n | spatie/laravel-translatable (models), vue-i18n (front), JSON lang files |
 | Gamification | local, `app/Models/Traits/Has{Experience,Achievements}.php` |
-| Queue / infra | Horizon, Redis, MySQL 8, Meilisearch (Scout), Mailpit, MinIO via Sail |
+| Queue / infra | Redis queue with plain `queue:work` workers, MySQL 8, Meilisearch (Scout), Mailpit, MinIO via Sail |
 | Testing | Pest 5 (Feature + Unit), Pest browser plugin (Playwright) for browser tests |
-| Monitoring | Sentry, Laravel Telescope, Debugbar |
+| Monitoring | Sentry, Laravel Telescope, Debugbar, spatie/laravel-health at `/admin/health` |
 | PWA | `vite-plugin-pwa`, generated `public/sw.js` and manifest |
 
 ## Local development
@@ -907,6 +907,44 @@ hashed workbox chunk are written to `public/` itself, so every build that change
 leaves the previous chunk on disk forever. There were five of them when the script was
 written, the oldest from July 2023.
 
+**The Forge script ends with the FPM reload and nothing after it.** Forge's default script
+also ends with a `queue:restart` called through `$FORGE_PHP_FPM`, which is the name of the
+FPM service rather than a PHP binary, so it fails with `php8.5-fpm: command not found`
+(exit 127) and fails the deploy. `deploy.sh` already restarts the workers with `$PHP`. Both
+locks in the Forge snippet (`/tmp/monster-hunter-deploy.lock` and
+`/tmp/monster-hunter-fpm.lock`) are named after this site.
+
+### Queue workers
+
+**Horizon and Pulse are gone.** They were removed from the server to reduce load, and the
+package, its config, its provider, the `viewHorizon` gate and `public/vendor/horizon` went
+with them. The workers are plain `php artisan queue:work` daemons in Forge, on the `redis`
+connection. `deploy.sh` ends with `queue:restart`, which only writes a timestamp to the
+cache: each worker finishes the job in hand, exits, and the Forge daemon starts it again on
+the new release. It runs after `config:cache`, so the signal goes to the cache store the
+workers will read.
+
+### Health checks
+
+spatie/laravel-health, with the same checks as gym-manager, registered in
+`App\Providers\HealthServiceProvider`: environment, debug mode, CPU load, used disk space,
+database, schedule heartbeat, cache, Redis (the cache and the queue both run on it),
+optimized app (config and routes cached), security advisories, and the two SSL certificate
+checks against `APP_URL`. Results are stored in `health_check_result_history_items`, kept
+five days. A failure mails `ADMIN_EMAIL`, at most once an hour.
+
+`routes/console.php` writes the schedule heartbeat every minute and runs `health:check`
+every five minutes, `withoutOverlapping`, to keep the load down. `ScheduleCheck` allows a
+heartbeat ten minutes old, two check runs. The checks run on that same scheduler, so if the
+scheduler stops nothing is sent; `/admin/health?fresh` runs them on the spot.
+
+**`/admin/health` is for the `admin` role on the web guard**, through
+`RoleMiddleware::using('admin')` inside the authenticated group. That is the platform role
+from `RolesSeeder` and `UserFactory::admin()`, not the campaign roles on the sanctum guard,
+and not the Jetstream team role that happens to share its name. Nothing in the app hands it
+out, so the owner assigns it once from tinker. The page reads stored results, so the tests
+in `tests/Feature/HealthTest.php` never run a check and never reach the network.
+
 ## Architecture notes
 
 ### Domain models
@@ -1560,7 +1598,6 @@ registered with Google, GitHub and Discord have to move** to `/auth/{provider}/c
 - `_ide_helper.php` (890 kB) and `_ide_helper_models.php` are generated and gitignored,
   but they are present on disk, so exclude them from greps or they will dominate results.
   The same applies to `.phpunit.result.cache`.
-- `public/vendor/horizon/*` is vendor published output, not hand written.
 - `public/build/`, `public/sw.js` and `public/workbox-*.js` are build artifacts and are
   gitignored, so running `npm run build` will not dirty the tree.
 - Sqlite is used for tests while production is MySQL, so anything relying on MySQL JSON

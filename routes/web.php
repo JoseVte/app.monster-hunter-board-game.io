@@ -9,12 +9,14 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CampaignController;
 use App\Http\Controllers\InvitationController;
 use App\Http\Controllers\ProfileLevelController;
+use Spatie\Permission\Middleware\RoleMiddleware;
 use App\Http\Controllers\CampaignHunterController;
 use App\Http\Controllers\CampaignMemberController;
 use App\Http\Controllers\Auth\SocialAuthController;
 use App\Http\Controllers\CampaignHunterItemController;
 use App\Http\Controllers\CampaignInvitationController;
 use App\Http\Controllers\Auth\InvitationAcceptController;
+use Spatie\Health\Http\Controllers\HealthCheckResultsController;
 use App\Http\Controllers\Wiki\ItemController as WikiItemController;
 use App\Http\Controllers\Wiki\ArmorController as WikiArmorController;
 use App\Http\Controllers\Wiki\WeaponController as WikiWeaponController;
@@ -160,6 +162,13 @@ Route::middleware([
 
     Route::get('user/level', [ProfileLevelController::class, 'index'])
         ->name('profile.level');
+
+    // `admin` on the web guard is the platform administrator role, the one
+    // RolesSeeder creates and UserFactory::admin() hands out. The campaign
+    // roles live on the sanctum guard and have nothing to do with this.
+    Route::get('admin/health', HealthCheckResultsController::class)
+        ->middleware(RoleMiddleware::using('admin'))
+        ->name('admin.health');
 });
 
 Route::get('auth/{provider}', [SocialAuthController::class, 'redirect'])

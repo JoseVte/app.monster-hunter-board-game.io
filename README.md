@@ -26,7 +26,6 @@ This project uses [Laravel Sail](https://laravel.com/docs/sail) to manage its lo
 - **Preview Emails via Mailpit** http://localhost:8025
 - **MeiliSearch Administration Panel** http://localhost:7700
 - **MinIO Administration Panel** http://localhost:9000
-- **Laravel Horizon** http://localhost/horizon
 
 ### Start the development server
 

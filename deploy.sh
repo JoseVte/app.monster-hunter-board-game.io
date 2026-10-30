@@ -19,6 +19,16 @@
 #     ( flock -w 10 9 || exit 1
 #         echo 'Restarting FPM...'; sudo -S service $FORGE_PHP_FPM reload ) 9>/tmp/fpmlock
 #
+# Nothing else goes after that reload. Forge's default script also ends with a
+# `queue:restart` that calls artisan through $FORGE_PHP_FPM, and it has to stay
+# out: $FORGE_PHP_FPM is the name of the FPM service, not a PHP binary, so it fails
+# with "php8.5-fpm: command not found" (exit 127) and takes the deploy down
+# with it. The restart is already done below, with $PHP.
+#
+# The deploy lock is this site's own, so two sites can deploy at once. The
+# reload lock is not: every site on the server reloads the same PHP-FPM, and
+# /tmp/fpmlock is what stops two of them reloading it at the same moment.
+#
 # What this replaces built the frontend with yarn. The project moved to npm and
 # deleted yarn.lock, and node 22 ships corepack, which already owns the `yarn`
 # and `yarnpkg` shims in the nvm bin directory, so `npm install -g yarn` now
@@ -168,9 +178,16 @@ $PHP artisan inertia:stop-ssr >/dev/null 2>&1 \
     || echo "    no SSR server answered, nothing to restart"
 
 echo "--> Queue"
-# Horizon supervises the workers, so it is the one that has to be told the code
-# changed. It stops the master process; the daemon that Forge keeps alive starts
-# it again with the new code. `queue:restart` would not reach them.
-$PHP artisan horizon:terminate
+# The workers are plain `queue:work` daemons that Forge keeps alive, and each
+# one holds the code it booted with until it exits. `queue:restart` does not
+# kill anything: it writes a timestamp to the cache, every worker checks it
+# between jobs, finishes the job in hand and exits, and the daemon starts it
+# again on the new release. It runs after the caches are rebuilt so that the
+# workers boot on the finished release, and so that the signal lands in the
+# cache store the new config names, which is the one the workers will read.
+#
+# Horizon used to sit here, with `horizon:terminate`. It was removed from the
+# server to reduce load, and so was Pulse.
+$PHP artisan queue:restart
 
 echo "--> Done"

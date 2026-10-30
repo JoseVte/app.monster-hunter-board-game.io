@@ -3,15 +3,15 @@
 use App\Providers\AppServiceProvider;
 use App\Providers\AuthServiceProvider;
 use App\Providers\RouteServiceProvider;
+use App\Providers\HealthServiceProvider;
 use App\Providers\FortifyServiceProvider;
-use App\Providers\HorizonServiceProvider;
 use App\Providers\JetstreamServiceProvider;
 use App\Providers\TypeScriptTransformerServiceProvider;
 
 return array_values(array_filter([
     AppServiceProvider::class,
     AuthServiceProvider::class,
-    HorizonServiceProvider::class,
+    HealthServiceProvider::class,
     RouteServiceProvider::class,
     FortifyServiceProvider::class,
     JetstreamServiceProvider::class,
