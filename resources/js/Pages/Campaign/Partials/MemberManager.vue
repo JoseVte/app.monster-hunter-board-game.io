@@ -80,7 +80,7 @@ const confirmCampaignMemberRemoval = (campaignMember) => {
 };
 
 const confirmCampaignHunterRemoval = (campaignHunter) => {
-    campaignHunterBeingRemoved.value = !!campaignHunter.id;
+    campaignHunterBeingRemoved.value = campaignHunter.membership.hunter_id;
 };
 
 const removeCampaignMember = () => {
@@ -185,9 +185,10 @@ const displayableRole = (role) => {
                                  rather than being squeezed into four columns. -->
                             <div class="flex flex-col gap-2 items-start sm:items-end">
                                 <div class="flex flex-wrap items-center gap-x-5 gap-y-2 sm:grid sm:grid-cols-2 sm:gap-2 sm:w-full">
-                                    <!-- Edit Hunter -->
+                                    <!-- Edit Hunter: the owner of the campaign or the
+                                         hunter's own player, as HunterPolicy allows. -->
                                     <Link
-                                        v-if="(userPermissions.canAddCampaignMembers || $page.props.auth.user.id === user.id) && user.membership.hunter_id"
+                                        v-if="(userPermissions.canUpdateCampaign || $page.props.auth.user.id === user.id) && user.membership.hunter_id"
                                         class="text-sm text-gray-600 dark:text-gray-400 underline"
                                         :href="route('campaigns.hunters.edit', [campaign, user.membership.hunter_id])"
                                     >
@@ -196,7 +197,7 @@ const displayableRole = (role) => {
 
                                     <!-- Remove Hunter -->
                                     <button
-                                        v-if="(userPermissions.canAddCampaignMembers || $page.props.auth.user.id === user.id) && user.membership.hunter_id"
+                                        v-if="(userPermissions.canRemoveCampaignMembers || $page.props.auth.user.id === user.id) && user.membership.hunter_id"
                                         class="cursor-pointer text-sm text-red-500"
                                         @click="confirmCampaignHunterRemoval(user)"
                                     >

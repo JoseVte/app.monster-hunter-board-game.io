@@ -29,7 +29,20 @@ const form = useForm({
     health_potions: props.campaign.health_potions,
 });
 
+// Any member of the campaign keeps count of the potions, so the count can
+// change under this page, and the next click has to start from the count the
+// page now shows rather than the one this form was mounted with.
+watch(() => props.campaign.health_potions, (healthPotions) => {
+    form.health_potions = healthPotions;
+});
+
+const maxHealthPotions = 3;
+
 const incrementPotion = () => {
+    if (form.health_potions >= maxHealthPotions) {
+        return;
+    }
+
     form.health_potions++;
     form.put(route('campaigns.update-potions', props.campaign), {
         errorBag: 'updateCampaign',
@@ -37,6 +50,10 @@ const incrementPotion = () => {
     });
 }
 const decrementPotion = () => {
+    if (form.health_potions <= 0) {
+        return;
+    }
+
     form.health_potions--;
     form.put(route('campaigns.update-potions', props.campaign), {
         errorBag: 'updateCampaign',
@@ -106,7 +123,7 @@ watch(showFullCalendar, (showFullCalendarValue) => storage.setStorageSync('show-
                                             :decrement="decrementPotion"
                                             :increment="incrementPotion"
                                             :value="campaign.health_potions"
-                                            max="3"
+                                            :max="maxHealthPotions"
                                             class="w-full mt-1"
                                         />
                                     </div>

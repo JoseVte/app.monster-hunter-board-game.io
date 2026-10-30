@@ -21,6 +21,12 @@ class CampaignSeeder extends Seeder
             $campaign->users()->attach($user, [
                 'role_id' => Role::findByName('member-campaign', 'sanctum')->id,
             ]);
+
+            // Same as AddCampaignMember: a campaign member belongs to the
+            // campaign's team, or opening the campaign cannot switch to it.
+            if (! $campaign->team->hasUser($user)) {
+                $campaign->team->users()->attach($user, ['role' => 'editor']);
+            }
         });
     }
 }

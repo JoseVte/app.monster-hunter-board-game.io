@@ -16,6 +16,15 @@ export default mergeConfig(viteConfig, defineConfig({
         globals: true,
         include: ['resources/js/**/*.test.ts'],
         setupFiles: ['resources/js/__tests__/setup.ts'],
+        // Listing the sources makes a file no test imports count as 0% instead of being
+        // left out of the report, which would flatter the total.
+        coverage: {
+            provider: 'v8',
+            include: ['resources/js/**/*.{ts,vue}'],
+            exclude: ['resources/js/__tests__/**', 'resources/js/types/**', 'resources/js/**/*.d.ts'],
+            reporter: ['text', 'text-summary', 'clover'],
+            reportsDirectory: 'coverage/js',
+        },
     },
     resolve: {
         alias: {

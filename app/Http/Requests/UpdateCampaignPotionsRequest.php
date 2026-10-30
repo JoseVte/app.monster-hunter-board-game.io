@@ -13,7 +13,7 @@ class UpdateCampaignPotionsRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check();
+        return $this->user()->can('updatePotions', $this->route('campaign'));
     }
 
     /**

@@ -1,4 +1,5 @@
 import {afterEach, beforeEach, describe, expect, it, vi} from 'vitest';
+import type {MockInstance} from 'vitest';
 import {flushPromises} from '@vue/test-utils';
 import {router} from '@inertiajs/vue3';
 import {mountComponent} from './setup';
@@ -7,6 +8,7 @@ import AddDayToCampaignButton from '@/Pages/Campaign/Partials/AddDayToCampaignBu
 import CampaignDay from '@/Pages/Campaign/Partials/CampaignDay.vue';
 import UpdateCampaignDayModal from '@/Pages/Campaign/Partials/UpdateCampaignDayModal.vue';
 import Calendar from '@/Components/Icons/Calendar.vue';
+import CountForm from '@/Components/Form/CountForm.vue';
 
 // The campaign page, mounted whole. `maxDowntimeActivities` travels from
 // `CampaignController::show()` through this page to two places, the add-day
@@ -91,9 +93,12 @@ const props = {
 };
 
 let warnings: string[] = [];
+let put: MockInstance<typeof router.put>;
+
+const lastPotions = () => (put.mock.calls.at(-1)?.[1] as unknown as {health_potions: number}).health_potions;
 
 beforeEach(() => {
-    vi.spyOn(router, 'put').mockImplementation(() => undefined);
+    put = vi.spyOn(router, 'put').mockImplementation(() => undefined);
     // `Show.vue` remembers whether the calendar was open. In the app that is
     // session storage, as `app.ts` configures `vue3-storage`; here the plugin
     // is not installed and its default is local storage. Both are cleared so
@@ -169,5 +174,29 @@ describe('Campaign/Show.vue', () => {
         expect(text).toContain('Forage');
         expect(text).toContain('Train');
         expect(text).toContain('Rest');
+    });
+
+    // Any member keeps count of the potions, so the count can change while the
+    // page is open and come back as a new prop. The next click has to count on
+    // from it, not from the count the form was mounted with.
+    it('counts the potions on from the latest count after the page reloads', async () => {
+        const wrapper = mountComponent(Show, props);
+
+        await wrapper.setProps({campaign: {...campaign, health_potions: 3}});
+        await wrapper.findComponent(CountForm).findAll('button')[0].trigger('click');
+
+        expect(lastPotions()).toBe(2);
+    });
+
+    // The server refuses anything outside nought to three, and a form left
+    // holding a count past either end would send the wrong one on the next click.
+    it('never asks for fewer than none or more than three potions', async () => {
+        const empty = mountComponent(Show, {...props, campaign: {...campaign, health_potions: 0}});
+        await empty.findComponent(CountForm).findAll('button')[0].trigger('click');
+
+        const full = mountComponent(Show, {...props, campaign: {...campaign, health_potions: 3}});
+        await full.findComponent(CountForm).findAll('button')[1].trigger('click');
+
+        expect(put).not.toHaveBeenCalled();
     });
 });

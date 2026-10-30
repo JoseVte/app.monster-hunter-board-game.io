@@ -36,8 +36,9 @@ jobs:
       run: vendor/bin/pint --config=./pint.json --test
 
     # The database comes from phpunit.xml, which pins sqlite :memory: for the whole suite.
+    # The Browser suite needs a build and Chromium, and runs in browser.yml instead.
     - name: Execute tests (Unit and Feature tests) via Pest
-      run: vendor/bin/pest
+      run: vendor/bin/pest --testsuite=Unit,Feature
 
   frontend:
 

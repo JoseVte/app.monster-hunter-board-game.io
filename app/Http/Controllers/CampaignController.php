@@ -54,9 +54,11 @@ class CampaignController extends Controller
 
     public function show(Campaign $campaign): RedirectResponse|Response
     {
-        if ($campaign->team_id !== auth()->user()->current_team_id) {
-            auth()->user()?->switchTeam($campaign->team);
-
+        // Switching only works for someone on the campaign's team. A member who
+        // is not (taken off the team, or seeded that way) would otherwise be
+        // sent back here with the same current team, forever; the policy has
+        // already let them in, so they see the campaign from where they are.
+        if ($campaign->team_id !== auth()->user()->current_team_id && auth()->user()->switchTeam($campaign->team)) {
             return redirect()->route('campaigns.show', $campaign);
         }
 

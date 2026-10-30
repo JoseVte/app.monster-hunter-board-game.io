@@ -20,7 +20,7 @@ class AddOrUpdateCampaignDayRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check();
+        return $this->user()->can('update', $this->route('campaign'));
     }
 
     /**
@@ -87,6 +87,9 @@ class AddOrUpdateCampaignDayRequest extends FormRequest
     }
 
     /**
+     * The hunters are the keys of `hunter_day_id`, which no rule reaches, so
+     * they are checked here against the campaign the day belongs to.
+     *
      * The three activities have to be different ones, and that is checked by
      * hand rather than with the `distinct` rule.
      *
@@ -101,7 +104,18 @@ class AddOrUpdateCampaignDayRequest extends FormRequest
     {
         return [
             function (Validator $validator): void {
+                $campaignHunterIds = $this->route('campaign')->hunters()->pluck('id');
+
                 foreach ((array) $this->input('hunter_day_id', []) as $hunter => $activities) {
+                    if (! $campaignHunterIds->contains($hunter)) {
+                        $validator->errors()->add(
+                            "hunter_day_id.$hunter",
+                            __('Only the hunters of this campaign can spend a day in it.'),
+                        );
+
+                        continue;
+                    }
+
                     $activities = (array) $activities;
 
                     if (count($activities) !== count(array_unique($activities))) {

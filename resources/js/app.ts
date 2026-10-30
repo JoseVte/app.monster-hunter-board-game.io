@@ -6,7 +6,7 @@ import Vue3Storage, {StorageType} from "vue3-storage";
 import { createInertiaApp } from '@inertiajs/vue3';
 import { resolvePageComponent } from 'laravel-vite-plugin/inertia-helpers';
 import { useRegisterSW } from 'virtual:pwa-register/vue'
-import { ZiggyVue } from '../../vendor/tightenco/ziggy/dist/vue.m';
+import { ZiggyVue } from '../../vendor/tightenco/ziggy';
 import { appTitle, installAppPlugins } from './appPlugins';
 useRegisterSW();
 const appName = window.document.getElementsByTagName('title')[0]?.innerText || import.meta.env.APP_NAME;

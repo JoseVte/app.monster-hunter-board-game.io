@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use App\Enum\DayType;
 use Inertia\Middleware;
-use Tightenco\Ziggy\Ziggy;
+use Tighten\Ziggy\Ziggy;
 use Illuminate\Http\Request;
 use App\Enum\MonsterDifficulty;
 use Illuminate\Support\Facades\Route;

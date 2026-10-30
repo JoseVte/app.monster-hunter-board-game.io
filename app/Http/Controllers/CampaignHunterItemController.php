@@ -18,7 +18,7 @@ class CampaignHunterItemController extends Controller
      */
     public function storeMany(StoreHunterItemsRequest $request, Campaign $campaign, Hunter $hunter): RedirectResponse
     {
-        $this->authorize('update', [$campaign, $hunter]);
+        $this->authorize('update', [$hunter, $campaign]);
 
         DB::transaction(function () use ($request, $hunter): void {
             foreach ($request->validated('items') as $item) {

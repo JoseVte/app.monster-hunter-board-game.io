@@ -36,6 +36,12 @@ uses(TestCase::class, RefreshDatabase::class)
     ->beforeEach(fn () => fakeRecaptcha())
     ->in('Feature');
 
+// The browser suite is served from this same process, so the fake below
+// answers the siteverify call the login and register forms trigger as well.
+uses(Tests\BrowserTestCase::class, RefreshDatabase::class)
+    ->beforeEach(fn () => fakeRecaptcha())
+    ->in('Browser');
+
 /*
 |--------------------------------------------------------------------------
 | Outgoing HTTP
@@ -91,6 +97,26 @@ expect()->extend('toBeOne', fn () => $this->toBe(1));
 function something(): void
 {
     // ..
+}
+
+/**
+ * A user who can actually use the app, for the browser suite.
+ *
+ * Every registration path goes through PrepareNewAccount: it grants the
+ * standard role and a personal team, and campaigns.store requires a team_id
+ * that exists and belongs to the caller. A user built without it would fail
+ * somewhere unhelpful.
+ */
+function browserUser(): App\Models\User
+{
+    $user = App\Models\User::factory()->create([
+        'name' => 'Test Hunter',
+        'password' => Illuminate\Support\Facades\Hash::make('password'),
+    ]);
+
+    app(App\Actions\PrepareNewAccount::class)($user);
+
+    return $user;
 }
 
 /**

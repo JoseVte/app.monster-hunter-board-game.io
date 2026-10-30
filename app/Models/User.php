@@ -36,7 +36,9 @@ class User extends Authenticatable implements MustVerifyEmail
         profilePhotoUrl as getPhotoUrl;
     }
     use HasRoles;
-    use HasTeams;
+    use HasTeams {
+        HasTeams::teams insteadof HasRoles;
+    }
     use Notifiable;
     use TwoFactorAuthenticatable;
 

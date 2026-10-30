@@ -34,8 +34,10 @@ const confirmUpdateDay = () => {
 // them back by hunter is what turns that into the list this form edits; the
 // single `day.downtime_activity_id` column cannot stand in for it, since it
 // only holds anything when the whole party spent the day on one activity.
+// Keyed by the hunter, not the user playing it, because those are the ids the
+// server attaches.
 const huntersDays = _.mapValues(
-    _.keyBy(props.campaign.users, 'id'),
+    _.keyBy(_.filter(props.campaign.users, 'membership.hunter_id'), 'membership.hunter_id'),
     (user) => _.filter(props.day.hunters, (hunter) => user.membership.hunter_id === hunter.id)
         .map((hunter) => hunter.pivot.downtime_activity)
         .filter(Boolean)
@@ -193,33 +195,35 @@ const closeModal = () => {
                             </div>
                         </div>
                         <div>
-                            <InputLabel
-                                :for="`add-day-id-${user.id}`"
-                                :value="$t('Day')"
-                            />
-                            <VueMultiselect
-                                :id="`add-day-id-${user.id}`"
-                                v-model="form.hunter_day_id[user.id]"
-                                class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary-500 dark:focus:border-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 rounded-md shadow-xs mt-1 block w-full"
-                                :options="days"
-                                label="name"
-                                track-by="id"
-                                multiple
-                                :max="maxActivities"
-                                :allow-empty="false"
-                                :placeholder="$t('Day')"
-                            />
+                            <template v-if="user.membership.hunter_id">
+                                <InputLabel
+                                    :for="`add-day-id-${user.id}`"
+                                    :value="$t('Day')"
+                                />
+                                <VueMultiselect
+                                    :id="`add-day-id-${user.id}`"
+                                    v-model="form.hunter_day_id[user.membership.hunter_id]"
+                                    class="border-gray-300 dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300 focus:border-primary-500 dark:focus:border-primary-600 focus:ring-primary-500 dark:focus:ring-primary-600 rounded-md shadow-xs mt-1 block w-full"
+                                    :options="days"
+                                    label="name"
+                                    track-by="id"
+                                    multiple
+                                    :max="maxActivities"
+                                    :allow-empty="false"
+                                    :placeholder="$t('Day')"
+                                />
 
-                            <!-- Laravel names a per-hunter failure
-                                 `hunter_day_id.<hunter>` and Inertia hands the
-                                 bag over with those dotted keys intact, so the
-                                 hunter's own error is looked up by that key
-                                 and the bare one is the fallback for a failure
-                                 about the whole array. -->
-                            <InputError
-                                :message="form.errors[`hunter_day_id.${user.id}`] ?? form.errors.hunter_day_id"
-                                class="mt-2"
-                            />
+                                <!-- Laravel names a per-hunter failure
+                                     `hunter_day_id.<hunter>` and Inertia hands the
+                                     bag over with those dotted keys intact, so the
+                                     hunter's own error is looked up by that key
+                                     and the bare one is the fallback for a failure
+                                     about the whole array. -->
+                                <InputError
+                                    :message="form.errors[`hunter_day_id.${user.membership.hunter_id}`] ?? form.errors.hunter_day_id"
+                                    class="mt-2"
+                                />
+                            </template>
                         </div>
                     </template>
                 </template>

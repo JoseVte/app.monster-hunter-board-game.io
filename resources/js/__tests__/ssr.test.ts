@@ -48,10 +48,10 @@ vi.mock('recaptcha-v3', () => ({
 // Ziggy needs the real route list to resolve a name, and every other suite
 // fakes `route()` for the same reason (see `setup.ts`). The fake is installed
 // the two ways the real `ZiggyVue.install()` installs it (read from
-// `vendor/tightenco/ziggy/dist/vue.m.js`): a mixin method, which is what a
+// `vendor/tightenco/ziggy/dist/index.js`): a mixin method, which is what a
 // template's `route(...)` reaches, and `app.provide('route', ...)`, which is
 // what a component injects when it needs a URL while rendering.
-vi.mock('../../../vendor/tightenco/ziggy/dist/vue.m', () => ({
+vi.mock('../../../vendor/tightenco/ziggy', () => ({
     ZiggyVue: {
         install(app: {mixin: (mixin: object) => void; provide: (key: string, value: unknown) => void}) {
             const fake = (name?: string) => (name === undefined ? {current: () => false} : `/${name}`);
@@ -79,7 +79,7 @@ function pageFor(path: string, props: Record<string, unknown>, locale = 'en'): P
             locale,
             // `renderPage()` builds a `URL` from this, which an empty string
             // (the DOM suites' value, where nothing parses it) is not.
-            ziggy: {location: 'http://localhost/', query: {}},
+            ziggy: {url: 'http://localhost', port: null, defaults: {}, routes: {}, location: 'http://localhost/', query: {}},
             ...props,
         },
         url: '/',

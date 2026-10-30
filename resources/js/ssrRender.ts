@@ -7,7 +7,7 @@ import {renderToString} from '@vue/server-renderer';
 import {createInertiaApp} from '@inertiajs/vue3';
 import type {Page} from '@inertiajs/core';
 import {resolvePageComponent} from 'laravel-vite-plugin/inertia-helpers';
-import {ZiggyVue} from '../../vendor/tightenco/ziggy/dist/vue.m';
+import {ZiggyVue} from '../../vendor/tightenco/ziggy';
 import {appTitle, installAppPlugins} from './appPlugins';
 
 export function renderPage(page: Page) {

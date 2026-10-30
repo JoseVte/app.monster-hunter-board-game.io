@@ -26,7 +26,10 @@ class CampaignHunterController extends Controller
 {
     public function __construct()
     {
-        $this->authorizeResource(['campaign', Hunter::class], ['campaign', 'hunter']);
+        // The hunter goes first in both lists so every ability, with or without
+        // a hunter yet, reaches HunterPolicy. With the campaign first they asked
+        // CampaignPolicy, whose `create` lets anybody in.
+        $this->authorizeResource([Hunter::class, 'campaign'], ['hunter', 'campaign']);
     }
 
     public function index(Campaign $campaign): RedirectResponse
@@ -50,7 +53,7 @@ class CampaignHunterController extends Controller
     public function show(Campaign $campaign, Hunter $hunter, string $tab = 'items', ?WeaponType $weaponType = null): Response
     {
         $user = $hunter->getUser();
-        $canEdit = auth()->user()?->can('update', [$campaign, $hunter]);
+        $canEdit = auth()->user()?->can('update', [$hunter, $campaign]);
         $hunter->load(
             'palico',
             'weaponType',
@@ -125,11 +128,15 @@ class CampaignHunterController extends Controller
 
     public function showWeaponType(Campaign $campaign, Hunter $hunter, WeaponType $weaponType): Response
     {
+        $this->authorize('view', [$hunter, $campaign]);
+
         return $this->show($campaign, $hunter, 'weapons', $weaponType);
     }
 
     public function craftWeapon(Request $request, Campaign $campaign, Hunter $hunter, WeaponType $weaponType, Weapon $weapon): JsonResponse|RedirectResponse
     {
+        $this->authorize('update', [$hunter, $campaign]);
+
         $affordable = $hunter->craftableRecipes($weapon);
 
         if ($affordable->isEmpty()) {
@@ -171,6 +178,8 @@ class CampaignHunterController extends Controller
 
     public function updateEquippedWeapon(EquipRequest $request, Campaign $campaign, Hunter $hunter, WeaponType $weaponType, Weapon $weapon): JsonResponse|RedirectResponse
     {
+        $this->authorize('update', [$hunter, $campaign]);
+
         // A hunter owns their starting weapon from the first day, but nothing ever
         // wrote it to the pivot, so equipping it was refused and there was no way
         // back to it once anything else of that type had been equipped.
@@ -216,7 +225,7 @@ class CampaignHunterController extends Controller
      */
     public function updateHuntingWeaponType(Campaign $campaign, Hunter $hunter, WeaponType $weaponType): RedirectResponse
     {
-        $this->authorize('update', [$campaign, $hunter]);
+        $this->authorize('update', [$hunter, $campaign]);
 
         $hunter->update(['weapon_type_id' => $weaponType->id]);
 
@@ -225,6 +234,8 @@ class CampaignHunterController extends Controller
 
     public function craftArmor(Campaign $campaign, Hunter $hunter, Armor $armor): JsonResponse|RedirectResponse
     {
+        $this->authorize('update', [$hunter, $campaign]);
+
         if (! $hunter->canCraftArmor($armor)) {
             return response()->json([
                 'error' => __('The armor cannot be crafted.'),
@@ -247,6 +258,8 @@ class CampaignHunterController extends Controller
 
     public function updateEquippedArmor(EquipRequest $request, Campaign $campaign, Hunter $hunter, Armor $armor): JsonResponse|RedirectResponse
     {
+        $this->authorize('update', [$hunter, $campaign]);
+
         if (! $hunter->armors()->find($armor->id)) {
             return response()->json([
                 'error' => __('The armor cannot be equipped.'),

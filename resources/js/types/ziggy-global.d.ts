@@ -95,22 +95,7 @@ declare const Ziggy: {
 // route` (this file's global) is added there instead; declaration merging
 // across files is what makes that one interface either way.
 
-// There is deliberately no declaration here for
-// '../../vendor/tightenco/ziggy/dist/vue.m', the path app.ts and ssr.ts (Task
-// 5) import `ZiggyVue` from. The plan called for one, wildcard or exact, on
-// the theory that TypeScript never reaches `ziggy-js`'s own types for an
-// import by file path. Measured instead of assumed: `vue.m.js` is a real file
-// and `allowJs` is on, so TypeScript's own module resolution finds it before
-// either an exact `declare module '../../vendor/tightenco/ziggy/dist/vue.m'`
-// or a wildcard `declare module '*/vendor/tightenco/ziggy/dist/vue.m'` is
-// ever consulted; both were tried and neither changed the inferred type of
-// `ZiggyVue` at all (confirmed by forcing a shape neither could satisfy and
-// reading the error TypeScript reported back: the real, inferred one, every
-// time). What TypeScript infers straight from the JS, `{install: (t: any, r:
-// any) => void}`, is untyped but perfectly usable: `app.use(ZiggyVue, Ziggy)`,
-// with the real `Ziggy` global above (not a stand-in), already compiles
-// against it with no declaration for `ZiggyVue` itself, because `any` accepts
-// anything. A declaration that cannot win against real resolution and is not
-// needed for the one thing that reads it is the failure mode this task exists
-// to avoid, not a gap to fill.
-
+// `app.ts` and `ssrRender.ts` import `ZiggyVue` from `vendor/tightenco/ziggy`,
+// whose package.json points TypeScript at Ziggy 2's own `src/js/index.d.ts`,
+// so `ZiggyVue.install()` is typed against Ziggy's real `Config` and needs no
+// declaration here.

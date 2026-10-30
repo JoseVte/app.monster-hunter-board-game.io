@@ -236,7 +236,7 @@ export const sharedPageProps = {
     // `'user.achievements'` was never a real key at runtime; see
     // `inertia.d.ts`'s own header comment for the source dive.
     errorBags: {},
-    ziggy: {location: '', query: {}},
+    ziggy: {url: 'http://localhost', port: null, defaults: {}, routes: {}, location: '', query: {}},
     socialLogin: {providers: [], linked: [], hasPassword: false},
     user: {campaigns: [], roles: [], permissions: [], achievements: []},
     dayType: [],

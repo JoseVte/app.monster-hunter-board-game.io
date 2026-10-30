@@ -11,6 +11,12 @@
         <testsuite name="Feature">
             <directory suffix="Test.php">./tests/Feature</directory>
         </testsuite>
+        <!-- Playwright, through pest-plugin-browser. It needs a built frontend
+             and a browser installed, so it is run on its own:
+             vendor/bin/pest with testsuite Browser. -->
+        <testsuite name="Browser">
+            <directory suffix="Test.php">./tests/Browser</directory>
+        </testsuite>
     </testsuites>
     <source>
         <include>

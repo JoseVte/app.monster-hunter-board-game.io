@@ -125,7 +125,8 @@ Route::middleware([
     Route::put('campaigns/{campaign}/add-day', [CampaignController::class, 'addDay'])
         ->name('campaigns.add-day');
     Route::put('campaigns/{campaign}/update-day/{day}', [CampaignController::class, 'updateDay'])
-        ->name('campaigns.update-day');
+        ->name('campaigns.update-day')
+        ->scopeBindings();
     Route::post('campaigns/{campaign}/members', [CampaignMemberController::class, 'store'])
         ->name('campaign-members.store');
     Route::put('campaigns/{campaign}/members/{user}', [CampaignMemberController::class, 'update'])

@@ -6,61 +6,80 @@ use App\Models\User;
 use App\Models\Hunter;
 use App\Models\Campaign;
 
+/**
+ * Every rule takes the campaign from the URL as well as the hunter, because
+ * the routes outside the resource are not scoped: a hunter reached through a
+ * campaign it does not belong to is refused here rather than served.
+ */
 class HunterPolicy
 {
-    /**
-     * Determine whether the user can view any models.
-     */
     public function viewAny(User $user, Campaign $campaign): bool
     {
         return $user->belongsToCampaign($campaign);
     }
 
-    /**
-     * Determine whether the user can view the model.
-     */
-    public function view(User $user, Campaign $campaign, Hunter $hunter): bool
+    public function view(User $user, Hunter $hunter, Campaign $campaign): bool
     {
-        return $user->belongsToCampaign($campaign) && $campaign->hunters->firstWhere('id', $hunter->id);
+        if (! $hunter->campaign()->is($campaign)) {
+            return false;
+        }
+
+        return $user->belongsToCampaign($campaign);
     }
 
-    /**
-     * Determine whether the user can create models.
-     */
     public function create(User $user, Campaign $campaign): bool
     {
         return $user->belongsToCampaign($campaign);
     }
 
     /**
-     * Determine whether the user can update the model.
+     * Covers the hunter's sheet as a whole: the name, the parts they carry,
+     * crafting, equipping and the weapon they hunt with.
      */
-    public function update(User $user, Campaign $campaign, Hunter $hunter): bool
+    public function update(User $user, Hunter $hunter, Campaign $campaign): bool
     {
-        return $user->belongsToCampaign($campaign) && $campaign->hunters->firstWhere('id', $hunter->id);
+        return $this->managesHunter($user, $hunter, $campaign);
     }
 
     /**
-     * Determine whether the user can delete the model.
+     * An administrator may remove the member who plays a hunter, or delete the
+     * whole campaign, so they may also delete the hunter on its own.
      */
-    public function delete(User $user, Campaign $campaign, Hunter $hunter): bool
+    public function delete(User $user, Hunter $hunter, Campaign $campaign): bool
     {
-        return $user->belongsToCampaign($campaign) && $campaign->hunters->firstWhere('id', $hunter->id);
+        if (! $hunter->campaign()->is($campaign)) {
+            return false;
+        }
+
+        if ($user->hasCampaignRole($campaign, 'admin-campaign')) {
+            return true;
+        }
+
+        return $this->managesHunter($user, $hunter, $campaign);
     }
 
     /**
-     * Determine whether the user can restore the model.
+     * The owner of the campaign looks after every hunter in it, and a player
+     * looks after their own. Nobody else in the party edits a hunter that is
+     * not theirs.
      */
-    public function restore(User $user, Campaign $campaign, Hunter $hunter): bool
+    protected function managesHunter(User $user, Hunter $hunter, Campaign $campaign): bool
     {
-        return $user->belongsToCampaign($campaign) && $campaign->hunters->firstWhere('id', $hunter->id);
-    }
+        if (! $hunter->campaign()->is($campaign)) {
+            return false;
+        }
 
-    /**
-     * Determine whether the user can permanently delete the model.
-     */
-    public function forceDelete(User $user, Hunter $hunter, Campaign $campaign): bool
-    {
-        return $user->belongsToCampaign($campaign) && $campaign->hunters->firstWhere('id', $hunter->id);
+        if ($user->ownsCampaign($campaign)) {
+            return true;
+        }
+
+        if (! $user->hasCampaignRole($campaign, 'member-campaign') && ! $user->hasCampaignRole($campaign, 'admin-campaign')) {
+            return false;
+        }
+
+        return $campaign->users()
+            ->wherePivot('hunter_id', $hunter->id)
+            ->whereKey($user->id)
+            ->exists();
     }
 }

@@ -1,4 +1,5 @@
 <script setup>
+import {watch} from "vue";
 import {Link, useForm} from "@inertiajs/vue3";
 import CountForm from "@/Components/Form/CountForm.vue";
 
@@ -15,6 +16,13 @@ const form = useForm({
     count_item: props.countItem,
 });
 
+// The count also changes from outside this counter (the "add items" modal sets
+// the same pivot), so the next click has to start from the count the page now
+// shows rather than the one this form was mounted with.
+watch(() => props.countItem, (countItem) => {
+    form.count_item = countItem;
+});
+
 const incrementItem = () => {
     form.count_item++;
     form.put(route('campaigns.hunters.items.update-count', [props.campaign, props.hunter, props.item]), {
@@ -23,6 +31,10 @@ const incrementItem = () => {
     });
 }
 const decrementItem = () => {
+    if (form.count_item <= 0) {
+        return;
+    }
+
     form.count_item--;
     form.put(route('campaigns.hunters.items.update-count', [props.campaign, props.hunter, props.item]), {
         errorBag: 'updateHunterItem',

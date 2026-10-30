@@ -83,11 +83,10 @@ declare namespace Inertia {
             managesProfilePhotos: boolean;
         };
         // `(new Ziggy)->toArray()` merged with a `location` and `query` this
-        // method adds itself; the rest of Ziggy's own shape (`url`, `port`,
-        // `defaults`, `routes`) is not worth re-declaring here, since nothing
-        // in the app reads `$page.props.ziggy` for anything but the plugin's
-        // own bootstrapping.
-        ziggy: {location: string; query: Record<string, string>} & Record<string, unknown>;
+        // method adds itself. The rest of the shape (`url`, `port`, `defaults`,
+        // `routes`) is the same config the Blade `Ziggy` global carries, and
+        // Ziggy 2's typed `ZiggyVue.install()` requires it in `ssrRender.ts`.
+        ziggy: Omit<typeof Ziggy, 'location'> & {location: string; query: Record<string, string>};
         recaptcha_site_key: string | null;
         // `Route::has('register')`.
         canRegister: boolean;

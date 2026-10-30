@@ -101,3 +101,36 @@ test('campaign show switches the team when the campaign belongs to another one',
     $response->assertRedirect(route('campaigns.show', $otherCampaign));
     expect($this->user->fresh()->current_team_id)->toEqual($otherTeam->id);
 });
+
+test('a member of the campaign who is not on its team sees the campaign instead of a redirect loop', function (): void {
+    $member = User::factory()->withPersonalTeam()->create();
+    $this->campaign->users()->attach($member, [
+        'role_id' => Role::findByName('member-campaign', 'sanctum')->id,
+    ]);
+
+    $response = $this->actingAs($member)->get(route('campaigns.show', $this->campaign));
+
+    $response->assertOk();
+    $response->assertInertia(fn (AssertableInertia $page) => $page
+        ->component('Campaign/Show')
+        ->where('campaign.id', $this->campaign->id));
+    expect($member->fresh()->current_team_id)->toBe($member->personalTeam()->id);
+});
+
+test('a member on the campaign team is moved onto that team first', function (): void {
+    $member = User::factory()->withPersonalTeam()->create();
+    $this->campaign->team->users()->attach($member, ['role' => 'editor']);
+    $this->campaign->users()->attach($member, [
+        'role_id' => Role::findByName('member-campaign', 'sanctum')->id,
+    ]);
+
+    $this->actingAs($member)
+        ->get(route('campaigns.show', $this->campaign))
+        ->assertRedirect(route('campaigns.show', $this->campaign));
+
+    expect($member->fresh()->current_team_id)->toBe($this->campaign->team_id);
+
+    $this->actingAs($member->fresh())
+        ->get(route('campaigns.show', $this->campaign))
+        ->assertOk();
+});

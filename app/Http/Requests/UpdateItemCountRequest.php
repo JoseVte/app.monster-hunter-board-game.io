@@ -13,7 +13,7 @@ class UpdateItemCountRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return auth()->check();
+        return $this->user()->can('update', [$this->route('hunter'), $this->route('campaign')]);
     }
 
     /**

@@ -2,44 +2,24 @@
 declare module 'ziggy-js' {
   interface RouteList {
     "debugbar.openhandler": [],
-    "debugbar.cache.delete": [
-        {
-            "name": "key"
-        }
-    ],
+    "debugbar.cache.delete": [],
     "debugbar.queries.explain": [],
     "debugbar.clockwork": [
         {
-            "name": "id"
+            "name": "id",
+            "required": true
         }
     ],
     "debugbar.assets": [],
     "boost.browser-logs": [],
-    "dusk.login": [
-        {
-            "name": "userId"
-        },
-        {
-            "name": "guard"
-        }
-    ],
-    "dusk.logout": [
-        {
-            "name": "guard"
-        }
-    ],
-    "dusk.user": [
-        {
-            "name": "guard"
-        }
-    ],
     "login": [],
     "login.store": [],
     "logout": [],
     "password.request": [],
     "password.reset": [
         {
-            "name": "token"
+            "name": "token",
+            "required": true
         }
     ],
     "password.email": [],
@@ -47,10 +27,12 @@ declare module 'ziggy-js' {
     "verification.notice": [],
     "verification.verify": [
         {
-            "name": "id"
+            "name": "id",
+            "required": true
         },
         {
-            "name": "hash"
+            "name": "hash",
+            "required": true
         }
     ],
     "verification.send": [],
@@ -75,35 +57,41 @@ declare module 'ziggy-js' {
     "horizon.monitoring.store": [],
     "horizon.monitoring-tag.paginate": [
         {
-            "name": "tag"
+            "name": "tag",
+            "required": true
         }
     ],
     "horizon.monitoring-tag.destroy": [
         {
-            "name": "tag"
+            "name": "tag",
+            "required": true
         }
     ],
     "horizon.jobs-metrics.index": [],
     "horizon.jobs-metrics.show": [
         {
-            "name": "id"
+            "name": "id",
+            "required": true
         }
     ],
     "horizon.queues-metrics.index": [],
     "horizon.queues-metrics.show": [
         {
-            "name": "id"
+            "name": "id",
+            "required": true
         }
     ],
     "horizon.jobs-batches.index": [],
     "horizon.jobs-batches.show": [
         {
-            "name": "id"
+            "name": "id",
+            "required": true
         }
     ],
     "horizon.jobs-batches.retry": [
         {
-            "name": "id"
+            "name": "id",
+            "required": true
         }
     ],
     "horizon.pending-jobs.index": [],
@@ -112,22 +100,26 @@ declare module 'ziggy-js' {
     "horizon.failed-jobs.index": [],
     "horizon.failed-jobs.show": [
         {
-            "name": "id"
+            "name": "id",
+            "required": true
         }
     ],
     "horizon.retry-jobs.show": [
         {
-            "name": "id"
+            "name": "id",
+            "required": true
         }
     ],
     "horizon.jobs.show": [
         {
-            "name": "id"
+            "name": "id",
+            "required": true
         }
     ],
     "horizon.index": [
         {
-            "name": "view"
+            "name": "view",
+            "required": false
         }
     ],
     "terms.show": [],
@@ -140,49 +132,59 @@ declare module 'ziggy-js' {
     "teams.store": [],
     "teams.show": [
         {
-            "name": "team"
+            "name": "team",
+            "required": true
         }
     ],
     "teams.update": [
         {
-            "name": "team"
+            "name": "team",
+            "required": true
         }
     ],
     "teams.destroy": [
         {
-            "name": "team"
+            "name": "team",
+            "required": true
         }
     ],
     "current-team.update": [],
     "team-members.store": [
         {
-            "name": "team"
+            "name": "team",
+            "required": true
         }
     ],
     "team-members.update": [
         {
-            "name": "team"
+            "name": "team",
+            "required": true
         },
         {
-            "name": "user"
+            "name": "user",
+            "required": true
         }
     ],
     "team-members.destroy": [
         {
-            "name": "team"
+            "name": "team",
+            "required": true
         },
         {
-            "name": "user"
+            "name": "user",
+            "required": true
         }
     ],
     "team-invitations.accept": [
         {
-            "name": "invitation"
+            "name": "invitation",
+            "required": true
         }
     ],
     "team-invitations.destroy": [
         {
-            "name": "invitation"
+            "name": "invitation",
+            "required": true
         }
     ],
     "sanctum.csrf-cookie": [],
@@ -193,7 +195,8 @@ declare module 'ziggy-js' {
     "welcome": [],
     "language": [
         {
-            "name": "language"
+            "name": "language",
+            "required": true
         }
     ],
     "dashboard": [],
@@ -204,12 +207,14 @@ declare module 'ziggy-js' {
     "wiki.monster.show": [
         {
             "name": "monster",
+            "required": true,
             "binding": "id"
         }
     ],
     "wiki.monster.card": [
         {
             "name": "monster",
+            "required": true,
             "binding": "id"
         }
     ],
@@ -217,6 +222,7 @@ declare module 'ziggy-js' {
     "wiki.item.show": [
         {
             "name": "item",
+            "required": true,
             "binding": "id"
         }
     ],
@@ -224,6 +230,7 @@ declare module 'ziggy-js' {
     "wiki.armor.show": [
         {
             "name": "armor",
+            "required": true,
             "binding": "id"
         }
     ],
@@ -231,12 +238,14 @@ declare module 'ziggy-js' {
     "wiki.weapon.type": [
         {
             "name": "weaponType",
+            "required": true,
             "binding": "id"
         }
     ],
     "wiki.weapon.show": [
         {
             "name": "weapon",
+            "required": true,
             "binding": "id"
         }
     ],
@@ -246,315 +255,377 @@ declare module 'ziggy-js' {
     "campaigns.show": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaigns.edit": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaigns.update": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaigns.destroy": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaigns.update-potions": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaigns.add-day": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaigns.update-day": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "day",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaign-members.store": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaign-members.update": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         },
         {
-            "name": "user"
+            "name": "user",
+            "required": true
         }
     ],
     "campaign-members.destroy": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "user",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaign-invitations.destroy": [
         {
             "name": "invitation",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaigns.hunters.index": [
         {
             "name": "campaign",
+            "required": true,
             "binding": null
         }
     ],
     "campaigns.hunters.create": [
         {
             "name": "campaign",
+            "required": true,
             "binding": null
         }
     ],
     "campaigns.hunters.store": [
         {
             "name": "campaign",
+            "required": true,
             "binding": null
         }
     ],
     "campaigns.hunters.edit": [
         {
             "name": "campaign",
+            "required": true,
             "binding": null
         },
         {
             "name": "hunter",
+            "required": true,
             "binding": null
         }
     ],
     "campaigns.hunters.update": [
         {
             "name": "campaign",
+            "required": true,
             "binding": null
         },
         {
             "name": "hunter",
+            "required": true,
             "binding": null
         }
     ],
     "campaigns.hunters.destroy": [
         {
             "name": "campaign",
+            "required": true,
             "binding": null
         },
         {
             "name": "hunter",
+            "required": true,
             "binding": null
         }
     ],
     "campaigns.hunters.weapon-type.index": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "hunter",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "weaponType",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaigns.hunters.weapons.craft": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "hunter",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "weaponType",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "weapon",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaigns.hunters.weapons.equip": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "hunter",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "weaponType",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "weapon",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaigns.hunters.weapon-type.hunt": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "hunter",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "weaponType",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaigns.hunters.armors.craft": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "hunter",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "armor",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaigns.hunters.armors.equip": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "hunter",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "armor",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaigns.hunters.show": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "hunter",
+            "required": true,
             "binding": "id"
         },
         {
-            "name": "tab"
+            "name": "tab",
+            "required": false
         },
         {
             "name": "weaponType",
+            "required": false,
             "binding": "id"
         }
     ],
     "campaigns.hunters.items.store-many": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "hunter",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaigns.hunters.items.update-count": [
         {
             "name": "campaign",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "hunter",
+            "required": true,
             "binding": "id"
         },
         {
             "name": "item",
+            "required": true,
             "binding": "id"
         }
     ],
     "profile.level": [],
     "auth.social.redirect": [
         {
-            "name": "provider"
+            "name": "provider",
+            "required": true
         }
     ],
     "auth.social.callback": [
         {
-            "name": "provider"
+            "name": "provider",
+            "required": true
         }
     ],
     "invitations.store": [],
     "invitations.resend": [
         {
             "name": "invitation",
+            "required": true,
             "binding": "id"
         }
     ],
     "invitations.destroy": [
         {
             "name": "invitation",
+            "required": true,
             "binding": "id"
         }
     ],
     "profile.social.redirect": [
         {
-            "name": "provider"
+            "name": "provider",
+            "required": true
         }
     ],
     "profile.social.unlink": [
         {
-            "name": "provider"
+            "name": "provider",
+            "required": true
         }
     ],
     "campaign-invitations.accept": [
         {
             "name": "invitation",
+            "required": true,
             "binding": "id"
         }
     ],
     "campaign-invitations.register": [
         {
             "name": "invitation",
+            "required": true,
             "binding": "id"
         }
     ],
     "invitations.show": [
         {
-            "name": "token"
+            "name": "token",
+            "required": true
         }
     ],
     "invitations.accept": [
         {
-            "name": "token"
+            "name": "token",
+            "required": true
         }
     ]
 }

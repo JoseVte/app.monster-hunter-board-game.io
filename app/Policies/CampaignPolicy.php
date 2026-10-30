@@ -3,7 +3,6 @@
 namespace App\Policies;
 
 use App\Models\User;
-use App\Models\Hunter;
 use App\Models\Campaign;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
@@ -38,13 +37,18 @@ class CampaignPolicy
     /**
      * Determine whether the user can update the model.
      */
-    public function update(User $user, Campaign $campaign, ?Hunter $hunter = null): bool
+    public function update(User $user, Campaign $campaign): bool
     {
-        return (
-            $user->ownsCampaign($campaign) || (
-                $hunter !== null && $user->belongsToCampaign($campaign) && $campaign->users()->wherePivot('hunter_id', $hunter->id)->find($user->id)
-            )
-        ) && ($user->hasCampaignRole($campaign, 'member-campaign') || $user->hasCampaignRole($campaign, 'admin-campaign'));
+        return $user->ownsCampaign($campaign);
+    }
+
+    /**
+     * The potions are the whole party's, so anybody in the campaign keeps
+     * count of them, not only whoever may edit the campaign itself.
+     */
+    public function updatePotions(User $user, Campaign $campaign): bool
+    {
+        return $user->belongsToCampaign($campaign);
     }
 
     /**
